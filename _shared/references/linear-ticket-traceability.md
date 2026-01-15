@@ -11,13 +11,13 @@ Linear uses a specific hierarchy different from traditional tools like Jira:
 │                        LINEAR HIERARCHY                                  │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│  INITIATIVE (Company Objective)                                          │
+│  INITIATIVE (Company Objective) ─── Optional, Enterprise/Plus feature   │
 │  └── PROJECT (Deliverable/Feature Set)                                   │
 │       └── ISSUE (Parent - Feature/Story)                                 │
 │            └── SUB-ISSUE (Task - Implementation Unit)                    │
 │                                                                          │
 │  Example:                                                                │
-│  Initiative: "Q1 2025 User Growth"                                       │
+│  Initiative: "Q1 2025 User Growth" (if enabled)                          │
 │  └── Project: "User Authentication System"                               │
 │       └── Issue: "Implement Password Reset Flow"                         │
 │            ├── Sub-issue: [Backend] Password reset API (incl. tests)     │
@@ -27,20 +27,26 @@ Linear uses a specific hierarchy different from traditional tools like Jira:
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
+### Initiative Availability
+
+**Note**: Initiatives are a Linear feature available on certain plans. If your workspace doesn't have Initiatives:
+- Project becomes the top-level container
+- Use Project description or labels to track strategic alignment
+
 ### Hierarchy Mapping (Linear vs Jira Equivalent)
 
-| Linear Concept | Jira Equivalent | Created By | Purpose |
-|----------------|-----------------|------------|---------|
-| **Initiative** | Epic (high-level) | Leadership/TPO | Company objectives |
-| **Project** | Epic | TPO | Time-bound deliverable |
-| **Issue** | Story/Feature | TPO | User-facing feature |
-| **Sub-Issue** | Task/Sub-task | Solutions Architect | Implementation work unit |
+| Linear Concept | Jira Equivalent | Created By | Purpose | Availability |
+|----------------|-----------------|------------|---------|--------------|
+| **Initiative** | Epic (high-level) | Leadership/TPO | Company objectives | Enterprise/Plus |
+| **Project** | Epic | TPO | Time-bound deliverable | All plans |
+| **Issue** | Story/Feature | TPO | User-facing feature | All plans |
+| **Sub-Issue** | Task/Sub-task | Solutions Architect | Implementation work unit | All plans |
 
 ### When to Use Each Level
 
 | Level | Use When | Example |
 |-------|----------|---------|
-| **Initiative** | Strategic company goal spanning months | "Improve User Retention" |
+| **Initiative** | Strategic company goal spanning months (if available) | "Improve User Retention" |
 | **Project** | Feature set with defined scope and timeline | "User Settings Redesign" |
 | **Issue (Parent)** | Single feature a user would recognize | "Add dark mode toggle" |
 | **Sub-Issue** | Technical work unit for one person | "[Backend] Dark mode API" |
@@ -48,11 +54,99 @@ Linear uses a specific hierarchy different from traditional tools like Jira:
 ### Issue Breakdown Decision
 
 ```
-Is this a company-wide objective? → Initiative
+Is this a company-wide objective? → Initiative (if available) or Project
 Is this a multi-feature deliverable? → Project
 Is this something a user would notice? → Issue (Parent)
 Is this technical implementation work? → Sub-Issue
 ```
+
+## Confirmation Before Creating Issues
+
+**CRITICAL**: Never assume which Initiative, Project, or Team an issue belongs to. Fetch options from Linear and let the user choose.
+
+### Pre-Creation Workflow
+
+Before creating any Issue or Sub-issue:
+
+**Step 1: Fetch available options from Linear**
+
+```python
+# Get teams
+teams = mcp.list_teams()
+
+# Get projects (optionally filtered by team)
+projects = mcp.list_projects(team="TeamName")
+```
+
+**Step 2: Present options to user for selection**
+
+```
+Before creating this issue, please select the Linear context:
+
+Issue: "[Title of the issue]"
+
+**Team**: (fetched from Linear)
+1. Platform Team
+2. Portal Team
+3. Data Team
+
+**Project**: (fetched from Linear)
+1. User Authentication System
+2. Q1 Platform Improvements
+3. Customer Portal Redesign
+4. [Create new project]
+
+**Initiative** (if available):
+1. Q1 2025 User Growth
+2. Platform Reliability
+3. [None / Not applicable]
+
+Which options should I use? (or specify different values)
+```
+
+**Step 3: Handle "Create new" if needed**
+
+If the user needs a new Project that doesn't exist, create it first:
+```python
+mcp.create_project(name="New Project Name", team="TeamName")
+```
+
+### Why Fetch from Linear
+
+- Shows **actual available options**, not guessed defaults
+- Options change as projects complete or start
+- Prevents typos in project/team names
+- User can make informed choice from real data
+
+### MCP Tools for Fetching Options
+
+```python
+# List all teams
+teams = mcp.list_teams()
+# → [{"name": "Platform Team", "id": "..."}, ...]
+
+# List projects (all or filtered)
+projects = mcp.list_projects()
+projects = mcp.list_projects(team="Platform Team")
+projects = mcp.list_projects(state="started")  # Active only
+
+# Get specific project details
+project = mcp.get_project(query="User Authentication")
+```
+
+### Optional: Pre-select with Defaults
+
+You can define defaults in `claude.md` to **pre-select** (not skip confirmation):
+
+```markdown
+### Linear Context Defaults
+| Field | Default Value |
+|-------|---------------|
+| Team | Platform Team |
+| Project | User Authentication System |
+```
+
+When defaults exist, show them as pre-selected but still present all options.
 
 ## INVEST Principle for Sub-Issues
 

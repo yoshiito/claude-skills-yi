@@ -247,16 +247,149 @@ Questions: [list]
 
 Trigger: PII handling, retention policies, cross-system data flow, analytics needs.
 
+## Scope Boundaries
+
+**CRITICAL**: TPO scope is project-specific. Before defining requirements or creating issues, verify your product area ownership.
+
+### Pre-Requirements Checklist
+
+```
+1. Check if project's claude.md has "Project Scope" section
+   → If NOT defined: Prompt user to set up scope (see below)
+   → If defined: Continue to step 2
+
+2. Read project scope definition in project's claude.md
+3. Identify which product areas you own on THIS project
+4. Before creating MRD or parent issues:
+   → Is this product area in my ownership? → Proceed
+   → Is this outside my product area? → Route to appropriate TPO
+```
+
+### If Project Scope Is Not Defined
+
+Prompt the user:
+
+```
+I notice this project doesn't have scope boundaries defined in claude.md yet.
+
+Before I create requirements or Linear issues, I need to understand:
+
+1. **What product areas exist?** (Customer Portal, Admin Dashboard, APIs, etc.)
+2. **Which areas do I own?** (e.g., "You own Customer Portal requirements")
+3. **Linear context?** (Which Team/Project for issues?)
+
+Would you like me to help set up a Project Scope section in claude.md?
+```
+
+After user responds, update `claude.md` with scope, then proceed.
+
+### What You CAN Do Outside Your Owned Product Areas
+
+- Identify feature dependencies that affect your area
+- Document integration needs from your perspective
+- Flag gaps that impact your owned features
+- Ask questions to clarify interfaces
+
+### What You CANNOT Do Outside Your Owned Product Areas
+
+- Create parent issues for features you don't own
+- Define acceptance criteria for other product areas
+- Prioritize work for other TPOs' backlogs
+- Make scope decisions for other product areas
+
+### TPO Boundary Examples
+
+```
+Your Ownership: Customer Portal (Frontend)
+Not Your Ownership: Admin Dashboard, Platform APIs
+
+✅ WITHIN YOUR SCOPE:
+- Define "User can reset password from portal"
+- Create [Feature] issue for password reset UI flow
+- Specify "Portal needs API endpoint for password reset"
+- Prioritize customer-facing features
+
+❌ OUTSIDE YOUR SCOPE:
+- Define "Admin can force-reset user passwords"
+- Create [Feature] issue for admin dashboard changes
+- Specify how the backend validates reset tokens
+- Define database schema for storing tokens
+```
+
+### Cross-Product Dependency Template
+
+When you identify work needed in a product area you don't own:
+
+```markdown
+## Product Dependency
+
+**From**: TPO (Your Product Area)
+**To**: TPO (Their Product Area)
+**Project**: [Project Name]
+
+### Your Feature
+[What you're building that has the dependency]
+
+### What You Need From Their Area
+[Interface, data, feature that must exist]
+
+### Suggested Priority
+[Why this matters to your timeline]
+
+### Questions
+1. [Is this planned?]
+2. [What's the expected timeline?]
+```
+
+See `_shared/references/scope-boundaries.md` for the complete framework.
+
 ## Linear Ticket Management
 
 **CRITICAL**: When Linear MCP is available, create parent Issues in Linear for each feature defined in the MRD.
+
+### Confirm Linear Context Before Creating Issues
+
+**ALWAYS** fetch options from Linear and let the user select before creating any issue.
+
+**Step 1**: Fetch available Teams and Projects from Linear:
+```python
+teams = mcp.list_teams()
+projects = mcp.list_projects()
+```
+
+**Step 2**: Present options for user selection:
+```
+Before creating this issue, please select the Linear context:
+
+Issue: "[Feature Name]"
+
+**Team**: (select one)
+1. Platform Team
+2. Portal Team
+3. [Other - specify]
+
+**Project**: (select one)
+1. User Authentication System
+2. Q1 Platform Improvements
+3. [Create new project]
+
+**Initiative** (if available):
+1. Q1 2025 User Growth
+2. [None]
+
+Which options should I use?
+```
+
+**Step 3**: Create new Project if needed, then create the issue.
+
+**Never assume** - always show actual options from Linear.
 
 ### When to Create Linear Issues
 
 | Trigger | Action |
 |---------|--------|
-| MRD finalized | Create parent Issue for the feature |
-| Feature scope defined | Link Issue to appropriate Project |
+| MRD finalized | Confirm Linear context, then create parent Issue |
+| Feature scope defined | Link Issue to confirmed Project |
 | Requirements ready for breakdown | Notify Solutions Architect for sub-issue creation |
 
 ### Creating Parent Issues

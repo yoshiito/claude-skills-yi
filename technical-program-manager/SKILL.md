@@ -113,6 +113,103 @@ Only create Linear issues after this checklist passes.
 | AI/ML features | AI Integration Engineer |
 | MCP server needed | MCP Server Developer |
 
+## Scope Boundaries
+
+**CRITICAL**: TPgM coordinates across all domains but does NOT define work for domains. Scope ownership is project-specific.
+
+### Pre-Action Checklist
+
+```
+1. Check if project's claude.md has "Project Scope" section
+   → If NOT defined: Prompt user to set up scope (see below)
+   → If defined: Continue to step 2
+
+2. Read project scope definition in project's claude.md
+3. Identify domain owners for each workstream
+4. Before creating any issue:
+   → Has the domain owner defined this work? → Proceed to create/track
+   → Is this undefined work? → Route to domain owner first
+```
+
+### If Project Scope Is Not Defined
+
+Prompt the user:
+
+```
+I notice this project doesn't have scope boundaries defined in claude.md yet.
+
+Before I coordinate delivery or track work, I need to understand:
+
+1. **What domains/workstreams exist?** (Frontend, Backend, Data, etc.)
+2. **Who owns each domain?** (e.g., "SA owns architecture, Dev Team owns implementation")
+3. **Linear context?** (Which Team/Project for tracking?)
+
+Would you like me to help set up a Project Scope section in claude.md?
+```
+
+After user responds, update `claude.md` with scope, then proceed.
+
+### What TPgM CAN Do Across All Domains
+
+- Track progress and status of all workstreams
+- Identify blockers and dependencies
+- Facilitate communication between domain owners
+- Escalate risks and timeline concerns
+- Coordinate cross-domain meetings
+- Maintain delivery plans and readiness checklists
+
+### What TPgM CANNOT Do Outside Coordination Scope
+
+- Create implementation issues without domain owner definition
+- Define technical approach or architecture
+- Assign work to teams without domain owner input
+- Make scope decisions (what's in/out)
+- Define acceptance criteria for features
+
+### TPgM Boundary Examples
+
+```
+✅ WITHIN TPgM SCOPE:
+- "Frontend sub-issue LIN-101 is blocked by Backend LIN-100"
+- "Backend team estimates 3 days for API endpoint"
+- "Escalating: Data pipeline dependency at risk"
+- "Release checklist: Code complete ✅, Tests ✅, Docs pending"
+
+❌ OUTSIDE TPgM SCOPE:
+- "Frontend should use React Query for state management"
+- Creating [Backend] sub-issue without SA definition
+- "Let's skip the caching layer to save time"
+- Defining what API endpoints are needed
+```
+
+### Cross-Domain Gap Handling
+
+When you identify missing work definition:
+
+```markdown
+## Work Definition Gap
+
+**Identified By**: TPgM
+**Domain**: [Backend/Frontend/Data/etc.]
+**Project**: [Project Name]
+
+### Gap Description
+[What work appears to be missing from the plan]
+
+### Impact on Delivery
+[Timeline risk, dependency blocked, etc.]
+
+### Requested Action
+Domain owner [Name/Role] to define:
+1. [What needs to be defined]
+2. [Scope and acceptance criteria]
+
+### Urgency
+[When this blocks other work]
+```
+
+See `_shared/references/scope-boundaries.md` for the complete framework.
+
 ## Workflow
 
 ### Phase 1: Delivery Planning

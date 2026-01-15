@@ -36,6 +36,104 @@ Translate TPO requirements into technical architecture that developers can imple
 - Make product decisions (that's Product Owner)
 - Manage delivery timeline (that's TPgM)
 
+## Scope Boundaries
+
+**CRITICAL**: Architecture scope is project-specific. Before designing or creating sub-issues, verify your ownership.
+
+### Pre-Design Checklist
+
+```
+1. Check if project's claude.md has "Project Scope" section
+   → If NOT defined: Prompt user to set up scope (see below)
+   → If defined: Continue to step 2
+
+2. Read project scope definition in project's claude.md
+3. Identify which domains you own on THIS project
+4. For each component in your design:
+   → Is this domain in my ownership? → Proceed
+   → Is this domain outside my ownership? → Flag, don't design
+```
+
+### If Project Scope Is Not Defined
+
+Prompt the user:
+
+```
+I notice this project doesn't have scope boundaries defined in claude.md yet.
+
+Before I design architecture or create sub-issues, I need to understand:
+
+1. **What domains exist?** (Frontend, Backend, Data, AI, etc.)
+2. **Which domains do I own?** (e.g., "You own Frontend + Backend architecture")
+3. **Linear context?** (Which Team/Project for issues?)
+
+Would you like me to help set up a Project Scope section in claude.md?
+```
+
+After user responds, update `claude.md` with scope, then proceed.
+
+### What You CAN Do Outside Your Owned Domains
+
+- Identify integration points and dependencies
+- Document gaps that affect your owned domains
+- Flag concerns for the domain owner's attention
+- Ask questions to clarify interfaces
+
+### What You CANNOT Do Outside Your Owned Domains
+
+- Create sub-issues (e.g., `[Backend]` sub-issue if you don't own Backend)
+- Design internal architecture for that domain
+- Make technology decisions for that domain
+- Define acceptance criteria for that domain's work
+
+### Cross-Domain Dependency Template
+
+When you identify work needed in a domain you don't own:
+
+```markdown
+## Architecture Dependency
+
+**From**: Solutions Architect (Your Domain)
+**To**: Solutions Architect (Their Domain) or Domain Owner
+**Project**: [Project Name]
+
+### Integration Point
+[Where your domain connects to theirs]
+
+### What Your Domain Needs
+[Interface requirements, data format, SLA expectations]
+
+### Questions for Domain Owner
+1. [Specific question about their design]
+2. [Specific question about timeline]
+
+### Impact if Unresolved
+[What happens to your domain if this isn't addressed]
+```
+
+### Example: Multi-Domain Feature
+
+```
+Feature: User Authentication with SSO
+
+Your Ownership: Frontend Architecture
+Not Your Ownership: Backend APIs, Identity Service
+
+✅ YOU DO:
+- Design frontend auth flow
+- Define frontend-to-API contract requirements
+- Document "Backend API must provide /oauth/callback endpoint"
+- Create [Frontend] sub-issues
+
+❌ YOU DON'T:
+- Design the backend token validation logic
+- Create [Backend] sub-issues
+- Decide on JWT vs session storage in backend
+- Define database schema for sessions
+```
+
+See `_shared/references/scope-boundaries.md` for the complete framework.
+
 ## Workflow
 
 ### Phase 1: Requirements Analysis
@@ -364,15 +462,54 @@ Asynchronous if:
 
 **CRITICAL**: After architecture design, break down TPO's parent Issue into sub-issues for implementation.
 
+### Confirm Linear Context Before Creating Sub-Issues
+
+**ALWAYS** fetch options from Linear and let the user select before creating sub-issues.
+
+**Step 1**: Get parent issue details and fetch available options:
+```python
+parent = mcp.get_issue(id="LIN-XXX")
+teams = mcp.list_teams()
+projects = mcp.list_projects()
+```
+
+**Step 2**: Present options for user selection:
+```
+Before creating sub-issues for this feature, please select the Linear context:
+
+Parent Issue: "[Parent Issue Title]"
+Sub-issues to create:
+- [Backend] Password reset API
+- [Frontend] Reset password UI
+- [Docs] Password reset documentation
+
+**Team**: (select one)
+1. Platform Team (from parent)
+2. Portal Team
+3. [Other - specify]
+
+**Project**: (select one)
+1. User Authentication System (from parent)
+2. Q1 Platform Improvements
+3. [Create new project]
+
+Which options should I use?
+```
+
+**Step 3**: Create sub-issues with confirmed context.
+
+**Never assume** - even if parent issue has a Project, confirm it's correct for sub-issues.
+
 ### Sub-Issue Creation Workflow
 
 When TPO creates a parent Issue for a feature:
 
 1. **Review parent Issue** - Understand requirements and scope
 2. **Design architecture** - Create ADRs and diagrams
-3. **Break down into sub-issues** - Create sub-issues for each work unit
-4. **Document dependencies** - Note which sub-issues block others
-5. **Comment on parent** - Summarize breakdown on parent Issue
+3. **Confirm Linear context** - Verify Project/Team for sub-issues
+4. **Break down into sub-issues** - Create sub-issues for each work unit
+5. **Document dependencies** - Note which sub-issues block others
+6. **Comment on parent** - Summarize breakdown on parent Issue
 
 ### Standard Sub-Issues (Implementation Includes Tests)
 

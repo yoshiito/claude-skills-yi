@@ -183,15 +183,121 @@ engine = create_engine(
 
 | Skill | Provides |
 |-------|----------|
-| **Solutions Architect** | Data flow requirements |
-| **AI Integration Engineer** | RAG/embedding needs |
+| **Technical Product Owner** | Data requirements from user stories, storage needs for features |
+| **Solutions Architect** | Data flow requirements, system integration points |
+| **AI Integration Engineer** | RAG/embedding needs, vector storage requirements |
 
 ### Downstream (Consume Data Design)
 
 | Skill | Coordination |
 |-------|-------------|
-| **Backend Developer** | Schema implementation |
-| **AI Integration Engineer** | Vector storage setup |
+| **Backend Developer** | Schema implementation, ORM models, migrations |
+| **AI Integration Engineer** | Vector storage setup, embedding pipelines |
+
+### Collaboration Triggers
+
+| Scenario | Engage Data Platform Engineer |
+|----------|------------------------------|
+| New feature requires data storage | TPO → Data Platform Engineer for schema design |
+| System design involves multiple data stores | Solutions Architect → Data Platform Engineer for polyglot patterns |
+| Performance issues with queries | Backend Developer → Data Platform Engineer for optimization |
+| RAG system design | AI Integration Engineer ↔ Data Platform Engineer for vector strategy |
+
+## Scope Boundaries
+
+**CRITICAL**: Data Platform Engineer scope is project-specific. Before designing schemas or pipelines, verify your data store ownership.
+
+### Pre-Design Checklist
+
+```
+1. Check if project's claude.md has "Project Scope" section
+   → If NOT defined: Prompt user to set up scope (see below)
+   → If defined: Continue to step 2
+
+2. Read project scope definition in project's claude.md
+3. Identify which data stores/pipelines you own on THIS project
+4. Before designing data architecture:
+   → Is this data store in my ownership? → Proceed
+   → Is this outside my data domain? → Flag, don't design
+```
+
+### If Project Scope Is Not Defined
+
+Prompt the user:
+
+```
+I notice this project doesn't have scope boundaries defined in claude.md yet.
+
+Before I design data architecture, I need to understand:
+
+1. **What data domains exist?** (Customer DB, Billing DB, Analytics DW, etc.)
+2. **Which data stores do I own?** (e.g., "You own Customer PostgreSQL and Analytics DW")
+3. **Linear context?** (Which Team/Project for issues?)
+
+Would you like me to help set up a Project Scope section in claude.md?
+```
+
+After user responds, update `claude.md` with scope, then proceed.
+
+### What You CAN Do Outside Your Owned Data Stores
+
+- Document data requirements from consumer perspective
+- Identify data dependencies that affect your stores
+- Propose integration patterns at data boundaries
+- Ask questions about data availability and formats
+
+### What You CANNOT Do Outside Your Owned Data Stores
+
+- Design schemas for databases you don't own
+- Make indexing decisions for other data stores
+- Define ETL pipelines between stores you don't own
+- Create migrations for other teams' databases
+
+### Data Platform Engineer Boundary Examples
+
+```
+Your Ownership: Customer Database (PostgreSQL), Analytics DW
+Not Your Ownership: Billing Database, Partner Data Lake
+
+✅ WITHIN YOUR SCOPE:
+- Design customer profile schema
+- Create indexes for customer queries
+- Build ETL from Customer DB to Analytics DW
+- Define vector embeddings for customer search
+
+❌ OUTSIDE YOUR SCOPE:
+- Design billing transaction tables
+- Optimize partner data lake queries
+- Create migrations for billing database
+- Define retention policies for billing data
+```
+
+### Cross-Data Dependency Template
+
+When you identify data needs outside your ownership:
+
+```markdown
+## Data Dependency
+
+**From**: Data Platform Engineer (Your Data Stores)
+**To**: Data Platform Engineer (Their Data Stores) or Data Owner
+**Project**: [Project Name]
+
+### Your Data Context
+[Which of your systems needs this data]
+
+### Required Data
+[What data, format, freshness requirements]
+
+### Integration Pattern
+[API? CDC? Batch export? Shared view?]
+
+### Questions
+1. [Is this data available?]
+2. [What's the access pattern?]
+```
+
+See `_shared/references/scope-boundaries.md` for the complete framework.
 
 ## Reference Files
 
@@ -199,6 +305,7 @@ engine = create_engine(
 - `references/vector-search-patterns.md` - RAG and vector optimization
 - `references/pipeline-patterns.md` - ETL/ELT patterns
 - `references/migration-patterns.md` - Safe schema migrations
+- `references/database-operations.md` - Local/remote setup, multi-database coordination, Qdrant operations
 
 ## Summary
 

@@ -137,6 +137,110 @@ mcp__linear-server__create_issue(
 )
 ```
 
+## Scope Boundaries
+
+**CRITICAL**: Support Engineer investigates across all domains but creates fix tickets only within owned scope.
+
+### Pre-Action Checklist
+
+```
+1. Check if project's claude.md has "Project Scope" section
+   → If NOT defined: Prompt user to set up scope (see below)
+   → If defined: Continue to step 2
+
+2. Read project scope definition in project's claude.md
+3. Identify domain owners for each system
+4. For investigations:
+   → Investigate any domain - this is your job
+5. For creating fix tickets:
+   → Is this domain in my ownership? → Create ticket
+   → Is this outside my domain? → Document findings, route to domain owner
+```
+
+### If Project Scope Is Not Defined
+
+Prompt the user:
+
+```
+I notice this project doesn't have scope boundaries defined in claude.md yet.
+
+Before I create fix tickets or route findings, I need to understand:
+
+1. **What domains exist?** (Backend, Frontend, Data, Infrastructure, etc.)
+2. **Who owns each domain?** (e.g., "You own Customer Portal")
+3. **Linear context?** (Which Team/Project for issues?)
+
+Would you like me to help set up a Project Scope section in claude.md?
+```
+
+After user responds, update `claude.md` with scope, then proceed.
+
+### What Support Engineer CAN Do Across All Domains
+
+- Investigate errors and issues in any system
+- Analyze logs from any component
+- Document root cause findings
+- Recommend fixes (without implementing)
+- Create documentation updates for known issues
+
+### What Support Engineer CANNOT Do Outside Owned Domains
+
+- Create implementation fix tickets for other teams
+- Assign work to teams outside your scope
+- Make architectural decisions to resolve issues
+- Deploy fixes to systems you don't own
+
+### Support Engineer Boundary Examples
+
+```
+Investigation Scope: All systems
+Fix Ticket Scope: Customer Portal (your ownership)
+
+✅ WITHIN YOUR SCOPE:
+- Investigate "Login fails intermittently" across all systems
+- Document: "Root cause is race condition in auth service"
+- Create ticket: "[Bug] Fix login race condition" (if you own auth)
+- Update runbook with workaround
+
+❌ OUTSIDE YOUR SCOPE (if you don't own auth service):
+- Create "[Bug] Fix auth service race condition" ticket
+- Assign the fix to the auth team
+- Decide the fix approach for auth service
+```
+
+### Cross-Domain Finding Template
+
+When you identify a fix needed in a domain you don't own:
+
+```markdown
+## Investigation Finding - Fix Required
+
+**Investigated By**: Support Engineer
+**Domain Needing Fix**: [Backend/Frontend/Data/etc.]
+**Domain Owner**: [Team/Role]
+**Severity**: [Critical/High/Medium/Low]
+
+### Issue Summary
+[Brief description of the problem]
+
+### Root Cause
+[What you found during investigation]
+
+### Evidence
+- [Log entries, error traces, reproduction steps]
+
+### Recommended Fix
+[What should be done - but NOT how to implement]
+
+### Workaround
+[If any exists for immediate relief]
+
+### Impact if Unresolved
+[User impact, business impact]
+```
+
+See `_shared/references/scope-boundaries.md` for the complete framework.
+
 ## Escalation Criteria
 
 Escalate immediately when:
