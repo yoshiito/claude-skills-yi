@@ -390,31 +390,80 @@ When TPO creates a parent Issue for a feature:
 | `[Test]` | Large features needing dedicated QA effort |
 | `[Integration Test]` | Cross-component E2E testing |
 
+### INVEST Principle for Sub-Issues
+
+Every sub-issue must follow INVEST to enable independent developer work:
+
+| Principle | Validation |
+|-----------|------------|
+| **I**ndependent | Can developer start without waiting? (If not, set `blockedBy`) |
+| **N**egotiable | Implementation approach flexible, acceptance criteria fixed |
+| **V**aluable | Moves feature closer to "Done" |
+| **E**stimable | Scope clear enough for time estimate |
+| **S**mall | Completable in 1-3 days (if larger, break down further) |
+| **T**estable | Specific, verifiable acceptance criteria |
+
 ### Creating Sub-Issues in Linear
 
+Use the Story/Task template from `_shared/references/ticket-templates.md`:
+
 ```python
-# Create sub-issue linked to parent
+# Create sub-issue linked to parent with dependencies
 mcp.create_issue(
     title="[Backend] Password reset API (incl. tests)",
     team="TeamName",
     parentId="parent-issue-id",  # Links to TPO's feature Issue
+    blockedBy=[],  # No blockers - can start immediately
     assignee="backend-developer@email.com",
     description="""
-## Scope
+## Description
 Implement password reset API endpoints with full test coverage.
 
-## Acceptance Criteria
-- POST /api/v1/auth/reset-password-request
-- POST /api/v1/auth/reset-password
-- Unit tests for all endpoints
-- Integration tests for email sending
+## Context
+- Parent Issue: LIN-456 - Password Reset Flow
+- ADR: /docs/adr/007-password-reset-tokens.md
+- API Spec: /docs/api/auth.yaml
 
-## Technical Notes
-- Use JWT for reset tokens (24h expiry)
-- Rate limit: 3 requests per email per hour
-- See ADR-XXX for token design
+## Acceptance Criteria
+- [ ] POST /api/v1/auth/reset-password-request sends email
+- [ ] POST /api/v1/auth/reset-password validates token and updates password
+- [ ] Rate limit: 3 requests per email per hour
+- [ ] Unit tests for all endpoints (>80% coverage)
+- [ ] Integration tests for email sending
+
+## NFRs
+- Response time < 200ms (p95)
+- Token expiry: 24 hours
+
+## Implementation Notes
+- Use JWT for reset tokens
+- Follow patterns in `app/api/v1/routes/auth.py`
+- See ADR-007 for token design rationale
+
+## Infrastructure Notes
+- N/A (no new infra required)
+
+## Testing
+- Happy path: Valid email triggers reset email
+- Invalid email: Returns 200 (no leak)
+- Expired token: Returns 401
+- Rate limit exceeded: Returns 429
+
+## Additional Notes
+- Email template in `templates/password-reset.html`
 """,
     labels=["Backend"]
+)
+
+# Create dependent sub-issue
+mcp.create_issue(
+    title="[Frontend] Reset password UI (incl. tests)",
+    team="TeamName",
+    parentId="parent-issue-id",
+    blockedBy=["LIN-101"],  # Depends on Backend API
+    assignee="frontend-developer@email.com",
+    description="""...""",
+    labels=["Frontend"]
 )
 ```
 

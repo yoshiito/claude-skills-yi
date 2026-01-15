@@ -290,7 +290,51 @@ Each parent Issue should include:
 - **Acceptance Criteria Reference**: Link to MRD acceptance criteria
 - **MRD Reference**: Link to full MRD document
 - **Out of Scope**: What this feature explicitly does NOT include
-- **Dependencies**: Other features/systems this depends on
+- **Dependencies**: Use Linear's `blockedBy`/`blocks` relations for tracking
+
+### Bug Reporting
+
+For bug reports, use the Bug template from `_shared/references/ticket-templates.md`:
+
+```python
+mcp.create_issue(
+    title="[Bug] iOS subscription cancellation not propagating to Apple",
+    team="TeamName",
+    description="""
+## Environment/Platform
+- iOS 17.2
+- App Version 5.4.1
+- Production
+
+## Impact
+**High** - Users cannot complete subscription cancellation
+
+## User Scope
+- Affects iOS users who subscribed via Apple
+- 47 support tickets in last 24 hours
+
+## Steps to Reproduce
+1. Open app on iOS device
+2. Navigate to Settings > Subscription
+3. Tap "Cancel Subscription"
+4. Confirm cancellation in Apple popup
+
+## Actual Result
+Subscription remains active in Apple settings
+
+## Expected Result
+Subscription is cancelled in Apple's system
+
+## Testing Notes
+- Verify cancellation propagates to Apple's API
+- Test with sandbox Apple account
+
+## Additional Notes
+Workaround: Users can cancel in iOS Settings directly
+""",
+    labels=["Bug", "P1", "iOS"]
+)
+```
 
 ### After Creating Parent Issue
 

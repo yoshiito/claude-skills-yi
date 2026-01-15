@@ -54,6 +54,29 @@ Is this something a user would notice? → Issue (Parent)
 Is this technical implementation work? → Sub-Issue
 ```
 
+## INVEST Principle for Sub-Issues
+
+Every sub-issue should follow the INVEST principle to enable independent developer work:
+
+| Principle | Description | Validation |
+|-----------|-------------|------------|
+| **I**ndependent | Can be worked on without blocking/being blocked by other sub-issues | Dependencies tracked via Linear's `blockedBy`/`blocks` relations |
+| **N**egotiable | Details can be discussed between architect and developer | Implementation approach is flexible, acceptance criteria is fixed |
+| **V**aluable | Delivers tangible value toward parent issue completion | Moves the feature closer to "Done" |
+| **E**stimable | Scope is clear enough to estimate effort | Developer can provide time estimate |
+| **S**mall | Completable within a sprint (ideally 1-3 days) | If larger, break into smaller sub-issues |
+| **T**estable | Has clear acceptance criteria that can be verified | Includes specific test scenarios |
+
+### Sub-Issue Quality Checklist
+
+Before creating a sub-issue, verify:
+
+- [ ] **Independent**: Can developer start without waiting for other sub-issues? (If not, set `blockedBy`)
+- [ ] **Clear scope**: Does the description define what's in/out of scope?
+- [ ] **Testable**: Are acceptance criteria specific and verifiable?
+- [ ] **Right size**: Can this be completed in 1-3 days?
+- [ ] **Context provided**: Links to parent issue, ADRs, API specs included?
+
 ## Ticket Lifecycle Overview
 
 ```
@@ -418,3 +441,8 @@ Before marking work as done:
 - [ ] Completion comment added with details
 - [ ] Ticket status updated to reflect reality
 - [ ] Any blockers or notes documented
+
+## Related References
+
+- **Ticket Templates**: See `ticket-templates.md` for Story/Task and Bug templates
+- **INVEST Principle**: Sub-issue quality validation (see above)
