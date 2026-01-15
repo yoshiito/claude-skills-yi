@@ -1,8 +1,22 @@
-# Linear Ticket Traceability Guide
+# Ticket Traceability Guide
 
-Comprehensive guide for using Linear to track work from requirements through implementation and verification.
+Comprehensive guide for tracking work from requirements through implementation and verification. Supports Linear, GitHub Issues, or manual tracking.
 
-## Linear Hierarchy Model
+## Ticket System Support
+
+This guide supports three ticket system configurations:
+
+| System | Best For | Traceability Level |
+|--------|----------|-------------------|
+| **Linear** | Full project management, sprints, initiatives | Full automation |
+| **GitHub Issues** | Code-focused projects, open source | PR-linked tracking |
+| **None** | Small teams, documentation-only projects | Manual tracking |
+
+Configure your ticket system in your project's `claude.md` under Team Context.
+
+## Issue Hierarchy
+
+### Linear Hierarchy Model
 
 Linear uses a specific hierarchy different from traditional tools like Jira:
 
@@ -60,13 +74,46 @@ Is this something a user would notice? → Issue (Parent)
 Is this technical implementation work? → Sub-Issue
 ```
 
+### GitHub Issues Hierarchy
+
+GitHub Issues has a flatter structure:
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      GITHUB ISSUES HIERARCHY                            │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  MILESTONE (Feature Set/Sprint)                                         │
+│  └── ISSUE (Feature/Story/Bug)                                          │
+│       └── TASK LIST (Checklist in issue body)                           │
+│                                                                          │
+│  Example:                                                                │
+│  Milestone: "v2.0 - User Authentication"                                │
+│  └── Issue: "Implement Password Reset Flow"                             │
+│       └── Task list:                                                     │
+│            - [ ] Backend: Password reset API                            │
+│            - [ ] Frontend: Reset password UI                            │
+│            - [ ] Docs: Password reset documentation                     │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Note**: GitHub Issues lacks native sub-issues. Use task lists within issues or create separate linked issues with labels like `parent: #123`.
+
+### No Ticket System
+
+When not using a ticket system:
+- Track work through PR descriptions and commit messages
+- Document requirements in `docs/` or project wiki
+- Use meaningful branch names as the primary tracking mechanism
+
 ## Confirmation Before Creating Issues
 
-**CRITICAL**: Never assume which Initiative, Project, or Team an issue belongs to. Fetch options from Linear and let the user choose.
+**CRITICAL**: Never assume project context. Fetch options from your ticket system and let the user choose.
 
-### Pre-Creation Workflow
+### Pre-Creation Workflow (Linear)
 
-Before creating any Issue or Sub-issue:
+Before creating any Issue or Sub-issue in Linear:
 
 **Step 1: Fetch available options from Linear**
 
@@ -147,6 +194,38 @@ You can define defaults in `claude.md` to **pre-select** (not skip confirmation)
 ```
 
 When defaults exist, show them as pre-selected but still present all options.
+
+### Pre-Creation Workflow (GitHub Issues)
+
+For GitHub Issues:
+
+**Step 1: Check repository context**
+```bash
+# Verify you're in the correct repository
+gh repo view
+
+# List existing milestones
+gh milestone list
+
+# List labels for categorization
+gh label list
+```
+
+**Step 2: Create issue with appropriate context**
+```bash
+gh issue create \
+  --title "[Feature] Password Reset Flow" \
+  --body "Description..." \
+  --milestone "v2.0 - User Auth" \
+  --label "feature,backend"
+```
+
+### Pre-Creation Workflow (No Ticket System)
+
+When not using a ticket system:
+1. Document requirements in `docs/requirements/` or project README
+2. Use descriptive branch names that convey the work
+3. Include full context in PR descriptions
 
 ## INVEST Principle for Sub-Issues
 
@@ -237,6 +316,31 @@ After architecture design, break down into logical work units.
 
 **Key Principle:** Developers own their tests. Separate test sub-issues only for dedicated QA efforts or cross-component integration testing.
 
+### Tests and Branching
+
+**When tests go in the developer's branch (default):**
+- Unit tests for the code being implemented
+- Component tests for UI components
+- Integration tests specific to the feature
+- Tests are part of the same sub-issue (e.g., `[Backend]`, `[Frontend]`)
+
+**When testers create their own branch:**
+- Dedicated `[Test]` sub-issue for comprehensive QA coverage
+- `[Integration Test]` sub-issue for cross-component E2E testing
+- Large features requiring dedicated test planning and execution
+
+```bash
+# Developer branches (include their own tests)
+feature/platform/LIN-101-password-reset-api    # Backend + unit tests
+feature/portal/LIN-102-reset-form              # Frontend + component tests
+
+# Dedicated tester branches (separate QA effort)
+test/platform/LIN-103-auth-e2e-tests           # Cross-component E2E
+test/portal/LIN-104-checkout-flow-qa           # Dedicated QA coverage
+```
+
+**Rule of thumb:** If the sub-issue prefix is `[Test]` or `[Integration Test]`, tester creates a branch. Otherwise, tests are included in the developer's branch.
+
 **Sub-Issue Creation Checklist:**
 - [ ] Each sub-issue has clear acceptance criteria
 - [ ] Dependencies between sub-issues are noted
@@ -258,6 +362,9 @@ Each assigned worker follows this workflow:
 
 ## Commit Message Format
 
+Format varies by ticket system:
+
+### Linear
 ```
 [LIN-XXX] Brief description of change
 
@@ -267,33 +374,111 @@ Each assigned worker follows this workflow:
 Ticket: https://linear.app/team/issue/LIN-XXX
 ```
 
-**Example:**
+### GitHub Issues
 ```
+[GH-XXX] Brief description of change
+
+- Detail 1
+- Detail 2
+
+Closes #XXX
+```
+
+### No Ticket System
+```
+Brief description of change
+
+- Detail 1
+- Detail 2
+
+Related: feature/team/description
+```
+
+**Examples:**
+```bash
+# Linear
 [LIN-123] Add user authentication endpoint
-
-- Implement JWT token generation
-- Add password hashing with bcrypt
-- Create login/logout routes
-
 Ticket: https://linear.app/acme/issue/LIN-123
+
+# GitHub Issues
+[GH-123] Add user authentication endpoint
+Closes #123
+
+# No ticket system
+Add user authentication endpoint
+Part of: feature/platform/user-auth
 ```
 
 ## Branch Naming
 
+**Branch at sub-issue level** - each sub-issue (or work unit) gets its own branch from `main`.
+
+### Branch Pattern
+
+The pattern varies based on your ticket system (defined in `claude.md` Team Context):
+
+| Ticket System | Pattern | Example |
+|---------------|---------|---------|
+| `linear` | `{type}/{team}/{LIN-XXX}-{description}` | `feature/platform/LIN-101-password-api` |
+| `github` | `{type}/{team}/{GH-XXX}-{description}` | `feature/platform/GH-101-password-api` |
+| `none` | `{type}/{team}/{description}` | `feature/platform/password-api` |
+
+| Component | Source | Example |
+|-----------|--------|---------|
+| `type` | Work type | `feature`, `fix`, `refactor`, `docs`, `test` |
+| `team` | From `claude.md` Team Context | `platform`, `portal`, `data` |
+| `{ID}` | Ticket ID (if using ticket system) | `LIN-101`, `GH-101` |
+| `description` | Brief slug | `password-reset-api` |
+
+### Examples by Ticket System
+
+```bash
+# With Linear
+feature/platform/LIN-101-password-reset-api
+fix/portal/LIN-102-login-validation
+refactor/data/LIN-103-query-optimization
+
+# With GitHub Issues
+feature/platform/GH-101-password-reset-api
+fix/portal/GH-102-login-validation
+docs/platform/GH-104-api-reference
+
+# Without ticket system
+feature/platform/password-reset-api
+fix/portal/login-validation
+docs/platform/api-reference
 ```
-feature/LIN-XXX-brief-description
-fix/LIN-XXX-brief-description
-refactor/LIN-XXX-brief-description
+
+### Why Team in Branch Name?
+
+- **Clear ownership**: Know which team owns the code at a glance
+- **Filter branches**: `git branch | grep platform/`
+- **Consistent with ticket system**: Team in branch matches Team assignment
+- **Scope alignment**: Reinforces domain boundaries
+
+### Workflow
+
 ```
+main ─────────────────────────────────────────────────►
+  │
+  ├─ feature/platform/LIN-101-backend-api ──► PR → main
+  ├─ feature/platform/LIN-102-frontend-ui ──► PR → main
+  └─ docs/platform/LIN-103-documentation ──► PR → main
+```
+
+Each sub-issue branch:
+1. Branches from `main`
+2. Contains independent, INVEST-compliant work
+3. Merges back to `main` via PR
 
 ## Progress Comments
 
-Workers MUST add comments to their assigned tickets to track state:
+Workers MUST add comments to track state (in ticket system or PR):
 
 ### When Starting Work
 ```markdown
 🚀 **Started work**
-- Branch: `feature/LIN-XXX-description`
+- Branch: `feature/{team}/{TICKET-ID}-description`
 - Approach: [Brief description of implementation approach]
 ```
 
@@ -471,11 +656,12 @@ Workers MUST add comments to their assigned tickets to track state:
 ### ETA: [Date]
 ```
 
-## Linear MCP Integration
+## Ticket System Integration
+
+### Linear MCP Integration
 
 When using Linear MCP tools:
 
-### Creating Sub-Issues
 ```python
 # Create sub-issue linked to parent
 mcp.create_issue(
@@ -485,25 +671,44 @@ mcp.create_issue(
     assignee="developer@email.com",
     description="Implementation sub-task for LIN-XXX"
 )
-```
 
-### Adding Progress Comments
-```python
 # Add progress comment
 mcp.create_comment(
     issueId="LIN-XXX",
-    body="🚀 **Started work**\n- Branch: `feature/LIN-XXX-user-api`"
+    body="🚀 **Started work**\n- Branch: `feature/platform/LIN-XXX-user-api`"
 )
-```
 
-### Updating Status
-```python
 # Move to In Progress
 mcp.update_issue(
     id="LIN-XXX",
     state="In Progress"
 )
 ```
+
+### GitHub CLI Integration
+
+When using GitHub Issues:
+
+```bash
+# Create issue
+gh issue create \
+  --title "[Backend] Implement user API" \
+  --body "Implementation sub-task for #123" \
+  --milestone "v2.0" \
+  --label "backend"
+
+# Add progress comment
+gh issue comment 124 --body "🚀 Started work on branch feature/platform/GH-124-user-api"
+
+# Close issue when PR merges (automatic with "Closes #124" in PR)
+```
+
+### No Ticket System
+
+When not using a ticket system:
+- Document progress in PR descriptions
+- Use PR comments for status updates
+- Link related PRs in descriptions
 
 ## Ticket Status Flow
 
@@ -529,11 +734,19 @@ mcp.update_issue(
 
 Before marking work as done:
 
-- [ ] All commits reference `[LIN-XXX]`
-- [ ] PR title includes `[LIN-XXX]`
+### With Ticket System (Linear/GitHub)
+- [ ] All commits reference ticket ID (`[LIN-XXX]` or `[GH-XXX]`)
+- [ ] PR title includes ticket ID
 - [ ] Started comment added to ticket
 - [ ] Completion comment added with details
 - [ ] Ticket status updated to reflect reality
+- [ ] Any blockers or notes documented
+
+### Without Ticket System
+- [ ] All commits have clear, descriptive messages
+- [ ] PR title clearly describes the change
+- [ ] PR description includes full context
+- [ ] Related PRs linked in description
 - [ ] Any blockers or notes documented
 
 ## Related References

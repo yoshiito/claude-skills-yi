@@ -36,9 +36,10 @@ Before I [create issues / design architecture / etc.], I'd like to understand:
 2. **Who owns each domain?**
    (e.g., "I own Frontend architecture" or "Platform Team owns Backend")
 
-3. **What's the Linear context?**
-   - Which Team should issues go to?
-   - Which Project should they be linked to?
+3. **What's the team and ticket system context?**
+   - What team owns this codebase? (e.g., `platform`, `portal`)
+   - Which ticket system do you use? (`linear`, `github`, or `none`)
+   - If Linear/GitHub: Which project/milestone should issues go to?
 
 Would you like me to help you set up a Project Scope section in claude.md?
 I can use the template from `_shared/references/project-scope-template.md`.
@@ -47,9 +48,10 @@ I can use the template from `_shared/references/project-scope-template.md`.
 ### After User Responds
 
 1. Create or update the `## Project Scope` section in `claude.md`
-2. Include Domain Ownership table
-3. Include Linear Context defaults
-4. Then proceed with the original task
+2. Include Team Context (team slug, ticket system)
+3. Include Domain Ownership table
+4. Include ticket system defaults (if using Linear or GitHub)
+5. Then proceed with the original task
 
 ## The Solution: Project Scope Definition + Role Boundary Checks
 
@@ -106,7 +108,7 @@ Before proposing work items, creating tickets, or making recommendations:
 - Ask questions to domain owners
 
 ### What You CANNOT Do Outside Your Scope
-- Create Linear issues/sub-issues
+- Create issues/sub-issues (in any ticket system)
 - Propose implementation approaches
 - Make architectural decisions
 - Define acceptance criteria
@@ -117,7 +119,7 @@ Before proposing work items, creating tickets, or making recommendations:
 ### Solutions Architect
 
 **Owns**: Technical architecture for assigned domains
-**Boundary Check**: Before creating sub-issues, verify each component falls within owned domains
+**Boundary Check**: Before creating sub-issues (or work items), verify each component falls within owned domains
 
 ```
 If creating [Backend] sub-issue:

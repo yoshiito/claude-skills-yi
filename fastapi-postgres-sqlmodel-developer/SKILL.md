@@ -184,12 +184,17 @@ See `references/code-patterns.md` for complete code examples.
 
 ```
 1. Accept work → Move ticket to "In Progress"
-2. Create branch → feature/LIN-XXX-description
+2. Create branch → {type}/{team}/LIN-XXX-description (team from claude.md)
 3. Do work → Commit with [LIN-XXX] prefix
 4. Track progress → Add comment on ticket
 5. Complete work → Create PR, move to "In Review"
 6. PR merged → Move to "Done"
 ```
+
+**Branch Pattern**: `{type}/{team}/{LIN-XXX}-{description}`
+- `type`: `feature`, `fix`, `refactor`, `docs`, `test`
+- `team`: From project's `claude.md` Team Context (e.g., `platform`)
+- Example: `feature/platform/LIN-101-password-reset-api`
 
 ### Starting Work
 
@@ -203,7 +208,7 @@ mcp.update_issue(id="LIN-XXX", state="In Progress")
 mcp.create_comment(
     issueId="LIN-XXX",
     body="""🚀 **Started work**
-- Branch: `feature/LIN-XXX-password-reset-api`
+- Branch: `feature/platform/LIN-XXX-password-reset-api`
 - Approach: Implementing JWT-based reset tokens with 24h expiry
 """
 )

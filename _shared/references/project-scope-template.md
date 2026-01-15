@@ -6,44 +6,106 @@ Copy this section into your project's `claude.md` file and customize for your pr
 
 ## Project Scope: [Project Name]
 
-### Linear Context
+### Team Context
+
+**REQUIRED**: Define the team that owns this codebase. This drives ticket system and Git conventions.
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| **Team** | `[team-slug]` | Lowercase, used in branch names |
+| **Team Name** | [Team Display Name] | Human-readable name |
+| **Ticket System** | `linear` / `github` / `none` | Which system tracks issues |
+| **Main Branch** | `main` | Default branch for PRs |
+
+**Key Principle**: One team owns one codebase. The team slug is used consistently across:
+- Git branch names (`feature/{team}/...`)
+- Ticket system Team assignment (if applicable)
+- Code ownership
+
+### Git Branching
+
+**Branch at sub-issue level** - each sub-issue gets its own branch from `main`.
+
+#### Branch Pattern
+
+The pattern varies based on your ticket system:
+
+| Ticket System | Pattern | Example |
+|---------------|---------|---------|
+| `linear` | `{type}/{team}/{LIN-XXX}-{description}` | `feature/platform/LIN-101-password-api` |
+| `github` | `{type}/{team}/{GH-XXX}-{description}` | `feature/platform/GH-101-password-api` |
+| `none` | `{type}/{team}/{description}` | `feature/platform/password-api` |
+
+| Component | Source | Example |
+|-----------|--------|---------|
+| `type` | Work type | `feature`, `fix`, `refactor`, `docs`, `test` |
+| `team` | Team Context above | `platform`, `portal`, `data` |
+| `{ID}` | Ticket ID (if using ticket system) | `LIN-101`, `GH-101` |
+| `description` | Brief slug | `password-reset-api` |
+
+#### Examples by Ticket System
+
+```bash
+# With Linear
+feature/platform/LIN-101-password-reset-api
+fix/portal/LIN-102-login-validation
+
+# With GitHub Issues
+feature/platform/GH-101-password-reset-api
+fix/portal/GH-102-login-validation
+
+# Without ticket system
+feature/platform/password-reset-api
+fix/portal/login-validation
+```
+
+#### Workflow
+
+```
+main ─────────────────────────────────────────────────►
+  │
+  ├─ feature/platform/LIN-101-backend-api ──► PR → main
+  ├─ feature/platform/LIN-102-frontend-ui ──► PR → main
+  └─ docs/platform/LIN-103-documentation ──► PR → main
+```
+
+### Ticket System Context
+
+Configure based on your `Ticket System` setting above.
+
+#### If using Linear (`linear`)
 
 **IMPORTANT**: Before creating any Linear issues, fetch available options from Linear and let the user select.
 
-#### Default Pre-selections (Optional)
-
-If this project typically uses specific Team/Project, list them here for pre-selection:
-
 | Field | Default Value | Notes |
 |-------|---------------|-------|
-| Team | [Team Name] | Pre-selected but user confirms |
+| Linear Team | [Team Name] | Must match Linear exactly |
 | Project | [Project Name] | Pre-selected but user confirms |
 | Initiative | [Initiative Name or "None"] | If workspace has Initiatives |
 
-#### Issue Creation Workflow
-
-When creating issues, roles must:
-
+**Issue Creation Workflow:**
 1. **Fetch options from Linear** (`list_teams`, `list_projects`)
-2. **Present options to user** with defaults pre-selected (if defined above)
+2. **Present options to user** with defaults pre-selected
 3. **Let user select or create new** - never assume
 4. **Create issue with confirmed context**
 
-```
-Before creating this issue, please select:
+#### If using GitHub Issues (`github`)
 
-**Team**: (fetched from Linear)
-1. Platform Team ← (default)
-2. Portal Team
-3. [Other]
+| Field | Default Value | Notes |
+|-------|---------------|-------|
+| Repository | [owner/repo] | GitHub repository |
+| Labels | [label1, label2] | Default labels for issues |
 
-**Project**: (fetched from Linear)
-1. User Auth System ← (default)
-2. Q1 Improvements
-3. [Create new]
+**Issue Creation Workflow:**
+1. Create issue in the repository
+2. Use `GH-XXX` (issue number) in branch names and commits
+3. Link PRs to issues using `Closes #XXX` in PR description
 
-Which should I use?
-```
+#### If using no ticket system (`none`)
+
+- Use descriptive branch names without ticket IDs
+- Track work through PR descriptions and commit messages
+- Document requirements in `docs/` or project wiki
 
 ### Domain Ownership
 
