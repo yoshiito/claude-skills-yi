@@ -1,51 +1,64 @@
 # PRD Template
 
-Complete structure for Product Requirements Documents.
+Collaborative Product Requirements Document. TPO is accountable for completion; domain experts contribute their sections.
+
+**Prerequisite**: MRD must be approved before PRD elaboration begins.
 
 ```markdown
 # PRD: [Feature Name]
 
-## 1. Overview
+**MRD Reference**: [Link to approved MRD]
+**Status**: [Draft | In Review | Approved]
+
+## Contributors
+
+| Section | Contributor | Role | Status |
+|---------|-------------|------|--------|
+| Business Requirements | [name] | TPO | [Pending/Complete] |
+| Technical Design | [name] | Solutions Architect | [Pending/Complete] |
+| User Experience | [name] | UX Designer | [Pending/Complete] |
+| Data Design | [name] | Data Platform Engineer | [Pending/Complete] |
+| API Specification | [name] | API Designer | [Pending/Complete] |
+| Test Strategy | [name] | Tester | [Pending/Complete] |
+| Delivery Plan | [name] | TPgM | [Pending/Complete] |
+
+*Add/remove contributors based on feature scope.*
+
+---
+
+## 1. Overview (from MRD)
+
+*Copied from approved MRD for reference. Do not modify without MRD amendment.*
 
 ### 1.1 Problem Statement
-[What problem exists? Who experiences it? What's the cost of not solving it?]
+[From MRD]
 
 ### 1.2 North Star Goal
-[Single sentence: the one outcome this feature must achieve]
+[From MRD]
 
 ### 1.3 Success Metrics
-| Metric | Current | Target | Measurement Method |
-|--------|---------|--------|-------------------|
-| [metric] | [baseline] | [goal] | [how measured] |
+[From MRD]
 
 ### 1.4 Scope
-
-#### In Scope
-- [Capability 1]
-- [Capability 2]
-
-#### Out of Scope
-- [Explicitly excluded 1]
-- [Explicitly excluded 2]
+[From MRD]
 
 ---
 
 ## 2. Users and Personas
+**Contributor: TPO**
 
 ### 2.1 Primary Users
 | Persona | Role | Goals | Pain Points |
 |---------|------|-------|-------------|
 | [Name] | [Role] | [What they want] | [Current frustrations] |
 
-### 2.2 Secondary Users
-[Users who interact with feature indirectly]
-
-### 2.3 User Journey Context
+### 2.2 User Journey Context
 [Where does this feature fit in the user's workflow? What happens before/after?]
 
 ---
 
-## 3. Requirements
+## 3. Business Requirements
+**Contributor: TPO**
 
 ### 3.1 User Stories
 
@@ -59,18 +72,11 @@ I WANT TO [action]
 SO THAT [measurable benefit]
 Acceptance Criteria: AC-003
 
-### 3.2 Functional Rules
+### 3.2 Business Rules
 
 RULE-001: [Name]
 Condition: [When this is true]
 Constraint: [This must/must not happen]
-Enforcement: [Frontend/Backend/Both]
-Error: [ERR_CODE] - "[User message]"
-
-RULE-002: [Name]
-Condition: [When this is true]
-Constraint: [This must/must not happen]
-Enforcement: [Frontend/Backend/Both]
 Error: [ERR_CODE] - "[User message]"
 
 ### 3.3 Acceptance Criteria
@@ -84,14 +90,63 @@ Scenario: [Specific scenario]
   Then [outcome]
   And [additional outcome]
 
-AC-002: [Descriptive Name]
+### 3.4 Edge Cases (Business Logic)
 
-Scenario: [Specific scenario]
-  Given [precondition]
-  When [action]
-  Then [outcome]
+EDGE-001: [Name]
+Trigger: [What causes this]
+Expected Behavior: [What should happen]
+Error Message: "[User-facing message]"
 
-### 3.4 Data Requirements
+---
+
+## 4. User Experience
+**Contributor: UX Designer**
+
+### 4.1 User Flows
+[Diagrams or descriptions of user interactions]
+
+### 4.2 Wireframes
+[Links to wireframes or embedded images]
+
+### 4.3 Empty States
+| State | Context | Display | Action |
+|-------|---------|---------|--------|
+| [name] | [where] | [what shows] | [CTA] |
+
+### 4.4 Error States
+[How errors are presented to users]
+
+---
+
+## 5. Technical Design
+**Contributor: Solutions Architect**
+
+### 5.1 Architecture Overview
+[System diagram, component interactions]
+
+### 5.2 Integration Points
+| System | Direction | Protocol | Purpose |
+|--------|-----------|----------|---------|
+| [system] | [in/out] | [REST/Event/etc] | [why] |
+
+### 5.3 Non-Functional Requirements Solutions
+
+NFR from MRD: [e.g., "sub-200ms response time"]
+Solution: [e.g., "Redis caching layer + CDN for static assets"]
+
+### 5.4 Security Design
+[Authentication, authorization, data protection approach]
+
+### 5.5 ADR References
+- [Link to ADR-001: Technology choice]
+- [Link to ADR-002: Integration pattern]
+
+---
+
+## 6. Data Design
+**Contributor: Data Platform Engineer**
+
+### 6.1 Data Model
 
 ENTITY: [EntityName]
 
@@ -100,174 +155,123 @@ ENTITY: [EntityName]
 | id | UUID | Yes | Primary key | No | Auto-generated |
 | [field] | [type] | [Yes/No] | [constraints] | [Yes/No] | [notes] |
 
-INDEXES:
-- [field] (unique/non-unique)
-- [field, field] (composite)
+### 6.2 Indexes and Relationships
+[Index strategy, foreign keys, cascade behavior]
 
-RELATIONSHIPS:
-- [field] -> [other_table.field] (CASCADE/SET NULL/RESTRICT)
-
-RETENTION:
-- [Retention policy description]
-
-SECURITY:
-- PII fields: [list]
-- Encryption: [requirements]
-- Audit logging: [requirements]
-
-### 3.5 Non-Functional Requirements
-
-NFR-PERF-001: API Response Time
-- p50: < [X]ms
-- p95: < [X]ms
-- p99: < [X]ms
-
-NFR-SCALE-001: Concurrent Users
-- Normal load: [X] users
-- Peak load: [X] users
-- Degradation threshold: [X] users
-
-NFR-A11Y-001: Accessibility
-- Level: WCAG 2.1 [A/AA/AAA]
-- Screen reader: [requirement]
-- Keyboard: [requirement]
-- Color contrast: [ratio]
-
-NFR-SEC-001: Security
-- Session timeout: [duration]
-- Rate limiting: [threshold]
-- [Other requirements]
+### 6.3 Data Retention and Privacy
+[Retention policy, PII handling, encryption requirements]
 
 ---
 
-## 4. Edge Cases and Error Handling
+## 7. API Specification
+**Contributor: API Designer**
 
-### 4.1 Unhappy Paths
+### 7.1 Endpoints
 
-UNHAPPY-001: [Name]
-Trigger: [What causes this]
-User Impact: [What user experiences]
-System Behavior: [What system does]
-Recovery Path: [How user recovers]
-Error Code: [ERR_CODE]
-Error Message: "[User-facing message]"
+| Method | Path | Purpose |
+|--------|------|---------|
+| POST | /api/v1/[resource] | Create [resource] |
+| GET | /api/v1/[resource]/{id} | Get [resource] by ID |
 
-### 4.2 Empty States
+### 7.2 Request/Response Contracts
+[OpenAPI spec or detailed contracts]
 
-EMPTY-001: [Name]
-Context: [Where this appears]
-Condition: [When shown]
-Display: [What UI shows]
-Action: [CTA or guidance]
-
-### 4.3 Extreme States
-
-EXTREME-001: [Name]
-Scenario: [The extreme condition]
-Expected Volume: [Numbers]
-System Behavior: [How handled]
-Degradation Strategy: [What's sacrificed]
-
-### 4.4 Error Messages
-
-| Code | HTTP | User Message | Internal Log | Retry |
-|------|------|--------------|--------------|-------|
-| [ERR_X] | [4XX] | "[message]" | "[log detail]" | [Yes/No] |
+### 7.3 Error Responses
+| Code | HTTP | Message | When |
+|------|------|---------|------|
+| [ERR_X] | [4XX] | "[message]" | [condition] |
 
 ---
 
-## 5. Dependencies
+## 8. Test Strategy
+**Contributor: Tester**
 
-### 5.1 Upstream Dependencies
+### 8.1 Test Approach
+[Unit, integration, E2E, performance, security testing plan]
 
-DEP-UP-001: [Name]
-Type: [Service/Data/Feature/Infrastructure]
-Owner: [Team]
-Status: [Available/In Progress/Blocked]
-Required By: [Date]
-Fallback: [If unavailable]
+### 8.2 Coverage Requirements
+| Type | Target | Tool |
+|------|--------|------|
+| Unit | >80% | [tool] |
+| Integration | [scope] | [tool] |
+| E2E | [critical paths] | [tool] |
 
-### 5.2 Downstream Dependencies
-
-DEP-DOWN-001: [Name]
-Dependent Feature: [What needs this]
-Integration Point: [API/Event/Data]
-Timeline Impact: [Effect of delays]
-
-### 5.3 External Dependencies
-
-DEP-EXT-001: [Name]
-Vendor: [Company/Service]
-Purpose: [Why needed]
-SLA: [Availability]
-Fallback: [If unavailable]
-Cost: [Pricing model]
-
-### 5.4 Dependency Risk Assessment
-
-| Dependency | Probability | Impact | Mitigation |
-|------------|-------------|--------|------------|
-| [name] | [L/M/H] | [L/M/H/Critical] | [strategy] |
+### 8.3 Performance Test Plan
+[Load testing approach for NFRs]
 
 ---
 
-## 6. Definition of Done
+## 9. Dependencies and Delivery
+**Contributor: TPgM**
+
+### 9.1 Dependencies
+
+| Dependency | Type | Owner | Status | Mitigation |
+|------------|------|-------|--------|------------|
+| [name] | [upstream/downstream/external] | [team] | [status] | [fallback] |
+
+### 9.2 Milestones
+| Milestone | Description | Dependencies |
+|-----------|-------------|--------------|
+| M1 | [description] | [what must complete first] |
+
+### 9.3 Risks
+| Risk | Probability | Impact | Mitigation | Owner |
+|------|-------------|--------|------------|-------|
+| [risk] | [L/M/H] | [L/M/H] | [strategy] | [who] |
+
+---
+
+## 10. Definition of Done
 
 ### Code Complete
 - [ ] All user stories implemented
-- [ ] All functional rules enforced
+- [ ] All business rules enforced
 - [ ] All acceptance criteria passing
-- [ ] Edge cases handled per specification
 
 ### Testing Complete
-- [ ] Unit tests (>80% coverage)
-- [ ] Integration tests passing
-- [ ] E2E tests passing
-- [ ] Performance tests meet NFRs
-- [ ] Security testing (OWASP top 10)
-- [ ] Accessibility testing (WCAG)
+- [ ] Test strategy executed
+- [ ] NFRs validated
+- [ ] Security testing passed
 
 ### Documentation Complete
-- [ ] API documentation (OpenAPI)
-- [ ] User-facing docs updated
-- [ ] Runbook for operations
+- [ ] API documentation published
+- [ ] User docs updated
+- [ ] Runbook created
 
-### Review Complete
-- [ ] Code review approved
-- [ ] Security review (if required)
-- [ ] UX review approved
-- [ ] Product Owner sign-off
-
-### Deployment Ready
-- [ ] Feature flag configured
-- [ ] Monitoring/alerting configured
-- [ ] Rollback plan documented
-- [ ] Database migrations tested
+### Approvals
+- [ ] TPO sign-off
+- [ ] SA sign-off (technical design)
+- [ ] UX sign-off (if applicable)
 
 ---
 
-## 7. Risk Register
+## 11. Appendix
 
-| ID | Risk | Prob | Impact | Mitigation | Owner | Status |
-|----|------|------|--------|------------|-------|--------|
-| R1 | [risk] | [L/M/H] | [L/M/H/C] | [strategy] | [who] | [status] |
-
----
-
-## 8. Appendix
-
-### 8.1 Glossary
+### 11.1 Glossary
 | Term | Definition |
 |------|------------|
 | [term] | [definition] |
 
-### 8.2 Related Documents
-- [Link to design doc]
-- [Link to architecture doc]
-- [Link to prior art]
+### 11.2 Related Documents
+- [Link to MRD]
+- [Link to ADRs]
+- [Link to designs]
 
-### 8.3 Revision History
+### 11.3 Revision History
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | [date] | [name] | Initial draft |
 ```
+
+## PRD Completion Checklist
+
+TPO validates before marking PRD as approved:
+
+- [ ] All required contributors have completed their sections
+- [ ] No "Pending" status in Contributors table
+- [ ] No TBD placeholders anywhere
+- [ ] MRD reference is linked and approved
+- [ ] All acceptance criteria are testable
+- [ ] Technical design reviewed by SA
+- [ ] Dependencies identified and owners assigned
