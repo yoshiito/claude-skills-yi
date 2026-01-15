@@ -18,6 +18,7 @@ Quick reference for understanding how skills relate and when to invoke each one.
 | **Frontend Tester** | Ensure UI test coverage | RTL tests, Playwright E2E, a11y audits |
 | **Tech Doc Writer** | Create and maintain documentation | API docs, guides, runbooks |
 | **Technical Program Manager (TPgM)** | Coordinate delivery across teams | Delivery plans, status updates, Linear tickets |
+| **Support Engineer** | Error triage, log analysis, incident investigation | Issue diagnosis, root cause analysis |
 | **Material Design UX** | Guide UI/UX decisions | Design patterns, accessibility guidance |
 | **SVG Designer** | Create vector graphics | Logos, icons, illustrations |
 
@@ -95,6 +96,16 @@ Quick reference for understanding how skills relate and when to invoke each one.
 │   └──────────────────┘                                                  │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    CROSS-CUTTING: OPERATIONS & SUPPORT                   │
+│                                                                          │
+│   ┌──────────────────┐                                                  │
+│   │ Support Engineer │  Error triage, log analysis, debugging           │
+│   │                  │  Uses Sentry MCP, reads logs, escalates          │
+│   └──────────────────┘                                                  │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## When to Use Each Skill
@@ -134,6 +145,15 @@ Quick reference for understanding how skills relate and when to invoke each one.
 2. Solutions Architect  → Review integration patterns
 ```
 
+### Investigating Issues
+```
+1. Support Engineer    → Triage errors (Sentry), analyze logs
+2. Backend Developer   → Fix code issues if identified
+3. Frontend Developer  → Fix UI issues if identified
+4. TPgM                → Track issue in Linear if escalation needed
+5. Tech Doc Writer     → Update runbooks with resolution
+```
+
 ## Skill Relationships Matrix
 
 ### Who Provides Input to Whom
@@ -142,14 +162,15 @@ Quick reference for understanding how skills relate and when to invoke each one.
 |-------|---------------------|
 | Solutions Architect | TPO, Data Platform Engineer, AI Integration Engineer |
 | API Designer | TPO, Solutions Architect |
-| Backend Developer | TPO, Solutions Architect, API Designer |
-| Frontend Developer | TPO, Solutions Architect, Material Design UX |
+| Backend Developer | TPO, Solutions Architect, API Designer, Support Engineer (bug reports) |
+| Frontend Developer | TPO, Solutions Architect, Material Design UX, Support Engineer (bug reports) |
 | Data Platform Engineer | TPO, Solutions Architect |
 | MCP Server Developer | TPO, Solutions Architect |
 | Backend Tester | Backend Developer |
 | Frontend Tester | Frontend Developer |
-| Tech Doc Writer | API Designer, Solutions Architect, TPO |
+| Tech Doc Writer | API Designer, Solutions Architect, TPO, Support Engineer (runbook updates) |
 | TPgM | All skills (for status tracking) |
+| Support Engineer | Sentry (errors), logs, user reports |
 
 ### Who Consumes Output From Whom
 
@@ -163,7 +184,8 @@ Quick reference for understanding how skills relate and when to invoke each one.
 | Data Platform Engineer | Backend Developer, AI Integration Engineer |
 | Backend Tester | TPgM (quality gates) |
 | Frontend Tester | TPgM (quality gates) |
-| Tech Doc Writer | External consumers, support teams |
+| Tech Doc Writer | External consumers, Support Engineer (runbooks) |
+| Support Engineer | Backend Developer, Frontend Developer (bug fixes), TPgM (escalations) |
 
 ## Common Collaboration Patterns
 
@@ -224,6 +246,9 @@ Quick reference for when to involve other skills:
 | Delivery planning | TPgM |
 | Vector search/RAG | Data Platform Engineer |
 | Prompt engineering | AI Integration Engineer |
+| Error investigation | Support Engineer |
+| Log analysis needed | Support Engineer |
+| Incident response | Support Engineer |
 
 ## Linear Ticket Traceability
 
