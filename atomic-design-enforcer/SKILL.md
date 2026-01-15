@@ -1147,4 +1147,85 @@ This is not a suggestion. These are mandatory patterns. Code reviews must reject
 - **Stories that violate atomic design principles**
 - **Insufficient variant or state coverage in stories**
 
+## Related Skills
+
+The Frontend Developer implements UI components based on designs and API contracts.
+
+### Upstream Skills (Provide Input)
+
+| Skill | Provides | Developer Should Request |
+|-------|----------|-------------------------|
+| **TPO** | MRD with user flows | Interaction requirements, states |
+| **Solutions Architect** | API contracts | Response formats, auth patterns |
+| **UX Designer** | Designs, user flows | Figma files, interaction specs |
+
+### Downstream/Parallel Skills
+
+| Skill | Relationship | Coordination Point |
+|-------|--------------|-------------------|
+| **Frontend Tester** | Tests components/E2E | Test scenarios, accessibility |
+| **Backend Developer** | Provides APIs | API contract alignment |
+| **Tech Doc Writer** | Component documentation | Storybook, usage guides |
+| **TPgM** | Tracks progress | Effort estimates, blockers |
+
+### Consultation Triggers
+
+**Consult UX Designer when:**
+- Interaction patterns unclear
+- Empty/error states need design
+- Responsive behavior decisions
+- Animation/motion design
+
+**Consult Frontend Tester when:**
+- Defining test scenarios
+- Accessibility requirements
+- E2E test coverage
+
+**Consult Backend Developer when:**
+- API contract questions
+- Data format issues
+- Real-time data needs
+
+### Handoff Checklist
+
+Before considering component complete:
+
+```
+□ UX Designer's designs implemented
+□ Storybook stories complete
+□ Frontend Tester has test strategy
+□ Accessibility validated
+□ TPgM updated on progress
+```
+
+### Skill Ecosystem Position
+
+```
+     ┌─────────────┐    ┌─────────────┐
+     │     TPO     │    │ UX Designer │
+     └──────┬──────┘    └──────┬──────┘
+            │                  │
+            └────────┬─────────┘
+                     │
+              ┌──────▼──────┐
+              │  Solutions  │
+              │  Architect  │
+              └──────┬──────┘
+                     │
+         ┌───────────┼───────────┐
+         │           │           │
+         ▼           ▼           ▼
+     Backend     Frontend     Data
+     Developer   Developer   Platform
+         │           │
+         │           │
+         ▼           ▼
+     Backend     Frontend
+     Tester      Tester
+```
+
+## Summary
+
 Build maintainable, scalable, and testable frontend applications through disciplined architecture and comprehensive component documentation.
+
+**Remember**: Consult UX Designer for design decisions and Frontend Tester for test strategy before implementation.

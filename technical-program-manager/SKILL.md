@@ -1,6 +1,6 @@
 ---
 name: technical-program-manager
-description: Technical Program Manager for cross-functional engineering delivery. Use when planning sprints or releases, tracking dependencies across features or teams, assessing release readiness, managing blockers and escalations, coordinating stakeholder communication, or ensuring documentation completeness before launch. Complements the TPO role - TPO defines what to build, TPgM ensures it gets delivered. Produces delivery plans, readiness checklists, status updates, and risk escalations.
+description: Technical Program Manager for cross-functional engineering delivery. Use when planning sprints or releases, tracking dependencies across features or teams, assessing release readiness, managing blockers and escalations, coordinating stakeholder communication, or ensuring documentation completeness before launch. Complements the TPO role - TPO defines what to build, TPgM ensures it gets delivered. Produces delivery plans, readiness checklists, status updates, and risk escalations. Integrates with Linear MCP for issue tracking.
 ---
 
 # Technical Program Manager (TPgM)
@@ -20,14 +20,82 @@ Bridge the gap between "what we're building" (TPO) and "shipped to production." 
 - Stakeholders stay informed
 - Documentation is complete
 
+## Linear MCP Integration
+
+**CRITICAL**: Use the Linear MCP server for all issue tracking and project management.
+
+### When to Use Linear
+
+| Action | Linear MCP Tool |
+|--------|-----------------|
+| Create epic/project | `create_issue` with parent project |
+| Create tasks | `create_issue` for each workstream item |
+| Track progress | `update_issue` to change status |
+| Log blockers | `create_issue` with "Blocked" label |
+| Search issues | `search_issues` to find related work |
+| Get status | `get_issue` for current state |
+
+### Linear Workflow
+
+```
+1. Create Project in Linear (epic-level)
+2. Create issues for each workstream
+3. Link dependencies between issues
+4. Update status as work progresses
+5. Use labels for tracking (P0, P1, Blocked, At-Risk)
+```
+
+### Before Creating Issues in Linear
+
+**STOP** - Ensure all relevant skills have provided input:
+
+1. **TPO Sign-off** - Are requirements complete? (MRD approved)
+2. **Solutions Architect Sign-off** - Is architecture defined? (ADRs written)
+3. **Data Platform Engineer** - Data dependencies identified? (if applicable)
+4. **Developer Input** - Effort estimates provided?
+5. **Tester Input** - Test strategy defined?
+
+**Pre-Flight Checklist**:
+```
+□ MRD from TPO is complete and approved
+□ Architecture from Solutions Architect is documented
+□ Data requirements from Data Platform Engineer are clear (if applicable)
+□ Backend Developer has reviewed feasibility
+□ Frontend Developer has reviewed feasibility
+□ Test strategy is outlined
+□ Documentation needs identified (Tech Doc Writer)
+```
+
+Only create Linear issues after this checklist passes.
+
 ## Relationship to Other Roles
 
-| Role | Responsibility | TPgM Interaction |
-|------|----------------|------------------|
-| TPO | Defines requirements | TPgM sequences delivery of TPO's MRDs |
-| Solutions Architect | Designs technical approach | TPgM tracks architecture decisions as dependencies |
-| Developers | Build features | TPgM tracks progress, removes blockers |
-| Testers | Validate quality | TPgM gates releases on test completion |
+| Role | Responsibility | TPgM Interaction | Consult Before |
+|------|----------------|------------------|----------------|
+| **TPO** | Defines requirements | TPgM sequences delivery of TPO's MRDs | Creating any issues |
+| **Solutions Architect** | Designs technical approach | TPgM tracks architecture decisions as dependencies | Technical breakdown |
+| **Backend Developer** | Implements APIs | TPgM tracks backend progress | Backend estimates |
+| **Frontend Developer** | Implements UI | TPgM tracks frontend progress | Frontend estimates |
+| **Backend Tester** | Validates API quality | TPgM gates on test completion | Test strategy |
+| **Frontend Tester** | Validates UI quality | TPgM gates on test completion | Test strategy |
+| **Data Platform Engineer** | Data infrastructure | TPgM tracks data dependencies | Data-related work |
+| **Tech Doc Writer** | Documentation | TPgM ensures docs complete | Release readiness |
+| **UX Designer** | User experience | TPgM tracks design dependencies | UI/UX work |
+
+### Cross-Skill Consultation Triggers
+
+**Before creating Linear issues, consult if:**
+
+| Trigger | Consult Skill |
+|---------|---------------|
+| New feature request | TPO (for MRD) |
+| Technical complexity unclear | Solutions Architect (for ADR) |
+| Database changes needed | Data Platform Engineer |
+| New API endpoints | Backend Developer + Backend Tester |
+| New UI components | Frontend Developer + Frontend Tester + UX Designer |
+| Documentation needs | Tech Doc Writer |
+| AI/ML features | AI Integration Engineer |
+| MCP server needed | MCP Server Developer |
 
 ## Workflow
 
@@ -351,14 +419,69 @@ DECISION NEEDED BY: [Date]
 - `references/status-update-templates.md` - Templates by audience
 - `references/release-checklist.md` - Comprehensive readiness gates
 - `references/escalation-framework.md` - Blocker and risk escalation formats
+- `references/linear-workflow.md` - Linear MCP integration patterns
+
+## Related Skills
+
+The TPgM coordinates with these skills throughout the delivery lifecycle:
+
+| Phase | Skills to Engage |
+|-------|------------------|
+| **Planning** | TPO, Solutions Architect |
+| **Breakdown** | Backend Developer, Frontend Developer, Data Platform Engineer |
+| **Estimation** | All developers, Testers |
+| **Execution** | All implementation skills |
+| **Testing** | Backend Tester, Frontend Tester |
+| **Documentation** | Tech Doc Writer, Solutions Architect |
+| **Release** | All skills for sign-off |
+
+### Skill Ecosystem
+
+```
+                    ┌─────────────────┐
+                    │       TPO       │
+                    │  (Requirements) │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │    Solutions    │
+                    │    Architect    │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+     ┌────────▼────────┐ ┌───▼───┐ ┌───────▼───────┐
+     │    Backend      │ │ Data  │ │   Frontend    │
+     │    Developer    │ │Platform│ │   Developer   │
+     └────────┬────────┘ └───┬───┘ └───────┬───────┘
+              │              │              │
+     ┌────────▼────────┐     │     ┌───────▼───────┐
+     │ Backend Tester  │     │     │Frontend Tester│
+     └────────┬────────┘     │     └───────┬───────┘
+              │              │              │
+              └──────────────┼──────────────┘
+                             │
+                    ┌────────▼────────┐
+                    │   Tech Doc      │
+                    │   Writer        │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │      TPgM       │◄──── Linear MCP
+                    │   (Delivery)    │      (Issue Tracking)
+                    └─────────────────┘
+```
 
 ## Summary
 
 The TPgM ensures features move from "defined" to "shipped" by:
+- **Consulting all relevant skills** before creating Linear issues
 - Planning delivery with clear milestones and dependencies
-- Tracking progress and surfacing blockers early
+- Tracking progress in Linear and surfacing blockers early
 - Validating readiness before launch
 - Communicating status to the right audience
 - Escalating risks before they become crises
+
+**Remember**: Before pushing any work to Linear, ensure voices from all relevant roles have been heard. This prevents rework and ensures alignment.
 
 A good TPgM makes delivery predictable and keeps surprises to a minimum.

@@ -254,6 +254,72 @@ Trigger: PII handling, retention policies, cross-system data flow, analytics nee
 - `references/edge-case-matrix.md` - Comprehensive unhappy/empty/extreme patterns
 - `references/collaboration-flags.md` - Detailed triggers and question templates
 
+## Related Skills
+
+The TPO is the starting point for all product work. MRDs flow to downstream skills:
+
+### Downstream Skills (Consume MRDs)
+
+| Skill | Receives From TPO | TPO Should Include |
+|-------|-------------------|-------------------|
+| **Solutions Architect** | MRD for technical design | Clear NFRs, integration requirements |
+| **Backend Developer** | API requirements | Data entities, validation rules |
+| **Frontend Developer** | UI requirements | User flows, interaction patterns |
+| **Data Platform Engineer** | Data requirements | Data models, retention policies |
+| **UX Designer** | User experience needs | Personas, journey context |
+| **AI Integration Engineer** | AI feature requirements | When AI is appropriate, expected behavior |
+| **MCP Server Developer** | Tool/integration requirements | What capabilities to expose |
+| **TPgM** | MRD for delivery planning | Dependencies, risks, priorities |
+
+### Upstream/Parallel Skills (Inform TPO)
+
+| Skill | Provides To TPO | TPO Should Request |
+|-------|-----------------|-------------------|
+| **UX Designer** | User research, flows | Validated user journeys |
+| **Solutions Architect** | Technical constraints | Feasibility feedback |
+| **Data Platform Engineer** | Data availability | What data exists/is possible |
+
+### Handoff Checklist
+
+Before handing MRD to downstream skills:
+
+```
+□ MRD complete - no TBD placeholders
+□ Solutions Architect consulted on technical feasibility
+□ Data Platform Engineer consulted on data requirements (if applicable)
+□ UX Designer consulted on user flows (if applicable)
+□ NFRs have concrete thresholds
+□ Edge cases documented
+□ Collaboration flags raised for any concerns
+```
+
+### Skill Ecosystem Position
+
+```
+    Business Goals
+          │
+          ▼
+    ┌─────────────┐
+    │     TPO     │ ◄─── UX Designer (user research)
+    │    (MRD)    │ ◄─── Data Platform (data constraints)
+    └──────┬──────┘
+           │
+           │ MRD flows to:
+           │
+    ┌──────┴──────┐
+    │             │
+    ▼             ▼
+Solutions    Technical
+Architect    Program Manager
+    │             │
+    │             │ (coordinates delivery)
+    ▼             │
+Implementation    │
+Skills ◄──────────┘
+```
+
 ## Summary
 
 A well-written MRD saves 10x the time in implementation back-and-forth. Produce documents that are complete, unambiguous, testable, and implementation-ready.
+
+**Remember**: Consult Solutions Architect for technical feasibility and Data Platform Engineer for data requirements before finalizing MRDs.

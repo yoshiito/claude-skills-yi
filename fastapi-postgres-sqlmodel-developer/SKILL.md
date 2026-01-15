@@ -617,14 +617,98 @@ Before considering complete, verify:
 - [ ] Architecture decisions documented
 - [ ] Test cases specified
 
+## Related Skills
+
+The Backend Developer implements APIs based on upstream design and coordinates with testing/documentation.
+
+### Upstream Skills (Provide Input)
+
+| Skill | Provides | Developer Should Request |
+|-------|----------|-------------------------|
+| **TPO** | MRD with data entities, rules | Clear validation rules, error messages |
+| **Solutions Architect** | API contracts, data models | OpenAPI specs, schema design |
+| **Data Platform Engineer** | Database patterns | Schema advice, query optimization |
+
+### Downstream/Parallel Skills
+
+| Skill | Relationship | Coordination Point |
+|-------|--------------|-------------------|
+| **Backend Tester** | Tests the APIs | Share test scenarios, edge cases |
+| **Frontend Developer** | Consumes the APIs | API contract alignment |
+| **Tech Doc Writer** | Documents APIs | OpenAPI spec, examples |
+| **TPgM** | Tracks progress | Effort estimates, blockers |
+
+### Consultation Triggers
+
+**Consult Data Platform Engineer when:**
+- Designing complex queries
+- Schema changes affect performance
+- Using raw SQL (for review)
+- Implementing bulk operations
+
+**Consult Solutions Architect when:**
+- API contract changes needed
+- New integration patterns required
+- Cross-service communication
+
+**Consult Backend Tester when:**
+- Defining test scenarios
+- Identifying edge cases
+- Setting up test data
+
+### Handoff Checklist
+
+Before considering implementation complete:
+
+```
+□ Solutions Architect's API contract implemented
+□ Data Platform Engineer consulted on schema (if changes)
+□ Backend Tester has test strategy
+□ OpenAPI docs current for Tech Doc Writer
+□ TPgM updated on progress
+```
+
+### Skill Ecosystem Position
+
+```
+     ┌─────────────┐
+     │     TPO     │
+     └──────┬──────┘
+            │
+     ┌──────▼──────┐
+     │  Solutions  │
+     │  Architect  │
+     └──────┬──────┘
+            │
+    ┌───────┼───────┐
+    │       │       │
+    ▼       ▼       ▼
+Backend  Frontend  Data
+Developer Developer Platform
+    │       │       │
+    │       │       │
+    ▼       ▼       │
+Backend  Frontend   │
+Tester   Tester     │
+    │       │       │
+    └───────┼───────┘
+            │
+     ┌──────▼──────┐
+     │  Tech Doc   │
+     │   Writer    │
+     └─────────────┘
+```
+
 ## Summary
 
 This systematic workflow ensures:
 - Complete planning before coding
-- Consistent patterns across APIs  
+- Consistent patterns across APIs
 - Documentation stays synchronized
 - Comprehensive test coverage
 - Security by default (auth/ownership)
 - Maintainable, scalable codebase
+
+**Remember**: Consult Data Platform Engineer for schema design and Backend Tester for test strategy before implementation.
 
 Follow each phase fully before moving to the next.

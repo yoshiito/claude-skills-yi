@@ -367,6 +367,94 @@ Asynchronous if:
 - `references/api-contract-template.md` - API specification format
 - `references/integration-patterns.md` - Common integration approaches
 
+## Related Skills
+
+The Solutions Architect bridges requirements (TPO) to implementation (Developers).
+
+### Upstream Skills (Provide Input)
+
+| Skill | Provides | Architect Should Request |
+|-------|----------|-------------------------|
+| **TPO** | MRD with requirements | Clear NFRs, constraints, scope |
+| **Data Platform Engineer** | Data architecture constraints | Storage patterns, data flow needs |
+| **AI Integration Engineer** | AI/ML requirements | Model serving, inference patterns |
+
+### Downstream Skills (Consume Architecture)
+
+| Skill | Receives | Architect Should Provide |
+|-------|----------|-------------------------|
+| **Backend Developer** | API contracts, data models | OpenAPI specs, schema definitions |
+| **Frontend Developer** | API contracts, data flow | Response formats, auth patterns |
+| **Data Platform Engineer** | Data architecture decisions | Schema design, indexing strategy |
+| **MCP Server Developer** | Integration patterns | Tool schemas, protocol decisions |
+| **TPgM** | Technical dependencies | What blocks what, critical path |
+| **Tech Doc Writer** | Architecture docs | ADRs, system diagrams |
+
+### Parallel Skills (Collaborate With)
+
+| Skill | Collaboration Point |
+|-------|---------------------|
+| **UX Designer** | UI architecture constraints |
+| **Backend Tester** | Testability of API design |
+| **Frontend Tester** | Testability of component design |
+
+### Consultation Triggers
+
+**Consult Data Platform Engineer when:**
+- Designing database schema
+- Planning data migrations
+- Defining caching strategy
+- Architecting for scale
+
+**Consult AI Integration Engineer when:**
+- Including AI/ML features
+- Designing RAG pipelines
+- Planning tool use patterns
+
+**Consult MCP Server Developer when:**
+- Exposing capabilities to AI
+- Designing tool interfaces
+
+### Handoff Checklist
+
+Before handing architecture to implementation:
+
+```
+□ TPO's MRD has been fully reviewed
+□ Data Platform Engineer consulted on data design
+□ AI Integration Engineer consulted (if AI features)
+□ ADRs written for key decisions
+□ API contracts defined
+□ Diagrams current and consistent
+□ TPgM informed of technical dependencies
+```
+
+### Skill Ecosystem Position
+
+```
+         ┌─────────────┐
+         │     TPO     │
+         │    (MRD)    │
+         └──────┬──────┘
+                │
+         ┌──────▼──────┐
+         │  Solutions  │◄─── Data Platform Engineer
+         │  Architect  │◄─── AI Integration Engineer
+         │   (ADRs)    │
+         └──────┬──────┘
+                │
+    ┌───────────┼───────────┐
+    │           │           │
+    ▼           ▼           ▼
+ Backend    Frontend      Data
+ Developer  Developer   Platform
+    │           │           │
+    │           │           │
+    ▼           ▼           ▼
+ Backend    Frontend     (Data
+ Tester     Tester      Pipelines)
+```
+
 ## Quality Checklist
 
 Before delivering architecture:
@@ -380,6 +468,7 @@ Before delivering architecture:
 - [ ] Integration patterns justified
 - [ ] Trade-offs explicitly stated
 - [ ] Diagrams are current and consistent
+- [ ] **Downstream skills consulted for feasibility**
 
 ## Summary
 
@@ -389,5 +478,7 @@ The Solutions Architect ensures:
 - Decisions are documented for posterity
 - Trade-offs are explicit and justified
 - Developers have clear specifications to implement
+
+**Remember**: Consult Data Platform Engineer for data design and AI Integration Engineer for AI features before finalizing architecture.
 
 Good architecture makes the right things easy and the wrong things hard.
