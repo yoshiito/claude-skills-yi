@@ -47,18 +47,34 @@ Bridge the gap between "what we're building" (TPO) and "shipped to production." 
 
 ### Before Creating Issues in Linear
 
-**STOP** - Ensure all relevant skills have provided input:
+**STOP** - Consult Plan Registry and Integration Catalog first:
 
-1. **TPO Sign-off** - Are requirements complete? (MRD approved)
-2. **Solutions Architect Sign-off** - Is architecture defined? (ADRs written)
+```
+1. Read docs/plans/_registry.json
+   - Is this plan registered? (if not, TPO must create it first)
+   - Is the plan status "approved"? (don't create tickets for drafts)
+   - What are the dependencies on other plans?
+
+2. Read docs/integrations/_catalog.json
+   - What integrations does this feature use?
+   - Are any integrations deprecated? (may need migration work)
+   - Are API versions current?
+```
+
+**Then** ensure all relevant skills have provided input:
+
+1. **TPO Sign-off** - Are requirements complete? (MRD approved, in registry)
+2. **Solutions Architect Sign-off** - Is architecture defined? (ADRs written, integrations cataloged)
 3. **Data Platform Engineer** - Data dependencies identified? (if applicable)
 4. **Developer Input** - Effort estimates provided?
 5. **Tester Input** - Test strategy defined?
 
 **Pre-Flight Checklist**:
 ```
+□ Plan exists in docs/plans/_registry.json with status "approved"
 □ MRD from TPO is complete and approved
 □ Architecture from Solutions Architect is documented
+□ Required integrations are in docs/integrations/_catalog.json
 □ Data requirements from Data Platform Engineer are clear (if applicable)
 □ Backend Developer has reviewed feasibility
 □ Frontend Developer has reviewed feasibility
@@ -413,6 +429,36 @@ RECOMMENDATION: [Which option and why]
 DECISION NEEDED BY: [Date]
 ```
 
+## Registry Updates (TPgM Responsibility)
+
+TPgM is responsible for updating registry statuses during delivery:
+
+### Plan Registry Updates
+
+| Trigger | Update |
+|---------|--------|
+| Work starts on plan | Update status to `in_progress`, add `linear_project_id` |
+| Plan delivered | Update status to `completed`, add `completed_date` |
+
+```python
+# When starting work
+registry["plans"][idx]["status"] = "in_progress"
+registry["plans"][idx]["linear_project_id"] = "proj_xxx"
+
+# When completing
+registry["plans"][idx]["status"] = "completed"
+registry["plans"][idx]["completed_date"] = "2024-03-15"
+```
+
+### Integration Catalog Updates
+
+| Trigger | Update |
+|---------|--------|
+| New integration goes live | Update status `planned` → `active` |
+| Integration issues found | Flag for SA review |
+
+See `_shared/references/plan-registry-schema.md` and `_shared/references/integration-catalog-schema.md` for full schemas.
+
 ## Reference Files
 
 - `references/delivery-plan-template.md` - Full delivery plan structure
@@ -420,6 +466,8 @@ DECISION NEEDED BY: [Date]
 - `references/release-checklist.md` - Comprehensive readiness gates
 - `references/escalation-framework.md` - Blocker and risk escalation formats
 - `references/linear-workflow.md` - Linear MCP integration patterns
+- `_shared/references/plan-registry-schema.md` - Plan Registry schema (TPO owns, TPgM updates status)
+- `_shared/references/integration-catalog-schema.md` - Integration Catalog schema (SA owns)
 
 ## Related Skills
 

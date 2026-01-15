@@ -503,12 +503,39 @@ Add this comment to the parent Issue after creating sub-issues:
 
 See `_shared/references/linear-ticket-traceability.md` for full workflow details.
 
+## Integration Catalog Ownership
+
+**Solutions Architect owns the Integration Catalog** - an index of all external integrations in `docs/integrations/_catalog.json`.
+
+### Before Adding a New Integration
+
+```
+1. Read docs/integrations/_catalog.json
+2. Check if integration already exists (avoid duplication)
+3. Check for deprecated alternatives to migrate from
+4. Write ADR explaining selection rationale
+5. Create integration docs in docs/integrations/{vendor}/
+6. Add entry to _catalog.json
+```
+
+### Catalog Workflow
+
+| Action | SA Responsibility |
+|--------|-------------------|
+| New integration | Write ADR, create docs, add to catalog with status `planned` → `active` |
+| API version update | Update api_version, review for breaking changes |
+| Deprecation | Update status to `deprecated`, document migration path |
+| Quarterly review | Verify all entries, update last_reviewed dates |
+
+See `_shared/references/integration-catalog-schema.md` for full schema and examples.
+
 ## Reference Files
 
 - `references/adr-template.md` - Full ADR structure with examples
 - `references/diagram-patterns.md` - Mermaid diagram templates
 - `references/api-contract-template.md` - API specification format
 - `references/integration-patterns.md` - Common integration approaches
+- `_shared/references/integration-catalog-schema.md` - Integration Catalog schema and usage
 
 ## Related Skills
 

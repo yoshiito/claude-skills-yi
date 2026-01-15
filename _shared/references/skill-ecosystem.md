@@ -228,6 +228,52 @@ AI Integration Engineer (evaluate approach)
 └── Backend Developer (API integration)
 ```
 
+## Project Documentation Registries
+
+Two key registries maintain project knowledge across sessions:
+
+### Plan Registry (`docs/plans/_registry.json`)
+
+| Aspect | Detail |
+|--------|--------|
+| **Owner** | TPO (creates/updates plans) |
+| **Consumers** | Solutions Architect, TPgM, all skills |
+| **Purpose** | Index of all product plans, MRDs, and their status |
+| **Schema** | See `plan-registry-schema.md` |
+
+### Integration Catalog (`docs/integrations/_catalog.json`)
+
+| Aspect | Detail |
+|--------|--------|
+| **Owner** | Solutions Architect (creates/updates integrations) |
+| **Consumers** | TPO, TPgM, Backend Developer, Tech Doc Writer |
+| **Purpose** | Index of all external integrations, vendors, and dependencies |
+| **Schema** | See `integration-catalog-schema.md` |
+
+### Registry Workflow
+
+```
+┌─────────────┐     creates plan      ┌─────────────────────┐
+│     TPO     │──────────────────────▶│ docs/plans/         │
+│             │                       │   _registry.json    │
+└─────────────┘                       └──────────┬──────────┘
+                                                 │
+                                                 │ consumes
+                                                 ▼
+┌─────────────┐    creates integration  ┌─────────────────────┐
+│  Solutions  │────────────────────────▶│ docs/integrations/  │
+│  Architect  │                         │   _catalog.json     │
+└─────────────┘                         └──────────┬──────────┘
+                                                   │
+                                                   │ consumes
+                                                   ▼
+                                        ┌─────────────────────┐
+                                        │       TPgM          │
+                                        │ (updates status,    │
+                                        │  creates tickets)   │
+                                        └─────────────────────┘
+```
+
 ## Consultation Triggers
 
 Quick reference for when to involve other skills:
@@ -249,6 +295,8 @@ Quick reference for when to involve other skills:
 | Error investigation | Support Engineer |
 | Log analysis needed | Support Engineer |
 | Incident response | Support Engineer |
+| **Check existing plans** | Read `docs/plans/_registry.json` |
+| **Check existing integrations** | Read `docs/integrations/_catalog.json` |
 
 ## Linear Ticket Traceability
 

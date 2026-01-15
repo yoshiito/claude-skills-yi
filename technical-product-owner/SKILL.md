@@ -344,12 +344,37 @@ Workaround: Users can cancel in iOS Settings directly
 
 See `_shared/references/linear-ticket-traceability.md` for full workflow details.
 
+## Plan Registry Ownership
+
+**TPO owns the Plan Registry** - an index of all product plans in `docs/plans/_registry.json`.
+
+### Before Creating a New Plan
+
+```
+1. Read docs/plans/_registry.json
+2. Check if similar plan exists (avoid duplication)
+3. Check for related/dependent plans
+4. Create MRD in docs/plans/{quarter}-{name}/mrd.md
+5. Add entry to _registry.json
+```
+
+### Registry Workflow
+
+| Action | TPO Responsibility |
+|--------|-------------------|
+| New plan | Create MRD, add to registry with status `draft` |
+| Plan approved | Update status to `approved`, add approved_date |
+| Plan cancelled | Update status to `cancelled` (keep for history) |
+
+See `_shared/references/plan-registry-schema.md` for full schema and examples.
+
 ## Reference Files
 
 - `references/mrd-template.md` - Full MRD structure with all sections
 - `references/gherkin-patterns.md` - Acceptance criteria examples by scenario type
 - `references/edge-case-matrix.md` - Comprehensive unhappy/empty/extreme patterns
 - `references/collaboration-flags.md` - Detailed triggers and question templates
+- `_shared/references/plan-registry-schema.md` - Plan Registry schema and usage
 
 ## Related Skills
 
