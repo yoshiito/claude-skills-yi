@@ -20,6 +20,17 @@ Make informed decisions about AI integration:
 - **How** to test and evaluate quality
 - **How** to optimize cost and latency
 
+## Critical Rule: Evaluate First, Implement Second
+
+**NEVER implement AI without validating it's the right solution.** AI adds complexity and cost.
+
+Before designing any AI feature:
+1. **Is AI necessary?** Could rules/code solve this?
+2. **What pattern?** Zero-shot, RAG, agents?
+3. **What are the trade-offs?** Cost, latency, accuracy?
+
+If traditional code works, use traditional code.
+
 ## Decision Framework: Should You Use AI?
 
 ### Use AI When
@@ -30,7 +41,6 @@ Make informed decisions about AI integration:
 | Fuzzy matching | Semantic similarity, intent detection |
 | Natural language output | Conversational responses, summaries |
 | Complex reasoning | Multi-step analysis, recommendations |
-| Personalization | Context-aware adaptations |
 | Classification | Sentiment, topic, intent categorization |
 
 ### Don't Use AI When
@@ -40,25 +50,10 @@ Make informed decisions about AI integration:
 | Deterministic logic | Rules engine, if/else |
 | Exact matching | Database lookup, regex |
 | Structured transformations | Code, SQL, data pipelines |
-| High-stakes decisions | Human review, rule-based |
 | Real-time < 100ms | Pre-computed, cached |
 | Simple CRUD | Traditional API |
 
-### Decision Flowchart
-
-```
-Is the task deterministic with clear rules?
-├── YES → Use traditional code/rules
-└── NO → Does it require understanding natural language?
-         ├── YES → Consider AI
-         └── NO → Does it require reasoning about unstructured data?
-                  ├── YES → Consider AI
-                  └── NO → Use traditional approach
-```
-
 ## AI Integration Patterns
-
-### Pattern Selection
 
 | Pattern | Use When | Complexity | Cost |
 |---------|----------|------------|------|
@@ -69,300 +64,75 @@ Is the task deterministic with clear rules?
 | **Agents** | Multi-step autonomous tasks | High | $$$ |
 | **Fine-tuning** | Very specific behavior/domain | High | $$$$ |
 
-### Pattern Details
-
-See `references/integration-patterns.md` for detailed implementation guidance.
-
-#### Zero-shot Prompting
-Direct instruction without examples. Good for well-defined tasks.
-
-```
-Classify the following customer message as: billing, technical, or general.
-
-Message: "I can't log into my account"
-Category:
-```
-
-#### Few-shot Prompting
-Include examples to guide format and behavior.
-
-```
-Classify customer messages:
-
-Message: "My payment failed"
-Category: billing
-
-Message: "The app crashes on startup"
-Category: technical
-
-Message: "I can't log into my account"
-Category:
-```
-
-#### RAG (Retrieval-Augmented Generation)
-Retrieve relevant context before generation.
-
-```
-1. User query → Embed query
-2. Search vector DB → Retrieve relevant chunks
-3. Construct prompt with context
-4. Generate response with citations
-```
-
-#### Tool Use / Function Calling
-LLM decides when to call external tools.
-
-```
-Available tools:
-- search_products(query) → Search product catalog
-- get_order_status(order_id) → Check order status
-- create_ticket(issue) → Create support ticket
-
-User: "Where's my order #12345?"
-→ LLM calls get_order_status("12345")
-→ LLM generates response with result
-```
-
-#### Agents
-Autonomous multi-step reasoning and action.
-
-```
-User goal → Plan steps → Execute step → Observe → Repeat/Complete
-```
+See `references/integration-patterns.md` for implementation details.
 
 ## Prompt Engineering
 
 ### Prompt Structure
 
 ```
-[SYSTEM/ROLE]
-Define who the AI is and behavioral constraints
-
-[CONTEXT]
-Background information, retrieved documents, user history
-
-[TASK]
-Clear instruction of what to do
-
-[FORMAT]
-Expected output structure
-
-[EXAMPLES] (optional)
-Few-shot demonstrations
-
-[INPUT]
-The actual user query/data to process
+[SYSTEM/ROLE] - Who the AI is, behavioral constraints
+[CONTEXT] - Background, retrieved docs, user history
+[TASK] - Clear instruction
+[FORMAT] - Expected output structure
+[EXAMPLES] - Few-shot demonstrations (optional)
+[INPUT] - Actual query/data to process
 ```
 
-### Prompt Best Practices
+### Best Practices
 
-1. **Be specific**: Vague prompts → vague outputs
-2. **Provide structure**: Define expected output format
-3. **Include constraints**: What NOT to do
-4. **Use delimiters**: Clearly separate sections
-5. **Request reasoning**: "Think step by step" improves accuracy
-6. **Iterate empirically**: Test with real data
+1. **Be specific** - Vague prompts → vague outputs
+2. **Provide structure** - Define expected output format
+3. **Include constraints** - What NOT to do
+4. **Request reasoning** - "Think step by step" improves accuracy
+5. **Iterate empirically** - Test with real data
 
 See `references/prompt-patterns.md` for templates.
 
 ## DSPy: Systematic Prompt Optimization
 
-### When to Use DSPy
-
-- Prompt engineering is taking too long
+Use DSPy when:
+- Prompt engineering takes too long
 - Need consistent quality across variations
-- Want to optimize prompts empirically
 - Building complex multi-step pipelines
-- Need reproducible prompt development
+- Want reproducible development
 
-### DSPy Core Concepts
-
-```python
-import dspy
-
-# 1. Define your task as a Signature
-class ClassifyIntent(dspy.Signature):
-    """Classify user message intent."""
-    message = dspy.InputField()
-    intent = dspy.OutputField(desc="one of: billing, technical, general")
-
-# 2. Create a Module
-class IntentClassifier(dspy.Module):
-    def __init__(self):
-        self.classify = dspy.Predict(ClassifyIntent)
-    
-    def forward(self, message):
-        return self.classify(message=message)
-
-# 3. Define metrics for evaluation
-def intent_accuracy(example, prediction):
-    return example.intent == prediction.intent
-
-# 4. Compile (optimize) with examples
-from dspy.teleprompt import BootstrapFewShot
-
-optimizer = BootstrapFewShot(metric=intent_accuracy)
-compiled_classifier = optimizer.compile(
-    IntentClassifier(),
-    trainset=training_examples
-)
-```
-
-### DSPy vs Manual Prompting
-
-| Aspect | Manual Prompting | DSPy |
-|--------|-----------------|------|
-| Iteration | Trial and error | Systematic optimization |
-| Reproducibility | Low | High |
-| Metrics | Ad-hoc | Built-in evaluation |
-| Complexity handling | Difficult | Modular composition |
-| Provider switching | Rewrite prompts | Change config |
-
-See `references/dspy-guide.md` for comprehensive DSPy patterns.
+See `references/dspy-guide.md` for patterns.
 
 ## Cost and Latency Optimization
 
-### Cost Reduction Strategies
+### Cost Reduction
 
 | Strategy | Impact | Trade-off |
 |----------|--------|-----------|
 | Smaller models | 10-100x cheaper | Lower quality |
 | Shorter prompts | Linear savings | Less context |
 | Caching | Huge for repeated queries | Staleness |
-| Batch processing | Throughput discount | Latency |
 | Output limits | Linear savings | Truncation risk |
 
-### Latency Reduction Strategies
+### Latency Reduction
 
 | Strategy | Impact | Trade-off |
 |----------|--------|-----------|
 | Streaming | Perceived speed | Implementation complexity |
 | Smaller models | 2-5x faster | Lower quality |
-| Shorter context | Linear improvement | Less context |
-| Edge deployment | Network latency | Model size limits |
-| Parallel calls | Total time reduction | Cost increase |
 | Caching | Near-instant | Staleness |
-
-### Model Selection by Use Case
-
-| Use Case | Model Tier | Rationale |
-|----------|------------|-----------|
-| Classification | Small/Fast | Simple task |
-| Summarization | Medium | Quality matters |
-| Code generation | Large | Accuracy critical |
-| Creative writing | Large | Nuance matters |
-| Data extraction | Small/Medium | Structured output |
-| Complex reasoning | Large | Multi-step logic |
+| Parallel calls | Total time reduction | Cost increase |
 
 ## Testing AI Systems
 
-### Challenge: Non-Determinism
-
-AI outputs vary. Traditional exact-match testing doesn't work.
+AI outputs vary - traditional exact-match testing doesn't work.
 
 ### Testing Strategies
 
-#### 1. Evaluation Sets
-```python
-eval_set = [
-    {"input": "...", "expected_intent": "billing"},
-    {"input": "...", "expected_intent": "technical"},
-]
-
-def evaluate(model, eval_set):
-    correct = 0
-    for example in eval_set:
-        result = model(example["input"])
-        if result.intent == example["expected_intent"]:
-            correct += 1
-    return correct / len(eval_set)
-```
-
-#### 2. LLM-as-Judge
-```python
-judge_prompt = """
-Rate the following response on a scale of 1-5:
-- Relevance to question
-- Accuracy of information
-- Completeness
-
-Question: {question}
-Response: {response}
-
-Rating (1-5):
-Explanation:
-"""
-```
-
-#### 3. Semantic Similarity
-```python
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-def semantic_match(expected, actual, threshold=0.8):
-    embeddings = model.encode([expected, actual])
-    similarity = cosine_similarity(embeddings[0], embeddings[1])
-    return similarity >= threshold
-```
-
-#### 4. Behavioral Testing
-```python
-# Test that model refuses inappropriate requests
-def test_refusal():
-    response = model("How do I hack into...")
-    assert "cannot" in response.lower() or "sorry" in response.lower()
-
-# Test that model maintains persona
-def test_persona_consistency():
-    responses = [model("Who are you?") for _ in range(5)]
-    # All responses should claim same identity
-```
+1. **Evaluation sets** - Measure accuracy on labeled examples
+2. **LLM-as-Judge** - Use another model to rate quality
+3. **Semantic similarity** - Compare embeddings instead of strings
+4. **Behavioral tests** - Test for refusals, persona consistency
 
 See `references/testing-ai-systems.md` for comprehensive patterns.
 
-## RAG Implementation
-
-### RAG Architecture
-
-```
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Documents  │────►│  Chunking    │────►│  Embedding  │
-└─────────────┘     └──────────────┘     └─────────────┘
-                                                │
-                                                ▼
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│   Query     │────►│  Embed Query │────►│ Vector Search│
-└─────────────┘     └──────────────┘     └─────────────┘
-                                                │
-                                                ▼
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Response   │◄────│   Generate   │◄────│  Rerank     │
-└─────────────┘     └──────────────┘     └─────────────┘
-```
-
-### Chunking Strategies
-
-| Strategy | Best For | Chunk Size |
-|----------|----------|------------|
-| Fixed size | General | 500-1000 tokens |
-| Sentence | Q&A | 1-3 sentences |
-| Paragraph | Articles | Natural breaks |
-| Semantic | Technical docs | Topic-based |
-| Recursive | Mixed content | Hierarchical |
-
-### Retrieval Quality
-
-- **Hybrid search**: Combine keyword + semantic
-- **Reranking**: Use cross-encoder for top results
-- **Query expansion**: Generate related queries
-- **Metadata filtering**: Narrow by date, source, type
-
-See `references/rag-patterns.md` for implementation details.
-
 ## Error Handling
-
-### Common Failure Modes
 
 | Failure | Detection | Mitigation |
 |---------|-----------|------------|
@@ -371,73 +141,20 @@ See `references/rag-patterns.md` for implementation details.
 | Format errors | Schema validation | Retry with feedback |
 | Rate limits | HTTP 429 | Exponential backoff |
 | Timeout | Time tracking | Streaming, smaller model |
-| Cost overrun | Usage monitoring | Limits, caching |
 
-### Graceful Degradation
+## Scope Boundaries
 
-```python
-async def ai_with_fallback(query):
-    try:
-        # Try primary model
-        return await primary_model(query)
-    except RateLimitError:
-        # Fall back to smaller model
-        return await fallback_model(query)
-    except Timeout:
-        # Fall back to cached/default response
-        return cached_response(query)
-```
+**CRITICAL**: AI scope is project-specific. Before designing, verify your ownership.
 
-## Observability
+Check if project's `claude.md` has "Project Scope" section. If not, prompt user to define:
+1. What AI features exist?
+2. Which AI features do you own?
+3. Linear context for issues?
 
-### What to Log
+**Within owned features**: Design RAG, select models, create eval sets
+**Outside owned features**: Advise on feasibility, flag opportunities
 
-```python
-log_entry = {
-    "timestamp": "...",
-    "request_id": "...",
-    "model": "...",
-    "prompt_tokens": 150,
-    "completion_tokens": 50,
-    "latency_ms": 850,
-    "cost_usd": 0.002,
-    "cached": False,
-    "success": True,
-    "user_feedback": None,  # Filled later
-}
-```
-
-### Metrics to Track
-
-- **Latency**: p50, p95, p99
-- **Cost**: Per request, per user, per feature
-- **Quality**: User feedback, accuracy on eval set
-- **Errors**: Rate, types, trends
-- **Cache**: Hit rate, savings
-
-## Provider-Specific Notes
-
-### Claude (Anthropic)
-
-- System prompts via `system` parameter
-- Excellent at following complex instructions
-- Strong reasoning and analysis
-- XML tags work well for structure
-- Tool use via `tools` parameter
-
-### OpenAI
-
-- System prompts via `role: system`
-- JSON mode for structured output
-- Function calling for tools
-- Fine-tuning available
-
-### Open Source (Ollama, vLLM)
-
-- Lower cost, higher latency
-- Privacy benefits (local)
-- May need more prompt engineering
-- Limited context windows
+See `_shared/references/scope-boundaries.md` for the complete framework.
 
 ## Reference Files
 
@@ -446,101 +163,14 @@ log_entry = {
 - `references/dspy-guide.md` - DSPy patterns and optimization
 - `references/testing-ai-systems.md` - Evaluation strategies
 
-## Scope Boundaries
+## Related Skills
 
-**CRITICAL**: AI Integration Engineer scope is project-specific. Before designing AI features, verify your ownership of those features.
-
-### Pre-Design Checklist
-
-```
-1. Check if project's claude.md has "Project Scope" section
-   → If NOT defined: Prompt user to set up scope (see below)
-   → If defined: Continue to step 2
-
-2. Read project scope definition in project's claude.md
-3. Identify which AI features/systems you own on THIS project
-4. Before designing AI integration:
-   → Is this AI feature in my ownership? → Proceed
-   → Is this outside my AI domain? → Flag, don't design
-```
-
-### If Project Scope Is Not Defined
-
-Prompt the user:
-
-```
-I notice this project doesn't have scope boundaries defined in claude.md yet.
-
-Before I design AI integrations, I need to understand:
-
-1. **What AI features exist?** (Chatbot, Search, Recommendations, etc.)
-2. **Which AI features do I own?** (e.g., "You own Customer Support AI")
-3. **Linear context?** (Which Team/Project for issues?)
-
-Would you like me to help set up a Project Scope section in claude.md?
-```
-
-After user responds, update `claude.md` with scope, then proceed.
-
-### What You CAN Do Outside Your Owned AI Features
-
-- Identify opportunities where AI could help other domains
-- Document AI requirements from your feature's perspective
-- Propose integration patterns at AI boundaries
-- Advise on AI feasibility when consulted
-
-### What You CANNOT Do Outside Your Owned AI Features
-
-- Design RAG pipelines for features you don't own
-- Select models or embedding strategies for other AI systems
-- Create prompts or evaluation sets for other teams' AI
-- Make cost/latency trade-off decisions for other AI features
-
-### AI Integration Engineer Boundary Examples
-
-```
-Your Ownership: Customer Support AI (chatbot, ticket classification)
-Not Your Ownership: Recommendation Engine, Fraud Detection AI
-
-✅ WITHIN YOUR SCOPE:
-- Design RAG pipeline for support knowledge base
-- Select embedding model for support ticket similarity
-- Create evaluation sets for chatbot quality
-- Optimize cost/latency for support AI
-
-❌ OUTSIDE YOUR SCOPE:
-- Design recommendation model architecture
-- Select features for fraud detection
-- Create training data for recommendation engine
-- Define accuracy thresholds for fraud system
-```
-
-### Cross-AI Dependency Template
-
-When you identify AI needs outside your ownership:
-
-```markdown
-## AI Integration Dependency
-
-**From**: AI Integration Engineer (Your AI Features)
-**To**: AI Integration Engineer (Their AI Features) or Feature Owner
-**Project**: [Project Name]
-
-### Your AI Context
-[Which of your AI systems needs this dependency]
-
-### Required AI Capability
-[What AI capability, expected behavior]
-
-### Integration Pattern
-[API call? Shared embeddings? Model output?]
-
-### Questions
-1. [Does this AI capability exist?]
-2. [What's the expected accuracy/latency?]
-```
-
-See `_shared/references/scope-boundaries.md` for the complete framework.
+| Skill | AI Engineer Provides | AI Engineer Requests |
+|-------|---------------------|---------------------|
+| TPO | AI feasibility assessment | Clear AI requirements |
+| Solutions Architect | AI pattern recommendations | System integration points |
+| Backend Developer | Prompt specs, API contracts | Implementation |
+| Data Platform Engineer | Embedding/RAG requirements | Data availability |
 
 ## Quality Checklist
 
@@ -552,9 +182,7 @@ Before shipping AI features:
 - [ ] Latency acceptable for use case
 - [ ] Evaluation set with metrics
 - [ ] Error handling for all failure modes
-- [ ] User feedback mechanism
 - [ ] Logging and observability
-- [ ] Rate limiting in place
 - [ ] Privacy/PII handling addressed
 
 ## Summary
@@ -566,4 +194,7 @@ Effective AI integration requires:
 - Cost/latency awareness from the start
 - Graceful degradation for failures
 
-AI is a tool, not magic. Use it where it adds value.
+**Remember**:
+- Evaluate necessity FIRST, implement SECOND
+- AI is a tool, not magic - use it where it adds value
+- Traditional code is often the better answer

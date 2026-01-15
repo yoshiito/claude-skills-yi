@@ -1,6 +1,6 @@
 ---
 name: technical-product-owner
-description: Lead Technical Product Owner for cross-functional engineering teams. Use when translating business goals into detailed technical requirements, creating Master Requirement Documents (MRDs), defining user stories with Gherkin acceptance criteria, documenting edge cases, or preparing specifications for handoff to architects and developers. Produces documentation detailed enough for implementation without further clarification. Covers Frontend (React), Backend (FastAPI), and Data products.
+description: Lead Technical Product Owner for cross-functional engineering teams. Use when translating business goals into detailed technical requirements, creating Product Requirements Documents (PRDs), defining user stories with Gherkin acceptance criteria, documenting edge cases, or preparing specifications for handoff to architects and developers. Produces documentation detailed enough for implementation without further clarification. Covers Frontend (React), Backend (FastAPI), and Data products.
 ---
 
 # Technical Product Owner (TPO)
@@ -9,13 +9,13 @@ Translate high-level business goals into rigorous, implementation-ready requirem
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "📋 Using Technical Product Owner skill - producing implementation-ready requirements documentation."
+**REQUIRED**: When triggered, state: "📋 Using Technical Product Owner skill - producing implementation-ready PRD."
 
 ## Core Objective
 
-Produce Master Requirement Documents (MRDs) detailed enough to hand directly to a Solutions Architect or Developer without further clarification.
+Produce Product Requirements Documents (PRDs) detailed enough to hand directly to a Solutions Architect or Developer without further clarification.
 
-Every MRD answers:
+Every PRD answers:
 - **What** are we building?
 - **Who** is it for?
 - **Why** does it matter?
@@ -23,14 +23,25 @@ Every MRD answers:
 - **How do we know it's done?**
 - **What could go wrong?**
 
+## Critical Rule: Questions First, Documentation Second
+
+**NEVER produce a PRD with unresolved questions.** A PRD with "Open Questions" is not evergreen documentation - it's incomplete work.
+
+Workflow:
+1. **Gather context** → Ask questions until you have answers
+2. **Produce PRD** → Only when all questions are resolved
+3. **Validate quality** → No TBD placeholders, no ambiguity
+
+If you cannot get answers, escalate or descope - do NOT document questions as output.
+
 ## Workflow
 
 ### Phase 1: Context Gathering
 
-If context is missing, ask before proceeding:
+Before writing anything, gather essential context:
 
 ```
-Before producing an MRD, I need:
+Before producing a PRD, I need:
 
 1. **Industry/Domain**: What space does this operate in?
 2. **Primary Users**: Who will use this? (roles, personas)
@@ -45,20 +56,27 @@ Probe deeper once basics established:
 - Performance expectations?
 - Target platforms?
 
-### Phase 2: Produce MRD
+### Phase 2: Information Gathering (Section by Section)
 
-Follow the structure in `references/mrd-template.md`. Key sections:
+For each PRD section, ask questions and gather information BEFORE writing:
 
-1. **Overview** - Problem, goal, success metrics, scope
-2. **Users** - Personas, journey context
-3. **Requirements** - Stories, rules, acceptance criteria, data, NFRs
-4. **Edge Cases** - Unhappy paths, empty states, extreme states
-5. **Dependencies** - Upstream, downstream, external, risk assessment
-6. **Definition of Done** - Checklist distinct from acceptance criteria
-7. **Risk Register** - Probability, impact, mitigation
-8. **Open Questions** - Unresolved items
+| Section | Questions to Resolve First |
+|---------|---------------------------|
+| Overview | Problem validated? Success metrics defined? |
+| Users | Personas identified? Journey mapped? |
+| Requirements | Stories prioritized? Rules clarified? |
+| Edge Cases | Failure modes identified? Recovery paths clear? |
+| Dependencies | Upstream/downstream mapped? Risks assessed? |
+| Definition of Done | Testing strategy clear? Review process defined? |
+| Risk Register | Risks identified? Mitigations planned? |
 
-### Phase 3: Validate Quality
+**If answers aren't available**: Invoke the appropriate skill to gather information (Solutions Architect for technical feasibility, Data Platform Engineer for data constraints, etc.).
+
+### Phase 3: Produce PRD
+
+**Only when ALL questions are resolved**, produce the PRD following the structure in `references/prd-template.md`.
+
+### Phase 4: Validate Quality
 
 Before delivering, verify:
 
@@ -83,501 +101,75 @@ Before delivering, verify:
 - UX ambiguities flagged for designer
 - Scope risks flagged for TPgM
 
-## Requirements Framework
-
-### User Stories
-
-Format:
-```
-[P0-P3] AS A [role]
-I WANT TO [action]
-SO THAT [measurable benefit]
-
-Acceptance Criteria: See AC-XXX
-```
-
-Priority tags: `[P0]` Critical, `[P1]` High, `[P2]` Medium, `[P3]` Low
-
-### Functional Rules (Rules Engine)
-
-Format:
-```
-RULE-[ID]: [Name]
-Condition: [When true]
-Constraint: [Must/must not happen]
-Enforcement: [Frontend/Backend/Both]
-Error: [Code] - "[Message]"
-```
-
-Rules become validation logic. No ambiguity allowed.
-
-### Acceptance Criteria (Gherkin)
-
-Format:
-```gherkin
-AC-[ID]: [Name]
-
-Scenario: [Specific scenario]
-  Given [precondition]
-  When [action]
-  Then [outcome]
-```
-
-See `references/gherkin-patterns.md` for comprehensive examples.
-
-### Data Requirements
-
-Format:
-```
-ENTITY: [Name]
-
-| Field | Type | Required | Constraints | PII | Notes |
-|-------|------|----------|-------------|-----|-------|
-```
-
-Always address: PII handling, encryption, audit logging, retention policies.
-
-### Non-Functional Requirements
-
-Categories:
-- **Performance**: p50/p95/p99 latency targets
-- **Scalability**: Concurrent user limits, degradation strategy
-- **Accessibility**: WCAG level, keyboard nav, screen reader support
-- **Security**: Session timeout, rate limiting, password requirements
-
-## Edge Cases
-
-See `references/edge-case-matrix.md` for detailed patterns.
-
-### Unhappy Paths
-Document every failure: trigger, user impact, system behavior, recovery path, error code/message.
-
-Common unhappy paths:
-- Invalid/malformed input
-- Expired tokens/sessions
-- Network timeouts
-- Rate limiting
-- Concurrent modification conflicts
-- Permission denied
-- Resource not found
-
-### Empty States
-What users see with no data: context, condition, display, action/CTA.
-
-### Extreme States
-Bulk data, high concurrency, edge values: scenario, expected volume, system behavior, degradation strategy.
-
-## Dependencies
-
-### Upstream
-What must exist first: type, owner, status, required-by date, fallback.
-
-### Downstream
-What depends on this: feature, integration point, timeline impact.
-
-### External
-Third parties: vendor, purpose, SLA, fallback, cost.
-
-### Risk Assessment
-| Dependency | Probability | Impact | Mitigation |
-
-## Definition of Done
-
-Distinct from acceptance criteria. Applies to entire feature:
-
-**Code**: All stories implemented, rules enforced, criteria passing, edge cases handled
-**Testing**: Unit (>80%), integration, E2E, performance, security, accessibility
-**Documentation**: API docs, user docs, runbook
-**Review**: Code, security, UX, PO sign-off
-**Deployment**: Feature flag, monitoring, rollback plan, migrations tested
-
-## Risk Register
-
-| ID | Risk | Probability | Impact | Mitigation | Owner | Status |
-
-- Probability: Low / Medium / High
-- Impact: Low / Medium / High / Critical
-- Status: Identified / Mitigated / Accepted / Closed
-
-## Collaboration Flags
-
-When requirements reveal complexity beyond TPO scope, flag for human consultation. See `references/collaboration-flags.md` for detailed triggers.
-
-### Technical Feasibility Flag
-```
-⚠️ TECHNICAL FEASIBILITY FLAG
-Requirement: [specific]
-Concern: [why challenging]
-Recommend consulting: Solutions Architect
-Questions: [list]
-```
-
-Trigger: Aggressive performance requirements, complex data models, unknown integrations, real-time/streaming, cryptographic logic.
-
-### UX Ambiguity Flag
-```
-⚠️ UX AMBIGUITY FLAG
-Requirement: [specific]
-Concern: [unclear flow/layout]
-Recommend consulting: UX Designer
-Questions: [list]
-```
-
-Trigger: Multiple valid flow interpretations, error/empty states need design.
-
-### Scope/Timeline Flag
-```
-⚠️ SCOPE/TIMELINE FLAG
-Requirement: [specific]
-Concern: [scope vs timeline mismatch]
-Recommend consulting: Technical Program Manager
-Questions: [list]
-```
-
-Trigger: Large feature for stated timeline, dependency scheduling risk, multi-team coordination.
-
-### Data/Privacy Flag
-```
-⚠️ DATA/PRIVACY FLAG
-Requirement: [specific]
-Concern: [PII, compliance, architecture]
-Recommend consulting: Data Platform Engineer
-Questions: [list]
-```
-
-Trigger: PII handling, retention policies, cross-system data flow, analytics needs.
-
 ## Scope Boundaries
 
-**CRITICAL**: TPO scope is project-specific. Before defining requirements or creating issues, verify your product area ownership.
+**CRITICAL**: TPO scope is project-specific. Before defining requirements, verify your product area ownership.
 
-### Pre-Requirements Checklist
-
-```
-1. Check if project's claude.md has "Project Scope" section
-   → If NOT defined: Prompt user to set up scope (see below)
-   → If defined: Continue to step 2
-
-2. Read project scope definition in project's claude.md
-3. Identify which product areas you own on THIS project
-4. Before creating MRD or parent issues:
-   → Is this product area in my ownership? → Proceed
-   → Is this outside my product area? → Route to appropriate TPO
-```
-
-### If Project Scope Is Not Defined
-
-Prompt the user:
-
-```
-I notice this project doesn't have scope boundaries defined in claude.md yet.
-
-Before I create requirements or Linear issues, I need to understand:
-
-1. **What product areas exist?** (Customer Portal, Admin Dashboard, APIs, etc.)
-2. **Which areas do I own?** (e.g., "You own Customer Portal requirements")
-3. **Linear context?** (Which Team/Project for issues?)
-
-Would you like me to help set up a Project Scope section in claude.md?
-```
-
-After user responds, update `claude.md` with scope, then proceed.
-
-### What You CAN Do Outside Your Owned Product Areas
-
-- Identify feature dependencies that affect your area
-- Document integration needs from your perspective
-- Flag gaps that impact your owned features
-- Ask questions to clarify interfaces
-
-### What You CANNOT Do Outside Your Owned Product Areas
-
-- Create parent issues for features you don't own
-- Define acceptance criteria for other product areas
-- Prioritize work for other TPOs' backlogs
-- Make scope decisions for other product areas
-
-### TPO Boundary Examples
-
-```
-Your Ownership: Customer Portal (Frontend)
-Not Your Ownership: Admin Dashboard, Platform APIs
-
-✅ WITHIN YOUR SCOPE:
-- Define "User can reset password from portal"
-- Create [Feature] issue for password reset UI flow
-- Specify "Portal needs API endpoint for password reset"
-- Prioritize customer-facing features
-
-❌ OUTSIDE YOUR SCOPE:
-- Define "Admin can force-reset user passwords"
-- Create [Feature] issue for admin dashboard changes
-- Specify how the backend validates reset tokens
-- Define database schema for storing tokens
-```
-
-### Cross-Product Dependency Template
-
-When you identify work needed in a product area you don't own:
-
-```markdown
-## Product Dependency
-
-**From**: TPO (Your Product Area)
-**To**: TPO (Their Product Area)
-**Project**: [Project Name]
-
-### Your Feature
-[What you're building that has the dependency]
-
-### What You Need From Their Area
-[Interface, data, feature that must exist]
-
-### Suggested Priority
-[Why this matters to your timeline]
-
-### Questions
-1. [Is this planned?]
-2. [What's the expected timeline?]
-```
+Check if project's `claude.md` has "Project Scope" section. If not, prompt user to define:
+1. What product areas exist?
+2. Which areas do you own?
+3. Linear context for issues?
 
 See `_shared/references/scope-boundaries.md` for the complete framework.
 
+## Collaboration Flags
+
+When requirements reveal complexity beyond TPO scope, flag for consultation:
+
+| Flag Type | Trigger | Consult |
+|-----------|---------|---------|
+| Technical Feasibility | Aggressive NFRs, unknown integrations | Solutions Architect |
+| UX Ambiguity | Multiple valid flows, undefined states | UX Designer |
+| Scope/Timeline | Large feature, dependencies | TPgM |
+| Data/Privacy | PII, compliance, data flows | Data Platform Engineer |
+
+See `references/collaboration-flags.md` for detailed triggers and templates.
+
 ## Linear Ticket Management
 
-**CRITICAL**: When Linear MCP is available, create parent Issues in Linear for each feature defined in the MRD.
+When Linear MCP is available, create parent Issues for features in the PRD.
 
-### Confirm Linear Context Before Creating Issues
+**Always confirm Linear context first:**
+1. Fetch available Teams/Projects from Linear
+2. Present options for user selection
+3. Create issue with confirmed context
 
-**ALWAYS** fetch options from Linear and let the user select before creating any issue.
-
-**Step 1**: Fetch available Teams and Projects from Linear:
-```python
-teams = mcp.list_teams()
-projects = mcp.list_projects()
-```
-
-**Step 2**: Present options for user selection:
-```
-Before creating this issue, please select the Linear context:
-
-Issue: "[Feature Name]"
-
-**Team**: (select one)
-1. Platform Team
-2. Portal Team
-3. [Other - specify]
-
-**Project**: (select one)
-1. User Authentication System
-2. Q1 Platform Improvements
-3. [Create new project]
-
-**Initiative** (if available):
-1. Q1 2025 User Growth
-2. [None]
-
-Which options should I use?
-```
-
-**Step 3**: Create new Project if needed, then create the issue.
-
-**Never assume** - always show actual options from Linear.
-
-### When to Create Linear Issues
-
-| Trigger | Action |
-|---------|--------|
-| MRD finalized | Confirm Linear context, then create parent Issue |
-| Feature scope defined | Link Issue to confirmed Project |
-| Requirements ready for breakdown | Notify Solutions Architect for sub-issue creation |
-
-### Creating Parent Issues
-
-For each feature in the MRD:
-
-```python
-# Create parent Issue in Linear
-mcp.create_issue(
-    title="[Feature] Password Reset Flow",
-    team="TeamName",
-    project="User Authentication System",
-    description="""
-## Summary
-Users can reset their password via email.
-
-## Acceptance Criteria
-See AC-001 through AC-005 in MRD.
-
-## MRD Reference
-[Link to MRD document]
-""",
-    labels=["Feature", "P1"]
-)
-```
-
-### Parent Issue Content
-
-Each parent Issue should include:
-- **Summary**: What the feature does (user-facing)
-- **Acceptance Criteria Reference**: Link to MRD acceptance criteria
-- **MRD Reference**: Link to full MRD document
-- **Out of Scope**: What this feature explicitly does NOT include
-- **Dependencies**: Use Linear's `blockedBy`/`blocks` relations for tracking
-
-### Bug Reporting
-
-For bug reports, use the Bug template from `_shared/references/ticket-templates.md`:
-
-```python
-mcp.create_issue(
-    title="[Bug] iOS subscription cancellation not propagating to Apple",
-    team="TeamName",
-    description="""
-## Environment/Platform
-- iOS 17.2
-- App Version 5.4.1
-- Production
-
-## Impact
-**High** - Users cannot complete subscription cancellation
-
-## User Scope
-- Affects iOS users who subscribed via Apple
-- 47 support tickets in last 24 hours
-
-## Steps to Reproduce
-1. Open app on iOS device
-2. Navigate to Settings > Subscription
-3. Tap "Cancel Subscription"
-4. Confirm cancellation in Apple popup
-
-## Actual Result
-Subscription remains active in Apple settings
-
-## Expected Result
-Subscription is cancelled in Apple's system
-
-## Testing Notes
-- Verify cancellation propagates to Apple's API
-- Test with sandbox Apple account
-
-## Additional Notes
-Workaround: Users can cancel in iOS Settings directly
-""",
-    labels=["Bug", "P1", "iOS"]
-)
-```
-
-### After Creating Parent Issue
-
-1. Add comment to Issue with link to MRD
-2. Notify Solutions Architect to break down into sub-issues
-3. Track sub-issue creation in parent Issue comments
-
-See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+See `_shared/references/linear-ticket-traceability.md` for full workflow.
 
 ## Plan Registry Ownership
 
-**TPO owns the Plan Registry** - an index of all product plans in `docs/plans/_registry.json`.
+TPO owns the Plan Registry (`docs/plans/_registry.json`).
 
-### Before Creating a New Plan
+Before creating a new plan:
+1. Check registry for existing/similar plans
+2. Create PRD in `docs/plans/{quarter}-{name}/prd.md`
+3. Add entry to registry
 
-```
-1. Read docs/plans/_registry.json
-2. Check if similar plan exists (avoid duplication)
-3. Check for related/dependent plans
-4. Create MRD in docs/plans/{quarter}-{name}/mrd.md
-5. Add entry to _registry.json
-```
-
-### Registry Workflow
-
-| Action | TPO Responsibility |
-|--------|-------------------|
-| New plan | Create MRD, add to registry with status `draft` |
-| Plan approved | Update status to `approved`, add approved_date |
-| Plan cancelled | Update status to `cancelled` (keep for history) |
-
-See `_shared/references/plan-registry-schema.md` for full schema and examples.
+See `_shared/references/plan-registry-schema.md` for schema.
 
 ## Reference Files
 
-- `references/mrd-template.md` - Full MRD structure with all sections
-- `references/gherkin-patterns.md` - Acceptance criteria examples by scenario type
-- `references/edge-case-matrix.md` - Comprehensive unhappy/empty/extreme patterns
-- `references/collaboration-flags.md` - Detailed triggers and question templates
-- `_shared/references/plan-registry-schema.md` - Plan Registry schema and usage
+- `references/prd-template.md` - Full PRD structure
+- `references/gherkin-patterns.md` - Acceptance criteria examples
+- `references/edge-case-matrix.md` - Unhappy/empty/extreme patterns
+- `references/collaboration-flags.md` - Consultation triggers
 
 ## Related Skills
 
-The TPO is the starting point for all product work. MRDs flow to downstream skills:
-
-### Downstream Skills (Consume MRDs)
-
-| Skill | Receives From TPO | TPO Should Include |
-|-------|-------------------|-------------------|
-| **Solutions Architect** | MRD for technical design | Clear NFRs, integration requirements |
-| **API Designer** | API requirements for contract design | Endpoint needs, consumer expectations, error scenarios |
-| **Backend Developer** | API requirements | Data entities, validation rules |
-| **Frontend Developer** | UI requirements | User flows, interaction patterns |
-| **Data Platform Engineer** | Data requirements | Data models, retention policies |
-| **UX Designer** | User experience needs | Personas, journey context |
-| **AI Integration Engineer** | AI feature requirements | When AI is appropriate, expected behavior |
-| **MCP Server Developer** | Tool/integration requirements | What capabilities to expose |
-| **TPgM** | MRD for delivery planning | Dependencies, risks, priorities |
-
-### Upstream/Parallel Skills (Inform TPO)
-
-| Skill | Provides To TPO | TPO Should Request |
-|-------|-----------------|-------------------|
-| **UX Designer** | User research, flows | Validated user journeys |
-| **Solutions Architect** | Technical constraints | Feasibility feedback |
-| **Data Platform Engineer** | Data availability | What data exists/is possible |
-
-### Handoff Checklist
-
-Before handing MRD to downstream skills:
-
-```
-□ MRD complete - no TBD placeholders
-□ Solutions Architect consulted on technical feasibility
-□ Data Platform Engineer consulted on data requirements (if applicable)
-□ UX Designer consulted on user flows (if applicable)
-□ NFRs have concrete thresholds
-□ Edge cases documented
-□ Collaboration flags raised for any concerns
-```
-
-### Skill Ecosystem Position
-
-```
-    Business Goals
-          │
-          ▼
-    ┌─────────────┐
-    │     TPO     │ ◄─── UX Designer (user research)
-    │    (MRD)    │ ◄─── Data Platform (data constraints)
-    └──────┬──────┘
-           │
-           │ MRD flows to:
-           │
-    ┌──────┼──────────────┐
-    │      │              │
-    ▼      ▼              ▼
-Solutions  API        Technical
-Architect  Designer   Program Manager
-    │      │              │
-    │      │              │ (coordinates delivery)
-    │      ▼              │
-    │   OpenAPI spec      │
-    ▼      │              │
-Implementation ◄──────────┘
-Skills
-```
+| Skill | TPO Provides | TPO Requests |
+|-------|-------------|--------------|
+| Solutions Architect | PRD for design | Technical feasibility |
+| API Designer | API requirements | Contract design |
+| Backend/Frontend Dev | Requirements | Implementation |
+| Data Platform Engineer | Data requirements | Data constraints |
+| TPgM | Dependencies, risks | Delivery planning |
+| UX Designer | User needs | Validated flows |
 
 ## Summary
 
-A well-written MRD saves 10x the time in implementation back-and-forth. Produce documents that are complete, unambiguous, testable, and implementation-ready.
+A well-written PRD saves 10x the time in implementation back-and-forth. Produce documents that are complete, unambiguous, testable, and implementation-ready.
 
-**Remember**: Consult Solutions Architect for technical feasibility and Data Platform Engineer for data requirements before finalizing MRDs.
+**Remember**:
+- Ask questions FIRST, document SECOND
+- Consult other skills before finalizing
+- Never deliver documentation with unresolved questions

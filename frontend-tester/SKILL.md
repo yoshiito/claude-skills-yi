@@ -15,31 +15,27 @@ Ensure comprehensive test coverage for React applications through component test
 
 Frontend testing pyramid:
 ```
-         /\
-        /  \        E2E Tests (Playwright)
-       /    \       Few, critical paths
-      /------\
-     /        \     Integration Tests
-    /          \    Component interactions
-   /------------\
-  /              \  Unit/Component Tests
- /                \ Many, fast, isolated
-/------------------\
+         /\           E2E Tests (Playwright)
+        /  \          Few, critical paths
+       /----\
+      /      \        Integration Tests
+     /        \       Component interactions
+    /----------\
+   /            \     Component Tests
+  /              \    Many, fast, isolated
 ```
 
 ## Test Types Overview
 
 | Type | Tool | Purpose | Speed | Quantity |
 |------|------|---------|-------|----------|
-| Component | React Testing Library | Test components in isolation | Fast | Many |
-| Integration | RTL + MSW | Test component interactions | Medium | Some |
-| E2E | Playwright | Test full user journeys | Slow | Few |
-| Visual | Playwright/Chromatic | Catch visual regressions | Slow | Key screens |
-| Accessibility | axe-core + Playwright | WCAG compliance | Fast | All |
+| Component | React Testing Library | Test in isolation | Fast | Many |
+| Integration | RTL + MSW | Component interactions | Medium | Some |
+| E2E | Playwright | Full user journeys | Slow | Few |
+| Visual | Playwright/Chromatic | Catch regressions | Slow | Key screens |
+| Accessibility | axe-core | WCAG compliance | Fast | All |
 
 ## Component Testing (React Testing Library)
-
-### Philosophy
 
 Test components the way users interact with them:
 - Query by accessible roles, labels, text
@@ -48,65 +44,9 @@ Test components the way users interact with them:
 
 ### Query Priority
 
-```javascript
-// 1. Accessible to everyone
-getByRole('button', { name: 'Submit' })
-getByLabelText('Email address')
-getByPlaceholderText('Enter email')
-getByText('Welcome back')
-
-// 2. Semantic queries
-getByAltText('Profile picture')
-getByTitle('Close')
-
-// 3. Test IDs (last resort)
-getByTestId('custom-element')
-```
-
-### Component Test Structure
-
-```javascript
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { ComponentName } from './ComponentName'
-
-describe('ComponentName', () => {
-  // Setup
-  const defaultProps = {
-    // Required props with sensible defaults
-  }
-  
-  const renderComponent = (props = {}) => {
-    return render(<ComponentName {...defaultProps} {...props} />)
-  }
-
-  describe('rendering', () => {
-    it('renders with required props', () => {
-      renderComponent()
-      expect(screen.getByRole('...')).toBeInTheDocument()
-    })
-  })
-
-  describe('interactions', () => {
-    it('handles user action', async () => {
-      const user = userEvent.setup()
-      const onAction = jest.fn()
-      renderComponent({ onAction })
-      
-      await user.click(screen.getByRole('button', { name: 'Action' }))
-      
-      expect(onAction).toHaveBeenCalledWith(expectedArgs)
-    })
-  })
-
-  describe('states', () => {
-    it('shows loading state', () => {
-      renderComponent({ isLoading: true })
-      expect(screen.getByRole('progressbar')).toBeInTheDocument()
-    })
-  })
-})
-```
+1. **Accessible to everyone**: `getByRole`, `getByLabelText`, `getByText`
+2. **Semantic queries**: `getByAltText`, `getByTitle`
+3. **Test IDs (last resort)**: `getByTestId`
 
 See `references/component-test-patterns.md` for comprehensive patterns.
 
@@ -114,221 +54,49 @@ See `references/component-test-patterns.md` for comprehensive patterns.
 
 ### When to Use E2E
 
-- Critical user journeys (signup, checkout, core workflows)
+- Critical user journeys (signup, checkout)
 - Cross-page interactions
 - Authentication flows
 - Third-party integrations
-- Visual regression on full pages
 
-### Playwright Test Structure
-
-```typescript
-import { test, expect } from '@playwright/test'
-
-test.describe('Feature: User Authentication', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/login')
-  })
-
-  test('successful login redirects to dashboard', async ({ page }) => {
-    // Arrange
-    await page.getByLabel('Email').fill('user@example.com')
-    await page.getByLabel('Password').fill('password123')
-    
-    // Act
-    await page.getByRole('button', { name: 'Sign in' }).click()
-    
-    // Assert
-    await expect(page).toHaveURL('/dashboard')
-    await expect(page.getByRole('heading', { name: 'Welcome' })).toBeVisible()
-  })
-
-  test('invalid credentials shows error', async ({ page }) => {
-    await page.getByLabel('Email').fill('user@example.com')
-    await page.getByLabel('Password').fill('wrongpassword')
-    await page.getByRole('button', { name: 'Sign in' }).click()
-    
-    await expect(page.getByRole('alert')).toContainText('Invalid credentials')
-    await expect(page).toHaveURL('/login')
-  })
-})
-```
-
-See `references/playwright-patterns.md` for comprehensive patterns.
-
-### Page Object Model
-
-```typescript
-// pages/LoginPage.ts
-export class LoginPage {
-  constructor(private page: Page) {}
-
-  async goto() {
-    await this.page.goto('/login')
-  }
-
-  async login(email: string, password: string) {
-    await this.page.getByLabel('Email').fill(email)
-    await this.page.getByLabel('Password').fill(password)
-    await this.page.getByRole('button', { name: 'Sign in' }).click()
-  }
-
-  async getErrorMessage() {
-    return this.page.getByRole('alert').textContent()
-  }
-}
-
-// Usage in test
-test('login flow', async ({ page }) => {
-  const loginPage = new LoginPage(page)
-  await loginPage.goto()
-  await loginPage.login('user@example.com', 'password')
-  await expect(page).toHaveURL('/dashboard')
-})
-```
+See `references/playwright-patterns.md` for patterns and Page Object Model.
 
 ## Accessibility Testing
 
 ### WCAG 2.1 AA Requirements
 
-| Category | Requirements |
-|----------|--------------|
-| **Perceivable** | Color contrast 4.5:1, alt text, captions |
-| **Operable** | Keyboard accessible, no seizure triggers, enough time |
-| **Understandable** | Readable, predictable, input assistance |
-| **Robust** | Compatible with assistive tech |
+| Category | Key Requirements |
+|----------|------------------|
+| Perceivable | Color contrast 4.5:1, alt text, captions |
+| Operable | Keyboard accessible, enough time |
+| Understandable | Readable, predictable, input assistance |
+| Robust | Compatible with assistive tech |
 
-### Automated A11y Testing
+### Automated Testing
 
-```typescript
-// Component level with jest-axe
-import { axe, toHaveNoViolations } from 'jest-axe'
+- **Component level**: jest-axe for RTL tests
+- **E2E level**: @axe-core/playwright
 
-expect.extend(toHaveNoViolations)
+### Manual Checklist
 
-it('has no accessibility violations', async () => {
-  const { container } = render(<Component />)
-  const results = await axe(container)
-  expect(results).toHaveNoViolations()
-})
-```
-
-```typescript
-// E2E level with Playwright
-import { test, expect } from '@playwright/test'
-import AxeBuilder from '@axe-core/playwright'
-
-test('page has no a11y violations', async ({ page }) => {
-  await page.goto('/dashboard')
-  
-  const results = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa'])
-    .analyze()
-  
-  expect(results.violations).toEqual([])
-})
-```
-
-### Manual A11y Checklist
-
-- [ ] **Keyboard navigation**: All interactive elements reachable with Tab
-- [ ] **Focus visible**: Clear focus indicators on all elements
-- [ ] **Screen reader**: Content announced in logical order
-- [ ] **Color contrast**: 4.5:1 for text, 3:1 for UI components
-- [ ] **Form labels**: All inputs have associated labels
-- [ ] **Error messages**: Errors announced to screen readers
-- [ ] **Headings**: Logical heading hierarchy (h1 → h2 → h3)
-- [ ] **Alt text**: All images have meaningful alt text
-- [ ] **Motion**: Respect prefers-reduced-motion
+- [ ] Keyboard navigation works
+- [ ] Focus visible on all elements
+- [ ] Screen reader announces content logically
+- [ ] Color contrast meets requirements
 
 See `references/accessibility-checklist.md` for complete checklist.
 
 ## Visual Regression Testing
 
-### Setup with Playwright
+Use Playwright screenshots for:
+- Key landing pages
+- Critical user flows (before/after)
+- Component variants
+- Responsive breakpoints
+- Dark/light themes
+- Error and empty states
 
-```typescript
-// playwright.config.ts
-export default defineConfig({
-  expect: {
-    toHaveScreenshot: {
-      maxDiffPixels: 100,
-      threshold: 0.2,
-    },
-  },
-})
-```
-
-### Visual Test Patterns
-
-```typescript
-test('component visual regression', async ({ page }) => {
-  await page.goto('/components/button')
-  
-  // Full page screenshot
-  await expect(page).toHaveScreenshot('button-page.png')
-  
-  // Component screenshot
-  const button = page.getByRole('button', { name: 'Primary' })
-  await expect(button).toHaveScreenshot('primary-button.png')
-})
-
-test('responsive visual regression', async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 667 })
-  await page.goto('/dashboard')
-  await expect(page).toHaveScreenshot('dashboard-mobile.png')
-  
-  await page.setViewportSize({ width: 1280, height: 720 })
-  await expect(page).toHaveScreenshot('dashboard-desktop.png')
-})
-```
-
-### What to Visually Test
-
-- [ ] Key landing pages
-- [ ] Critical user flows (before/after states)
-- [ ] Component variants (from Storybook)
-- [ ] Responsive breakpoints
-- [ ] Dark/light themes
-- [ ] Error states and empty states
-
-## Integration with Storybook
-
-### Testing Storybook Stories
-
-```typescript
-// Import stories as tests
-import { composeStories } from '@storybook/react'
-import * as ButtonStories from './Button.stories'
-
-const { Primary, Secondary, Disabled } = composeStories(ButtonStories)
-
-describe('Button stories', () => {
-  it('Primary renders correctly', () => {
-    render(<Primary />)
-    expect(screen.getByRole('button')).toHaveClass('btn-primary')
-  })
-})
-```
-
-### Storybook Play Functions to Tests
-
-```typescript
-// Button.stories.tsx
-export const WithInteraction: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const button = canvas.getByRole('button')
-    
-    await userEvent.click(button)
-    await expect(button).toHaveAttribute('aria-pressed', 'true')
-  },
-}
-```
-
-## Test Coverage Strategy
-
-### Coverage by Atomic Level
+## Coverage by Atomic Level
 
 | Level | Component Tests | Integration | E2E | Visual |
 |-------|-----------------|-------------|-----|--------|
@@ -338,209 +106,61 @@ export const WithInteraction: Story = {
 | Templates | Layout rendering | - | - | Key breakpoints |
 | Pages | - | Full flows | Critical paths | Key pages |
 
-### What to Test at Each Level
+## What to Test
 
-**Component Tests (atoms, molecules)**:
-- All prop variations
-- User interactions (click, type, hover)
-- State changes (loading, error, empty)
-- Accessibility (roles, labels, keyboard)
+**Component Tests**: All prop variations, interactions, states (loading, error, empty), accessibility
 
-**Integration Tests (organisms)**:
-- API mocking with MSW
-- State management integration
-- Component composition
-- Form submissions
+**Integration Tests**: API mocking with MSW, state management, form submissions
 
-**E2E Tests (pages)**:
-- Authentication flows
-- Critical user journeys
-- Checkout/payment (if applicable)
-- Cross-page navigation
-- Error recovery
+**E2E Tests**: Authentication, critical journeys, checkout/payment, error recovery
 
-## Mocking Strategies
+## Linear Ticket Workflow
 
-### API Mocking with MSW
+**Note**: Most test work is included within `[Frontend]` sub-issues. Separate `[Test]` sub-issues only for dedicated QA on large features.
 
-```typescript
-// mocks/handlers.ts
-import { rest } from 'msw'
+When assigned a test sub-issue:
 
-export const handlers = [
-  rest.get('/api/users/:id', (req, res, ctx) => {
-    return res(
-      ctx.json({
-        id: req.params.id,
-        name: 'Test User',
-        email: 'test@example.com',
-      })
-    )
-  }),
-  
-  rest.post('/api/users', async (req, res, ctx) => {
-    const body = await req.json()
-    return res(
-      ctx.status(201),
-      ctx.json({ id: 'new-id', ...body })
-    )
-  }),
-]
+1. **Start work** → Move to "In Progress", add branch comment
+2. **Complete work** → Create PR, add coverage summary comment
+3. **PR merged** → Move to "Done"
 
-// In tests
-import { server } from './mocks/server'
-
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
-
-it('handles API error', async () => {
-  server.use(
-    rest.get('/api/users/:id', (req, res, ctx) => {
-      return res(ctx.status(500))
-    })
-  )
-  
-  render(<UserProfile id="123" />)
-  await expect(screen.findByText('Error loading user')).resolves.toBeInTheDocument()
-})
-```
-
-## Test Quality Checklist
-
-Before tests are complete:
-
-**Coverage**:
-- [ ] Happy path tested
-- [ ] All user interactions tested
-- [ ] Error states tested
-- [ ] Loading states tested
-- [ ] Empty states tested
-- [ ] Edge cases (long text, special chars)
-- [ ] Responsive behavior tested
-
-**Quality**:
-- [ ] Tests use accessible queries (roles, labels)
-- [ ] No implementation details tested
-- [ ] Tests are independent
-- [ ] Tests are deterministic (no flaky tests)
-- [ ] Async properly handled (waitFor, findBy)
-
-**Accessibility**:
-- [ ] All components pass axe checks
-- [ ] Keyboard navigation tested
-- [ ] Screen reader flow verified
-- [ ] Color contrast validated
-
-**Performance**:
-- [ ] Tests run in < 30 seconds (component)
-- [ ] E2E tests run in < 5 minutes
-- [ ] No unnecessary waiting
+See `_shared/references/linear-ticket-traceability.md` for full workflow.
 
 ## Reference Files
 
 - `references/component-test-patterns.md` - RTL patterns and examples
 - `references/playwright-patterns.md` - E2E test patterns
 - `references/accessibility-checklist.md` - Complete WCAG checklist
-- `references/test-data-factories.md` - Test data generation patterns
+- `references/test-data-factories.md` - Test data generation
 
-## Linear Ticket Workflow
+## Quality Checklist
 
-**CRITICAL**: When assigned a Linear sub-issue for dedicated testing work, follow this workflow to ensure traceability.
+Before tests are complete:
 
-**Note**: Most test work is included within `[Frontend]` sub-issues (developers own their tests). Separate `[Test]` sub-issues are created only for large features needing dedicated QA effort or cross-component E2E testing.
+**Coverage**:
+- [ ] Happy path tested
+- [ ] All user interactions tested
+- [ ] Error/loading/empty states tested
+- [ ] Edge cases (long text, special chars)
 
-### Worker Workflow
+**Quality**:
+- [ ] Tests use accessible queries
+- [ ] No implementation details tested
+- [ ] Tests are deterministic (no flaky tests)
+- [ ] Async properly handled
 
-```
-1. Accept work → Move ticket to "In Progress"
-2. Create branch → feature/LIN-XXX-description
-3. Do work → Commit with [LIN-XXX] prefix
-4. Track progress → Add comment on ticket
-5. Complete work → Create PR, move to "In Review"
-6. PR merged → Move to "Done"
-```
-
-### Starting Work
-
-When you begin work on an assigned test sub-issue:
-
-```python
-# Update ticket status
-mcp.update_issue(id="LIN-XXX", state="In Progress")
-
-# Add start comment
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🚀 **Started work**
-- Branch: `feature/LIN-XXX-password-reset-e2e`
-- Approach: E2E tests for password reset flow + accessibility audit
-"""
-)
-```
-
-### Completion Comment Template
-
-When PR is ready for review:
-
-```python
-mcp.update_issue(id="LIN-XXX", state="In Review")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🔍 **Ready for review**
-- PR: [link to PR]
-
-## Test Coverage Summary
-
-### Test Files
-- `tests/e2e/password-reset.spec.ts` - 8 E2E tests
-- `tests/components/ResetPasswordForm.test.tsx` - 12 component tests
-
-### E2E Scenarios
-- Complete password reset flow: ✅
-- Invalid token handling: ✅
-- Expired token handling: ✅
-- Form validation errors: ✅
-
-### Accessibility
-- axe-core violations: 0
-- Keyboard navigation: ✅
-- Screen reader flow: ✅
-- Color contrast: ✅
-
-### Visual Regression
-- Desktop baseline: captured
-- Mobile baseline: captured
-- Error states: captured
-"""
-)
-```
-
-### After PR Merge
-
-```python
-mcp.update_issue(id="LIN-XXX", state="Done")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""✅ **Completed**
-- PR merged: [link]
-- All tests passing in CI
-- Visual baselines committed
-"""
-)
-```
-
-See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+**Accessibility**:
+- [ ] All components pass axe checks
+- [ ] Keyboard navigation tested
+- [ ] Color contrast validated
 
 ## Summary
 
 Comprehensive frontend testing:
 - **Component tests**: Fast, isolated, behavior-focused with RTL
-- **Integration tests**: API mocking with MSW, component interactions
+- **Integration tests**: API mocking with MSW
 - **E2E tests**: Critical paths with Playwright
 - **Accessibility**: axe-core automation + manual checklist
 - **Visual regression**: Screenshot comparison for key screens
 
-Test like a user, not like an implementation.
+**Remember**: Test like a user, not like an implementation.

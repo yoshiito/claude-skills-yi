@@ -1,9 +1,9 @@
-# MRD Template
+# PRD Template
 
-Complete structure for Master Requirement Documents.
+Complete structure for Product Requirements Documents.
 
 ```markdown
-# MRD: [Feature Name]
+# PRD: [Feature Name]
 
 ## 1. Overview
 
@@ -254,27 +254,19 @@ Cost: [Pricing model]
 
 ---
 
-## 8. Open Questions
+## 8. Appendix
 
-| ID | Question | Owner | Due Date | Resolution |
-|----|----------|-------|----------|------------|
-| Q1 | [question] | [who] | [date] | [answer when resolved] |
-
----
-
-## 9. Appendix
-
-### 9.1 Glossary
+### 8.1 Glossary
 | Term | Definition |
 |------|------------|
 | [term] | [definition] |
 
-### 9.2 Related Documents
+### 8.2 Related Documents
 - [Link to design doc]
 - [Link to architecture doc]
 - [Link to prior art]
 
-### 9.3 Revision History
+### 8.3 Revision History
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | [date] | [name] | Initial draft |
