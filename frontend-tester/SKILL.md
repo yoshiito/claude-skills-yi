@@ -444,6 +444,96 @@ Before tests are complete:
 - `references/accessibility-checklist.md` - Complete WCAG checklist
 - `references/test-data-factories.md` - Test data generation patterns
 
+## Linear Ticket Workflow
+
+**CRITICAL**: When assigned a Linear sub-issue for dedicated testing work, follow this workflow to ensure traceability.
+
+**Note**: Most test work is included within `[Frontend]` sub-issues (developers own their tests). Separate `[Test]` sub-issues are created only for large features needing dedicated QA effort or cross-component E2E testing.
+
+### Worker Workflow
+
+```
+1. Accept work → Move ticket to "In Progress"
+2. Create branch → feature/LIN-XXX-description
+3. Do work → Commit with [LIN-XXX] prefix
+4. Track progress → Add comment on ticket
+5. Complete work → Create PR, move to "In Review"
+6. PR merged → Move to "Done"
+```
+
+### Starting Work
+
+When you begin work on an assigned test sub-issue:
+
+```python
+# Update ticket status
+mcp.update_issue(id="LIN-XXX", state="In Progress")
+
+# Add start comment
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🚀 **Started work**
+- Branch: `feature/LIN-XXX-password-reset-e2e`
+- Approach: E2E tests for password reset flow + accessibility audit
+"""
+)
+```
+
+### Completion Comment Template
+
+When PR is ready for review:
+
+```python
+mcp.update_issue(id="LIN-XXX", state="In Review")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🔍 **Ready for review**
+- PR: [link to PR]
+
+## Test Coverage Summary
+
+### Test Files
+- `tests/e2e/password-reset.spec.ts` - 8 E2E tests
+- `tests/components/ResetPasswordForm.test.tsx` - 12 component tests
+
+### E2E Scenarios
+- Complete password reset flow: ✅
+- Invalid token handling: ✅
+- Expired token handling: ✅
+- Form validation errors: ✅
+
+### Accessibility
+- axe-core violations: 0
+- Keyboard navigation: ✅
+- Screen reader flow: ✅
+- Color contrast: ✅
+
+### Visual Regression
+- Desktop baseline: captured
+- Mobile baseline: captured
+- Error states: captured
+"""
+)
+```
+
+### After PR Merge
+
+```python
+mcp.update_issue(id="LIN-XXX", state="Done")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""✅ **Completed**
+- PR merged: [link]
+- All tests passing in CI
+- Visual baselines committed
+"""
+)
+```
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
 ## Summary
 
 Comprehensive frontend testing:

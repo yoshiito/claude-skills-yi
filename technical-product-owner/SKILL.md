@@ -247,6 +247,59 @@ Questions: [list]
 
 Trigger: PII handling, retention policies, cross-system data flow, analytics needs.
 
+## Linear Ticket Management
+
+**CRITICAL**: When Linear MCP is available, create parent Issues in Linear for each feature defined in the MRD.
+
+### When to Create Linear Issues
+
+| Trigger | Action |
+|---------|--------|
+| MRD finalized | Create parent Issue for the feature |
+| Feature scope defined | Link Issue to appropriate Project |
+| Requirements ready for breakdown | Notify Solutions Architect for sub-issue creation |
+
+### Creating Parent Issues
+
+For each feature in the MRD:
+
+```python
+# Create parent Issue in Linear
+mcp.create_issue(
+    title="[Feature] Password Reset Flow",
+    team="TeamName",
+    project="User Authentication System",
+    description="""
+## Summary
+Users can reset their password via email.
+
+## Acceptance Criteria
+See AC-001 through AC-005 in MRD.
+
+## MRD Reference
+[Link to MRD document]
+""",
+    labels=["Feature", "P1"]
+)
+```
+
+### Parent Issue Content
+
+Each parent Issue should include:
+- **Summary**: What the feature does (user-facing)
+- **Acceptance Criteria Reference**: Link to MRD acceptance criteria
+- **MRD Reference**: Link to full MRD document
+- **Out of Scope**: What this feature explicitly does NOT include
+- **Dependencies**: Other features/systems this depends on
+
+### After Creating Parent Issue
+
+1. Add comment to Issue with link to MRD
+2. Notify Solutions Architect to break down into sub-issues
+3. Track sub-issue creation in parent Issue comments
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
 ## Reference Files
 
 - `references/mrd-template.md` - Full MRD structure with all sections
@@ -263,6 +316,7 @@ The TPO is the starting point for all product work. MRDs flow to downstream skil
 | Skill | Receives From TPO | TPO Should Include |
 |-------|-------------------|-------------------|
 | **Solutions Architect** | MRD for technical design | Clear NFRs, integration requirements |
+| **API Designer** | API requirements for contract design | Endpoint needs, consumer expectations, error scenarios |
 | **Backend Developer** | API requirements | Data entities, validation rules |
 | **Frontend Developer** | UI requirements | User flows, interaction patterns |
 | **Data Platform Engineer** | Data requirements | Data models, retention policies |
@@ -306,16 +360,18 @@ Before handing MRD to downstream skills:
            │
            │ MRD flows to:
            │
-    ┌──────┴──────┐
-    │             │
-    ▼             ▼
-Solutions    Technical
-Architect    Program Manager
-    │             │
-    │             │ (coordinates delivery)
-    ▼             │
-Implementation    │
-Skills ◄──────────┘
+    ┌──────┼──────────────┐
+    │      │              │
+    ▼      ▼              ▼
+Solutions  API        Technical
+Architect  Designer   Program Manager
+    │      │              │
+    │      │              │ (coordinates delivery)
+    │      ▼              │
+    │   OpenAPI spec      │
+    ▼      │              │
+Implementation ◄──────────┘
+Skills
 ```
 
 ## Summary

@@ -1,0 +1,523 @@
+# OpenAPI Specification Template
+# Copy and customize for each new API
+
+openapi: 3.1.0
+info:
+  title: "[API Name]"
+  description: |
+    [Brief description of what this API does and who it's for]
+
+    ## Authentication
+    [Describe authentication method - API key, OAuth, JWT, etc.]
+
+    ## Rate Limiting
+    [Describe rate limits if applicable]
+
+    ## Versioning
+    [Describe versioning strategy]
+  version: "1.0.0"
+  contact:
+    name: "[Team Name]"
+    email: "[team@example.com]"
+  license:
+    name: "[License]"
+    url: "[License URL]"
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production
+  - url: https://api-staging.example.com/v1
+    description: Staging
+  - url: http://localhost:8000/v1
+    description: Local development
+
+tags:
+  - name: "[Resource Name]"
+    description: "[Resource description and operations]"
+
+paths:
+  # ============================================
+  # Collection Endpoints
+  # ============================================
+  /resources:
+    get:
+      tags:
+        - "[Resource Name]"
+      summary: List all resources
+      description: |
+        Returns a paginated list of resources.
+
+        ## Pagination
+        Use `page` and `pageSize` query parameters.
+
+        ## Filtering
+        [Describe available filters]
+      operationId: listResources
+      parameters:
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PageSizeParam'
+        - $ref: '#/components/parameters/SortByParam'
+        - $ref: '#/components/parameters/SortOrderParam'
+        # Add resource-specific filters here
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - bearerAuth: []
+
+    post:
+      tags:
+        - "[Resource Name]"
+      summary: Create a resource
+      description: Creates a new resource with the provided data.
+      operationId: createResource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceCreateRequest'
+      responses:
+        '201':
+          description: Resource created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - bearerAuth: []
+
+  # ============================================
+  # Instance Endpoints
+  # ============================================
+  /resources/{resourceId}:
+    parameters:
+      - $ref: '#/components/parameters/ResourceIdParam'
+
+    get:
+      tags:
+        - "[Resource Name]"
+      summary: Get a resource
+      description: Returns a single resource by ID.
+      operationId: getResource
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - bearerAuth: []
+
+    patch:
+      tags:
+        - "[Resource Name]"
+      summary: Update a resource
+      description: Partially updates a resource. Only provided fields are updated.
+      operationId: updateResource
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceUpdateRequest'
+      responses:
+        '200':
+          description: Resource updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - bearerAuth: []
+
+    delete:
+      tags:
+        - "[Resource Name]"
+      summary: Delete a resource
+      description: Permanently deletes a resource.
+      operationId: deleteResource
+      responses:
+        '204':
+          description: Resource deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+      security:
+        - bearerAuth: []
+
+components:
+  # ============================================
+  # Security Schemes
+  # ============================================
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from authentication endpoint
+
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for service-to-service authentication
+
+  # ============================================
+  # Common Parameters
+  # ============================================
+  parameters:
+    ResourceIdParam:
+      name: resourceId
+      in: path
+      required: true
+      description: Unique identifier of the resource
+      schema:
+        type: string
+        format: uuid
+        example: "550e8400-e29b-41d4-a716-446655440000"
+
+    PageParam:
+      name: page
+      in: query
+      description: Page number (1-indexed)
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+
+    PageSizeParam:
+      name: pageSize
+      in: query
+      description: Number of items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+        example: 20
+
+    SortByParam:
+      name: sortBy
+      in: query
+      description: Field to sort by
+      schema:
+        type: string
+        enum: [createdAt, updatedAt, name]
+        default: createdAt
+        example: createdAt
+
+    SortOrderParam:
+      name: sortOrder
+      in: query
+      description: Sort direction
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+        example: desc
+
+  # ============================================
+  # Schemas
+  # ============================================
+  schemas:
+    # Request Schemas
+    ResourceCreateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Name of the resource
+          example: "My Resource"
+        description:
+          type: string
+          maxLength: 1000
+          description: Optional description
+          example: "A detailed description"
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Optional key-value metadata
+          example:
+            key1: "value1"
+
+    ResourceUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Name of the resource
+        description:
+          type: string
+          maxLength: 1000
+          description: Optional description
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Optional key-value metadata
+
+    # Response Schemas
+    ResourceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          description: Name of the resource
+          example: "My Resource"
+        description:
+          type: string
+          description: Resource description
+          example: "A detailed description"
+        metadata:
+          type: object
+          additionalProperties: true
+          description: Key-value metadata
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+          example: "2024-01-15T10:30:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          example: "2024-01-15T10:30:00Z"
+
+    ResourceListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceResponse'
+        pagination:
+          $ref: '#/components/schemas/PaginationInfo'
+
+    PaginationInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: Current page number
+          example: 1
+        pageSize:
+          type: integer
+          description: Items per page
+          example: 20
+        totalItems:
+          type: integer
+          description: Total number of items
+          example: 156
+        totalPages:
+          type: integer
+          description: Total number of pages
+          example: 8
+
+    # Error Schemas
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          required:
+            - code
+            - message
+          properties:
+            code:
+              type: string
+              description: Machine-readable error code
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              description: Human-readable error message
+              example: "Request validation failed"
+            details:
+              type: array
+              items:
+                $ref: '#/components/schemas/ErrorDetail'
+            requestId:
+              type: string
+              description: Request ID for support reference
+              example: "req-abc123"
+            documentation:
+              type: string
+              format: uri
+              description: Link to error documentation
+              example: "https://api.example.com/docs/errors#VALIDATION_ERROR"
+
+    ErrorDetail:
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field that caused the error
+          example: "email"
+        code:
+          type: string
+          description: Specific error code for this field
+          example: "INVALID_FORMAT"
+        message:
+          type: string
+          description: Detailed error message
+          example: "Must be a valid email address"
+
+  # ============================================
+  # Common Responses
+  # ============================================
+  responses:
+    BadRequest:
+      description: Invalid request - validation failed or malformed input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "VALIDATION_ERROR"
+              message: "Request validation failed"
+              details:
+                - field: "email"
+                  code: "INVALID_FORMAT"
+                  message: "Must be a valid email address"
+              requestId: "req-abc123"
+
+    Unauthorized:
+      description: Authentication required or token invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "AUTH_TOKEN_INVALID"
+              message: "Authentication token is missing or invalid"
+              requestId: "req-abc123"
+
+    Forbidden:
+      description: Authenticated but not authorized for this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "PERMISSION_DENIED"
+              message: "You don't have permission to perform this action"
+              requestId: "req-abc123"
+
+    NotFound:
+      description: Requested resource does not exist
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "RESOURCE_NOT_FOUND"
+              message: "The requested resource was not found"
+              requestId: "req-abc123"
+
+    Conflict:
+      description: Request conflicts with current state
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "RESOURCE_CONFLICT"
+              message: "A resource with this identifier already exists"
+              requestId: "req-abc123"
+
+    TooManyRequests:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying
+          schema:
+            type: integer
+        X-RateLimit-Limit:
+          description: Request limit per window
+          schema:
+            type: integer
+        X-RateLimit-Remaining:
+          description: Remaining requests in window
+          schema:
+            type: integer
+        X-RateLimit-Reset:
+          description: Unix timestamp when window resets
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "RATE_LIMIT_EXCEEDED"
+              message: "Too many requests. Please slow down."
+              requestId: "req-abc123"
+
+    InternalError:
+      description: Unexpected server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error:
+              code: "INTERNAL_ERROR"
+              message: "An unexpected error occurred. Please try again later."
+              requestId: "req-abc123"

@@ -472,6 +472,87 @@ The TPgM coordinates with these skills throughout the delivery lifecycle:
                     └─────────────────┘
 ```
 
+## Linear Ticket Traceability Verification
+
+**CRITICAL**: Before closing any parent Issue, verify code-to-ticket traceability.
+
+### Hierarchy Model
+
+```
+Initiative (Company Objective)
+└── Project (Deliverable/Feature Set)
+     └── Issue (Parent - Feature/Story) ← TPO creates
+          └── Sub-Issue (Task - Implementation Unit) ← Solutions Architect creates
+```
+
+### Traceability Verification Checklist
+
+Before marking a parent Issue as Done:
+
+**Sub-Issue Completion**:
+- [ ] All sub-issues are in "Done" status
+- [ ] Each sub-issue has completion comment with PR link
+- [ ] No orphaned sub-issues (all linked to parent)
+
+**Commit Traceability**:
+- [ ] All commits reference `[LIN-XXX]` in message
+- [ ] PR titles include ticket references
+- [ ] Branch names follow `feature/LIN-XXX-description` pattern
+
+**Progress Documentation**:
+- [ ] Each sub-issue has start comment
+- [ ] Each sub-issue has completion comment
+- [ ] Test coverage documented in comments
+- [ ] Implementation decisions noted
+
+### Verification Commands
+
+```python
+# Get parent Issue with all sub-issues
+parent = mcp.get_issue(id="LIN-XXX", includeRelations=True)
+
+# List all sub-issues
+sub_issues = mcp.list_issues(parentId="LIN-XXX")
+
+# Check comments on each sub-issue
+for sub in sub_issues:
+    comments = mcp.list_comments(issueId=sub.id)
+    # Verify start and completion comments exist
+```
+
+### Parent Issue Status Update
+
+When all sub-issues are verified:
+
+```python
+mcp.create_comment(
+    issueId="LIN-XXX",  # Parent Issue
+    body="""## Delivery Status - COMPLETE
+
+### Sub-issue Status
+| Issue | Assignee | Status | PR |
+|-------|----------|--------|-----|
+| LIN-101 [Backend] | @backend-dev | ✅ Done | PR #45 |
+| LIN-102 [Frontend] | @frontend-dev | ✅ Done | PR #47 |
+| LIN-103 [Docs] | @tech-writer | ✅ Done | PR #48 |
+
+### Traceability Verified
+- ✅ All commits reference tickets
+- ✅ All PRs linked
+- ✅ Test coverage documented
+- ✅ All sub-issues have completion comments
+
+### Ready for Release
+Feature verified and ready for deployment.
+"""
+)
+
+# Update parent to Done (auto-closes when all sub-issues done)
+mcp.update_issue(id="LIN-XXX", state="Done")
+```
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
 ## Summary
 
 The TPgM ensures features move from "defined" to "shipped" by:

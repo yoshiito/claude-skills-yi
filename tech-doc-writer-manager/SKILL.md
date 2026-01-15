@@ -174,6 +174,111 @@ python scripts/doc_audit.py --project-path /path/to/project --stale-days 90
 **User**: "Update the payments integration guide with the new webhook format"
 **Action**: Read existing doc, update content and metadata, update index
 
+## Related Skills
+
+### Upstream Skills (Provide Documentation Source)
+
+| Skill | Provides | Doc Writer Receives |
+|-------|----------|---------------------|
+| **API Designer** | OpenAPI specs, error catalogs | API reference source material |
+| **Solutions Architect** | ADRs, system diagrams | Architecture documentation |
+| **TPO** | MRDs | Feature documentation requirements |
+
+### Coordination Points
+
+**With API Designer:**
+- Receive OpenAPI specs for API reference generation
+- Receive error code catalogs for error handling guides
+- Receive design decisions for API changelog
+- Create: API reference, quick start guides, code examples
+
+**With Solutions Architect:**
+- Receive ADRs for architecture documentation
+- Receive system diagrams for technical overviews
+- Create: Architecture guides, integration documentation
+
+## Linear Ticket Workflow
+
+**CRITICAL**: When assigned a Linear sub-issue for documentation work, follow this workflow to ensure traceability.
+
+### Worker Workflow
+
+```
+1. Accept work → Move ticket to "In Progress"
+2. Create branch → feature/LIN-XXX-description
+3. Do work → Commit with [LIN-XXX] prefix
+4. Track progress → Add comment on ticket
+5. Complete work → Create PR, move to "In Review"
+6. PR merged → Move to "Done"
+```
+
+### Starting Work
+
+When you begin work on an assigned documentation sub-issue:
+
+```python
+# Update ticket status
+mcp.update_issue(id="LIN-XXX", state="In Progress")
+
+# Add start comment
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🚀 **Started work**
+- Branch: `feature/LIN-XXX-password-reset-docs`
+- Approach: API reference + quick start guide for password reset flow
+"""
+)
+```
+
+### Completion Comment Template
+
+When PR is ready for review:
+
+```python
+mcp.update_issue(id="LIN-XXX", state="In Review")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🔍 **Ready for review**
+- PR: [link to PR]
+
+## Documentation Summary
+
+### Files Updated
+- `docs/api/auth/password-reset.md` - API reference
+- `docs/guides/password-reset-quickstart.md` - Quick start guide
+
+### Documentation Includes
+- Endpoint reference (POST /api/v1/auth/reset-password)
+- Request/response examples
+- Error codes and messages
+- Rate limiting details
+- Security considerations
+- Code examples (curl, Python, JavaScript)
+
+### Related Docs Updated
+- `docs/_index.json` - Index updated
+- `docs/api/README.md` - Added link to new endpoint
+"""
+)
+```
+
+### After PR Merge
+
+```python
+mcp.update_issue(id="LIN-XXX", state="Done")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""✅ **Completed**
+- PR merged: [link]
+- Documentation deployed
+"""
+)
+```
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
 ## Output Format
 
 Every documentation action outputs TWO artifacts:

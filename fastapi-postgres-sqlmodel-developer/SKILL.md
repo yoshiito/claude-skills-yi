@@ -5,710 +5,279 @@ description: Systematic workflow for designing and implementing CRUD APIs using 
 
 # FastAPI + PostgreSQL + SQLModel Developer
 
-Build production-ready CRUD APIs following a systematic, documentation-first workflow. This skill ensures consistency, comprehensive testing, and maintainable code through structured planning and validation.
+Build production-ready CRUD APIs following a systematic, documentation-first workflow.
 
 ## Tech Stack
 
-- **FastAPI**: Modern Python web framework with automatic OpenAPI docs
+- **FastAPI**: Python web framework with automatic OpenAPI docs
 - **PostgreSQL**: Relational database with strong consistency
 - **SQLModel**: Pydantic-based ORM combining SQLAlchemy and Pydantic
 - **Pytest**: Testing framework with async support
 
-## Raw SQL vs SQLModel ORM: Decision Framework
+## Raw SQL vs ORM Decision
 
-**DEFAULT**: Use SQLModel ORM for standard CRUD operations. Only use raw SQL when you have a specific, justified reason.
+**DEFAULT**: Use SQLModel ORM for 95% of operations.
 
-### When to Use SQLModel ORM (Default)
+| Use SQLModel ORM | Use Raw SQL |
+|------------------|-------------|
+| Standard CRUD | Complex aggregations (window functions) |
+| Simple filters | PostgreSQL-specific (JSONB, full-text) |
+| Joins with relationships | Bulk operations (1000+ rows) |
+| Type-safe queries | Performance-critical with N+1 issues |
 
-Use SQLModel for 95% of operations:
-
-**Standard CRUD operations**:
-```python
-# Create
-user = User(name="John", email="john@example.com")
-db.add(user)
-db.commit()
-
-# Read
-user = db.exec(select(User).where(User.id == user_id)).first()
-
-# Update
-user.name = "Jane"
-db.add(user)
-db.commit()
-
-# Delete
-db.delete(user)
-db.commit()
-```
-
-**Simple queries with filters**:
-```python
-# Filter by single field
-users = db.exec(select(User).where(User.status == "active")).all()
-
-# Multiple conditions
-users = db.exec(
-    select(User)
-    .where(User.status == "active")
-    .where(User.created_at > start_date)
-).all()
-
-# Ordering and pagination
-users = db.exec(
-    select(User)
-    .order_by(User.created_at.desc())
-    .offset(skip)
-    .limit(limit)
-).all()
-```
-
-**Joins and relationships**:
-```python
-# Join with relationship
-statement = (
-    select(Project, User)
-    .join(User)
-    .where(Project.status == "active")
-)
-results = db.exec(statement).all()
-```
-
-**Benefits of ORM**:
-- Type safety with Pydantic validation
-- Automatic SQL injection protection
-- IDE autocomplete for fields
-- Easier to test and mock
-- Cleaner, more maintainable code
-- Automatic handling of relationships
-
-### When to Use Raw SQL
-
-Use raw SQL only in these specific scenarios:
-
-#### 1. Complex Aggregations
-
-**When**: Multiple GROUP BY, HAVING clauses, complex aggregations, window functions
-
-```python
-# ORM gets too verbose/complex
-query = """
-    SELECT 
-        DATE_TRUNC('day', created_at) as date,
-        status,
-        COUNT(*) as count,
-        AVG(amount) as avg_amount,
-        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY amount) as median_amount
-    FROM orders
-    WHERE created_at >= :start_date
-    GROUP BY DATE_TRUNC('day', created_at), status
-    HAVING COUNT(*) > 10
-    ORDER BY date DESC, status
-"""
-results = db.exec(text(query), {"start_date": start_date}).all()
-```
-
-#### 2. PostgreSQL-Specific Features
-
-**When**: Using JSONB operations, full-text search, array operations, CTEs, or other PostgreSQL-specific features
-
-```python
-# JSONB operations
-query = """
-    SELECT * FROM resources
-    WHERE metadata @> :filter_json
-    AND metadata->'tags' ?| :tags
-"""
-
-# Full-text search
-query = """
-    SELECT *, ts_rank(search_vector, query) as rank
-    FROM articles, plainto_tsquery(:search_term) query
-    WHERE search_vector @@ query
-    ORDER BY rank DESC
-"""
-
-# Array operations
-query = """
-    SELECT * FROM projects
-    WHERE :tag_id = ANY(tag_ids)
-"""
-
-# Common Table Expressions (CTEs)
-query = """
-    WITH active_users AS (
-        SELECT id, name FROM users WHERE last_login > NOW() - INTERVAL '30 days'
-    ),
-    user_stats AS (
-        SELECT user_id, COUNT(*) as project_count
-        FROM projects
-        GROUP BY user_id
-    )
-    SELECT u.*, s.project_count
-    FROM active_users u
-    LEFT JOIN user_stats s ON u.id = s.user_id
-"""
-```
-
-#### 3. Bulk Operations
-
-**When**: Inserting/updating thousands of rows at once
-
-```python
-# Bulk insert with ON CONFLICT
-query = """
-    INSERT INTO cache_entries (key, value, expires_at)
-    VALUES (:key, :value, :expires_at)
-    ON CONFLICT (key) 
-    DO UPDATE SET value = EXCLUDED.value, expires_at = EXCLUDED.expires_at
-"""
-db.exec(text(query), params_list)
-
-# Bulk update with complex logic
-query = """
-    UPDATE resources
-    SET status = CASE
-        WHEN expires_at < NOW() THEN 'expired'
-        WHEN usage_count > threshold THEN 'over_limit'
-        ELSE 'active'
-    END
-    WHERE owner_id = :owner_id
-"""
-```
-
-#### 4. Performance-Critical Queries
-
-**When**: Query has performance issues with ORM due to N+1 queries or inefficient SQL generation
-
-```python
-# Instead of N+1 queries with ORM
-query = """
-    SELECT 
-        p.*,
-        COALESCE(
-            JSON_AGG(
-                JSON_BUILD_OBJECT('id', t.id, 'name', t.name)
-            ) FILTER (WHERE t.id IS NOT NULL),
-            '[]'
-        ) as tags
-    FROM projects p
-    LEFT JOIN project_tags pt ON p.id = pt.project_id
-    LEFT JOIN tags t ON pt.tag_id = t.id
-    WHERE p.owner_id = :owner_id
-    GROUP BY p.id
-"""
-```
-
-#### 5. Database Maintenance Operations
-
-**When**: Running migrations, maintenance tasks, or database administration
-
-```python
-# Vacuum, analyze, reindex
-query = "VACUUM ANALYZE resources"
-
-# Update statistics
-query = "ANALYZE resources"
-
-# Create indexes concurrently
-query = "CREATE INDEX CONCURRENTLY idx_name ON table(column)"
-```
-
-### Raw SQL Guidelines
-
-When you do use raw SQL, follow these rules:
-
-**1. Always use parameterized queries** (NEVER string interpolation):
-```python
-# ✓ CORRECT - parameterized
-query = "SELECT * FROM users WHERE id = :user_id"
-result = db.exec(text(query), {"user_id": user_id})
-
-# ✗ WRONG - SQL injection vulnerability
-query = f"SELECT * FROM users WHERE id = {user_id}"  # NEVER DO THIS
-```
-
-**2. Document why raw SQL is necessary**:
-```python
-# Use raw SQL for complex aggregation with window functions
-# ORM would generate inefficient subqueries
-query = """
-    SELECT 
-        *,
-        ROW_NUMBER() OVER (PARTITION BY category ORDER BY score DESC) as rank
-    FROM products
-"""
-```
-
-**3. Keep SQL in constants or separate files**:
-```python
-# For complex queries, extract to constant
-DAILY_STATS_QUERY = """
-    SELECT 
-        DATE_TRUNC('day', created_at) as date,
-        COUNT(*) as total,
-        COUNT(*) FILTER (WHERE status = 'completed') as completed
-    FROM orders
-    WHERE created_at >= :start_date
-    GROUP BY DATE_TRUNC('day', created_at)
-    ORDER BY date
-"""
-
-def get_daily_stats(start_date: datetime, db: Session):
-    """Get daily order statistics."""
-    return db.exec(text(DAILY_STATS_QUERY), {"start_date": start_date}).all()
-```
-
-**4. Map results to models when possible**:
-```python
-# Raw query but still return proper models
-from sqlmodel import col
-
-query = text("""
-    SELECT * FROM users 
-    WHERE last_login > :cutoff
-    ORDER BY RANDOM()
-    LIMIT 10
-""")
-users = db.exec(query, {"cutoff": cutoff}).all()
-
-# Convert to User models
-return [User.model_validate(dict(row)) for row in users]
-```
-
-**5. Test raw SQL thoroughly**:
-```python
-def test_complex_aggregation_query():
-    """Test raw SQL aggregation query."""
-    # Test with known data
-    result = get_daily_stats(start_date, db)
-    
-    # Verify structure
-    assert len(result) > 0
-    assert all(hasattr(row, 'date') for row in result)
-    
-    # Verify calculations
-    first_day = result[0]
-    manual_count = db.exec(
-        select(func.count(Order.id))
-        .where(func.date_trunc('day', Order.created_at) == first_day.date)
-    ).first()
-    assert first_day.total == manual_count
-```
-
-### Decision Checklist
-
-Before writing raw SQL, ask:
-
-- [ ] Can this be done with SQLModel select/where/join? → Use SQLModel
-- [ ] Does this use PostgreSQL-specific features (JSONB, arrays, full-text)? → Raw SQL OK
-- [ ] Is this a complex aggregation with multiple GROUP BY/window functions? → Raw SQL OK
-- [ ] Is this a bulk operation affecting 1000+ rows? → Raw SQL OK
-- [ ] Does the ORM version have performance issues (N+1, inefficient SQL)? → Raw SQL OK
-- [ ] Is this a one-time migration or maintenance task? → Raw SQL OK
-- [ ] Would parameterized queries be used (no string interpolation)? → Must be yes
-- [ ] Is there a comment explaining why raw SQL is necessary? → Must be yes
-
-### Anti-Patterns
-
-**❌ Don't use raw SQL for simple queries**:
-```python
-# WRONG - this is a simple select
-query = "SELECT * FROM users WHERE status = :status"
-users = db.exec(text(query), {"status": "active"}).all()
-
-# CORRECT - use SQLModel
-users = db.exec(select(User).where(User.status == "active")).all()
-```
-
-**❌ Don't bypass type safety unnecessarily**:
-```python
-# WRONG - loses type safety
-query = "INSERT INTO users (name, email) VALUES (:name, :email)"
-db.exec(text(query), {"name": name, "email": email})
-
-# CORRECT - use SQLModel for type validation
-user = User(name=name, email=email)
-db.add(user)
-db.commit()
-```
-
-**❌ Don't use string formatting**:
-```python
-# WRONG - SQL injection vulnerability
-query = f"SELECT * FROM users WHERE name = '{name}'"  # NEVER
-
-# CORRECT - always parameterize
-query = "SELECT * FROM users WHERE name = :name"
-db.exec(text(query), {"name": name})
-```
-
-### Summary
-
-**Default to SQLModel ORM** for:
-- All CRUD operations
-- Simple queries and filters
-- Joins with defined relationships
-- Anything that benefits from type safety
-
-**Use raw SQL only when**:
-- PostgreSQL-specific features are required
-- Complex aggregations/window functions are needed
-- Bulk operations on large datasets
-- Performance is critical and ORM is inefficient
-- Database maintenance tasks
-
-**Always**:
-- Use parameterized queries (never string interpolation)
-- Document why raw SQL is necessary
-- Test raw SQL queries thoroughly
-- Map results back to models when possible
+See `references/raw-sql-vs-orm.md` for detailed decision framework and examples.
 
 ## Workflow Overview
 
 Follow these phases in order:
 
-1. **Requirements Gathering** - Understand the resource, fields, relationships, and constraints
-2. **Explore Existing Patterns** - Review current codebase architecture
-3. **Create Plan File** - Document design decisions in `.plan/` directory
+1. **Requirements Gathering** - Resource, fields, relationships, constraints
+2. **Explore Existing Patterns** - Review codebase architecture
+3. **Create Plan File** - Document design in `.plan/` directory
 4. **Documentation First** - Update API docs before implementation
-5. **Implementation** - Follow strict ordering: model → DDL → routes → tests
-6. **Verification** - Run comprehensive checklist before considering complete
+5. **Implementation** - Model → DDL → Routes → Tests
+6. **Verification** - Run comprehensive checklist
 
 ## Phase 1: Requirements Gathering
 
-Before writing any code, gather complete requirements. Ask about:
-
 ### Resource Identity
-- **Resource name**: Singular and plural forms (e.g., "project" / "projects")
-- **Primary use case**: What problem does this resource solve?
-- **User story**: Who needs this and why?
+- Resource name (singular/plural)
+- Primary use case
+- User story
 
 ### Fields and Schema
-For each field, determine:
-- **Name**: Snake_case field name
-- **Type**: String, integer, boolean, float, date, datetime, UUID, enum
-- **Required vs Optional**: Can it be null?
-- **Constraints**: Max length, min/max values, regex patterns, foreign keys
-- **Defaults**: Default values for creation
-- **Computed fields**: Fields calculated from other data
-- **Arrays**: Does the field hold multiple values?
-- **Enums**: Fixed set of allowed values?
-- **Config-driven options**: Should values come from config file?
+For each field: Name, Type, Required?, Constraints, Defaults, Arrays?, Enums?
 
 ### Ownership Model
-- **Profile-scoped**: Owned by individual users (most resources)
-- **Account-scoped**: Shared across account/organization
-- **Public**: No ownership restrictions
+- Profile-scoped (user-owned)
+- Account-scoped (org-shared)
+- Public (no restrictions)
 
 ### Delete Behavior
-- **Soft delete**: Set `deleted_at` timestamp, keep data
-- **Hard delete**: Physically remove from database
-- **Cascade behavior**: What happens to related resources?
+- Soft delete (deleted_at timestamp)
+- Hard delete
+- Cascade behavior
 
 ### Relationships
-- **Foreign keys**: References to other tables
-- **One-to-many**: Parent has multiple children
-- **Many-to-many**: Requires junction table
-- **Cascading**: Do deletes/updates cascade?
-
-### Special Considerations
-- **Validation rules**: Cross-field validation, business logic
-- **Authorization**: Who can read/write/delete?
-- **Pagination**: Expected result set size?
-- **Filtering**: Which fields should be filterable?
-- **Sorting**: Default sort order?
-- **Search**: Full-text search needed?
+- Foreign keys
+- One-to-many / Many-to-many
+- Cascading rules
 
 ## Phase 2: Explore Existing Patterns
 
-**CRITICAL**: Before creating plan, review existing codebase to maintain consistency.
+**CRITICAL**: Review codebase for consistency before implementing.
 
-### Files to Read
-
-**Schema files**:
-- `sql/schema.sql` - Existing table definitions, naming conventions, constraint patterns
-- `sql/drop_all_tables.sql` - Table drop order (dependency order)
-
-**Models**:
-- `app/models/*.py` - SQLModel patterns, base classes, common fields
-- Look for: `Base`, `TimestampMixin`, `SoftDeleteMixin`, naming conventions
-
-**Routes**:
-- `app/api/v1/routes/*.py` - Endpoint patterns, auth decorators, response models
-- Look for: Dependency injection patterns, pagination, filtering, error handling
-
-**Tests**:
-- `tests/test_*.py` - Test structure, fixtures, factories, assertion patterns
-- Look for: Common test setup, auth helpers, data factories
-
-**Documentation**:
-- `doc/api.md` - API documentation format, examples, conventions
-
-**Configuration**:
-- `app/main.py` - Router registration pattern
-- `config/*.json` - Config file structure if using config-driven fields
-
-### Pattern Recognition
-
-Note:
-- Common field patterns (created_at, updated_at, deleted_at, created_by, owner_id)
-- Auth/authorization patterns (current_user dependency, ownership checks)
-- Naming conventions (table names, route prefixes, model class names)
-- Error response formats
-- Pagination implementation
-- Test organization and naming
+| File | Look For |
+|------|----------|
+| `sql/schema.sql` | Table naming, constraints |
+| `app/models/*.py` | SQLModel patterns, base classes |
+| `app/api/v1/routes/*.py` | Auth patterns, pagination |
+| `tests/test_*.py` | Test structure, fixtures |
+| `doc/api.md` | Documentation format |
 
 ## Phase 3: Create Plan File
 
-Create `.plan/<resource>-api.md` documenting all design decisions before coding.
-
-This plan file serves as:
-- Design document for review
-- Implementation contract
-- Test case specification
-- Architecture decision record
-
-Include these sections:
-1. Product (user story, acceptance criteria, non-goals)
-2. Development (files, architecture decisions, DDL, models, endpoints, examples)
-3. Testing (test cases organized by type with Test Intent Validation)
+Create `.plan/<resource>-api.md` with:
+1. **Product**: User story, acceptance criteria, non-goals
+2. **Development**: Files, DDL, models, endpoints, examples
+3. **Testing**: Test cases with Test Intent Validation
 
 ## Phase 4: Documentation First
 
-**BEFORE implementing**, update `doc/api.md` with complete API documentation for all endpoints.
-
-Include for each endpoint:
+Update `doc/api.md` BEFORE implementing:
 - HTTP method and path
-- Description
 - Authentication requirements
-- Request parameters/body with types and constraints
-- Success response with example
-- Error responses with status codes
+- Request parameters/body with types
+- Success and error responses
 - Validation rules
 
-## Phase 5: Implementation
+## Phase 5: Implementation Order
 
-Follow this exact order:
+Follow strictly:
+1. SQLModel classes (`app/models/<resource>.py`)
+2. DDL (`sql/schema.sql`)
+3. Drop statement (`sql/drop_all_tables.sql`)
+4. Service layer (if needed)
+5. Routes (`app/api/v1/routes/<resource>.py`)
+6. Register router (`app/main.py`)
+7. Tests (`tests/test_<resource>.py`)
+8. Run migration
+9. Run tests
 
-1. **SQLModel classes** (`app/models/<resource>.py`)
-2. **DDL** (`sql/schema.sql`)
-3. **Drop statement** (`sql/drop_all_tables.sql`)
-4. **Service layer** (`app/services/<resource>_service.py`) - if needed
-5. **Config file** (`config/<resource>_options.json`) - if needed
-6. **Routes** (`app/api/v1/routes/<resource>.py`)
-7. **Register router** (`app/main.py`)
-8. **Tests** (`tests/test_<resource>.py`)
-9. **Run migration** (apply DDL)
-10. **Run tests** (verify everything works)
+See `references/code-patterns.md` for complete code examples.
 
-## Phase 6: Code Patterns
+## Phase 6: Verification Checklist
 
-### SQLModel Pattern
-
-```python
-class ResourceBase(SQLModel):
-    """Shared fields"""
-    name: str
-    
-class Resource(ResourceBase, table=True):
-    """DB model - has ID, timestamps"""
-    id: UUID
-    owner_id: UUID
-    created_at: datetime
-    
-class ResourceCreate(ResourceBase):
-    """Only settable fields"""
-    pass
-    
-class ResourceUpdate(SQLModel):
-    """All fields optional"""
-    name: Optional[str] = None
-    
-class ResourceResponse(ResourceBase):
-    """API response - includes ID"""
-    id: UUID
-    created_at: datetime
-```
-
-### Route Pattern
-
-```python
-@router.post("", response_model=ResponseModel, status_code=201)
-async def create_resource(
-    data: CreateModel,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """Create new resource."""
-    resource = Service.create(data, current_user.profile_id, db)
-    return resource
-```
-
-### DDL Pattern
-
-```sql
-CREATE TABLE resources (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    owner_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP WITH TIME ZONE
-);
-
-CREATE INDEX idx_resources_owner_id ON resources(owner_id);
-```
-
-### Test Pattern
-
-```python
-def test_create_resource_success(auth_headers, resource_data):
-    """Test successful resource creation."""
-    response = client.post("/api/v1/resources", json=resource_data, headers=auth_headers)
-    assert response.status_code == 201
-    assert response.json()["name"] == resource_data["name"]
-```
-
-## Phase 7: Verification Checklist
-
-Before considering complete, verify:
-
-**Documentation**:
-- [ ] `doc/api.md` updated with all endpoints
+### Documentation
+- [ ] `doc/api.md` updated
 - [ ] Request/response examples included
 - [ ] Error responses documented
 
-**Database**:
-- [ ] `sql/schema.sql` has table DDL with indexes
+### Database
+- [ ] DDL in `sql/schema.sql` with indexes
 - [ ] `sql/drop_all_tables.sql` updated
 - [ ] Migration applied successfully
 
-**Models**:
+### Models
 - [ ] SQLModel classes follow pattern (Base, Table, Create, Update, Response)
 - [ ] All fields properly typed
 
-**Routes**:
-- [ ] All CRUD endpoints implemented (POST, GET, GET by ID, PATCH, DELETE)
+### Routes
+- [ ] All CRUD endpoints (POST, GET, GET/:id, PATCH, DELETE)
 - [ ] Auth dependencies present
-- [ ] Router registered in `app/main.py`
+- [ ] Router registered
 
-**Tests**:
+### Tests
 - [ ] Happy path tests pass
-- [ ] Error handling tests pass (422)
-- [ ] Auth tests pass (401)
-- [ ] Authorization tests pass (403)
-- [ ] Not found tests pass (404)
-- [ ] Edge case tests pass
+- [ ] Validation errors (422) tested
+- [ ] Auth (401) tested
+- [ ] Authorization (403) tested
+- [ ] Not found (404) tested
+- [ ] Edge cases tested
 - [ ] Coverage > 90%
 
-**Test Intent Validation**:
-- [ ] All tests pass product lens (user behavior)
-- [ ] All tests pass developer lens (code coverage)
-- [ ] All tests pass tester lens (independent, meaningful)
-
-**Functional**:
-- [ ] All endpoints work via API
-- [ ] Ownership checks enforce security
-- [ ] Soft delete works correctly (if applicable)
-- [ ] Validation errors return proper codes
-
-**Plan File**:
-- [ ] `.plan/<resource>-api.md` completed
-- [ ] Architecture decisions documented
-- [ ] Test cases specified
+### Test Intent Validation
+- [ ] Product lens (user behavior)
+- [ ] Developer lens (code coverage)
+- [ ] Tester lens (independent, meaningful)
 
 ## Related Skills
 
-The Backend Developer implements APIs based on upstream design and coordinates with testing/documentation.
-
 ### Upstream Skills (Provide Input)
 
-| Skill | Provides | Developer Should Request |
-|-------|----------|-------------------------|
-| **TPO** | MRD with data entities, rules | Clear validation rules, error messages |
-| **Solutions Architect** | API contracts, data models | OpenAPI specs, schema design |
-| **Data Platform Engineer** | Database patterns | Schema advice, query optimization |
+| Skill | Provides |
+|-------|----------|
+| **TPO** | MRD with data entities, rules |
+| **Solutions Architect** | API contracts, data models |
+| **Data Platform Engineer** | Database patterns |
 
 ### Downstream/Parallel Skills
 
-| Skill | Relationship | Coordination Point |
-|-------|--------------|-------------------|
-| **Backend Tester** | Tests the APIs | Share test scenarios, edge cases |
-| **Frontend Developer** | Consumes the APIs | API contract alignment |
-| **Tech Doc Writer** | Documents APIs | OpenAPI spec, examples |
-| **TPgM** | Tracks progress | Effort estimates, blockers |
+| Skill | Coordination |
+|-------|-------------|
+| **Backend Tester** | Test scenarios, edge cases |
+| **Frontend Developer** | API contract alignment |
+| **Tech Doc Writer** | OpenAPI spec, examples |
+| **TPgM** | Progress tracking |
 
 ### Consultation Triggers
 
-**Consult Data Platform Engineer when:**
-- Designing complex queries
-- Schema changes affect performance
-- Using raw SQL (for review)
-- Implementing bulk operations
-
-**Consult Solutions Architect when:**
-- API contract changes needed
-- New integration patterns required
-- Cross-service communication
-
-**Consult Backend Tester when:**
-- Defining test scenarios
-- Identifying edge cases
-- Setting up test data
+- **Data Platform Engineer**: Complex queries, schema performance, raw SQL review
+- **Solutions Architect**: API contract changes, integration patterns
+- **Backend Tester**: Test scenarios, edge cases
 
 ### Handoff Checklist
 
-Before considering implementation complete:
-
 ```
 □ Solutions Architect's API contract implemented
-□ Data Platform Engineer consulted on schema (if changes)
+□ Data Platform Engineer consulted on schema
 □ Backend Tester has test strategy
-□ OpenAPI docs current for Tech Doc Writer
+□ OpenAPI docs current
 □ TPgM updated on progress
 ```
 
-### Skill Ecosystem Position
+## Linear Ticket Workflow
+
+**CRITICAL**: When assigned a Linear sub-issue, follow this workflow to ensure traceability.
+
+### Worker Workflow
 
 ```
-     ┌─────────────┐
-     │     TPO     │
-     └──────┬──────┘
-            │
-     ┌──────▼──────┐
-     │  Solutions  │
-     │  Architect  │
-     └──────┬──────┘
-            │
-    ┌───────┼───────┐
-    │       │       │
-    ▼       ▼       ▼
-Backend  Frontend  Data
-Developer Developer Platform
-    │       │       │
-    │       │       │
-    ▼       ▼       │
-Backend  Frontend   │
-Tester   Tester     │
-    │       │       │
-    └───────┼───────┘
-            │
-     ┌──────▼──────┐
-     │  Tech Doc   │
-     │   Writer    │
-     └─────────────┘
+1. Accept work → Move ticket to "In Progress"
+2. Create branch → feature/LIN-XXX-description
+3. Do work → Commit with [LIN-XXX] prefix
+4. Track progress → Add comment on ticket
+5. Complete work → Create PR, move to "In Review"
+6. PR merged → Move to "Done"
 ```
+
+### Starting Work
+
+When you begin work on an assigned sub-issue:
+
+```python
+# Update ticket status
+mcp.update_issue(id="LIN-XXX", state="In Progress")
+
+# Add start comment
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🚀 **Started work**
+- Branch: `feature/LIN-XXX-password-reset-api`
+- Approach: Implementing JWT-based reset tokens with 24h expiry
+"""
+)
+```
+
+### Commit Message Format
+
+```
+[LIN-XXX] Brief description of change
+
+- Detail 1
+- Detail 2
+
+Ticket: https://linear.app/team/issue/LIN-XXX
+```
+
+### Completion Comment Template
+
+When PR is ready for review:
+
+```python
+mcp.update_issue(id="LIN-XXX", state="In Review")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""🔍 **Ready for review**
+- PR: [link to PR]
+
+## Implementation Summary
+- Endpoint: POST /api/v1/auth/reset-password
+- Token: JWT with 24h expiry
+- Rate limit: 3 requests/email/hour
+
+## Test Coverage
+- Unit tests: 12 tests passing
+- Integration tests: 5 tests passing
+- Coverage: 94%
+
+## Files Changed
+- `app/api/v1/routes/auth.py`
+- `app/services/password_reset.py`
+- `tests/test_password_reset.py`
+"""
+)
+```
+
+### After PR Merge
+
+```python
+mcp.update_issue(id="LIN-XXX", state="Done")
+
+mcp.create_comment(
+    issueId="LIN-XXX",
+    body="""✅ **Completed**
+- PR merged: [link]
+- Deployed to: staging
+"""
+)
+```
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
+## Reference Files
+
+- `references/raw-sql-vs-orm.md` - When to use ORM vs raw SQL with examples
+- `references/code-patterns.md` - SQLModel, route, DDL, and test patterns
 
 ## Summary
 
-This systematic workflow ensures:
+This workflow ensures:
 - Complete planning before coding
 - Consistent patterns across APIs
-- Documentation stays synchronized
+- Documentation synchronized
 - Comprehensive test coverage
-- Security by default (auth/ownership)
-- Maintainable, scalable codebase
+- Security by default
 
-**Remember**: Consult Data Platform Engineer for schema design and Backend Tester for test strategy before implementation.
-
-Follow each phase fully before moving to the next.
+**Remember**: Consult Data Platform Engineer for schema design and Backend Tester for test strategy.

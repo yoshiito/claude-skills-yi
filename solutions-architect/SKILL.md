@@ -360,6 +360,100 @@ Asynchronous if:
    - Error handling
    - Retry strategies
 
+## Linear Sub-Issue Breakdown
+
+**CRITICAL**: After architecture design, break down TPO's parent Issue into sub-issues for implementation.
+
+### Sub-Issue Creation Workflow
+
+When TPO creates a parent Issue for a feature:
+
+1. **Review parent Issue** - Understand requirements and scope
+2. **Design architecture** - Create ADRs and diagrams
+3. **Break down into sub-issues** - Create sub-issues for each work unit
+4. **Document dependencies** - Note which sub-issues block others
+5. **Comment on parent** - Summarize breakdown on parent Issue
+
+### Standard Sub-Issues (Implementation Includes Tests)
+
+| Sub-Issue Prefix | Assigned To | Includes |
+|------------------|-------------|----------|
+| `[Backend]` | Backend Developer | API implementation + unit/integration tests |
+| `[Frontend]` | Frontend Developer | UI components + component/E2E tests |
+| `[Docs]` | Tech Doc Writer | API docs, guides |
+
+### Optional Sub-Issues (When Needed)
+
+| Sub-Issue Prefix | When to Create |
+|------------------|----------------|
+| `[API Design]` | New/complex API needing contract design first |
+| `[Test]` | Large features needing dedicated QA effort |
+| `[Integration Test]` | Cross-component E2E testing |
+
+### Creating Sub-Issues in Linear
+
+```python
+# Create sub-issue linked to parent
+mcp.create_issue(
+    title="[Backend] Password reset API (incl. tests)",
+    team="TeamName",
+    parentId="parent-issue-id",  # Links to TPO's feature Issue
+    assignee="backend-developer@email.com",
+    description="""
+## Scope
+Implement password reset API endpoints with full test coverage.
+
+## Acceptance Criteria
+- POST /api/v1/auth/reset-password-request
+- POST /api/v1/auth/reset-password
+- Unit tests for all endpoints
+- Integration tests for email sending
+
+## Technical Notes
+- Use JWT for reset tokens (24h expiry)
+- Rate limit: 3 requests per email per hour
+- See ADR-XXX for token design
+""",
+    labels=["Backend"]
+)
+```
+
+### Sub-Issue Breakdown Comment Template
+
+Add this comment to the parent Issue after creating sub-issues:
+
+```markdown
+## Architecture Breakdown
+
+### Sub-issues created:
+- LIN-101: [Backend] Password reset API (incl. tests)
+- LIN-102: [Frontend] Reset password UI (incl. tests)
+- LIN-103: [Docs] Password reset documentation
+
+### Dependencies:
+- LIN-102 (Frontend) depends on LIN-101 (Backend API)
+- LIN-103 (Docs) depends on LIN-101 (API finalization)
+
+### Technical Notes:
+- JWT tokens for reset links (24h expiry)
+- Rate limiting on request endpoint
+- See ADR-XXX for detailed design
+
+### ADR:
+[Link to ADR document]
+```
+
+### Sub-Issue Creation Checklist
+
+- [ ] Each sub-issue has clear acceptance criteria
+- [ ] Dependencies between sub-issues documented
+- [ ] Appropriate assignee set (or unassigned for team pickup)
+- [ ] Parent Issue linked via `parentId`
+- [ ] Technical notes from ADR included
+- [ ] Labels applied (`Backend`, `Frontend`, `Docs`)
+
+See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+
 ## Reference Files
 
 - `references/adr-template.md` - Full ADR structure with examples
@@ -383,6 +477,7 @@ The Solutions Architect bridges requirements (TPO) to implementation (Developers
 
 | Skill | Receives | Architect Should Provide |
 |-------|----------|-------------------------|
+| **API Designer** | System context, integration points | Service boundaries, data flow constraints |
 | **Backend Developer** | API contracts, data models | OpenAPI specs, schema definitions |
 | **Frontend Developer** | API contracts, data flow | Response formats, auth patterns |
 | **Data Platform Engineer** | Data architecture decisions | Schema design, indexing strategy |
@@ -394,6 +489,7 @@ The Solutions Architect bridges requirements (TPO) to implementation (Developers
 
 | Skill | Collaboration Point |
 |-------|---------------------|
+| **API Designer** | API contract design, endpoint structure |
 | **UX Designer** | UI architecture constraints |
 | **Backend Tester** | Testability of API design |
 | **Frontend Tester** | Testability of component design |
@@ -414,6 +510,11 @@ The Solutions Architect bridges requirements (TPO) to implementation (Developers
 **Consult MCP Server Developer when:**
 - Exposing capabilities to AI
 - Designing tool interfaces
+
+**Consult API Designer when:**
+- Defining public/partner API contracts
+- Establishing API versioning strategy
+- Standardizing error handling patterns
 
 ### Handoff Checklist
 
@@ -440,7 +541,7 @@ Before handing architecture to implementation:
          ┌──────▼──────┐
          │  Solutions  │◄─── Data Platform Engineer
          │  Architect  │◄─── AI Integration Engineer
-         │   (ADRs)    │
+         │   (ADRs)    │◄───► API Designer (collaborates)
          └──────┬──────┘
                 │
     ┌───────────┼───────────┐
