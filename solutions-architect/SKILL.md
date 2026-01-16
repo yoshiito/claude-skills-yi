@@ -102,22 +102,39 @@ Document significant technical decisions. Write an ADR when:
 
 See `references/adr-template.md` for full template.
 
-## Linear Sub-Issue Breakdown
+## Sub-Issue Breakdown
 
 After architecture design, break down TPO's parent Issue into sub-issues.
 
-**Always confirm Linear context first:**
+**Always confirm ticket system context first:**
 1. Fetch parent issue details
 2. Present Team/Project options for user selection
 3. Create sub-issues with confirmed context
 
+See `_shared/references/ticketing-core.md` for system-specific workflows.
+
+### Mandatory Template Usage
+
+**CRITICAL**: Before creating any sub-issue, read `_shared/references/ticket-templates.md` and apply the Story/Task template.
+
+Every sub-issue MUST include:
+- **Assigned Role** - Which skill/role completes the work
+- **Description** - Clear, concise scope
+- **Context** - Parent issue, ADR, API spec links
+- **Acceptance Criteria** - Specific, testable criteria
+- **NFRs** - Performance, security requirements (or "N/A")
+- **Implementation Notes** - Technical guidance
+- **Infrastructure Notes** - DB changes, env vars (or "N/A")
+- **Testing** - Scenarios to cover
+
 ### Standard Sub-Issues
 
-| Prefix | Assigned To | Includes |
-|--------|-------------|----------|
+| Prefix | Assigned Role | Includes |
+|--------|---------------|----------|
 | `[Backend]` | Backend Developer | API + tests |
 | `[Frontend]` | Frontend Developer | UI + tests |
 | `[Docs]` | Tech Doc Writer | API docs, guides |
+| `[Test]` | Backend/Frontend Tester | Dedicated QA effort |
 
 ### INVEST Principle
 
@@ -128,9 +145,6 @@ Every sub-issue must be:
 - **E**stimable - Bounded scope: known files, clear end state
 - **S**mall - Single logical change (one PR, one concern)
 - **T**estable - Verifiable acceptance criteria
-
-See `_shared/references/ticket-templates.md` for sub-issue templates.
-See `_shared/references/ticketing-core.md` for full workflow.
 
 ## Integration Catalog Ownership
 
@@ -180,6 +194,13 @@ Before delivering architecture:
 - [ ] Scaling approach defined
 - [ ] Trade-offs explicitly stated
 - [ ] Diagrams current and consistent
+
+Before creating sub-issues:
+
+- [ ] Read `_shared/references/ticket-templates.md`
+- [ ] All sub-issues follow Story/Task template
+- [ ] Each sub-issue has Assigned Role specified
+- [ ] All required sections populated (no empty fields)
 
 ## Summary
 

@@ -1,17 +1,22 @@
 # Ticket Templates
 
-Standard templates for creating well-structured Linear tickets. These templates ensure consistency and completeness across different ticket types.
+Standard templates for creating well-structured tickets. These templates ensure consistency and completeness across different ticket types.
+
+**MANDATORY**: All sub-issues MUST use these templates. Solutions Architect creates tickets, TPO reviews, TPgM validates.
 
 ## Story/Task Template
 
 Use this template for implementation sub-issues created by Solutions Architect.
 
 ```markdown
+## Assigned Role
+[Skill/role that should complete this work - e.g., Backend Developer, Frontend Developer, Tech Doc Writer]
+
 ## Description
 [Clear, concise description of what needs to be implemented]
 
 ## Context
-- Parent Issue: [LIN-XXX - Parent feature name]
+- Parent Issue: [TICKET-ID - Parent feature name]
 - ADR: [Link to architecture decision record if applicable]
 - API Spec: [Link to OpenAPI spec if applicable]
 - Design: [Link to Figma/design if applicable]
@@ -40,6 +45,9 @@ Use this template for implementation sub-issues created by Solutions Architect.
 ### Example: Story/Task
 
 ```markdown
+## Assigned Role
+Backend Developer
+
 ## Description
 Backend API to retrieve pricing information for AMC+ from App Store/Play Store price points.
 
@@ -76,6 +84,18 @@ Backend API to retrieve pricing information for AMC+ from App Store/Play Store p
 ## Additional Notes
 - Price points may vary by region - initial implementation is US-only
 ```
+
+### Assigned Role Values
+
+| Role | When to Assign |
+|------|----------------|
+| Backend Developer | API endpoints, services, database operations |
+| Frontend Developer | UI components, pages, client-side logic |
+| Tech Doc Writer | API documentation, guides, runbooks |
+| Backend Tester | Dedicated backend test coverage |
+| Frontend Tester | Dedicated frontend/E2E test coverage |
+| Data Platform Engineer | Data pipelines, migrations, analytics |
+| API Designer | API contract design (before implementation) |
 
 ## Bug Template
 

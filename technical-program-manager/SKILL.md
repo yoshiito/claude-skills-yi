@@ -35,13 +35,29 @@ If inputs are incomplete, route back to appropriate skill (TPO for requirements,
 
 **BLOCK ticket creation if quality standards not met.** Every ticket must pass quality gates.
 
-Before creating ANY Linear ticket, verify ALL required fields. See `references/ticket-quality-checklist.md`.
+Before creating ANY ticket, verify ALL required fields. See `references/ticket-quality-checklist.md`.
+
+**Template Validation:**
+All tickets must follow templates from `_shared/references/ticket-templates.md`:
+- Story/Task template for implementation sub-issues
+- Bug template for bug reports
+
+**Required Sections (Story/Task):**
+- [ ] Assigned Role specified
+- [ ] Description clear and concise
+- [ ] Context with parent issue and doc links
+- [ ] Acceptance Criteria specific and testable
+- [ ] NFRs stated (or "N/A")
+- [ ] Implementation Notes provided
+- [ ] Infrastructure Notes stated (or "N/A")
+- [ ] Testing scenarios defined
 
 **Enforcement Protocol:**
-1. Run quality checklist against ticket content
-2. If ANY required field missing → STOP, do not create
-3. Report missing fields to requestor
-4. Only proceed when ALL fields complete
+1. Verify ticket follows correct template
+2. Run quality checklist against ticket content
+3. If ANY required section missing → STOP, do not create
+4. Report missing sections to SA (for sub-issues) or requestor
+5. Only proceed when ALL sections complete
 
 ## What TPgM Does NOT Do
 
@@ -182,7 +198,7 @@ Before closing any parent Issue:
 - [ ] Test coverage documented
 - [ ] Regression gates passed
 
-See `_shared/references/linear-ticket-traceability.md` for full workflow.
+See `_shared/references/ticketing-core.md` for full workflow.
 
 ## Task Completion Standards
 

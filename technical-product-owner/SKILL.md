@@ -184,7 +184,7 @@ When Linear MCP is available, create parent Issues for features.
 2. Present options for user selection
 3. Create/update issue with confirmed context
 
-See `_shared/references/linear-ticket-traceability.md` for full workflow.
+See `_shared/references/ticketing-core.md` for full workflow.
 
 ## Plan Registry Ownership
 
@@ -216,11 +216,23 @@ See `_shared/references/plan-registry-schema.md` for schema.
 - `references/gherkin-patterns.md` - Acceptance criteria examples
 - `references/edge-case-matrix.md` - Unhappy/empty/extreme patterns
 
+## Sub-Issue Review
+
+When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
+
+**Template Compliance Check:**
+- [ ] Sub-issues follow Story/Task template from `_shared/references/ticket-templates.md`
+- [ ] Each sub-issue has Assigned Role specified
+- [ ] Acceptance criteria align with parent Issue requirements
+- [ ] Scope matches what was defined in MRD/PRD
+
+**If sub-issues don't follow template:** Route back to SA for correction before TPgM begins delivery planning.
+
 ## Related Skills
 
 | Skill | Relationship |
 |-------|--------------|
-| Solutions Architect | TPO provides MRD → SA contributes technical design to PRD |
+| Solutions Architect | TPO provides MRD → SA contributes technical design to PRD, creates sub-issues |
 | UX Designer | TPO provides user needs → UX contributes flows to PRD |
 | Data Platform Engineer | TPO provides data needs → DPE contributes data design to PRD |
 | API Designer | TPO provides API needs → AD contributes contracts to PRD |
