@@ -53,18 +53,27 @@ Before creating any sub-issue:
 - [ ] **Testable**: Technical Spec + Gherkin scenarios are specific and verifiable?
 - [ ] **Context linked**: Parent issue, ADRs, specs included?
 
-## Mandatory Progress Comments
+## Mandatory Progress Updates
 
-**All workers MUST comment on tickets at these points.**
+**All workers MUST update ticket status AND add comments at these points.**
 
 ### When Starting Work
+
+**Status**: Move ticket to **In Progress**
+
+**Comment**:
 ```markdown
 🚀 **Started**
 - Branch: `{branch-name}`
+- Base: `{base_branch}` (confirmed with user)
 - Approach: [Brief implementation approach]
 ```
 
 ### During Work (for tasks > 1 day)
+
+**Status**: Keep as **In Progress**
+
+**Comment**:
 ```markdown
 📝 **Progress**
 - Done: [What's completed]
@@ -73,14 +82,22 @@ Before creating any sub-issue:
 ```
 
 ### When PR Created
+
+**Status**: Move ticket to **In Review**
+
+**Comment**:
 ```markdown
 🔍 **Ready for review**
-- PR: [link]
+- PR: [link] (targeting {base_branch})
 - Changes: [Brief summary]
 - Tests: [What's covered]
 ```
 
 ### When Complete
+
+**Status**: Move ticket to **Done** (or let auto-close on PR merge if supported)
+
+**Comment**:
 ```markdown
 ✅ **Completed**
 - PR merged: [link]
