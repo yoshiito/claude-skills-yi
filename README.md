@@ -17,8 +17,8 @@ Skills are domain-specific prompts that give Claude Code expertise in particular
 | **technical-product-owner** | Translate business goals into MRDs and coordinate PRD development |
 | **solutions-architect** | Design system architecture, ADRs, and integration patterns |
 | **api-designer** | Create pragmatic REST API designs with OpenAPI specs |
-| **fastapi-postgres-sqlmodel-developer** | Implement CRUD APIs with FastAPI and PostgreSQL |
-| **fastapi-pytest-tester** | Backend test coverage analysis and test generation |
+| **backend-fastapi-postgres-sqlmodel-developer** | Implement CRUD APIs with FastAPI and PostgreSQL |
+| **backend-fastapi-pytest-tester** | Backend test coverage analysis and test generation |
 | **frontend-tester** | React component testing, Playwright E2E, accessibility |
 | **frontend-atomic-design-engineer** | Enforce atomic design principles in React components |
 | **data-platform-engineer** | Design data pipelines, storage, and vector search |

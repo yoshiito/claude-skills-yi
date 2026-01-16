@@ -1,5 +1,5 @@
 ---
-name: fastapi-pytest-tester
+name: backend-fastapi-pytest-tester
 description: Systematic test coverage analysis and quality assurance for FastAPI applications using pytest. Use when reviewing test coverage, generating comprehensive test suites, identifying edge cases, evaluating test quality, or ensuring robust testing for APIs, services, utilities, and background jobs. Essential for lean teams relying on LLM-generated tests. Provides frameworks for coverage analysis, edge case discovery, test quality evaluation, and effective prompting strategies.
 ---
 

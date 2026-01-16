@@ -1,5 +1,5 @@
 ---
-name: fastapi-postgres-sqlmodel-developer
+name: backend-fastapi-postgres-sqlmodel-developer
 description: Systematic workflow for designing and implementing CRUD APIs using FastAPI, PostgreSQL, and SQLModel ORM. Use when creating new REST API endpoints, designing database schemas, implementing CRUD operations, or adding new resources to existing FastAPI applications. Guides through requirements gathering, pattern exploration, planning, documentation-first development, implementation, and verification with comprehensive test coverage. Includes guidance on when to use raw SQL vs ORM.
 ---
 
