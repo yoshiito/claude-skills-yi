@@ -46,7 +46,8 @@ All tickets must follow templates from `_shared/references/ticket-templates.md`:
 - [ ] Assigned Role specified
 - [ ] Story in user story format (As a... I want... so that...)
 - [ ] Context provides background for unfamiliar reader
-- [ ] Acceptance Criteria in Gherkin format (Given/When/Then scenarios)
+- [ ] Technical Spec with MUST/MUST NOT/SHOULD constraints (guardrails for AI agents)
+- [ ] Gherkin scenarios for behavioral validation (Given/When/Then)
 - [ ] NFRs stated (or "N/A")
 - [ ] Implementation Notes provided
 - [ ] Infrastructure Notes stated (or "N/A")

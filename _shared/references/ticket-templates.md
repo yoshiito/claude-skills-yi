@@ -15,7 +15,7 @@ Use this template for implementation sub-issues created by Solutions Architect.
 | **Assigned Role** | Skill/role that should complete this work |
 | **Story** | As a [user type], I want [capability] so that [benefit]. |
 | **Context** | Background for someone unfamiliar (see below) |
-| **Acceptance Criteria** | Gherkin scenarios (Given/When/Then) |
+| **Acceptance Criteria & Technical Spec** | Technical constraints + Gherkin scenarios (see below) |
 | **NFRs** | Performance, security requirements (or "N/A") |
 | **Implementation Notes** | Technical guidance, patterns, code references |
 | **Infrastructure Notes** | DB changes, env vars, deployment (or "N/A") |
@@ -35,9 +35,49 @@ Include **References** at the end:
 - API Spec: [Link if applicable]
 - Design: [Link if applicable]
 
-### Acceptance Criteria Format (Gherkin)
+### Acceptance Criteria Format (Hybrid: Spec + Gherkin)
 
-Write acceptance criteria as Gherkin scenarios:
+Acceptance Criteria has two parts that serve different purposes:
+
+| Component | Purpose | Consumer |
+|-----------|---------|----------|
+| **Technical Specification** | Hard constraints, guardrails, red-lines | AI Coding Agents (Cursor, Copilot, Claude Code) |
+| **Gherkin Scenarios** | Behavioral validation, testable outcomes | Agent Testers, QA automation |
+
+**Why this hybrid approach?**
+- Technical Specs provide **guardrails** for AI Coding Agents - they define what MUST or MUST NOT be done
+- Gherkin provides **validation** for Agent Testers - they define how to verify the implementation works
+
+#### Technical Specification
+
+Define hard constraints using `<technical-spec>` tags or markdown lists. Include:
+
+- **MUST**: Required behaviors or constraints (non-negotiable)
+- **MUST NOT**: Prohibited approaches or patterns (red-lines)
+- **SHOULD**: Preferred approaches (negotiable with justification)
+- **Tools/Libraries**: Specific technologies required
+
+```xml
+<technical-spec>
+  <must>
+    - Use Redis for caching (not in-memory)
+    - Validate currency codes against ISO-4217
+    - Return amounts as integers (cents, not decimals)
+  </must>
+  <must-not>
+    - Do NOT call external APIs synchronously in the request path
+    - Do NOT store prices as floating point numbers
+  </must-not>
+  <should>
+    - Prefer async/await over callbacks
+    - Use existing ExternalPricingClient class
+  </should>
+</technical-spec>
+```
+
+#### Gherkin Scenarios
+
+Write behavioral scenarios for testing:
 
 ```gherkin
 Feature: [Feature name]
@@ -60,7 +100,8 @@ Feature: [Feature name]
 | Assigned Role | Solutions Architect | Who implements this |
 | Story | Solutions Architect | User-centric description |
 | Context | Solutions Architect | Background for anyone to understand |
-| Acceptance Criteria | Solutions Architect | Gherkin scenarios defining "done" |
+| Acceptance Criteria (Tech Spec) | Solutions Architect | Guardrails for AI Coding Agents |
+| Acceptance Criteria (Gherkin) | Solutions Architect | Behavioral scenarios for validation |
 | NFRs | Solutions Architect | Performance/security requirements |
 | Implementation Notes | Solutions Architect | Technical guidance |
 | Infrastructure Notes | Solutions Architect | Deployment considerations |
@@ -99,7 +140,33 @@ This is part of the larger "Subscription Management" feature where users can vie
 
 ---
 
-**Acceptance Criteria (Gherkin):**
+**Acceptance Criteria & Technical Spec:**
+
+*Technical Specification (Guardrails for AI Coding Agents):*
+
+```xml
+<technical-spec>
+  <must>
+    - Use Redis for caching (PRICING_CACHE_TTL env var)
+    - Validate currency codes against ISO-4217 standard
+    - Return price amounts as integers in cents (not decimals)
+    - Use existing ExternalPricingClient for store API calls
+    - Cache responses with key prefix "pricing:"
+  </must>
+  <must-not>
+    - Do NOT call App Store/Play Store APIs synchronously in request path
+    - Do NOT store or return prices as floating point numbers
+    - Do NOT implement custom HTTP clients (use ExternalPricingClient)
+  </must-not>
+  <should>
+    - Follow repository pattern in app/repositories/
+    - Use async/await for external API calls
+    - Log cache hits/misses for monitoring
+  </should>
+</technical-spec>
+```
+
+*Gherkin Scenarios (Validation for Agent Testers):*
 
 ```gherkin
 Feature: Pricing API
@@ -310,7 +377,8 @@ Before submitting any ticket:
 
 - [ ] **Story**: Written as user story (As a... I want... so that...)?
 - [ ] **Context**: Enough background for someone unfamiliar to understand?
-- [ ] **Acceptance Criteria**: Written in Gherkin format with scenarios?
+- [ ] **Technical Spec**: MUST/MUST NOT/SHOULD constraints defined for AI agents?
+- [ ] **Gherkin Scenarios**: Behavioral tests written in Given/When/Then format?
 - [ ] **References**: Parent issue, ADR, specs linked?
 - [ ] **Dependencies**: Set via `blockedBy`/`blocks` fields?
 - [ ] **Assignee**: Appropriate person assigned?

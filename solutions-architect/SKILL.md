@@ -121,7 +121,8 @@ Every sub-issue MUST include:
 - **Assigned Role** - Which skill/role completes the work
 - **Story** - User story format (As a... I want... so that...)
 - **Context** - Background for someone unfamiliar to understand the work
-- **Acceptance Criteria** - Gherkin format scenarios (Given/When/Then)
+- **Technical Spec** - MUST/MUST NOT/SHOULD constraints (guardrails for AI Coding Agents)
+- **Gherkin Scenarios** - Behavioral validation (Given/When/Then) for Agent Testers
 - **NFRs** - Performance, security requirements (or "N/A")
 - **Implementation Notes** - Technical guidance
 - **Infrastructure Notes** - DB changes, env vars (or "N/A")

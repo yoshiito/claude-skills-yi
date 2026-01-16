@@ -50,7 +50,7 @@ Before creating any sub-issue:
 - [ ] **Valuable**: Moves feature toward "Done"?
 - [ ] **Estimable**: Bounded scope with known files and clear end state?
 - [ ] **Small**: Single logical change (one PR, one concern)?
-- [ ] **Testable**: Acceptance criteria are specific and verifiable?
+- [ ] **Testable**: Technical Spec + Gherkin scenarios are specific and verifiable?
 - [ ] **Context linked**: Parent issue, ADRs, specs included?
 
 ## Mandatory Progress Comments

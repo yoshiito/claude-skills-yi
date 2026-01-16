@@ -225,7 +225,8 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] Story written in user story format (As a... I want... so that...)
 - [ ] Context provides enough background for unfamiliar reader
-- [ ] Acceptance Criteria in Gherkin format (Given/When/Then scenarios)
+- [ ] Technical Spec defines MUST/MUST NOT/SHOULD constraints for AI agents
+- [ ] Gherkin scenarios provide behavioral validation (Given/When/Then)
 - [ ] Scope matches what was defined in MRD/PRD
 
 **If sub-issues don't follow template:** Route back to SA for correction before TPgM begins delivery planning.
