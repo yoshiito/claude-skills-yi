@@ -8,27 +8,37 @@ Standard templates for creating well-structured tickets. These templates ensure 
 
 Use this template for implementation sub-issues created by Solutions Architect.
 
-```markdown
-## Assigned Role
-[Skill/role that should complete this work]
+### Template Structure
 
-## Story
-As a [user type], I want [capability] so that [benefit].
+| Section | Content |
+|---------|---------|
+| **Assigned Role** | Skill/role that should complete this work |
+| **Story** | As a [user type], I want [capability] so that [benefit]. |
+| **Context** | Background for someone unfamiliar (see below) |
+| **Acceptance Criteria** | Gherkin scenarios (Given/When/Then) |
+| **NFRs** | Performance, security requirements (or "N/A") |
+| **Implementation Notes** | Technical guidance, patterns, code references |
+| **Infrastructure Notes** | DB changes, env vars, deployment (or "N/A") |
+| **Testing Notes** | Added by Tester after review |
 
-## Context
-[Provide enough background for someone unfamiliar with the product to understand:
+### Context Section Guidelines
+
+Context should provide enough background for someone unfamiliar with the product:
 - Why this work exists (business driver)
 - How it fits into the larger feature
 - What the user is trying to accomplish
-- Any relevant domain knowledge needed]
+- Any relevant domain knowledge needed
 
-**References:**
+Include **References** at the end:
 - Parent Issue: [TICKET-ID - Parent feature name]
-- ADR: [Link to architecture decision record if applicable]
-- API Spec: [Link to OpenAPI spec if applicable]
-- Design: [Link to Figma/design if applicable]
+- ADR: [Link if applicable]
+- API Spec: [Link if applicable]
+- Design: [Link if applicable]
 
-## Acceptance Criteria (Gherkin)
+### Acceptance Criteria Format (Gherkin)
+
+Write acceptance criteria as Gherkin scenarios:
+
 ```gherkin
 Feature: [Feature name]
 
@@ -41,19 +51,6 @@ Feature: [Feature name]
     Given [initial context]
     When [action taken]
     Then [expected outcome]
-```
-
-## NFRs (Non-Functional Requirements)
-[Performance, security, accessibility requirements, or "N/A" if none]
-
-## Implementation Notes
-[Technical guidance, patterns to follow, code references]
-
-## Infrastructure Notes
-[Database changes, environment variables, deployment considerations, or "N/A" if none]
-
-## Testing Notes
-[Added by Tester - additional test scenarios, edge cases discovered, regression considerations]
 ```
 
 ### Section Ownership
@@ -69,16 +66,26 @@ Feature: [Feature name]
 | Infrastructure Notes | Solutions Architect | Deployment considerations |
 | Testing Notes | Tester | Additional test scenarios after review |
 
-### Example: Story/Task
+---
 
-```markdown
-## Assigned Role
-Backend Developer
+## Example: Story/Task
 
-## Story
+**Title:** `[Backend] Pricing API`
+
+---
+
+**Assigned Role:** Backend Developer
+
+---
+
+**Story:**
+
 As a subscriber, I want to see current pricing for my subscription plan so that I can understand what I'm paying before making changes.
 
-## Context
+---
+
+**Context:**
+
 AMC+ is expanding to support multiple pricing tiers. Users currently have no way to see their current price or compare it to other plans. This API will power the pricing display on the Account Settings page.
 
 The pricing data comes from App Store (iOS) and Play Store (Android) via their respective APIs. We need to cache this data to avoid rate limits and improve response times.
@@ -90,7 +97,10 @@ This is part of the larger "Subscription Management" feature where users can vie
 - ADR: /docs/adr/005-pricing-api-design.md
 - API Spec: /docs/api/pricing.yaml
 
-## Acceptance Criteria (Gherkin)
+---
+
+**Acceptance Criteria (Gherkin):**
+
 ```gherkin
 Feature: Pricing API
 
@@ -125,25 +135,35 @@ Feature: Pricing API
     Then I receive a 503 response
 ```
 
-## NFRs
+---
+
+**NFRs:**
 - Response time < 200ms (p95)
 - Cache hit rate > 80%
 - Graceful degradation when external APIs fail
 
-## Implementation Notes
+---
+
+**Implementation Notes:**
 - Use existing `ExternalPricingClient` for App Store/Play Store APIs
 - Follow repository pattern in `app/repositories/`
 - Price amounts should be stored as integers (cents)
 - See `app/services/subscription_service.py` for similar patterns
 
-## Infrastructure Notes
+---
+
+**Infrastructure Notes:**
 - Add `PRICING_CACHE_TTL` environment variable (default: 3600 seconds)
 - Redis cache key prefix: `pricing:`
 - No database migrations required
 
-## Testing Notes
+---
+
+**Testing Notes:**
+
 [To be added by Backend Tester after implementation review]
-```
+
+---
 
 ### Assigned Role Values
 
@@ -157,81 +177,89 @@ Feature: Pricing API
 | Data Platform Engineer | Data pipelines, migrations, analytics |
 | API Designer | API contract design (before implementation) |
 
+---
+
 ## Bug Template
 
 Use this template for bug reports.
 
-```markdown
-## Environment/Platform
-[e.g., iOS 17.2, Android 14, Web Chrome 120, Production/Staging]
+### Template Structure
 
-## Impact
-[Critical/High/Medium/Low - describe business impact]
+| Section | Content |
+|---------|---------|
+| **Environment/Platform** | OS, browser, app version, environment |
+| **Impact** | Critical/High/Medium/Low with business impact |
+| **User Scope** | How many users affected |
+| **Steps to Reproduce** | Numbered steps |
+| **Actual Result** | What happens |
+| **Expected Result** | What should happen |
+| **Testing Notes** | How to verify fix |
+| **Additional Notes** | Workarounds, logs, related issues |
 
-## User Scope
-[How many users affected? Specific user segments?]
+---
 
-## Steps to Reproduce
-1. [First step]
-2. [Second step]
-3. [Third step]
+## Example: Bug
 
-## Actual Result
-[What happens - include error messages, screenshots if applicable]
+**Title:** `[Bug] iOS subscription cancellation fails silently`
 
-## Expected Result
-[What should happen]
+---
 
-## Testing Notes
-[How to verify the fix, regression test scenarios]
-
-## Additional Notes
-[Workarounds, related issues, logs, stack traces]
-```
-
-### Example: Bug
-
-```markdown
-## Environment/Platform
+**Environment/Platform:**
 - iOS 17.2
 - App Version 5.4.1
 - Production
 
-## Impact
+---
+
+**Impact:**
+
 **High** - Users cannot complete subscription cancellation, leading to support tickets and potential chargebacks.
 
-## User Scope
+---
+
+**User Scope:**
 - Affects iOS users who subscribed via Apple
 - Estimated 15% of active subscriber base
 - 47 support tickets in last 24 hours
 
-## Steps to Reproduce
+---
+
+**Steps to Reproduce:**
 1. Open app on iOS device
 2. Navigate to Settings > Subscription
 3. Tap "Cancel Subscription"
 4. Confirm cancellation in Apple popup
 
-## Actual Result
+---
+
+**Actual Result:**
 - App shows "Cancellation successful" message
 - Subscription remains active in Apple settings
 - User continues to be charged
 
-## Expected Result
+---
+
+**Expected Result:**
 - Subscription is cancelled in Apple's system
 - User receives confirmation email
 - No further charges occur
 
-## Testing Notes
+---
+
+**Testing Notes:**
 - Verify cancellation propagates to Apple's API
 - Check webhook handling for cancellation events
 - Test with sandbox Apple account
 - Regression: Verify new subscriptions still work
 
-## Additional Notes
+---
+
+**Additional Notes:**
 - Workaround: Users can cancel directly in iOS Settings > Apple ID > Subscriptions
 - Related: LIN-234 (subscription webhook refactor)
 - Logs show timeout on Apple API call at `SubscriptionService:145`
-```
+
+---
 
 ## Dependency Tracking
 
