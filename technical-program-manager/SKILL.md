@@ -31,6 +31,18 @@ Before creating any issue:
 
 If inputs are incomplete, route back to appropriate skill (TPO for requirements, SA for architecture).
 
+## Critical Rule: Ticket Quality Enforcement
+
+**BLOCK ticket creation if quality standards not met.** Every ticket must pass quality gates.
+
+Before creating ANY Linear ticket, verify ALL required fields. See `references/ticket-quality-checklist.md`.
+
+**Enforcement Protocol:**
+1. Run quality checklist against ticket content
+2. If ANY required field missing → STOP, do not create
+3. Report missing fields to requestor
+4. Only proceed when ALL fields complete
+
 ## What TPgM Does NOT Do
 
 - Define requirements (that's TPO)
@@ -73,12 +85,16 @@ Before creating Linear issues:
 When a feature/project starts:
 
 1. **Intake MRD** from TPO - understand scope, dependencies, risks
-2. **Break down into workstreams** - identify parallel vs sequential
-3. **Map dependencies** - internal teams, external vendors
-4. **Identify milestones** - checkpoints for validation
-5. **Document risks** - from MRD + delivery-specific
+2. **Collaborate with SA** on task breakdown granularity
+3. **Map dependencies explicitly** - every task has `blockedBy` or is independent
+4. **Define regression gates** - each feature ends with test validation
+5. **Document in delivery plan** - tasks, dependencies, test requirements, docs
 
-See `references/delivery-plan-template.md` for structure.
+See `references/delivery-plan-template.md` for comprehensive structure including:
+- Task breakdown tables with dependencies
+- INVEST compliance validation
+- Regression gate definitions
+- Linear import summary
 
 ### Phase 2: Execution Tracking
 
@@ -164,12 +180,24 @@ Before closing any parent Issue:
 - [ ] Each sub-issue has completion comment with PR link
 - [ ] All commits reference `[LIN-XXX]` in message
 - [ ] Test coverage documented
+- [ ] Regression gates passed
 
 See `_shared/references/linear-ticket-traceability.md` for full workflow.
 
+## Task Completion Standards
+
+Every completed task MUST have a completion comment documenting:
+- What was implemented
+- Tests added/passed
+- Documentation updated
+- PR link
+
+**Status must be actively maintained** - stale tickets (no update >3 days while "In Progress") trigger TPgM follow-up.
+
 ## Reference Files
 
-- `references/delivery-plan-template.md` - Delivery plan structure
+- `references/delivery-plan-template.md` - Delivery plan with task breakdown tables
+- `references/ticket-quality-checklist.md` - Quality gates for ticket creation
 - `references/status-update-templates.md` - Templates by audience
 - `references/release-checklist.md` - Readiness gates
 - `references/escalation-framework.md` - Blocker escalation

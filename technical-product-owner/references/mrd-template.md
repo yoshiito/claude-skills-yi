@@ -86,9 +86,6 @@ Market Requirements Document - focused exclusively on **What** and **Why**.
 |------|------------|--------|------------|
 | [risk] | [L/M/H] | [L/M/H] | [what we'll do] |
 
-### Open Questions
-[Questions that must be answered before MRD approval - NOT technical questions]
-
 ---
 
 ## 7. Approval
@@ -124,3 +121,4 @@ Before seeking approval:
 - [ ] "Why now" is compelling
 - [ ] Risks are business-level, not technical
 - [ ] No TBD placeholders
+- [ ] **No open questions** - all questions resolved before finalizing

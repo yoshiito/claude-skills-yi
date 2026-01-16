@@ -40,19 +40,51 @@ TPO is **accountable** for PRD completion but not the sole author. Each domain e
 
 TPO may state needs ("sub-200ms response time") but not prescribe solutions ("use Redis caching").
 
-## Critical Rule: MRD Approval Before PRD Elaboration
+## Critical Rules
+
+### Rule 1: No Open Questions in MRD or PRD
+
+**NEVER include open questions in MRD or PRD documents.** These documents represent finalized decisions.
+
+- Track questions in `questions.md` during discovery phase
+- Resolve all questions BEFORE creating MRD
+- If new questions arise, update `questions.md` and resolve them before updating docs
+
+### Rule 2: MRD Approval Before PRD Elaboration
 
 **NEVER begin detailed PRD work without an approved MRD.** Detailed elaboration on unapproved scope is wasted effort.
 
 Workflow:
-1. **Draft MRD** → What/Why only, no implementation details
-2. **Get MRD approved** → Stakeholder sign-off on scope
-3. **Coordinate PRD** → Engage contributors for their sections
-4. **Drive completion** → Ensure all sections complete, resolve conflicts
+1. **Gather requirements** → Ask questions, get answers BEFORE drafting
+2. **Draft MRD** → What/Why only, no implementation details
+3. **Get MRD approved** → Stakeholder sign-off on scope
+4. **Coordinate PRD** → Engage contributors for their sections
+5. **Drive completion** → Ensure all sections complete, resolve conflicts
 
 ## Workflow
 
-### Phase 1: MRD Creation (TPO Solo)
+### Phase 1: Requirements Gathering (MANDATORY FIRST STEP)
+
+**CRITICAL: Do NOT draft the MRD until these questions are answered.** Ask the user directly.
+
+| Area | Questions to Ask |
+|------|------------------|
+| Problem | "What specific problem are we solving? Is this validated with users/data?" |
+| Impact | "What's the cost of not solving this? What happens if we do nothing?" |
+| Users | "Who specifically will use this? What are their goals?" |
+| Success | "How will we measure success? What are the target metrics?" |
+| Scope | "What's explicitly OUT of scope? Why these boundaries?" |
+| Priority | "Why now? What's driving the urgency?" |
+
+**Workflow:**
+1. Ask these questions using AskUserQuestion or direct conversation
+2. Document answers as you receive them
+3. Only proceed to MRD drafting when you have sufficient answers
+4. If user wants to skip questions, warn that MRD quality will suffer
+
+### Phase 2: MRD Creation (TPO Solo)
+
+**Prerequisite:** Phase 1 questions answered. If not, go back.
 
 Create MRD focused exclusively on business context. See `references/mrd-template.md`.
 
@@ -70,17 +102,7 @@ Create MRD focused exclusively on business context. See `references/mrd-template
 - UI wireframes or flows
 - Implementation estimates
 
-**Questions to resolve before MRD is complete:**
-
-| Area | Questions |
-|------|-----------|
-| Problem | Is this validated? What's the cost of not solving? |
-| Users | Who specifically? What are their goals? |
-| Success | How do we measure? What's the target? |
-| Scope | What's explicitly out? Why these boundaries? |
-| Priority | Why now? What's the urgency driver? |
-
-### Phase 2: MRD Approval Gate
+### Phase 3: MRD Approval Gate
 
 Before proceeding to PRD:
 
@@ -92,7 +114,7 @@ Before proceeding to PRD:
 
 If MRD is not approved, iterate or descope. Do NOT proceed to PRD.
 
-### Phase 3: PRD Coordination (TPO + Contributors)
+### Phase 4: PRD Coordination (TPO + Contributors)
 
 Once MRD is approved, engage domain experts to elaborate their sections.
 
@@ -119,7 +141,7 @@ Once MRD is approved, engage domain experts to elaborate their sections.
 
 **Not all contributors are needed for every PRD.** Engage based on feature scope.
 
-### Phase 4: PRD Completion
+### Phase 5: PRD Completion
 
 TPO ensures PRD is complete:
 
@@ -168,16 +190,27 @@ See `_shared/references/linear-ticket-traceability.md` for full workflow.
 
 TPO owns the Plan Registry (`docs/plans/_registry.json`).
 
-Workflow:
+**Folder Structure**: All documents for a feature live in ONE folder:
+```
+docs/plans/{quarter}-{name}/
+├── questions.md    # Open questions (tracked here, NOT in MRD/PRD)
+├── mrd.md          # Market Requirements Document
+└── prd.md          # Product Requirements Document (after MRD approval)
+```
+
+**Workflow:**
 1. Check registry for existing/similar plans
-2. Create MRD in `docs/plans/{quarter}-{name}/mrd.md`
-3. After approval, create PRD in same folder
-4. Add/update entry in registry
+2. Create feature folder: `docs/plans/{quarter}-{name}/`
+3. Create `questions.md` to track open questions during discovery
+4. Only create MRD after questions are answered
+5. After MRD approval, create PRD in same folder
+6. Add/update entry in registry
 
 See `_shared/references/plan-registry-schema.md` for schema.
 
 ## Reference Files
 
+- `references/questions-template.md` - Track open questions during discovery
 - `references/mrd-template.md` - MRD structure (what/why only)
 - `references/prd-template.md` - Full PRD structure (collaborative)
 - `references/gherkin-patterns.md` - Acceptance criteria examples

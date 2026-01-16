@@ -17,6 +17,19 @@ Integration patterns for using Linear MCP server in delivery management.
 
 **Before creating ANY issues in Linear, verify:**
 
+### Critical: Quality Gate Enforcement
+
+**BLOCK ticket creation if quality standards not met.** See `ticket-quality-checklist.md` for full checklist.
+
+Quick validation:
+- [ ] Title follows `[Type] description` convention
+- [ ] Description is complete (not placeholder text)
+- [ ] Acceptance criteria are specific and testable
+- [ ] Dependencies are explicitly declared
+- [ ] Testing requirements are defined
+
+If ANY check fails → STOP, report missing fields, do NOT create ticket.
+
 ### Requirements Phase
 ```
 □ TPO has produced MRD
@@ -291,14 +304,18 @@ Labels: Release, [Version]
 **Don't:**
 - Create issues before requirements are clear
 - Skip the pre-flight checklist
+- Skip quality gate validation
 - Leave blocked issues without escalation
 - Let issues sit in "In Review" > 3 days
+- Create tickets with placeholder acceptance criteria
 
 **Do:**
+- Run `ticket-quality-checklist.md` before every create
 - Get sign-off from relevant skills first
 - Link issues to MRD/ADR documentation
 - Update issues as work progresses
 - Escalate blockers immediately
+- Require completion comments on every task
 
 ### Reporting
 

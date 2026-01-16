@@ -21,11 +21,17 @@ your-project/
 └── docs/
     └── plans/
         ├── _registry.json          # This index file
-        ├── 2024-Q1-auth-revamp/
-        │   └── mrd.md
+        ├── 2024-Q1-auth-revamp/    # All docs for one feature in one folder
+        │   ├── questions.md        # Open questions (tracked separately)
+        │   ├── mrd.md              # Market Requirements Document
+        │   └── prd.md              # Product Requirements Document (after MRD approval)
         └── 2024-Q2-payments/
-            └── mrd.md
+            ├── questions.md
+            ├── mrd.md
+            └── prd.md
 ```
+
+**Critical**: Each feature has ONE folder containing ALL related plan documents. Open questions are tracked in `questions.md`, never embedded in MRD or PRD.
 
 ## Schema Definition
 
