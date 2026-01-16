@@ -10,21 +10,38 @@ Use this template for implementation sub-issues created by Solutions Architect.
 
 ```markdown
 ## Assigned Role
-[Skill/role that should complete this work - e.g., Backend Developer, Frontend Developer, Tech Doc Writer]
+[Skill/role that should complete this work]
 
-## Description
-[Clear, concise description of what needs to be implemented]
+## Story
+As a [user type], I want [capability] so that [benefit].
 
 ## Context
+[Provide enough background for someone unfamiliar with the product to understand:
+- Why this work exists (business driver)
+- How it fits into the larger feature
+- What the user is trying to accomplish
+- Any relevant domain knowledge needed]
+
+**References:**
 - Parent Issue: [TICKET-ID - Parent feature name]
 - ADR: [Link to architecture decision record if applicable]
 - API Spec: [Link to OpenAPI spec if applicable]
 - Design: [Link to Figma/design if applicable]
 
-## Acceptance Criteria
-- [ ] [Specific, testable criterion 1]
-- [ ] [Specific, testable criterion 2]
-- [ ] [Specific, testable criterion 3]
+## Acceptance Criteria (Gherkin)
+```gherkin
+Feature: [Feature name]
+
+  Scenario: [Happy path scenario]
+    Given [initial context]
+    When [action taken]
+    Then [expected outcome]
+
+  Scenario: [Edge case or error scenario]
+    Given [initial context]
+    When [action taken]
+    Then [expected outcome]
+```
 
 ## NFRs (Non-Functional Requirements)
 [Performance, security, accessibility requirements, or "N/A" if none]
@@ -35,12 +52,22 @@ Use this template for implementation sub-issues created by Solutions Architect.
 ## Infrastructure Notes
 [Database changes, environment variables, deployment considerations, or "N/A" if none]
 
-## Testing
-[Test scenarios to cover, edge cases to validate]
-
-## Additional Notes
-[Any other relevant information]
+## Testing Notes
+[Added by Tester - additional test scenarios, edge cases discovered, regression considerations]
 ```
+
+### Section Ownership
+
+| Section | Written By | Purpose |
+|---------|------------|---------|
+| Assigned Role | Solutions Architect | Who implements this |
+| Story | Solutions Architect | User-centric description |
+| Context | Solutions Architect | Background for anyone to understand |
+| Acceptance Criteria | Solutions Architect | Gherkin scenarios defining "done" |
+| NFRs | Solutions Architect | Performance/security requirements |
+| Implementation Notes | Solutions Architect | Technical guidance |
+| Infrastructure Notes | Solutions Architect | Deployment considerations |
+| Testing Notes | Tester | Additional test scenarios after review |
 
 ### Example: Story/Task
 
@@ -48,41 +75,74 @@ Use this template for implementation sub-issues created by Solutions Architect.
 ## Assigned Role
 Backend Developer
 
-## Description
-Backend API to retrieve pricing information for AMC+ from App Store/Play Store price points.
+## Story
+As a subscriber, I want to see current pricing for my subscription plan so that I can understand what I'm paying before making changes.
 
 ## Context
+AMC+ is expanding to support multiple pricing tiers. Users currently have no way to see their current price or compare it to other plans. This API will power the pricing display on the Account Settings page.
+
+The pricing data comes from App Store (iOS) and Play Store (Android) via their respective APIs. We need to cache this data to avoid rate limits and improve response times.
+
+This is part of the larger "Subscription Management" feature where users can view and modify their subscriptions.
+
+**References:**
 - Parent Issue: LIN-456 - AMC+ Pricing Display Feature
 - ADR: /docs/adr/005-pricing-api-design.md
 - API Spec: /docs/api/pricing.yaml
 
-## Acceptance Criteria
-- [ ] GET /api/v1/pricing/{platform} returns price points for iOS/Android
-- [ ] Response includes currency, amount, and billing period
-- [ ] Caches price data for 1 hour to reduce external API calls
-- [ ] Returns 404 for unsupported platforms
+## Acceptance Criteria (Gherkin)
+```gherkin
+Feature: Pricing API
+
+  Scenario: Retrieve iOS pricing successfully
+    Given the App Store API is available
+    When I request GET /api/v1/pricing/ios
+    Then I receive a 200 response
+    And the response includes currency, amount, and billing_period
+    And the response is cached for 1 hour
+
+  Scenario: Retrieve Android pricing successfully
+    Given the Play Store API is available
+    When I request GET /api/v1/pricing/android
+    Then I receive a 200 response
+    And the response includes currency, amount, and billing_period
+
+  Scenario: Request pricing for unsupported platform
+    When I request GET /api/v1/pricing/windows
+    Then I receive a 404 response
+    And the error message indicates unsupported platform
+
+  Scenario: External API timeout with cache hit
+    Given the App Store API is unavailable
+    And cached pricing data exists
+    When I request GET /api/v1/pricing/ios
+    Then I receive a 200 response with cached data
+
+  Scenario: External API timeout without cache
+    Given the App Store API is unavailable
+    And no cached pricing data exists
+    When I request GET /api/v1/pricing/ios
+    Then I receive a 503 response
+```
 
 ## NFRs
 - Response time < 200ms (p95)
 - Cache hit rate > 80%
+- Graceful degradation when external APIs fail
 
 ## Implementation Notes
 - Use existing `ExternalPricingClient` for App Store/Play Store APIs
 - Follow repository pattern in `app/repositories/`
 - Price amounts should be stored as integers (cents)
+- See `app/services/subscription_service.py` for similar patterns
 
 ## Infrastructure Notes
-- Add `PRICING_CACHE_TTL` environment variable
+- Add `PRICING_CACHE_TTL` environment variable (default: 3600 seconds)
 - Redis cache key prefix: `pricing:`
+- No database migrations required
 
-## Testing
-- Happy path: Valid platform returns prices
-- Cache hit: Second request uses cached data
-- Invalid platform: Returns 404
-- External API timeout: Returns cached data or 503
-
-## Additional Notes
-- Price points may vary by region - initial implementation is US-only
+## Testing Notes
+[To be added by Backend Tester after implementation review]
 ```
 
 ### Assigned Role Values
@@ -175,7 +235,7 @@ Use this template for bug reports.
 
 ## Dependency Tracking
 
-Use Linear's native dependency fields instead of adding dependency sections to descriptions:
+Use native dependency fields instead of adding dependency sections to descriptions:
 
 ```python
 # When creating a sub-issue with dependencies
@@ -220,9 +280,10 @@ mcp.create_issue(
 
 Before submitting any ticket:
 
-- [ ] **Description**: Clear and concise?
-- [ ] **Context**: Links to parent/related docs included?
-- [ ] **Acceptance Criteria**: Specific and testable?
+- [ ] **Story**: Written as user story (As a... I want... so that...)?
+- [ ] **Context**: Enough background for someone unfamiliar to understand?
+- [ ] **Acceptance Criteria**: Written in Gherkin format with scenarios?
+- [ ] **References**: Parent issue, ADR, specs linked?
 - [ ] **Dependencies**: Set via `blockedBy`/`blocks` fields?
 - [ ] **Assignee**: Appropriate person assigned?
 - [ ] **Labels**: Correct labels applied?

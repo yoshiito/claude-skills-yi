@@ -44,13 +44,13 @@ All tickets must follow templates from `_shared/references/ticket-templates.md`:
 
 **Required Sections (Story/Task):**
 - [ ] Assigned Role specified
-- [ ] Description clear and concise
-- [ ] Context with parent issue and doc links
-- [ ] Acceptance Criteria specific and testable
+- [ ] Story in user story format (As a... I want... so that...)
+- [ ] Context provides background for unfamiliar reader
+- [ ] Acceptance Criteria in Gherkin format (Given/When/Then scenarios)
 - [ ] NFRs stated (or "N/A")
 - [ ] Implementation Notes provided
 - [ ] Infrastructure Notes stated (or "N/A")
-- [ ] Testing scenarios defined
+- [ ] Testing Notes section present (Tester adds scenarios later)
 
 **Enforcement Protocol:**
 1. Verify ticket follows correct template
