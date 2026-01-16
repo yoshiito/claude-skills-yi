@@ -201,16 +201,29 @@ python scripts/doc_audit.py --project-path /path/to/project --stale-days 90
 
 **CRITICAL**: When assigned a Linear sub-issue for documentation work, follow this workflow to ensure traceability.
 
+### Base Branch Confirmation (REQUIRED)
+
+**Before creating any branch**, ask the user which branch to branch from and merge back to:
+
+```
+Question: "Which branch should I branch from and merge back to?"
+Options: main (Recommended), develop, Other
+```
+
 ### Worker Workflow
 
 ```
 1. Accept work → Move ticket to "In Progress"
-2. Create branch → feature/LIN-XXX-description
-3. Do work → Commit with [LIN-XXX] prefix
-4. Track progress → Add comment on ticket
-5. Complete work → Create PR, move to "In Review"
-6. PR merged → Move to "Done"
+2. Confirm base branch → Ask user which branch to use
+3. Checkout base branch → git checkout {base_branch} && git pull
+4. Create branch → feature/LIN-XXX-description
+5. Do work → Commit with [LIN-XXX] prefix
+6. Track progress → Add comment on ticket
+7. Complete work → Create PR targeting {base_branch}, move to "In Review"
+8. PR merged → Move to "Done"
 ```
+
+See `_shared/references/git-workflow.md` for complete Git workflow details.
 
 ### Starting Work
 
@@ -220,11 +233,12 @@ When you begin work on an assigned documentation sub-issue:
 # Update ticket status
 mcp.update_issue(id="LIN-XXX", state="In Progress")
 
-# Add start comment
+# Add start comment (include base branch)
 mcp.create_comment(
     issueId="LIN-XXX",
     body="""🚀 **Started work**
 - Branch: `feature/LIN-XXX-password-reset-docs`
+- Base: `{base_branch}` (confirmed with user)
 - Approach: API reference + quick start guide for password reset flow
 """
 )

@@ -222,9 +222,23 @@ See `references/security-checklist.md` for complete checklist.
 - `references/typescript-implementation.md` - TypeScript SDK guide
 - `references/security-checklist.md` - Security requirements
 
-## Linear Ticket Traceability
+## Linear Ticket Workflow
 
-**IMPORTANT**: Follow `_shared/references/linear-ticket-traceability.md` for commit conventions.
+**IMPORTANT**: When making code changes, follow the standard Git workflow.
+
+### Base Branch Confirmation (REQUIRED)
+
+**Before creating any branch**, ask the user which branch to branch from and merge back to:
+
+```
+Question: "Which branch should I branch from and merge back to?"
+Options: main (Recommended), develop, Other
+```
+
+See `_shared/references/git-workflow.md` for complete Git workflow details including:
+- Branch naming conventions
+- Commit message format (with ticket ID prefix)
+- PR creation guidelines
 
 ## Summary
 

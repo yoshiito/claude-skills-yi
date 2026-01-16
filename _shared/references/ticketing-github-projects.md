@@ -9,7 +9,7 @@ GitHub Projects-specific mappings and commands. See `ticketing-core.md` for univ
 | Initiative | Project (board) | GitHub Project board groups related work |
 | Project | Milestone or Label | Use milestone for time-bound; label for categorical |
 | Issue | Issue | Standard GitHub issue |
-| Sub-Issue | Task list or Linked issue | Checklist in body, or separate issue with `parent: #123` label |
+| Sub-Issue | Sub-issue (native) | Use GitHub's native sub-issues feature (GA April 2025) |
 
 ```
 Project Board: "Q1 User Growth"
@@ -24,7 +24,13 @@ Project Board: "Q1 User Growth"
 
 `#XXX` or `GH-XXX` (e.g., `#123`, `GH-123`)
 
-## Branch Pattern
+## Git Workflow
+
+See `git-workflow.md` for complete Git workflow including base branch confirmation.
+
+**Key point**: Always ask the user which branch to branch from and merge back to. Do not assume `main`.
+
+### Branch Pattern
 
 ```
 feature/platform/GH-101-password-reset-api
@@ -32,7 +38,7 @@ fix/portal/GH-102-login-validation
 docs/platform/GH-103-api-reference
 ```
 
-## Commit Pattern
+### Commit Pattern
 
 ```
 [GH-123] Brief description
@@ -196,10 +202,11 @@ gh issue close 123
 ### Progress Comments
 
 ```bash
-# Started comment
+# Started comment (include base branch)
 gh issue comment 123 --body "$(cat <<'EOF'
 🚀 **Started**
 - Branch: `feature/platform/GH-123-password-api`
+- Base: `{base_branch}` (confirmed with user)
 - Approach: Implementing REST endpoint with email service
 EOF
 )"
@@ -207,7 +214,7 @@ EOF
 # Completed comment
 gh issue comment 123 --body "$(cat <<'EOF'
 ✅ **Completed**
-- PR: #456
+- PR: #456 (targeting {base_branch})
 - Files: `app/api/auth.py`, `app/services/email.py`
 EOF
 )"
@@ -278,17 +285,103 @@ Configure custom status field in GitHub Project:
 | 👀 In Review | PR created |
 | ✅ Done | PR merged, issue closed |
 
+## Sub-Issues (Native Support)
+
+GitHub now has native sub-issues support (GA as of April 2025). Sub-issues create a parent-child hierarchy for tasks.
+
+### Creating Sub-Issues
+
+```bash
+# Create parent issue first
+gh issue create \
+  --title "[Feature] Implement Password Reset Flow" \
+  --body "## Description
+Implement password reset functionality."
+
+# Create sub-issue linked to parent
+# Use the GitHub web UI or API to create sub-issues under a parent
+# The gh CLI support for sub-issues may require the --parent flag (check current gh version)
+```
+
+### Via GitHub Web UI
+
+1. Open the parent issue
+2. Click "Add sub-issue" in the sub-issues section
+3. Create or link existing issues as sub-issues
+
+### Sub-Issue Features
+
+- **Automatic progress tracking**: Parent issue shows completion % based on sub-issues
+- **Tree visualization**: View hierarchical structure of issues
+- **Inherited context**: Sub-issues inherit project/milestone from parent
+
+## Dependencies (Native Support)
+
+GitHub now has native issue dependencies (GA as of August 2025). Dependencies define blocking relationships between issues.
+
+### Creating Dependencies
+
+```bash
+# Via GitHub web UI or API:
+# 1. Open an issue
+# 2. In the "Development" section, click "Add dependency"
+# 3. Choose "blocked by" or "blocks" relationship
+# 4. Search and select the related issue
+```
+
+### Dependency Types
+
+| Relationship | Meaning |
+|--------------|---------|
+| **Blocked by** | This issue cannot start until the blocking issue is resolved |
+| **Blocks** | This issue is blocking other issues from starting |
+
+### Example Dependency Setup
+
+For a password reset feature:
+
+```
+#101 [Backend] Password reset API
+  └── blocks: #102, #103
+
+#102 [Frontend] Reset form UI
+  └── blocked by: #101
+
+#103 [Docs] Password reset guide
+  └── blocked by: #101
+```
+
+### Tracking Dependencies
+
+When starting work on a blocked issue:
+
+```bash
+# Check if blocker is resolved via web UI or:
+gh issue view 101 --json state
+
+# Once unblocked, start work and add comment
+gh issue comment 102 --body "$(cat <<'EOF'
+🔓 **Unblocked**
+- Blocker #101 is now complete
+- Starting work
+EOF
+)"
+```
+
 ## GitHub-Specific Notes
 
-- **No native sub-issues**: Use task lists in issue body or linked issues with labels
+- **Native sub-issues**: Create hierarchical issue relationships (GA April 2025)
+- **Native dependencies**: Define blocking relationships (GA August 2025)
+- **Issue types**: Classify issues as bugs, features, tasks, etc.
 - **Auto-close**: PRs with `Closes #123` auto-close issues on merge
 - **Projects vs Milestones**: Projects are Kanban boards; Milestones are time-boxed
 - **Task lists**: `- [ ] Task` in issue body creates trackable checkboxes
 - **Cross-repo**: Use `owner/repo#123` to link issues across repositories
+- **Advanced search**: Support for complex queries using `and` and `or`
 
-## Task List for Sub-Issues
+## Legacy: Task List for Sub-Issues
 
-When sub-issues are small, use task list in parent issue body:
+For simple sub-tasks or repositories not using native sub-issues, use task lists in issue body:
 
 ```markdown
 ## Sub-tasks
@@ -297,14 +390,4 @@ When sub-issues are small, use task list in parent issue body:
 - [ ] [Docs] Password reset guide @writer
 
 Track progress by checking off items as completed.
-```
-
-For larger sub-issues, create separate issues with linking:
-
-```bash
-# In sub-issue body, reference parent
-Parent: #101
-
-# Or use a label
-gh issue create --label "parent:#101"
 ```

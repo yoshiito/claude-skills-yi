@@ -88,43 +88,15 @@ Before creating any sub-issue:
 - Notes: [Anything for QA/next steps]
 ```
 
-## Branch Naming
+## Git Workflow
 
-**Pattern**: `{type}/{team}/{TICKET-ID}-{description}`
+See `git-workflow.md` for complete Git workflow including:
+- **Base branch confirmation** (MUST ask user before branching)
+- Branch naming conventions
+- Commit message format
+- PR creation guidelines
 
-| Component | Values |
-|-----------|--------|
-| `type` | `feature`, `fix`, `refactor`, `docs`, `test` |
-| `team` | From project's `claude.md` (e.g., `platform`, `portal`) |
-| `TICKET-ID` | System-specific (e.g., `LIN-101`, `GH-101`, or omit if none) |
-| `description` | Brief slug (e.g., `password-reset-api`) |
-
-**Examples**:
-```bash
-feature/platform/LIN-101-password-reset-api   # Linear
-feature/platform/GH-101-password-reset-api    # GitHub
-feature/platform/password-reset-api           # No system
-```
-
-## Commit Message Format
-
-**Pattern**: `[TICKET-ID] Brief description`
-
-```bash
-[LIN-123] Add password reset endpoint      # Linear
-[GH-123] Add password reset endpoint       # GitHub
-Add password reset endpoint                # No system (describe clearly)
-```
-
-Include ticket link in commit body when helpful:
-```
-[LIN-123] Add password reset endpoint
-
-- Implement POST /api/v1/auth/reset
-- Add email notification service call
-
-Ticket: https://linear.app/team/issue/LIN-123
-```
+**Key point**: Always ask the user which branch to branch from and merge back to. Do not assume `main`.
 
 ## Ticket Status Flow
 

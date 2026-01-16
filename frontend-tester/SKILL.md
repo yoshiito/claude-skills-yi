@@ -118,13 +118,22 @@ Use Playwright screenshots for:
 
 **Note**: Most test work is included within `[Frontend]` sub-issues. Separate `[Test]` sub-issues only for dedicated QA on large features.
 
-When assigned a test sub-issue:
+### Base Branch Confirmation (REQUIRED)
 
-1. **Start work** → Move to "In Progress", add branch comment
-2. **Complete work** → Create PR, add coverage summary comment
+**Before creating any branch**, ask the user which branch to branch from and merge back to:
+
+```
+Question: "Which branch should I branch from and merge back to?"
+Options: main (Recommended), develop, Other
+```
+
+### Worker Workflow
+
+1. **Start work** → Move to "In Progress", confirm base branch with user, add branch comment (include base branch)
+2. **Complete work** → Create PR targeting {base_branch}, add coverage summary comment
 3. **PR merged** → Move to "Done"
 
-See `_shared/references/linear-ticket-traceability.md` for full workflow.
+See `_shared/references/git-workflow.md` for complete Git workflow details.
 
 ## Reference Files
 

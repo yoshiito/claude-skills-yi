@@ -180,21 +180,34 @@ See `references/code-patterns.md` for complete code examples.
 
 **CRITICAL**: When assigned a Linear sub-issue, follow this workflow to ensure traceability.
 
+### Base Branch Confirmation (REQUIRED)
+
+**Before creating any branch**, ask the user which branch to branch from and merge back to:
+
+```
+Question: "Which branch should I branch from and merge back to?"
+Options: main (Recommended), develop, Other
+```
+
 ### Worker Workflow
 
 ```
 1. Accept work → Move ticket to "In Progress"
-2. Create branch → {type}/{team}/LIN-XXX-description (team from claude.md)
-3. Do work → Commit with [LIN-XXX] prefix
-4. Track progress → Add comment on ticket
-5. Complete work → Create PR, move to "In Review"
-6. PR merged → Move to "Done"
+2. Confirm base branch → Ask user which branch to use
+3. Checkout base branch → git checkout {base_branch} && git pull
+4. Create branch → {type}/{team}/LIN-XXX-description (team from claude.md)
+5. Do work → Commit with [LIN-XXX] prefix
+6. Track progress → Add comment on ticket
+7. Complete work → Create PR targeting {base_branch}, move to "In Review"
+8. PR merged → Move to "Done"
 ```
 
 **Branch Pattern**: `{type}/{team}/{LIN-XXX}-{description}`
 - `type`: `feature`, `fix`, `refactor`, `docs`, `test`
 - `team`: From project's `claude.md` Team Context (e.g., `platform`)
 - Example: `feature/platform/LIN-101-password-reset-api`
+
+See `_shared/references/git-workflow.md` for complete Git workflow details.
 
 ### Starting Work
 
@@ -204,11 +217,12 @@ When you begin work on an assigned sub-issue:
 # Update ticket status
 mcp.update_issue(id="LIN-XXX", state="In Progress")
 
-# Add start comment
+# Add start comment (include base branch)
 mcp.create_comment(
     issueId="LIN-XXX",
     body="""🚀 **Started work**
 - Branch: `feature/platform/LIN-XXX-password-reset-api`
+- Base: `{base_branch}` (confirmed with user)
 - Approach: Implementing JWT-based reset tokens with 24h expiry
 """
 )
