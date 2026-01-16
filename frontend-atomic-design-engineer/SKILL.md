@@ -1,5 +1,5 @@
 ---
-name: atomic-design-enforcer
+name: frontend-atomic-design-engineer
 description: Militant enforcement of atomic design principles, component modularity, and Storybook documentation for frontend development. Use when building React components, creating component libraries, structuring frontend applications, refactoring component hierarchies, or ensuring comprehensive component documentation. Enforces strict 5-tier hierarchy (Atoms→Molecules→Organisms→Templates→Pages), single responsibility, composition patterns, mandatory Storybook stories with interaction tests, and systematic architecture with zero compromise.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: material-design-ux
+name: material-ux-designer
 description: Pragmatic Material Design UX guidance with flexible application. Use when designing user interfaces, interaction patterns, user flows, visual hierarchies, or making UX decisions for web and mobile applications. Provides Material Design principles (elevation, typography, motion, color systems) as a foundation while encouraging context-appropriate adaptations. Not a rigid framework but a solid starting point for accessible, usable interfaces.
 ---
 

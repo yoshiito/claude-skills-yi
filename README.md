@@ -20,14 +20,14 @@ Skills are domain-specific prompts that give Claude Code expertise in particular
 | **fastapi-postgres-sqlmodel-developer** | Implement CRUD APIs with FastAPI and PostgreSQL |
 | **fastapi-pytest-tester** | Backend test coverage analysis and test generation |
 | **frontend-tester** | React component testing, Playwright E2E, accessibility |
-| **atomic-design-enforcer** | Enforce atomic design principles in React components |
+| **frontend-atomic-design-engineer** | Enforce atomic design principles in React components |
 | **data-platform-engineer** | Design data pipelines, storage, and vector search |
 | **ai-integration-engineer** | Evaluate and implement AI-powered features |
 | **mcp-server-developer** | Build Model Context Protocol servers |
 | **tech-doc-writer-manager** | Technical documentation authoring and maintenance |
 | **technical-program-manager** | Cross-functional delivery coordination with Linear |
 | **support-engineer** | Error triage, log analysis, and incident investigation |
-| **material-design-ux** | UI/UX guidance based on Material Design |
+| **material-ux-designer** | UI/UX guidance based on Material Design |
 | **svg-designer** | Create logos, icons, and vector illustrations |
 
 ## Skill Workflow Layers
