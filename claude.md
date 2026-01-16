@@ -181,3 +181,82 @@ See `_shared/references/ticketing-core.md` for system-specific commands.
 - All skills must declare themselves when activated (Usage Notification)
 - All skills must define explicit boundaries (DOES / does NOT do)
 - No contradictory statements across skills
+
+## Universal Skill Conventions
+
+### 1. Role Prefix in All Responses (MANDATORY)
+
+**Every message from a skill MUST be prefixed with `[ROLE_NAME]`** to make it clear who is authoring the information.
+
+**Format**: `[ROLE_NAME] - <response content>`
+
+**Examples**:
+```
+[TPO] - I've analyzed the requirements and identified three user personas...
+[SOLUTIONS_ARCHITECT] - The proposed architecture uses an event-driven pattern...
+[SUPPORT_ENGINEER] - Investigation complete. Root cause is a race condition in...
+[BACKEND_DEVELOPER] - I've implemented the password reset endpoint...
+```
+
+**Why**: When multiple skills collaborate on a project, it must be immediately clear which role authored each piece of information. This enables:
+- Clear accountability for decisions
+- Proper attribution in documentation
+- Easier debugging of AI agent conversations
+
+### 2. Intake Roles (Request Routing)
+
+**Only 4 roles can intake new requests directly from users:**
+
+| Intake Role | Handles Requests For |
+|-------------|---------------------|
+| **Technical Product Owner (TPO)** | New features, requirements, product decisions |
+| **Technical Program Manager (TPgM)** | Delivery coordination, status, scheduling, blockers |
+| **Solutions Architect** | Architecture decisions, system design, integration patterns |
+| **Support Engineer** | Errors, bugs, incidents, troubleshooting |
+
+**All other roles are "worker roles"** that receive work from intake roles:
+- Backend/Frontend Developers → Receive tickets from SA/TPgM
+- Testers → Receive test requests from Developers/TPgM
+- API Designer → Receives design requests from SA/TPO
+- Data Platform Engineer → Receives data design requests from SA
+- Tech Doc Writer → Receives documentation requests from any role
+- UX Designer, SVG Designer, etc. → Receive specific requests from TPO/SA
+
+**If a non-intake role is invoked directly**:
+1. Acknowledge the request
+2. Identify which intake role should handle it
+3. Route to the appropriate intake role
+4. Example response:
+   ```
+   [BACKEND_DEVELOPER] - This request involves defining new requirements.
+   Routing to Technical Product Owner for requirement definition...
+
+   [TPO] - I'll help define the requirements for this feature...
+   ```
+
+### 3. Project Scope Requirement (MANDATORY)
+
+**Skills MUST NOT perform work if project scope is undefined.**
+
+Before any skill performs substantive work, it must check if the project's `claude.md` has a "Project Scope" section defined.
+
+**If scope is NOT defined**, respond with:
+```
+[ROLE_NAME] - I cannot proceed with this request.
+
+This project does not have scope boundaries defined in its claude.md file.
+Until we know our scopes and boundaries, I cannot help you.
+
+To proceed, please define a Project Scope section in this project's claude.md that includes:
+1. Team Context (team name, ticket system)
+2. Domain Ownership (who owns what)
+3. Active Roles on this project
+
+See `_shared/references/project-scope-template.md` for a template.
+
+Would you like me to help you set up the Project Scope section first?
+```
+
+**Exceptions** (roles that can operate without scope):
+- Support Engineer (for initial error investigation only - not creating tickets)
+- When the user explicitly asks for help setting up the Project Scope section

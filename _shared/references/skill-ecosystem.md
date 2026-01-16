@@ -2,6 +2,53 @@
 
 Quick reference for understanding how skills relate and when to invoke each one.
 
+## Intake Roles vs Worker Roles
+
+**CRITICAL**: Not all skills can receive direct user requests. Skills are divided into two categories:
+
+### Intake Roles (Can Receive Direct Requests)
+
+| Role | Prefix | Handles |
+|------|--------|---------|
+| **Technical Product Owner (TPO)** | `[TPO]` | New features, requirements, product decisions |
+| **Technical Program Manager (TPgM)** | `[TPgM]` | Delivery coordination, status, scheduling, blockers |
+| **Solutions Architect** | `[SOLUTIONS_ARCHITECT]` | Architecture decisions, system design, integrations |
+| **Support Engineer** | `[SUPPORT_ENGINEER]` | Errors, bugs, incidents, troubleshooting |
+
+### Worker Roles (Receive Work from Intake Roles)
+
+| Role | Prefix | Receives Work From |
+|------|--------|--------------------|
+| Backend Developer | `[BACKEND_DEVELOPER]` | SA, TPgM (via tickets) |
+| Frontend Developer | `[FRONTEND_DEVELOPER]` | SA, TPgM (via tickets) |
+| Backend Tester | `[BACKEND_TESTER]` | Developers, TPgM |
+| Frontend Tester | `[FRONTEND_TESTER]` | Developers, TPgM |
+| API Designer | `[API_DESIGNER]` | SA, TPO |
+| Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` | SA |
+| AI Integration Engineer | `[AI_INTEGRATION_ENGINEER]` | SA, TPO |
+| MCP Server Developer | `[MCP_SERVER_DEVELOPER]` | SA |
+| Tech Doc Writer | `[TECH_DOC_WRITER]` | Any role |
+| UX Designer | `[UX_DESIGNER]` | TPO, SA |
+| SVG Designer | `[SVG_DESIGNER]` | TPO, UX Designer |
+
+### Request Routing Rules
+
+When a **worker role** receives a direct user request:
+
+1. Acknowledge with role prefix: `[ROLE_NAME] - This request involves...`
+2. Identify the appropriate intake role
+3. Route and continue with the intake role
+
+**Example**:
+```
+[BACKEND_DEVELOPER] - This request involves defining new feature requirements.
+Routing to Technical Product Owner for requirement definition...
+
+[TPO] - I'll help define the requirements for this feature...
+```
+
+See `_shared/references/universal-skill-preamble.md` for full preamble rules.
+
 ## Skill Directory
 
 | Skill | Purpose | Primary Output |
