@@ -48,9 +48,80 @@ Add password reset endpoint
 Fixes #123
 ```
 
+## Pre-Creation Confirmation
+
+**CRITICAL**: Before creating any issue, explicitly confirm the GitHub context with the user.
+
+### Step 1: Fetch Available Options
+
+```bash
+# Verify repository
+gh repo view
+
+# List projects (boards)
+gh project list
+
+# List milestones
+gh milestone list
+
+# List labels
+gh label list
+```
+
+### Step 2: Present Options to User
+
+```
+Before creating this issue, please confirm the GitHub context:
+
+Issue: "[Title of the issue]"
+
+**Repository**: (from gh repo view)
+- owner/repo-name
+
+**Project Board** (Initiative level):
+1. Q1 User Growth
+2. Platform Reliability
+3. [Create new project]
+4. [None]
+
+**Milestone** (Project level):
+1. User Authentication System
+2. v2.0 Release
+3. [Create new milestone]
+4. [None]
+
+**Labels**:
+1. feature
+2. backend
+3. frontend
+4. [Other]
+
+Which options should I use?
+```
+
+### Step 3: Create After Confirmation
+
+Only create issues after user confirms:
+- Repository is correct
+- Project board selected (or none)
+- Milestone selected (or none)
+- Labels selected
+
+If project or milestone doesn't exist, create it first:
+
+```bash
+# Create new project
+gh project create --title "New Project Name"
+
+# Create new milestone
+gh milestone create --title "New Milestone"
+```
+
+---
+
 ## CLI Commands
 
-### Fetch Options (Pre-Creation)
+### Fetch Options
 
 ```bash
 # Verify repository
