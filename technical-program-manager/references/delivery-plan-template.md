@@ -196,8 +196,8 @@ Every task must be:
 | **I**ndependent | Can start without waiting? (If not, set `blockedBy`) |
 | **N**egotiable | Is approach flexible, criteria fixed? |
 | **V**aluable | Does it move feature toward "Done"? |
-| **E**stimable | Can developer estimate effort? |
-| **S**mall | Completable in 1-3 days? |
+| **E**stimable | Bounded scope with known files and clear end state? |
+| **S**mall | Single logical change (one PR, one concern)? |
 | **T**estable | Are acceptance criteria verifiable? |
 
 ### Standard Task Types
@@ -215,12 +215,12 @@ Every task must be:
 
 Granularity is determined collaboratively by TPM, SA, and domain experts:
 
-**Fine-grained (0.5-1 day each):**
+**Fine-grained (single focused change):**
 - When tests need dedicated focus (complex edge cases)
 - When multiple reviewers needed
 - When parallelization benefits
 
-**Coarse-grained (1-3 days each):**
+**Coarse-grained (multiple related changes in one PR):**
 - When implementation + tests naturally go together
 - When single developer owns end-to-end
 - Default for most work

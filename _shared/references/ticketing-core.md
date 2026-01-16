@@ -1,0 +1,237 @@
+# Ticketing Core Rules
+
+Universal rules for all ticket systems. System-specific mappings and commands are in separate files.
+
+## Hierarchy (4 Levels)
+
+All ticket systems map to this hierarchy:
+
+| Level | Purpose | Created By |
+|-------|---------|------------|
+| **Initiative** | Strategic company goal | Leadership/TPO |
+| **Project** | Time-bound deliverable | TPO |
+| **Issue** | User-facing feature | TPO |
+| **Sub-Issue** | Implementation work unit | Solutions Architect |
+
+```
+Initiative: "Q1 User Growth"
+└── Project: "User Authentication System"
+    └── Issue: "Implement Password Reset"
+        ├── Sub-Issue: [Backend] Password reset API
+        ├── Sub-Issue: [Frontend] Reset form UI
+        └── Sub-Issue: [Docs] Password reset guide
+```
+
+## Sub-Issue Prefixes
+
+| Prefix | Assigned To | Includes |
+|--------|-------------|----------|
+| `[Backend]` | Backend Developer | Implementation + unit/integration tests |
+| `[Frontend]` | Frontend Developer | UI + component/E2E tests |
+| `[Docs]` | Tech Doc Writer | Documentation |
+| `[API Design]` | API Designer | Contract design (when needed) |
+| `[Test]` | Tester | Dedicated QA effort (when needed) |
+
+## Pre-Creation Checklist
+
+**CRITICAL**: Never assume project context. Always confirm before creating.
+
+- [ ] Fetch available options from ticket system (teams, projects)
+- [ ] Present options to user for selection
+- [ ] Confirm: team, project, assignee
+- [ ] If project doesn't exist, create it first
+
+## Sub-Issue Quality Checklist (INVEST)
+
+Before creating any sub-issue:
+
+- [ ] **Independent**: Can start without waiting for others? (If not, set dependency)
+- [ ] **Negotiable**: Approach is flexible, acceptance criteria is fixed?
+- [ ] **Valuable**: Moves feature toward "Done"?
+- [ ] **Estimable**: Bounded scope with known files and clear end state?
+- [ ] **Small**: Single logical change (one PR, one concern)?
+- [ ] **Testable**: Acceptance criteria are specific and verifiable?
+- [ ] **Context linked**: Parent issue, ADRs, specs included?
+
+## Mandatory Progress Comments
+
+**All workers MUST comment on tickets at these points.**
+
+### When Starting Work
+```markdown
+🚀 **Started**
+- Branch: `{branch-name}`
+- Approach: [Brief implementation approach]
+```
+
+### During Work (for tasks > 1 day)
+```markdown
+📝 **Progress**
+- Done: [What's completed]
+- Next: [Current focus]
+- Blockers: [Any issues]
+```
+
+### When PR Created
+```markdown
+🔍 **Ready for review**
+- PR: [link]
+- Changes: [Brief summary]
+- Tests: [What's covered]
+```
+
+### When Complete
+```markdown
+✅ **Completed**
+- PR merged: [link]
+- Files: [Key files changed]
+- Notes: [Anything for QA/next steps]
+```
+
+## Branch Naming
+
+**Pattern**: `{type}/{team}/{TICKET-ID}-{description}`
+
+| Component | Values |
+|-----------|--------|
+| `type` | `feature`, `fix`, `refactor`, `docs`, `test` |
+| `team` | From project's `claude.md` (e.g., `platform`, `portal`) |
+| `TICKET-ID` | System-specific (e.g., `LIN-101`, `GH-101`, or omit if none) |
+| `description` | Brief slug (e.g., `password-reset-api`) |
+
+**Examples**:
+```bash
+feature/platform/LIN-101-password-reset-api   # Linear
+feature/platform/GH-101-password-reset-api    # GitHub
+feature/platform/password-reset-api           # No system
+```
+
+## Commit Message Format
+
+**Pattern**: `[TICKET-ID] Brief description`
+
+```bash
+[LIN-123] Add password reset endpoint      # Linear
+[GH-123] Add password reset endpoint       # GitHub
+Add password reset endpoint                # No system (describe clearly)
+```
+
+Include ticket link in commit body when helpful:
+```
+[LIN-123] Add password reset endpoint
+
+- Implement POST /api/v1/auth/reset
+- Add email notification service call
+
+Ticket: https://linear.app/team/issue/LIN-123
+```
+
+## Ticket Status Flow
+
+| Stage | Status | Updated By |
+|-------|--------|------------|
+| Created | Backlog/Todo | TPO/Architect |
+| Work started | In Progress | Worker |
+| PR created | In Review | Worker |
+| PR merged | Done | Worker/Auto |
+
+## Role Responsibilities
+
+### TPO (Technical Product Owner)
+- Creates parent Issues with requirements
+- Links to MRD, design docs
+- Verifies acceptance criteria before closing
+
+### Solutions Architect
+- Breaks Issues into Sub-Issues after design
+- Sets dependencies between sub-issues
+- Links ADRs and technical specs
+
+### Developers (Backend/Frontend)
+- Posts progress comments (mandatory)
+- Commits with ticket ID prefix
+- Updates status as work progresses
+
+### Testers
+- Posts test coverage summary on completion
+- Documents tested scenarios
+
+### Tech Doc Writer
+- Posts documentation summary on completion
+- Links to created/updated docs
+
+### TPgM (Technical Program Manager)
+- Tracks progress across all sub-issues
+- Verifies traceability before closing parent
+- Escalates blockers
+
+## Scope Boundary Check
+
+Before creating tickets, verify ownership per project's `claude.md`:
+
+- [ ] This domain is within my ownership?
+- [ ] If NO: Document gap, tag domain owner, do NOT create ticket
+
+## Worker Completion Checklist
+
+Before marking any work as done:
+
+- [ ] All commits reference ticket ID
+- [ ] PR title includes ticket ID
+- [ ] "Started" comment posted
+- [ ] "Completed" comment posted
+- [ ] Ticket status reflects reality
+- [ ] Blockers/notes documented
+
+## Ticket Templates
+
+### Story/Task Template
+
+```markdown
+## Description
+[What needs to be implemented]
+
+## Context
+- Parent Issue: [TICKET-ID - Parent name]
+- ADR: [Link if applicable]
+- API Spec: [Link if applicable]
+
+## Acceptance Criteria
+- [ ] [Specific, testable criterion]
+- [ ] [Specific, testable criterion]
+
+## Implementation Notes
+[Technical guidance, patterns to follow]
+
+## Testing
+[Scenarios to cover, edge cases]
+```
+
+### Bug Template
+
+```markdown
+## Environment
+[Platform, version, environment]
+
+## Impact
+[Critical/High/Medium/Low - business impact]
+
+## Steps to Reproduce
+1. [Step]
+2. [Step]
+
+## Actual Result
+[What happens]
+
+## Expected Result
+[What should happen]
+
+## Testing Notes
+[How to verify fix]
+```
+
+## System-Specific References
+
+- **Linear**: See `ticketing-linear.md`
+- **GitHub Projects**: See `ticketing-github-projects.md`
+- **No system**: See `ticketing-plan-file.md`

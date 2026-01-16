@@ -298,6 +298,17 @@ Quick reference for when to involve other skills:
 | **Check existing plans** | Read `docs/plans/_registry.json` |
 | **Check existing integrations** | Read `docs/integrations/_catalog.json` |
 
-## Linear Ticket Traceability
+## Ticket Traceability
 
-All implementation skills (developers, testers, TPgM) should follow the conventions in `linear-ticket-traceability.md` to ensure code commits reference tickets.
+All implementation skills (developers, testers, TPgM) must follow ticketing conventions to ensure code commits reference work items.
+
+### Ticketing References
+
+| File | When to Use |
+|------|-------------|
+| `ticketing-core.md` | Universal rules (always read first) |
+| `ticketing-linear.md` | Linear ticket system |
+| `ticketing-github-projects.md` | GitHub Projects |
+| `ticketing-plan-file.md` | No external ticket system |
+
+Configure your ticket system in project's `claude.md` under Team Context.

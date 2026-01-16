@@ -125,12 +125,12 @@ Every sub-issue must be:
 - **I**ndependent - Can start without waiting (or set `blockedBy`)
 - **N**egotiable - Approach flexible, criteria fixed
 - **V**aluable - Moves feature toward "Done"
-- **E**stimable - Clear enough for time estimate
-- **S**mall - Completable in 1-3 days
+- **E**stimable - Bounded scope: known files, clear end state
+- **S**mall - Single logical change (one PR, one concern)
 - **T**estable - Verifiable acceptance criteria
 
 See `_shared/references/ticket-templates.md` for sub-issue templates.
-See `_shared/references/linear-ticket-traceability.md` for full workflow.
+See `_shared/references/ticketing-core.md` for full workflow.
 
 ## Integration Catalog Ownership
 

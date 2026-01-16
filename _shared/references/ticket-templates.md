@@ -203,7 +203,8 @@ Before submitting any ticket:
 - [ ] **Description**: Clear and concise?
 - [ ] **Context**: Links to parent/related docs included?
 - [ ] **Acceptance Criteria**: Specific and testable?
-- [ ] **Dependencies**: Set via Linear `blockedBy`/`blocks` fields?
+- [ ] **Dependencies**: Set via `blockedBy`/`blocks` fields?
 - [ ] **Assignee**: Appropriate person assigned?
 - [ ] **Labels**: Correct labels applied?
-- [ ] **Estimate**: Provided if known?
+
+Note: Estimates are added by TPgM during delivery planning, not by ticket creator.

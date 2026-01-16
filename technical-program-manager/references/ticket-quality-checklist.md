@@ -140,8 +140,8 @@ Run this checklist before ANY `create_issue` call:
 - [ ] **I**ndependent: Can start without waiting (or `blockedBy` set)
 - [ ] **N**egotiable: Approach flexible, criteria fixed
 - [ ] **V**aluable: Moves feature toward "Done"
-- [ ] **E**stimable: Scope clear enough for estimate
-- [ ] **S**mall: Completable in 1-3 days
+- [ ] **E**stimable: Bounded scope with known files and clear end state
+- [ ] **S**mall: Single logical change (one PR, one concern)
 - [ ] **T**estable: Criteria can be verified
 
 ---
