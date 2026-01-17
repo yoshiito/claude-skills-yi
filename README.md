@@ -2,13 +2,32 @@
 
 A collection of specialized skills for Claude Code that enable role-based AI assistance across the software development lifecycle.
 
-## What Are Skills?
+## Quick Start
 
-Skills are domain-specific prompts that give Claude Code expertise in particular areas. Each skill defines:
-- **Role boundaries** - What it does and doesn't do
-- **Workflows** - Step-by-step processes to follow
-- **References** - Templates, schemas, and guidelines
-- **Integration points** - How it connects with other skills
+To use these skills in your project:
+
+1. Copy `_shared/references/boilerplate-claude-md.md` to your project as `claude.md`
+2. Fill in the `[placeholders]` for your project
+3. Skills will enforce the rules defined in your `claude.md`
+
+## How It Works
+
+**Every interaction goes through a skill.** No freeform responses.
+
+1. User makes a request
+2. Claude selects and invokes the appropriate skill
+3. Skill checks project scope (refuses if undefined)
+4. Skill verifies domain ownership before acting
+5. Skill prefixes response with `[ROLE_NAME]`
+
+### Intake vs Worker Roles
+
+| Type | Skills | Accepts |
+|------|--------|---------|
+| **Intake** | TPO, Solutions Architect, TPgM, Support Engineer | Direct user requests |
+| **Worker** | All others | Only tickets with Technical Spec + Gherkin |
+
+Worker skills route new feature requests to intake roles.
 
 ## Available Skills
 
@@ -67,6 +86,34 @@ skills/
 │   └── assets/           # Templates and schemas
 ```
 
-## Usage
+## Using the Boilerplate
 
-Skills are invoked automatically by Claude Code based on task context, or explicitly via slash commands (e.g., `/technical-product-owner`).
+The boilerplate (`_shared/references/boilerplate-claude-md.md`) is a template for your project's `claude.md`. It enforces:
+
+### First Action
+Skills must be invoked before any response. No freeform chat.
+
+### Project Scope
+Required sections that skills check before acting:
+
+- **Team Context** — Team slug for branch names, ticket system (`linear`/`github`/`none`), main branch
+- **Domain Ownership** — Who owns what. Skills cannot create tickets or make decisions outside owned domains.
+- **Active Roles** — Which skills are enabled. Skills not listed cannot be invoked.
+- **Cross-Domain Protocol** — How to handle work outside your domain (flag, don't action)
+
+### Naming Rules
+- Plan names: Feature description only. No dates/quarters/sprints.
+- Branch names: `{type}/{team-slug}/{TICKET-ID}-{description}`
+
+### Ticket Requirements
+All tickets need Technical Spec (MUST/MUST NOT/SHOULD) + Gherkin scenarios. TPgM blocks creation without these.
+
+### Skill Behavior
+1. Prefix responses with `[ROLE_NAME]`
+2. Refuse work if Project Scope undefined
+3. Check domain ownership before acting
+4. Confirm base branch before creating feature branches
+
+## Invocation
+
+Skills are invoked via slash commands: `/technical-product-owner`, `/solutions-architect`, etc.
