@@ -2,6 +2,20 @@
 
 This repository contains reusable Claude Code skills for software engineering teams. Skills are role-based prompts that guide Claude through specific workflows with consistent quality.
 
+## Default Skill: Skill Creator
+
+**IMPORTANT**: When working in this repository, ALWAYS use the **Skill Creator** skill.
+
+All requests in this skills library should be handled by Skill Creator, which:
+- Creates new skills following best practices
+- Validates skills against quality gates
+- Enforces role boundaries and prevents overlaps
+- Ensures Claude Code prompt engineering standards
+
+**Invoke with**: `/skill-creator` or simply start working - Skill Creator is the default.
+
+See `skill-creator/SKILL.md` for full details.
+
 ## Project Purpose
 
 Build and maintain a library of AI coding agent skills that:
@@ -61,6 +75,7 @@ Sub-issues follow INVEST adapted for AI agents:
 
 | Layer | Roles | Responsibility |
 |-------|-------|----------------|
+| **Skill Management** | **Skill Creator** | **Manage this skills library (meta-role)** |
 | Product Definition | TPO | What and Why (MRDs) |
 | Architecture | Solutions Architect, API Designer | How it fits together (ADRs, contracts) |
 | Implementation | Backend/Frontend Developers | Build it |
@@ -173,6 +188,17 @@ See `_shared/references/ticketing-core.md` for system-specific commands.
 
 ## Quality Standards
 
+### File Size Limits (Claude Best Practices)
+
+| Metric | Target | Warning | Hard Limit |
+|--------|--------|---------|------------|
+| SKILL.md lines | < 300 | 300-400 | 500 |
+| Reference files | < 200 | 200-300 | 400 |
+
+**Why**: Large files consume Claude's context window inefficiently. Keep skills focused and use `_shared/references/` for reusable content.
+
+### Content Standards
+
 - No open questions in final documents (MRDs, PRDs, ADRs)
 - All tickets follow templates from `ticket-templates.md`
 - Technical Spec defines guardrails for AI Coding Agents
@@ -181,6 +207,14 @@ See `_shared/references/ticketing-core.md` for system-specific commands.
 - All skills must declare themselves when activated (Usage Notification)
 - All skills must define explicit boundaries (DOES / does NOT do)
 - No contradictory statements across skills
+
+### Prompt Engineering Standards
+
+- **Explicit over implicit** - State what role does AND doesn't do
+- **No vague language** - Avoid "try to", "consider", "maybe"
+- **Structured formatting** - Use tables and lists over prose
+- **Actionable checklists** - Over narrative paragraphs
+- **Examples for ambiguity** - When behavior might be unclear
 
 ## Universal Skill Conventions
 

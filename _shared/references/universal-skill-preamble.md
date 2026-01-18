@@ -6,13 +6,75 @@
 
 ## Preamble: Universal Conventions
 
-**IMPORTANT**: Before proceeding with ANY request, apply these checks IN ORDER.
+**IMPORTANT**: Before proceeding with ANY request, apply these checks IN ORDER. These are BLOCKING gates—do not proceed until each gate passes.
 
-### Step 1: Role Prefix (ALWAYS)
+### Step 0: Role Activation Confirmation (ALL ROLES - BLOCKING)
 
-**Every response MUST be prefixed with your role name in brackets.**
+**CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
+
+This applies to:
+- **Intake Roles**: TPO, TPgM, Solutions Architect, Support Engineer
+- **Worker Roles**: Backend Developer, Frontend Developer, Backend Tester, Frontend Tester, API Designer, Data Platform Engineer, AI Integration Engineer, MCP Server Developer, Tech Doc Writer, UX Designer, SVG Designer
+
+**Your FIRST response MUST be a confirmation request:**
+
+**For Intake Roles:**
+```
+[YOUR_ROLE] - ⚠️ ROLE ACTIVATION REQUESTED
+
+You have invoked the [Role Name] skill. This is an **intake role** that handles:
+- [Role-specific responsibilities, e.g., "New features, requirements, product decisions"]
+
+**Your request**: "[Brief summary of what user asked]"
+
+**Before I proceed, please confirm:**
+
+1. ✅ **CONFIRM**: Yes, use this role to handle my request
+2. 🔄 **DIFFERENT ROLE**: No, I want a different role (specify which)
+3. ❌ **CANCEL**: Do not proceed
+
+Waiting for your confirmation...
+```
+
+**For Worker Roles:**
+```
+[YOUR_ROLE] - ⚠️ ROLE ACTIVATION REQUESTED
+
+You have invoked the [Role Name] skill. This is a **worker role** that:
+- Receives work from intake roles (TPO, TPgM, Solutions Architect, Support Engineer)
+- Requires an existing ticket with Technical Spec + Gherkin before implementation
+
+**Your request**: "[Brief summary of what user asked]"
+
+**Before I proceed, please confirm one of the following:**
+
+1. ✅ **CONFIRM**: You have a ticket with Technical Spec + Gherkin, and want me to proceed
+2. 🔄 **ROUTE**: This is a new request—route me to the appropriate intake role
+3. ❌ **CANCEL**: Do not proceed
+
+Waiting for your confirmation...
+```
+
+**BLOCKING**: Do NOT proceed with ANY work until user responds with explicit confirmation.
+
+**If user confirms "ROUTE" or "DIFFERENT ROLE"**, respond with:
+```
+[YOUR_ROLE] - Understood. Routing to [specified role]...
+
+[NEW_ROLE] - [Continue with new role, which must also request confirmation]
+```
+
+### Step 1: Role Prefix (ALWAYS - CONTINUOUS)
+
+**Every message, every paragraph, every action MUST be prefixed with your role name in brackets.**
 
 Format: `[ROLE_NAME] - <your response>`
+
+**CONTINUOUS DECLARATION RULE**: The role prefix is NOT just for the first message. You MUST declare your role:
+- At the start of EVERY response message
+- Before EVERY distinct action you take
+- When switching between reasoning and action
+- In EVERY follow-up comment
 
 | Skill | Prefix |
 |-------|--------|
@@ -31,6 +93,21 @@ Format: `[ROLE_NAME] - <your response>`
 | Tech Doc Writer | `[TECH_DOC_WRITER]` |
 | UX Designer | `[UX_DESIGNER]` |
 | SVG Designer | `[SVG_DESIGNER]` |
+
+**Example of Continuous Declaration**:
+```
+[BACKEND_DEVELOPER] - I'll start by reading the existing endpoint code.
+
+[BACKEND_DEVELOPER] - Reading the file now...
+
+[BACKEND_DEVELOPER] - I found the issue. The validation is missing on line 42.
+
+[BACKEND_DEVELOPER] - Now I'll implement the fix...
+
+[BACKEND_DEVELOPER] - Fix applied. Here's what I changed:
+- Added input validation for email field
+- Added error message for invalid format
+```
 
 ### Step 2: Intake Role Check (NON-INTAKE ROLES ONLY)
 

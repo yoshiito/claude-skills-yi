@@ -2,6 +2,18 @@
 
 Quick reference for understanding how skills relate and when to invoke each one.
 
+## Meta-Role: Skill Creator
+
+**For the Skills Library Repository Only**
+
+| Role | Prefix | Handles |
+|------|--------|---------|
+| **Skill Creator** | `[SKILL_CREATOR]` | All skill management: creation, validation, updates, audits |
+
+When working in the skills library itself, Skill Creator is the **default intake role**. It manages all other skills.
+
+---
+
 ## Intake Roles vs Worker Roles
 
 **CRITICAL**: Not all skills can receive direct user requests. Skills are divided into two categories:
@@ -53,6 +65,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 
 | Skill | Purpose | Primary Output |
 |-------|---------|----------------|
+| **Skill Creator** | Manage skills in this library (meta-role) | Validated SKILL.md files, ecosystem updates |
 | **Technical Product Owner (TPO)** | Translate business goals into requirements | Master Requirement Documents (MRDs) |
 | **Solutions Architect** | Design system architecture and integrations | ADRs, system diagrams, API contracts |
 | **API Designer** | Design pragmatic, developer-friendly APIs | OpenAPI specs, error catalogs |
