@@ -9,7 +9,7 @@ GitHub Projects-specific mappings and commands. See `ticketing-core.md` for univ
 | Initiative | Project (board) | GitHub Project board groups related work |
 | Project | Milestone or Label | Use milestone for time-bound; label for categorical |
 | Issue | Issue | Standard GitHub issue |
-| Sub-Issue | Sub-issue (native) | Use GitHub's native sub-issues feature (GA April 2025) |
+| Sub-Issue | Task list item | Checklist items in issue body (`- [ ] task`) |
 
 ```
 Project Board: "Q1 User Growth"
@@ -285,81 +285,79 @@ Configure custom status field in GitHub Project:
 | 👀 In Review | PR created |
 | ✅ Done | PR merged, issue closed |
 
-## Sub-Issues (Native Support)
+## Sub-Issues (Task Lists)
 
-GitHub now has native sub-issues support (GA as of April 2025). Sub-issues create a parent-child hierarchy for tasks.
+**⚠️ GitHub does NOT have native parent-child issue relationships like Linear.**
 
-### Creating Sub-Issues
+Use **task lists** within an issue body to track sub-tasks:
+
+### Creating Sub-Tasks in Issue Body
 
 ```bash
-# Create parent issue first
 gh issue create \
   --title "[Feature] Implement Password Reset Flow" \
-  --body "## Description
-Implement password reset functionality."
+  --body "$(cat <<'EOF'
+## Description
+Implement password reset functionality.
 
-# Create sub-issue linked to parent
-# Use the GitHub web UI or API to create sub-issues under a parent
-# The gh CLI support for sub-issues may require the --parent flag (check current gh version)
+## Sub-tasks
+- [ ] [Backend] Password reset API
+- [ ] [Frontend] Reset form UI
+- [ ] [Docs] Password reset guide
+
+Track progress by checking off items as completed.
+EOF
+)"
 ```
 
-### Via GitHub Web UI
+### Linking Related Issues (Manual)
 
-1. Open the parent issue
-2. Click "Add sub-issue" in the sub-issues section
-3. Create or link existing issues as sub-issues
-
-### Sub-Issue Features
-
-- **Automatic progress tracking**: Parent issue shows completion % based on sub-issues
-- **Tree visualization**: View hierarchical structure of issues
-- **Inherited context**: Sub-issues inherit project/milestone from parent
-
-## Dependencies (Native Support)
-
-GitHub now has native issue dependencies (GA as of August 2025). Dependencies define blocking relationships between issues.
-
-### Creating Dependencies
+For more complex tracking, create separate issues and link them manually:
 
 ```bash
-# Via GitHub web UI or API:
-# 1. Open an issue
-# 2. In the "Development" section, click "Add dependency"
-# 3. Choose "blocked by" or "blocks" relationship
-# 4. Search and select the related issue
+# Create parent issue
+gh issue create \
+  --title "[Feature] Implement Password Reset Flow" \
+  --body "## Sub-issues
+- #102 [Backend] Password reset API
+- #103 [Frontend] Reset form UI
+- #104 [Docs] Password reset guide"
+
+# Create child issue with reference to parent
+gh issue create \
+  --title "[Backend] Password reset API" \
+  --body "Parent: #101
+
+## Description
+..."
 ```
 
-### Dependency Types
+**Note**: These are just text references - GitHub does not track or enforce these relationships.
 
-| Relationship | Meaning |
-|--------------|---------|
-| **Blocked by** | This issue cannot start until the blocking issue is resolved |
-| **Blocks** | This issue is blocking other issues from starting |
+## Dependencies (Manual Tracking)
 
-### Example Dependency Setup
+**⚠️ GitHub does NOT have native dependency fields like Linear's `blockedBy`/`blocks`.**
 
-For a password reset feature:
+Track dependencies manually using issue body text or comments:
 
+### Document Dependencies in Issue Body
+
+```markdown
+## Dependencies
+
+**Blocked by:**
+- #101 - Backend API must be complete first
+
+**Blocks:**
+- #103 - Frontend needs this API
+- #104 - Docs need the API spec
 ```
-#101 [Backend] Password reset API
-  └── blocks: #102, #103
 
-#102 [Frontend] Reset form UI
-  └── blocked by: #101
+### Track Dependency Status
 
-#103 [Docs] Password reset guide
-  └── blocked by: #101
-```
-
-### Tracking Dependencies
-
-When starting work on a blocked issue:
+When a blocker is resolved, add a comment:
 
 ```bash
-# Check if blocker is resolved via web UI or:
-gh issue view 101 --json state
-
-# Once unblocked, start work and add comment
 gh issue comment 102 --body "$(cat <<'EOF'
 🔓 **Unblocked**
 - Blocker #101 is now complete
@@ -368,26 +366,22 @@ EOF
 )"
 ```
 
+### AI Agent Execution with Dependencies
+
+For AI agents executing GitHub-tracked work:
+
+1. Read the issue body for `Blocked by:` section
+2. Check if blocking issues are closed: `gh issue view 101 --json state`
+3. If blockers are open, skip to next unblocked task
+4. If unblocked, execute the task
+
 ## GitHub-Specific Notes
 
-- **Native sub-issues**: Create hierarchical issue relationships (GA April 2025)
-- **Native dependencies**: Define blocking relationships (GA August 2025)
+- **NO native sub-issues**: Use task lists in issue body or manual linking
+- **NO native dependencies**: Document in issue body, track manually
 - **Issue types**: Classify issues as bugs, features, tasks, etc.
 - **Auto-close**: PRs with `Closes #123` auto-close issues on merge
 - **Projects vs Milestones**: Projects are Kanban boards; Milestones are time-boxed
 - **Task lists**: `- [ ] Task` in issue body creates trackable checkboxes
 - **Cross-repo**: Use `owner/repo#123` to link issues across repositories
 - **Advanced search**: Support for complex queries using `and` and `or`
-
-## Legacy: Task List for Sub-Issues
-
-For simple sub-tasks or repositories not using native sub-issues, use task lists in issue body:
-
-```markdown
-## Sub-tasks
-- [ ] [Backend] Password reset API @developer1
-- [ ] [Frontend] Reset form UI @developer2
-- [ ] [Docs] Password reset guide @writer
-
-Track progress by checking off items as completed.
-```

@@ -2,8 +2,24 @@
 
 Tracking work without an external ticket system. See `ticketing-core.md` for universal rules.
 
-## When to Use
+## ⚠️ ENFORCEMENT WARNING
 
+**This file is ONLY for projects where `Ticket System: none` in claude.md.**
+
+### DO NOT USE Plan Files If:
+
+| Condition | What to Do Instead |
+|-----------|-------------------|
+| Project has `Ticket System: linear` | Use Linear MCP commands (see `ticketing-linear.md`) |
+| Project has `Ticket System: github` | Use GitHub Issues (see `ticketing-github-projects.md`) |
+| Linear/GitHub MCP is "unavailable" | STOP and ask user to fix connection - do NOT fall back |
+| You think markdown is "faster" | NO. Use the configured system. |
+
+**If you're reading this file but the project uses Linear or GitHub, STOP and use the correct system.**
+
+## When to Use (Legitimate Cases ONLY)
+
+- `Ticket System: none` is explicitly set in project's claude.md
 - Small teams without formal project management
 - Personal projects
 - Open source with minimal process
@@ -66,12 +82,12 @@ Create `docs/plans/{feature-name}.md`:
 ## Tasks
 
 ### {Component 1}
-- [ ] Sub-task 1 - @assignee
-- [ ] Sub-task 2 - @assignee
+- [ ] Sub-task 1
+- [ ] Sub-task 2 (blockedBy: Sub-task 1)
 
 ### {Component 2}
-- [ ] Sub-task 1 - @assignee
-- [ ] Sub-task 2 - @assignee
+- [ ] Sub-task 1 (blockedBy: {Component 1} Sub-task 2)
+- [ ] Sub-task 2 (blockedBy: Sub-task 1)
 
 ## Progress Log
 
@@ -84,6 +100,8 @@ Create `docs/plans/{feature-name}.md`:
 - PR: #{number} (when created)
 - ADR: docs/adr/{number}.md
 ```
+
+**Note**: Use `(blockedBy: ...)` for dependencies. Omit `@assignee` for AI agent execution.
 
 ## Progress Tracking
 
@@ -144,7 +162,64 @@ Add password reset endpoint with email notification
 Part of: user-authentication plan
 ```
 
-## Coordination Without Tickets
+## AI Agent Execution Mode
+
+**When an AI agent is executing planned work, these rules apply:**
+
+### No Sprints or Arbitrary Assignments
+
+- ❌ DO NOT create sprint assignments
+- ❌ DO NOT assign work to team members (@alice, @bob)
+- ❌ DO NOT batch tasks into "phases" or "iterations"
+- ✅ Execute tasks sequentially in the order listed
+- ✅ Respect explicit `blockedBy` dependencies only
+- ✅ Mark each task complete before moving to the next
+
+### Execution Sequence
+
+```
+1. Read the plan file
+2. Find the first unchecked task: `- [ ]`
+3. Check if it has a `blockedBy` that is still incomplete
+   - If blocked: skip to next unblocked task
+   - If unblocked: execute it
+4. Mark task complete: `- [x]`
+5. Repeat until all tasks done
+```
+
+### Plan File Format for AI Execution
+
+```markdown
+## Tasks
+
+### Backend
+- [ ] Password reset API
+- [ ] Rate limiting (blockedBy: Password reset API)
+
+### Frontend
+- [ ] Reset form (blockedBy: Password reset API)
+
+### Documentation
+- [ ] Password reset guide (blockedBy: Reset form)
+```
+
+**Note**: The `(blockedBy: ...)` annotation is the ONLY coordination mechanism needed. No sprints, no assignees, no phases.
+
+### Progress Updates During Execution
+
+As the agent works, update the plan file:
+
+```markdown
+## Tasks
+
+### Backend
+- [x] Password reset API ✓ 2025-01-16
+- [ ] Rate limiting (blockedBy: Password reset API)
+```
+
+## Human Team Coordination (Optional)
+
+**Only use this section if multiple humans are coordinating work.**
 
 ### Assign Work
 

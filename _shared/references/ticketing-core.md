@@ -2,6 +2,64 @@
 
 Universal rules for all ticket systems. System-specific mappings and commands are in separate files.
 
+## PM Tool Enforcement (MANDATORY)
+
+**CRITICAL**: Skills MUST use the project's configured ticket system. Falling back to markdown files when a proper PM tool is configured is a VIOLATION.
+
+### Pre-Work Check (Required Before ANY Ticket Operation)
+
+```
+1. READ project's claude.md → find "Ticket System" field
+2. IF Ticket System = "linear" → MUST use Linear MCP commands
+3. IF Ticket System = "github" → MUST use GitHub Issues/Projects
+4. IF Ticket System = "none" → ONLY THEN use plan files
+5. IF Ticket System field is MISSING → ASK user to configure it first
+```
+
+### Enforcement Rules
+
+| Configured System | Allowed | NOT Allowed |
+|-------------------|---------|-------------|
+| `linear` | Linear MCP commands | Creating `docs/plans/*.md`, markdown checklists as tickets |
+| `github` | `gh` CLI, GitHub API | Creating `docs/plans/*.md`, markdown checklists as tickets |
+| `none` | `docs/plans/*.md` | N/A (this is the fallback) |
+
+### Failure Modes to Avoid
+
+**DO NOT**:
+- Create a markdown plan file "because Linear is slow"
+- Use `docs/plans/` when Linear/GitHub is configured
+- Assume "no MCP available" without checking
+- Fall back to markdown "temporarily"
+
+**IF PM tool is unavailable** (MCP not connected, API error):
+1. STOP and inform user: "Linear MCP is not available. Please connect it or change Ticket System to 'none'."
+2. DO NOT proceed with markdown fallback
+3. Wait for user decision
+
+### Example Enforcement Check
+
+```python
+# Pseudocode every skill should follow:
+ticket_system = read_claude_md().get("Ticket System")
+
+if ticket_system == "linear":
+    if not mcp_linear_available():
+        STOP("Linear MCP not connected. Cannot proceed.")
+    use_linear_commands()  # REQUIRED
+
+elif ticket_system == "github":
+    if not gh_cli_available():
+        STOP("GitHub CLI not available. Cannot proceed.")
+    use_github_commands()  # REQUIRED
+
+elif ticket_system == "none":
+    use_plan_files()  # OK
+
+else:
+    ASK_USER("Ticket System not configured. Please set it in claude.md.")
+```
+
 ## Hierarchy (4 Levels)
 
 All ticket systems map to this hierarchy:

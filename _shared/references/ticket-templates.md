@@ -330,7 +330,11 @@ Use this template for bug reports.
 
 ## Dependency Tracking
 
-Use native dependency fields instead of adding dependency sections to descriptions:
+Dependency tracking varies by ticket system:
+
+### Linear (Native Fields)
+
+Linear has native dependency fields - use them:
 
 ```python
 # When creating a sub-issue with dependencies
@@ -352,14 +356,44 @@ mcp.create_issue(
 )
 ```
 
-### Dependency Types
-
 | Relation | When to Use | Example |
 |----------|-------------|---------|
 | `blockedBy` | This issue cannot start until another completes | Frontend blocked by Backend API |
 | `blocks` | Other issues cannot start until this completes | Backend API blocks Frontend |
 | `relatedTo` | Issues are related but not dependent | Two features touching same code |
 | `duplicateOf` | This issue duplicates another | Bug already reported |
+
+### GitHub (Manual in Issue Body)
+
+**⚠️ GitHub does NOT have native `parentId`, `blockedBy`, or `blocks` fields.**
+
+Document dependencies in the issue body instead:
+
+```markdown
+## Dependencies
+
+**Parent:** #101 - Password Reset Feature
+
+**Blocked by:**
+- #102 - Backend API must be complete first
+
+**Blocks:**
+- #104 - Documentation depends on this
+```
+
+See `ticketing-github-projects.md` for GitHub-specific patterns.
+
+### Plan Files (Inline Annotation)
+
+Use inline `(blockedBy: ...)` annotations:
+
+```markdown
+- [ ] Backend API
+- [ ] Frontend form (blockedBy: Backend API)
+- [ ] Documentation (blockedBy: Frontend form)
+```
+
+See `ticketing-plan-file.md` for plan file patterns.
 
 ## Template Selection Guide
 
@@ -380,7 +414,10 @@ Before submitting any ticket:
 - [ ] **Technical Spec**: MUST/MUST NOT/SHOULD constraints defined for AI agents?
 - [ ] **Gherkin Scenarios**: Behavioral tests written in Given/When/Then format?
 - [ ] **References**: Parent issue, ADR, specs linked?
-- [ ] **Dependencies**: Set via `blockedBy`/`blocks` fields?
+- [ ] **Dependencies**: Documented appropriately for the ticket system?
+  - Linear: Use native `blockedBy`/`blocks` fields
+  - GitHub: Document in issue body (no native fields)
+  - Plan files: Use `(blockedBy: ...)` inline annotation
 - [ ] **Assignee**: Appropriate person assigned?
 - [ ] **Labels**: Correct labels applied?
 

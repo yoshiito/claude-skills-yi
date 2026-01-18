@@ -14,7 +14,7 @@ Copy this section into your project's `claude.md` file and customize for your pr
 |-------|-------|-------|
 | **Team** | `[team-slug]` | Lowercase, used in branch names |
 | **Team Name** | [Team Display Name] | Human-readable name |
-| **Ticket System** | `linear` / `github` / `none` | Which system tracks issues |
+| **Ticket System** | `linear` / `github` / `none` | **ENFORCED** - skills MUST use this system |
 | **Main Branch** | `main` | Default branch for PRs |
 
 **Key Principle**: One team owns one codebase. The team slug is used consistently across:
@@ -70,6 +70,11 @@ main ─────────────────────────
 ```
 
 ### Ticket System Context
+
+**ENFORCEMENT**: The `Ticket System` field above is MANDATORY. Skills will:
+- **REFUSE** to create markdown plan files if `linear` or `github` is configured
+- **STOP** and ask for configuration if this field is missing
+- **FAIL** explicitly if the configured tool is unavailable (won't silently fall back)
 
 Configure based on your `Ticket System` setting above.
 
