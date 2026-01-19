@@ -108,7 +108,7 @@ Before creating any sub-issue, verify ALL items:
 ### Independence Check
 - [ ] Can start without waiting for others?
   - **If YES**: Mark as independent (no blockedBy)
-  - **If NO**: Set `blockedBy` via native field (Linear: `blockedBy`, GitHub: `--add-blocked-by`)
+  - **If NO**: Set `blockedBy` via native field (Linear: `blockedBy`, GitHub: GraphQL `addBlockedBy`)
 - [ ] Dependencies set via native fields, NOT in issue body text
 
 ### Negotiable Check
@@ -138,7 +138,7 @@ Before creating any sub-issue, verify ALL items:
 - [ ] Agent Tester can verify completion without ambiguity?
 
 ### Context Check
-- [ ] Parent relationship set via native field (Linear: `parentId`, GitHub: `--parent`)
+- [ ] Parent relationship set via native field (Linear: `parentId`, GitHub: GraphQL `addSubIssue` mutation)
 - [ ] ADRs linked if architectural decisions involved?
 - [ ] API specs linked if API work involved?
 

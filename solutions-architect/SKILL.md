@@ -153,8 +153,8 @@ For EACH sub-issue, verify:
 
 **Independence**
 - [ ] Can start without waiting for others? → If NO, set `blockedBy` via native field
-- [ ] Dependencies set via native fields only (Linear: `blockedBy`, GitHub: `--add-blocked-by`)
-- [ ] Parent set via native field (Linear: `parentId`, GitHub: `--parent`)
+- [ ] Dependencies set via native fields only (Linear: `blockedBy`, GitHub: GraphQL `addBlockedBy`)
+- [ ] Parent set via native field (Linear: `parentId`, GitHub: GraphQL `addSubIssue`)
 
 **Negotiable**
 - [ ] HOW is flexible (implementation approach can vary)?
@@ -201,10 +201,12 @@ Every sub-issue MUST include:
 
 Set relationships via native fields, NOT in issue body text:
 
-| System | Parent | Blocked By | Blocks |
-|--------|--------|------------|--------|
-| Linear | `parentId` parameter | `blockedBy` parameter | `blocks` parameter |
-| GitHub | `--parent` flag | `--add-blocked-by` flag | `--add-blocks` flag |
+| System | Parent | Blocked By | Notes |
+|--------|--------|------------|-------|
+| Linear | `parentId` parameter | `blockedBy` parameter | Via MCP at issue creation |
+| GitHub | GraphQL `addSubIssue` mutation | GraphQL `addBlockedBy` mutation | Requires node IDs + `-H "GraphQL-Features: sub_issues"` header |
+
+**For GitHub**: See `_shared/references/ticketing-github-projects.md` for complete GraphQL workflow. CLI flags (`--parent`, `--add-blocked-by`) do NOT exist.
 
 ### Standard Sub-Issues
 
@@ -281,9 +283,9 @@ Before creating sub-issues (ALL gates must pass):
 - [ ] Testable: Gherkin scenarios specific and verifiable
 
 **Gate 3: Native Relationship Fields** (run for EACH sub-issue)
-- [ ] Parent: Identified, will set via `parentId` (Linear) or `--parent` (GitHub)
-- [ ] Blocked By: Dependencies identified, will set via `blockedBy`/`--add-blocked-by`
-- [ ] Blocks: Dependents identified, will set via `blocks`/`--add-blocks`
+- [ ] Parent: Identified, will set via `parentId` (Linear) or GraphQL `addSubIssue` mutation (GitHub)
+- [ ] Blocked By: Dependencies identified, will set via `blockedBy` (Linear) or GraphQL `addBlockedBy` mutation (GitHub)
+- [ ] Blocks: Dependents identified, will set via related issues (tracked by inverse `blockedBy` relationships)
 
 **STOP**: If any gate fails, revise and re-check before creating sub-issues.
 

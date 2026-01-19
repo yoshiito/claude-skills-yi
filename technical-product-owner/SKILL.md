@@ -262,9 +262,10 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Testable: Gherkin scenarios specific and verifiable
 
 **Gate 3: Native Relationship Fields**
-- [ ] Parent set via native field (Linear: `parentId`, GitHub: `--parent`)
-- [ ] Blocked By set via native field if dependencies exist
+- [ ] Parent set via native field (Linear: `parentId`, GitHub: GraphQL `addSubIssue` mutation)
+- [ ] Blocked By set via native field if dependencies exist (Linear: `blockedBy`, GitHub: GraphQL `addBlockedBy` mutation)
 - [ ] Relationships NOT duplicated in issue body text
+- [ ] For GitHub: Verify relationship with GraphQL query (see `ticketing-github-projects.md`)
 
 **If any gate fails:** Route back to SA for correction before TPgM begins delivery planning.
 

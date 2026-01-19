@@ -338,8 +338,8 @@ How to set dependencies varies by ticket system. Use the correct method for your
 
 | System | Method | Parent | Blocked By | Blocks |
 |--------|--------|--------|------------|--------|
-| **Linear** | Native fields | `parentId` | `blockedBy` | `blocks` |
-| **GitHub** | Native fields | `--parent` | `--add-blocked-by` | `--add-blocks` |
+| **Linear** | Native fields (MCP) | `parentId` | `blockedBy` | `blocks` |
+| **GitHub** | GraphQL mutations | `addSubIssue` mutation | `addBlockedBy` mutation | (inverse of blockedBy) |
 | **Plan Files** | Inline text | N/A | `(blockedBy: ...)` | N/A |
 
 ### Linear (Native Fields)
@@ -371,28 +371,55 @@ mcp.create_issue(
 | `blocks` | Other issues cannot start until this completes | Backend API blocks Frontend |
 | `relatedTo` | Issues are related but not dependent | Two features touching same code |
 
-### GitHub Projects (Native Relationship Fields)
+### GitHub Projects (Native Relationship Fields via GraphQL)
 
-GitHub Projects has native relationship fields. Use CLI flags, not issue body text.
+GitHub provides native relationship fields via GraphQL Sub-Issues API (beta feature).
+
+**IMPORTANT**: CLI flags like `--parent`, `--add-blocked-by` do NOT exist. Use GraphQL mutations.
 
 ```bash
-# Create sub-issue with parent
-gh issue create --title "[Frontend] Reset form UI" --parent 101 --body "..."
+# Create issues first
+parent_num=$(gh issue create --title "[Feature] Password Reset" --body "..." | grep -oP '\d+')
+child_num=$(gh issue create --title "[Frontend] Reset form UI" --body "..." | grep -oP '\d+')
+
+# Get node IDs
+REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner')
+parent_node=$(gh api repos/$REPO/issues/$parent_num --jq '.node_id')
+child_node=$(gh api repos/$REPO/issues/$child_num --jq '.node_id')
+
+# Set parent-child relationship
+gh api graphql -H "GraphQL-Features: sub_issues" -f query='
+mutation {
+  addSubIssue(input: {
+    issueId: "'"$parent_node"'"
+    subIssueId: "'"$child_node"'"
+  }) {
+    issue { number }
+    subIssue { number }
+  }
+}'
 
 # Set blocking relationship
-gh issue edit 103 --add-blocked-by 102
-
-# View relationships
-gh issue view 103 --json parent,blockedBy,blocks
+blocker_node=$(gh api repos/$REPO/issues/102 --jq '.node_id')
+gh api graphql -H "GraphQL-Features: sub_issues" -f query='
+mutation {
+  addBlockedBy(input: {
+    issueId: "'"$child_node"'"
+    blockingIssueId: "'"$blocker_node"'"
+  }) {
+    issue { number }
+  }
+}'
 ```
 
-| Relationship | CLI Flag |
-|--------------|----------|
-| `parent` | `--parent ISSUE_NUMBER` or `--add-parent` |
-| `blockedBy` | `--add-blocked-by ISSUE_NUMBER` |
-| `blocks` | `--add-blocks ISSUE_NUMBER` |
+| Relationship | GraphQL Mutation |
+|--------------|------------------|
+| `parent` | `addSubIssue` (requires node IDs + beta header) |
+| `blockedBy` | `addBlockedBy` (requires node IDs + beta header) |
+| `remove parent` | `removeSubIssue` |
+| `remove blockedBy` | `removeBlockedBy` |
 
-See `ticketing-github-projects.md` for full GitHub Projects workflow.
+See `ticketing-github-projects.md` for full GitHub GraphQL workflow.
 
 ### Plan Files (Inline Annotation)
 
@@ -426,8 +453,8 @@ Before submitting any ticket:
 - [ ] **Gherkin Scenarios**: Behavioral tests written in Given/When/Then format?
 - [ ] **References**: Parent issue, ADR, specs linked?
 - [ ] **Dependencies set correctly for your system**:
-  - Linear: `parentId`, `blockedBy`, `blocks` native fields
-  - GitHub: `--parent`, `--add-blocked-by`, `--add-blocks` flags
+  - Linear: `parentId`, `blockedBy`, `blocks` native fields via MCP
+  - GitHub: GraphQL `addSubIssue`, `addBlockedBy` mutations (NOT CLI flags)
   - Plan files: `(blockedBy: ...)` inline annotation
 - [ ] **Assignee**: Appropriate person assigned?
 - [ ] **Labels**: Correct labels applied?
