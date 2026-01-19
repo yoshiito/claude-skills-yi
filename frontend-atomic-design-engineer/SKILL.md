@@ -207,6 +207,7 @@ Code reviews must reject:
 | **Frontend Tester** | Test scenarios, accessibility |
 | **Backend Developer** | API contract alignment |
 | **Tech Doc Writer** | Component documentation |
+| **Code Reviewer** | PR review before completion |
 | **TPgM** | Progress tracking, blockers |
 
 ### Consultation Triggers
@@ -222,6 +223,7 @@ Code reviews must reject:
 □ Storybook stories complete
 □ Frontend Tester has test strategy
 □ Accessibility validated
+□ Code Reviewer approved PR (MANDATORY)
 □ TPgM updated on progress
 ```
 
@@ -288,9 +290,31 @@ mcp.create_comment(
 Ticket: https://linear.app/team/issue/LIN-XXX
 ```
 
+### Code Review (MANDATORY BEFORE PR)
+
+**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
+
+```
+[FRONTEND_DEVELOPER] - Implementation complete. Invoking Code Reviewer for PR review.
+
+/code-reviewer
+
+PR: https://github.com/org/repo/pull/123
+Branch: feature/portal/LIN-XXX-password-reset-form
+Changes: Created ResetPasswordForm molecule with validation
+```
+
+**Workflow**:
+1. Self-review your changes first
+2. Ensure all tests pass
+3. Invoke `/code-reviewer` with PR details
+4. Address all Critical and High severity issues
+5. Request re-review if changes were required
+6. Only after Code Reviewer approves → Create PR and move to "In Review"
+
 ### Completion Comment Template
 
-When PR is ready for review:
+When Code Reviewer approves and PR is ready:
 
 ```python
 mcp.update_issue(id="LIN-XXX", state="In Review")
@@ -299,6 +323,7 @@ mcp.create_comment(
     issueId="LIN-XXX",
     body="""🔍 **Ready for review**
 - PR: [link to PR]
+- Code Review: ✅ Approved by Code Reviewer
 
 ## Implementation Summary
 - Components: ResetPasswordForm (molecule), PasswordInput (atom)

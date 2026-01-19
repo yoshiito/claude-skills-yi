@@ -82,13 +82,13 @@ Initiative: "Q1 User Growth"
 
 ## Sub-Issue Prefixes
 
-| Prefix | Assigned To | Includes |
-|--------|-------------|----------|
-| `[Backend]` | Backend Developer | Implementation + unit/integration tests |
-| `[Frontend]` | Frontend Developer | UI + component/E2E tests |
-| `[Docs]` | Tech Doc Writer | Documentation |
-| `[API Design]` | API Designer | Contract design (when needed) |
-| `[Test]` | Tester | Dedicated QA effort (when needed) |
+| Prefix | Assigned To (exact skill name) | Includes |
+|--------|--------------------------------|----------|
+| `[Backend]` | `backend-fastapi-postgres-sqlmodel-developer` | Implementation + unit/integration tests |
+| `[Frontend]` | `frontend-atomic-design-engineer` | UI + component/E2E tests |
+| `[Docs]` | `tech-doc-writer-manager` | Documentation |
+| `[API Design]` | `api-designer` | Contract design (when needed) |
+| `[Test]` | `backend-fastapi-pytest-tester` or `frontend-tester` | Dedicated QA effort (when needed) |
 
 ## Pre-Creation Checklist
 
@@ -99,17 +99,50 @@ Initiative: "Q1 User Growth"
 - [ ] Confirm: team, project, assignee
 - [ ] If project doesn't exist, create it first
 
-## Sub-Issue Quality Checklist (INVEST)
+## Sub-Issue Quality Checklist (INVEST) - MANDATORY
 
-Before creating any sub-issue:
+**BLOCKING**: Sub-issues that fail INVEST checks MUST be revised before creation.
 
-- [ ] **Independent**: Can start without waiting for others? (If not, set dependency)
-- [ ] **Negotiable**: Approach is flexible, acceptance criteria is fixed?
-- [ ] **Valuable**: Moves feature toward "Done"?
-- [ ] **Estimable**: Bounded scope with known files and clear end state?
-- [ ] **Small**: Single logical change (one PR, one concern)?
-- [ ] **Testable**: Technical Spec + Gherkin scenarios are specific and verifiable?
-- [ ] **Context linked**: Parent issue, ADRs, specs included?
+Before creating any sub-issue, verify ALL items:
+
+### Independence Check
+- [ ] Can start without waiting for others?
+  - **If YES**: Mark as independent (no blockedBy)
+  - **If NO**: Set `blockedBy` via native field (Linear: `blockedBy`, GitHub: `--add-blocked-by`)
+- [ ] Dependencies set via native fields, NOT in issue body text
+
+### Negotiable Check
+- [ ] Approach is flexible (HOW is negotiable)?
+- [ ] Acceptance criteria is fixed (WHAT is non-negotiable)?
+- [ ] Technical Spec has MUST/MUST NOT/SHOULD constraints?
+
+### Valuable Check
+- [ ] Moves feature toward "Done"?
+- [ ] Delivers user-visible or developer-visible value?
+- [ ] Not just a "refactor for the sake of refactoring"?
+
+### Estimable Check
+- [ ] Bounded scope with known files?
+- [ ] Clear end state defined?
+- [ ] No open questions in the ticket?
+
+### Small Check
+- [ ] Single logical change?
+- [ ] One PR, one concern?
+- [ ] Can be completed in 1-3 days max?
+- [ ] **If larger**: Break down into smaller sub-issues
+
+### Testable Check
+- [ ] Technical Spec defines verifiable constraints?
+- [ ] Gherkin scenarios provide Given/When/Then validation?
+- [ ] Agent Tester can verify completion without ambiguity?
+
+### Context Check
+- [ ] Parent relationship set via native field (Linear: `parentId`, GitHub: `--parent`)
+- [ ] ADRs linked if architectural decisions involved?
+- [ ] API specs linked if API work involved?
+
+**STOP**: If any check fails, revise the sub-issue before creation.
 
 ## Mandatory Progress Updates
 
@@ -182,35 +215,68 @@ See `git-workflow.md` for complete Git workflow including:
 | PR created | In Review | Worker |
 | PR merged | Done | Worker/Auto |
 
-## Role Responsibilities
+## Role Responsibilities: Ticket Creators vs Workers
 
-### TPO (Technical Product Owner)
-- Creates parent Issues with requirements
-- Links to MRD, design docs
-- Verifies acceptance criteria before closing
+### Ticket Creator Roles (Who Creates Tickets)
 
-### Solutions Architect
-- Breaks Issues into Sub-Issues after design
-- Sets dependencies between sub-issues
+| Skill Name | Creates | Template | INVEST Required |
+|------------|---------|----------|-----------------|
+| `technical-product-owner` | Parent Issues | MRD in description | N/A (parent issues) |
+| `solutions-architect` | Sub-Issues | Story/Task template | **YES - MANDATORY** |
+| `support-engineer` | Bug reports | Bug template | N/A (bugs) |
+
+**Only these 3 roles create tickets.** All other roles work on existing tickets.
+
+### Worker Roles (Who Works on Tickets)
+
+| Skill Name | Works On | Updates | Does NOT Create |
+|------------|----------|---------|-----------------|
+| `backend-fastapi-postgres-sqlmodel-developer` | Sub-issues assigned to them | Status, progress comments | New sub-issues |
+| `frontend-atomic-design-engineer` | Sub-issues assigned to them | Status, progress comments | New sub-issues |
+| `backend-fastapi-pytest-tester` | Test sub-issues | Test coverage notes | Implementation tickets |
+| `frontend-tester` | Test sub-issues | Test coverage notes | Implementation tickets |
+| `tech-doc-writer-manager` | Doc sub-issues | Documentation links | Implementation tickets |
+| `technical-program-manager` | Tracks all tickets | Delivery status | Implementation tickets |
+
+### Role-Specific Responsibilities
+
+**`technical-product-owner`**
+- Creates parent Issues with MRD requirements
+- Reviews sub-issues for alignment with requirements
+- Verifies acceptance criteria before closing feature
+- Does NOT create sub-issues (that's `solutions-architect`)
+
+**`solutions-architect`**
+- Breaks parent Issues into Sub-Issues after architecture design
+- **MUST pass INVEST checklist** before creating any sub-issue
+- Sets `parent` and `blockedBy` via native fields (not issue body)
 - Links ADRs and technical specs
 
-### Developers (Backend/Frontend)
-- Posts progress comments (mandatory)
+**`backend-fastapi-postgres-sqlmodel-developer` / `frontend-atomic-design-engineer`**
+- Works on assigned sub-issues only
+- Posts mandatory progress comments
 - Commits with ticket ID prefix
 - Updates status as work progresses
+- Does NOT create new tickets (requests new work via TPO/SA)
 
-### Testers
+**`backend-fastapi-pytest-tester` / `frontend-tester`**
+- Works on test sub-issues assigned by SA
 - Posts test coverage summary on completion
 - Documents tested scenarios
+- Does NOT create implementation tickets
 
-### Tech Doc Writer
+**`tech-doc-writer-manager`**
+- Works on doc sub-issues assigned by SA
 - Posts documentation summary on completion
 - Links to created/updated docs
+- Does NOT create implementation tickets
 
-### TPgM (Technical Program Manager)
+**`technical-program-manager`**
 - Tracks progress across all sub-issues
+- Validates tickets meet quality standards before work begins
 - Verifies traceability before closing parent
 - Escalates blockers
+- Does NOT create implementation sub-issues
 
 ## Scope Boundary Check
 

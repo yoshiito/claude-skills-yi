@@ -160,10 +160,33 @@ Options: main (Recommended), develop, Other
 ### Worker Workflow
 
 1. **Start work** → Move to "In Progress", confirm base branch with user, add branch comment (include base branch)
-2. **Complete work** → Create PR targeting {base_branch}, add coverage summary comment
-3. **PR merged** → Move to "Done"
+2. **Code Review** → Invoke `/code-reviewer` before creating PR (see below)
+3. **Complete work** → After Code Reviewer approves, create PR targeting {base_branch}, add coverage summary comment
+4. **PR merged** → Move to "Done"
 
 See `_shared/references/git-workflow.md` for complete Git workflow details.
+
+### Code Review (MANDATORY BEFORE PR)
+
+**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
+
+```
+[FRONTEND_TESTER] - Test implementation complete. Invoking Code Reviewer for PR review.
+
+/code-reviewer
+
+PR: https://github.com/org/repo/pull/123
+Branch: feature/LIN-XXX-password-reset-tests
+Changes: Added E2E tests for password reset flow + accessibility validation
+```
+
+**Workflow**:
+1. Self-review your test code
+2. Ensure all tests pass
+3. Invoke `/code-reviewer` with PR details
+4. Address all Critical and High severity issues
+5. Request re-review if changes were required
+6. Only after Code Reviewer approves → Create PR and move to "In Review"
 
 ## Reference Files
 

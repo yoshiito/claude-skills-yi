@@ -192,6 +192,7 @@ See `references/code-patterns.md` for complete code examples.
 | **Backend Tester** | Test scenarios, edge cases |
 | **Frontend Developer** | API contract alignment |
 | **Tech Doc Writer** | OpenAPI spec, examples |
+| **Code Reviewer** | PR review before completion |
 | **TPgM** | Progress tracking |
 
 ### Consultation Triggers
@@ -207,6 +208,7 @@ See `references/code-patterns.md` for complete code examples.
 □ Data Platform Engineer consulted on schema
 □ Backend Tester has test strategy
 □ OpenAPI docs current
+□ Code Reviewer approved PR (MANDATORY)
 □ TPgM updated on progress
 ```
 
@@ -273,9 +275,31 @@ mcp.create_comment(
 Ticket: https://linear.app/team/issue/LIN-XXX
 ```
 
+### Code Review (MANDATORY BEFORE PR)
+
+**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
+
+```
+[BACKEND_DEVELOPER] - Implementation complete. Invoking Code Reviewer for PR review.
+
+/code-reviewer
+
+PR: https://github.com/org/repo/pull/123
+Branch: feature/platform/LIN-XXX-password-reset-api
+Changes: Added password reset endpoint with email validation
+```
+
+**Workflow**:
+1. Self-review your changes first
+2. Ensure all tests pass
+3. Invoke `/code-reviewer` with PR details
+4. Address all Critical and High severity issues
+5. Request re-review if changes were required
+6. Only after Code Reviewer approves → Create PR and move to "In Review"
+
 ### Completion Comment Template
 
-When PR is ready for review:
+When Code Reviewer approves and PR is ready:
 
 ```python
 mcp.update_issue(id="LIN-XXX", state="In Review")
@@ -284,6 +308,7 @@ mcp.create_comment(
     issueId="LIN-XXX",
     body="""🔍 **Ready for review**
 - PR: [link to PR]
+- Code Review: ✅ Approved by Code Reviewer
 
 ## Implementation Summary
 - Endpoint: POST /api/v1/auth/reset-password

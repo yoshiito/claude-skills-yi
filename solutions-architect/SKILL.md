@@ -130,16 +130,61 @@ See `references/adr-template.md` for full template.
 
 After architecture design, break down TPO's parent Issue into sub-issues.
 
-**Always confirm ticket system context first:**
+**SA is the ONLY role that creates implementation sub-issues.** This responsibility includes ensuring quality via INVEST.
+
+### Pre-Creation Workflow
+
 1. Fetch parent issue details
 2. Present Team/Project options for user selection
-3. Create sub-issues with confirmed context
+3. Draft sub-issue content following Story/Task template
+4. **GATE: Run INVEST checklist** on each drafted sub-issue (see below)
+5. **GATE: Verify relationship fields** are ready for native field assignment
+6. Only after both gates pass: Create sub-issues with native relationship fields
+
+**If either gate fails**: Revise the sub-issue and re-run checks. Do NOT proceed to creation.
 
 See `_shared/references/ticketing-core.md` for system-specific workflows.
 
+### Mandatory INVEST Checklist (BLOCKING)
+
+**CRITICAL**: Before creating ANY sub-issue, complete this checklist. If ANY item fails, revise before creation.
+
+For EACH sub-issue, verify:
+
+**Independence**
+- [ ] Can start without waiting for others? → If NO, set `blockedBy` via native field
+- [ ] Dependencies set via native fields only (Linear: `blockedBy`, GitHub: `--add-blocked-by`)
+- [ ] Parent set via native field (Linear: `parentId`, GitHub: `--parent`)
+
+**Negotiable**
+- [ ] HOW is flexible (implementation approach can vary)?
+- [ ] WHAT is fixed (acceptance criteria is non-negotiable)?
+- [ ] Technical Spec has MUST/MUST NOT/SHOULD constraints?
+
+**Valuable**
+- [ ] Moves feature toward "Done"?
+- [ ] Delivers user-visible or developer-visible value?
+
+**Estimable**
+- [ ] Bounded scope with known files?
+- [ ] Clear end state defined?
+- [ ] No open questions in the ticket?
+
+**Small**
+- [ ] Single logical change (one PR, one concern)?
+- [ ] Can be completed in 1-3 days max?
+- [ ] If larger → break down into smaller sub-issues
+
+**Testable**
+- [ ] Technical Spec defines verifiable constraints?
+- [ ] Gherkin scenarios provide Given/When/Then validation?
+- [ ] Agent Tester can verify without ambiguity?
+
+**STOP**: If any check fails, revise the sub-issue before creation.
+
 ### Mandatory Template Usage
 
-**CRITICAL**: Before creating any sub-issue, read `_shared/references/ticket-templates.md` and apply the Story/Task template.
+Before creating any sub-issue, read `_shared/references/ticket-templates.md` and apply the Story/Task template.
 
 Every sub-issue MUST include:
 - **Assigned Role** - Which skill/role completes the work
@@ -152,24 +197,23 @@ Every sub-issue MUST include:
 - **Infrastructure Notes** - DB changes, env vars (or "N/A")
 - **Testing Notes** - Left for Tester to add additional scenarios
 
+### Relationship Fields (MANDATORY)
+
+Set relationships via native fields, NOT in issue body text:
+
+| System | Parent | Blocked By | Blocks |
+|--------|--------|------------|--------|
+| Linear | `parentId` parameter | `blockedBy` parameter | `blocks` parameter |
+| GitHub | `--parent` flag | `--add-blocked-by` flag | `--add-blocks` flag |
+
 ### Standard Sub-Issues
 
-| Prefix | Assigned Role | Includes |
-|--------|---------------|----------|
-| `[Backend]` | Backend Developer | API + tests |
-| `[Frontend]` | Frontend Developer | UI + tests |
-| `[Docs]` | Tech Doc Writer | API docs, guides |
-| `[Test]` | Backend/Frontend Tester | Dedicated QA effort |
-
-### INVEST Principle
-
-Every sub-issue must be:
-- **I**ndependent - Can start without waiting (or set `blockedBy`)
-- **N**egotiable - Approach flexible, criteria fixed
-- **V**aluable - Moves feature toward "Done"
-- **E**stimable - Bounded scope: known files, clear end state
-- **S**mall - Single logical change (one PR, one concern)
-- **T**estable - Verifiable acceptance criteria
+| Prefix | Assigned Role (exact skill name) | Includes |
+|--------|----------------------------------|----------|
+| `[Backend]` | `backend-fastapi-postgres-sqlmodel-developer` | API + tests |
+| `[Frontend]` | `frontend-atomic-design-engineer` | UI + tests |
+| `[Docs]` | `tech-doc-writer-manager` | API docs, guides |
+| `[Test]` | `backend-fastapi-pytest-tester` or `frontend-tester` | Dedicated QA effort |
 
 ## Integration Catalog Ownership
 
@@ -220,12 +264,28 @@ Before delivering architecture:
 - [ ] Trade-offs explicitly stated
 - [ ] Diagrams current and consistent
 
-Before creating sub-issues:
+Before creating sub-issues (ALL gates must pass):
 
+**Gate 1: Template Compliance**
 - [ ] Read `_shared/references/ticket-templates.md`
 - [ ] All sub-issues follow Story/Task template
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] All required sections populated (no empty fields)
+
+**Gate 2: INVEST Compliance** (run for EACH sub-issue)
+- [ ] Independent: Can start alone OR `blockedBy` identified
+- [ ] Negotiable: Technical Spec has MUST/MUST NOT/SHOULD
+- [ ] Valuable: Moves feature toward "Done"
+- [ ] Estimable: Bounded scope, known files, clear end state
+- [ ] Small: Single logical change (1-3 days max)
+- [ ] Testable: Gherkin scenarios specific and verifiable
+
+**Gate 3: Native Relationship Fields** (run for EACH sub-issue)
+- [ ] Parent: Identified, will set via `parentId` (Linear) or `--parent` (GitHub)
+- [ ] Blocked By: Dependencies identified, will set via `blockedBy`/`--add-blocked-by`
+- [ ] Blocks: Dependents identified, will set via `blocks`/`--add-blocks`
+
+**STOP**: If any gate fails, revise and re-check before creating sub-issues.
 
 ## PR Review Gate Enforcement
 

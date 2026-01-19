@@ -234,15 +234,19 @@ Feature: Pricing API
 
 ### Assigned Role Values
 
-| Role | When to Assign |
-|------|----------------|
-| Backend Developer | API endpoints, services, database operations |
-| Frontend Developer | UI components, pages, client-side logic |
-| Tech Doc Writer | API documentation, guides, runbooks |
-| Backend Tester | Dedicated backend test coverage |
-| Frontend Tester | Dedicated frontend/E2E test coverage |
-| Data Platform Engineer | Data pipelines, migrations, analytics |
-| API Designer | API contract design (before implementation) |
+Use exact skill names from the skills library:
+
+| Skill Name | When to Assign |
+|------------|----------------|
+| `backend-fastapi-postgres-sqlmodel-developer` | FastAPI endpoints, services, database operations |
+| `frontend-atomic-design-engineer` | React UI components, pages, client-side logic |
+| `tech-doc-writer-manager` | API documentation, guides, runbooks |
+| `backend-fastapi-pytest-tester` | Dedicated backend test coverage |
+| `frontend-tester` | Dedicated frontend/E2E test coverage |
+| `data-platform-engineer` | Data pipelines, migrations, analytics |
+| `api-designer` | API contract design (before implementation) |
+| `ai-integration-engineer` | AI/LLM features, prompt design |
+| `mcp-server-developer` | MCP server implementation |
 
 ---
 
@@ -330,11 +334,15 @@ Use this template for bug reports.
 
 ## Dependency Tracking
 
-Dependency tracking varies by ticket system:
+How to set dependencies varies by ticket system. Use the correct method for your system.
+
+| System | Method | Parent | Blocked By | Blocks |
+|--------|--------|--------|------------|--------|
+| **Linear** | Native fields | `parentId` | `blockedBy` | `blocks` |
+| **GitHub** | Native fields | `--parent` | `--add-blocked-by` | `--add-blocks` |
+| **Plan Files** | Inline text | N/A | `(blockedBy: ...)` | N/A |
 
 ### Linear (Native Fields)
-
-Linear has native dependency fields - use them:
 
 ```python
 # When creating a sub-issue with dependencies
@@ -358,30 +366,33 @@ mcp.create_issue(
 
 | Relation | When to Use | Example |
 |----------|-------------|---------|
+| `parentId` | Links sub-issue to parent | Sub-issue belongs to parent feature |
 | `blockedBy` | This issue cannot start until another completes | Frontend blocked by Backend API |
 | `blocks` | Other issues cannot start until this completes | Backend API blocks Frontend |
 | `relatedTo` | Issues are related but not dependent | Two features touching same code |
-| `duplicateOf` | This issue duplicates another | Bug already reported |
 
-### GitHub (Manual in Issue Body)
+### GitHub Projects (Native Relationship Fields)
 
-**⚠️ GitHub does NOT have native `parentId`, `blockedBy`, or `blocks` fields.**
+GitHub Projects has native relationship fields. Use CLI flags, not issue body text.
 
-Document dependencies in the issue body instead:
+```bash
+# Create sub-issue with parent
+gh issue create --title "[Frontend] Reset form UI" --parent 101 --body "..."
 
-```markdown
-## Dependencies
+# Set blocking relationship
+gh issue edit 103 --add-blocked-by 102
 
-**Parent:** #101 - Password Reset Feature
-
-**Blocked by:**
-- #102 - Backend API must be complete first
-
-**Blocks:**
-- #104 - Documentation depends on this
+# View relationships
+gh issue view 103 --json parent,blockedBy,blocks
 ```
 
-See `ticketing-github-projects.md` for GitHub-specific patterns.
+| Relationship | CLI Flag |
+|--------------|----------|
+| `parent` | `--parent ISSUE_NUMBER` or `--add-parent` |
+| `blockedBy` | `--add-blocked-by ISSUE_NUMBER` |
+| `blocks` | `--add-blocks ISSUE_NUMBER` |
+
+See `ticketing-github-projects.md` for full GitHub Projects workflow.
 
 ### Plan Files (Inline Annotation)
 
@@ -414,10 +425,10 @@ Before submitting any ticket:
 - [ ] **Technical Spec**: MUST/MUST NOT/SHOULD constraints defined for AI agents?
 - [ ] **Gherkin Scenarios**: Behavioral tests written in Given/When/Then format?
 - [ ] **References**: Parent issue, ADR, specs linked?
-- [ ] **Dependencies**: Documented appropriately for the ticket system?
-  - Linear: Use native `blockedBy`/`blocks` fields
-  - GitHub: Document in issue body (no native fields)
-  - Plan files: Use `(blockedBy: ...)` inline annotation
+- [ ] **Dependencies set correctly for your system**:
+  - Linear: `parentId`, `blockedBy`, `blocks` native fields
+  - GitHub: `--parent`, `--add-blocked-by`, `--add-blocks` flags
+  - Plan files: `(blockedBy: ...)` inline annotation
 - [ ] **Assignee**: Appropriate person assigned?
 - [ ] **Labels**: Correct labels applied?
 

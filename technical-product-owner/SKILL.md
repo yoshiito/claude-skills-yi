@@ -244,7 +244,7 @@ See `_shared/references/plan-registry-schema.md` for schema.
 
 When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 
-**Template Compliance Check:**
+**Gate 1: Template Compliance**
 - [ ] Sub-issues follow Story/Task template from `_shared/references/ticket-templates.md`
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] Story written in user story format (As a... I want... so that...)
@@ -253,7 +253,20 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Gherkin scenarios provide behavioral validation (Given/When/Then)
 - [ ] Scope matches what was defined in MRD/PRD
 
-**If sub-issues don't follow template:** Route back to SA for correction before TPgM begins delivery planning.
+**Gate 2: INVEST Compliance**
+- [ ] Independent: Can start alone OR `blockedBy` set via native field
+- [ ] Negotiable: Technical Spec has MUST/MUST NOT/SHOULD
+- [ ] Valuable: Moves feature toward "Done"
+- [ ] Estimable: Bounded scope, known files, clear end state
+- [ ] Small: Single logical change (1-3 days max)
+- [ ] Testable: Gherkin scenarios specific and verifiable
+
+**Gate 3: Native Relationship Fields**
+- [ ] Parent set via native field (Linear: `parentId`, GitHub: `--parent`)
+- [ ] Blocked By set via native field if dependencies exist
+- [ ] Relationships NOT duplicated in issue body text
+
+**If any gate fails:** Route back to SA for correction before TPgM begins delivery planning.
 
 ## PR Review Gate Verification
 

@@ -2,6 +2,61 @@
 
 GitHub Projects-specific mappings and commands. See `ticketing-core.md` for universal rules.
 
+## Critical: GitHub Projects Has Native Relationship Fields
+
+GitHub Projects has built-in relationship fields that MUST be used for issue relationships.
+
+| Relationship | Purpose | CLI Flag |
+|--------------|---------|----------|
+| **Parent** | Links sub-issue to parent issue | `--parent ISSUE_NUMBER` |
+| **Blocked By** | Issues that must complete before this one | `--add-blocked-by ISSUE_NUMBER` |
+| **Blocks** | Issues that depend on this one completing | `--add-blocks ISSUE_NUMBER` |
+
+### Required: Relationship Checklist
+
+Before creating any sub-issue, complete this checklist:
+
+- [ ] **Parent relationship set** via `--parent` flag or `gh issue edit --add-parent`
+- [ ] **Blocked By set** via `--add-blocked-by` for any dependencies
+- [ ] **Blocks set** via `--add-blocks` if this issue blocks others
+- [ ] **Relationships NOT in issue body** - all relationships use native fields only
+
+### Setting Relationships via CLI
+
+```bash
+# Set parent relationship (sub-issue → parent)
+gh issue edit ISSUE_NUMBER --add-parent PARENT_ISSUE_NUMBER
+
+# Set blocking relationship (this issue blocks another)
+gh issue edit ISSUE_NUMBER --add-blocks BLOCKED_ISSUE_NUMBER
+
+# Set blocked-by relationship (this issue is blocked by another)
+gh issue edit ISSUE_NUMBER --add-blocked-by BLOCKING_ISSUE_NUMBER
+
+# View issue relationships
+gh issue view ISSUE_NUMBER --json parent,blockedBy,blocks
+```
+
+### Creating Sub-Issues with Relationships
+
+```bash
+# Create a sub-issue with parent relationship
+gh issue create \
+  --title "[Backend] Password reset API" \
+  --body "$(cat <<'EOF'
+## Story
+As a user, I want to reset my password via API...
+
+## Acceptance Criteria
+...
+EOF
+)" \
+  --parent 101
+
+# Then add blocking relationships if needed
+gh issue edit 102 --add-blocked-by 100
+```
+
 ## Hierarchy Mapping
 
 | Core Term | GitHub Term | How to Implement |
@@ -9,15 +64,15 @@ GitHub Projects-specific mappings and commands. See `ticketing-core.md` for univ
 | Initiative | Project (board) | GitHub Project board groups related work |
 | Project | Milestone or Label | Use milestone for time-bound; label for categorical |
 | Issue | Issue | Standard GitHub issue |
-| Sub-Issue | Task list item | Checklist items in issue body (`- [ ] task`) |
+| Sub-Issue | Issue with Parent relationship | Separate issue linked via `--parent` flag |
 
 ```
 Project Board: "Q1 User Growth"
 └── Milestone: "User Authentication System"
-    └── Issue #101: "Implement Password Reset"
-        ├── Task: [ ] Backend: Password reset API
-        ├── Task: [ ] Frontend: Reset form UI
-        └── Task: [ ] Docs: Password reset guide
+    └── Issue #101: "Implement Password Reset" (parent)
+        ├── Issue #102: "[Backend] Password reset API" (parent: #101)
+        ├── Issue #103: "[Frontend] Reset form UI" (parent: #101, blockedBy: #102)
+        └── Issue #104: "[Docs] Password reset guide" (parent: #101, blockedBy: #102)
 ```
 
 ## Ticket ID Format
@@ -149,7 +204,7 @@ gh project view PROJECT_NUMBER
 ### Create Issues
 
 ```bash
-# Create issue with milestone and labels
+# Create parent issue with milestone and labels
 gh issue create \
   --title "[Feature] Implement Password Reset Flow" \
   --body "$(cat <<'EOF'
@@ -160,21 +215,30 @@ Implement password reset functionality.
 - [ ] User can request password reset
 - [ ] Email sent with reset link
 - [ ] User can set new password
-
-## Sub-tasks
-- [ ] [Backend] Password reset API
-- [ ] [Frontend] Reset form UI
-- [ ] [Docs] Password reset guide
 EOF
 )" \
   --milestone "User Authentication" \
-  --label "feature,backend"
+  --label "feature"
+# Returns: Created issue #101
 
-# Create linked sub-issue
+# Create sub-issue with parent relationship (REQUIRED)
 gh issue create \
   --title "[Backend] Password reset API" \
-  --body "Parent: #101" \
-  --label "backend,sub-task"
+  --parent 101 \
+  --label "backend" \
+  --body "..."
+# Returns: Created issue #102
+
+# Create another sub-issue with parent AND blocking relationship
+gh issue create \
+  --title "[Frontend] Reset form UI" \
+  --parent 101 \
+  --label "frontend" \
+  --body "..."
+# Returns: Created issue #103
+
+# Add blocking relationship (Frontend blocked by Backend)
+gh issue edit 103 --add-blocked-by 102
 ```
 
 ### Update Issues
@@ -285,77 +349,79 @@ Configure custom status field in GitHub Project:
 | 👀 In Review | PR created |
 | ✅ Done | PR merged, issue closed |
 
-## Sub-Issues (Task Lists)
+## Sub-Issues (Native Parent Relationship)
 
-**⚠️ GitHub does NOT have native parent-child issue relationships like Linear.**
+GitHub has native parent-child relationships. Create sub-issues using the `--parent` flag.
 
-Use **task lists** within an issue body to track sub-tasks:
-
-### Creating Sub-Tasks in Issue Body
+### Creating Sub-Issues with Parent Relationship
 
 ```bash
+# 1. Create parent issue first
 gh issue create \
   --title "[Feature] Implement Password Reset Flow" \
   --body "$(cat <<'EOF'
 ## Description
 Implement password reset functionality.
 
-## Sub-tasks
-- [ ] [Backend] Password reset API
-- [ ] [Frontend] Reset form UI
-- [ ] [Docs] Password reset guide
-
-Track progress by checking off items as completed.
+## Acceptance Criteria
+- [ ] User can request password reset
+- [ ] Email sent with reset link
+- [ ] User can set new password
 EOF
 )"
-```
+# Returns: Created issue #101
 
-### Linking Related Issues (Manual)
-
-For more complex tracking, create separate issues and link them manually:
-
-```bash
-# Create parent issue
-gh issue create \
-  --title "[Feature] Implement Password Reset Flow" \
-  --body "## Sub-issues
-- #102 [Backend] Password reset API
-- #103 [Frontend] Reset form UI
-- #104 [Docs] Password reset guide"
-
-# Create child issue with reference to parent
+# 2. Create sub-issues with parent relationship
 gh issue create \
   --title "[Backend] Password reset API" \
-  --body "Parent: #101
+  --parent 101 \
+  --body "..."
+# Returns: Created issue #102
 
-## Description
-..."
+gh issue create \
+  --title "[Frontend] Reset form UI" \
+  --parent 101 \
+  --body "..."
+# Returns: Created issue #103
+
+# 3. Add blocking relationships between sub-issues
+gh issue edit 103 --add-blocked-by 102
 ```
 
-**Note**: These are just text references - GitHub does not track or enforce these relationships.
+### Viewing Parent-Child Relationships
 
-## Dependencies (Manual Tracking)
+```bash
+# View sub-issues of a parent
+gh issue view 101 --json subIssues
 
-**⚠️ GitHub does NOT have native dependency fields like Linear's `blockedBy`/`blocks`.**
-
-Track dependencies manually using issue body text or comments:
-
-### Document Dependencies in Issue Body
-
-```markdown
-## Dependencies
-
-**Blocked by:**
-- #101 - Backend API must be complete first
-
-**Blocks:**
-- #103 - Frontend needs this API
-- #104 - Docs need the API spec
+# View parent of a sub-issue
+gh issue view 102 --json parent
 ```
 
-### Track Dependency Status
+## Dependencies (Native Relationship Fields)
 
-When a blocker is resolved, add a comment:
+**MANDATORY**: Use GitHub's native relationship fields for all dependencies.
+
+### Setting Dependencies via CLI
+
+```bash
+# Mark issue 102 as blocked by issue 101
+gh issue edit 102 --add-blocked-by 101
+
+# Mark issue 101 as blocking issues 102 and 103
+gh issue edit 101 --add-blocks 102
+gh issue edit 101 --add-blocks 103
+
+# View all relationships for an issue
+gh issue view 102 --json parent,blockedBy,blocks
+
+# Remove a blocking relationship
+gh issue edit 102 --remove-blocked-by 101
+```
+
+### Dependency Status Notification
+
+When a blocker is resolved, add a comment to notify:
 
 ```bash
 gh issue comment 102 --body "$(cat <<'EOF'
@@ -370,18 +436,26 @@ EOF
 
 For AI agents executing GitHub-tracked work:
 
-1. Read the issue body for `Blocked by:` section
-2. Check if blocking issues are closed: `gh issue view 101 --json state`
-3. If blockers are open, skip to next unblocked task
-4. If unblocked, execute the task
+```bash
+# 1. Query issue relationships via native fields
+gh issue view ISSUE_NUMBER --json state,blockedBy
+
+# 2. Check if any blockers exist and are still open
+# Example output: {"state":"OPEN","blockedBy":[{"number":101,"state":"OPEN"}]}
+
+# 3. If blockedBy array has items with state != "CLOSED", skip to next task
+# 4. If no open blockers, execute the task
+```
+
+**DO NOT parse issue body for dependencies** - always use the native `blockedBy` field.
 
 ## GitHub-Specific Notes
 
-- **NO native sub-issues**: Use task lists in issue body or manual linking
-- **NO native dependencies**: Document in issue body, track manually
+- **Native parent/sub-issues**: Use `--parent` flag to create parent-child relationships
+- **Native blocking/blocked-by**: Use `--add-blocked-by` and `--add-blocks` for dependencies
 - **Issue types**: Classify issues as bugs, features, tasks, etc.
 - **Auto-close**: PRs with `Closes #123` auto-close issues on merge
 - **Projects vs Milestones**: Projects are Kanban boards; Milestones are time-boxed
-- **Task lists**: `- [ ] Task` in issue body creates trackable checkboxes
+- **Task lists**: `- [ ] Task` in issue body for simple checklists (not sub-issues)
 - **Cross-repo**: Use `owner/repo#123` to link issues across repositories
 - **Advanced search**: Support for complex queries using `and` and `or`

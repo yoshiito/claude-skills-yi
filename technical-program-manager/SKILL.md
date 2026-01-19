@@ -80,9 +80,11 @@ All tickets must follow templates from `_shared/references/ticket-templates.md`:
 **Enforcement Protocol:**
 1. Verify ticket follows correct template
 2. Run quality checklist against ticket content
-3. If ANY required section missing → STOP, do not create
-4. Report missing sections to SA (for sub-issues) or requestor
-5. Only proceed when ALL sections complete
+3. Verify INVEST compliance (Independent, Negotiable, Valuable, Estimable, Small, Testable)
+4. Verify relationship fields set via native fields (Parent, Blocked By, Blocks) - NOT in issue body
+5. If ANY check fails → STOP, do not proceed
+6. Report failures to SA (for sub-issues) or requestor
+7. Only proceed when ALL gates pass
 
 ## What TPgM Does NOT Do
 

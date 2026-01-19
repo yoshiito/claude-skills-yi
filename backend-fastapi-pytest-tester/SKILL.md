@@ -233,6 +233,7 @@ See `references/llm-prompting-guide.md` for complete prompt templates.
 | Skill | Coordination |
 |-------|-------------|
 | **Frontend Tester** | Test strategy alignment |
+| **Code Reviewer** | PR review before completion |
 | **TPgM** | Test coverage reporting |
 
 ## Linear Ticket Workflow
@@ -284,9 +285,31 @@ mcp.create_comment(
 )
 ```
 
+### Code Review (MANDATORY BEFORE PR)
+
+**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
+
+```
+[BACKEND_TESTER] - Test implementation complete. Invoking Code Reviewer for PR review.
+
+/code-reviewer
+
+PR: https://github.com/org/repo/pull/123
+Branch: feature/LIN-XXX-password-reset-tests
+Changes: Added integration tests for password reset flow + security edge cases
+```
+
+**Workflow**:
+1. Self-review your test code
+2. Ensure all tests pass
+3. Invoke `/code-reviewer` with PR details
+4. Address all Critical and High severity issues
+5. Request re-review if changes were required
+6. Only after Code Reviewer approves → Create PR and move to "In Review"
+
 ### Completion Comment Template
 
-When PR is ready for review:
+When Code Reviewer approves and PR is ready:
 
 ```python
 mcp.update_issue(id="LIN-XXX", state="In Review")
@@ -295,6 +318,7 @@ mcp.create_comment(
     issueId="LIN-XXX",
     body="""🔍 **Ready for review**
 - PR: [link to PR]
+- Code Review: ✅ Approved by Code Reviewer
 
 ## Test Coverage Summary
 
