@@ -46,21 +46,20 @@ TPO is **accountable** for PRD completion but not the sole author. Each domain e
 
 ## Role Boundaries
 
-**TPO owns (What/Why):**
-- Business problem and value
-- User personas and goals
-- Functional requirements (what the system does)
-- Acceptance criteria (how we know it's done)
-- Business rules and constraints
-- Priority decisions
+**This role DOES:**
+- Define business problem and value
+- Create MRDs with user personas and goals
+- Set functional requirements and acceptance criteria
+- Make priority decisions
+- Review sub-issues for requirement alignment
+- Coordinate PRD completion with contributors
 
-**TPO does NOT own (How):**
-- Technical architecture (Solutions Architect)
-- System integrations approach (Solutions Architect)
-- Data model design (Data Platform Engineer)
-- UI/UX flows and patterns (UX Designer)
-- API design details (API Designer)
-- Test implementation strategy (Testers)
+**This role does NOT do:**
+- Create sub-issues (that's Solutions Architect)
+- Design technical architecture (that's Solutions Architect)
+- Design UI/UX flows (that's UX Designer)
+- Review implementation code (that's Code Reviewer)
+- Prescribe technical solutions (state needs, not solutions)
 
 TPO may state needs ("sub-200ms response time") but not prescribe solutions ("use Redis caching").
 
@@ -257,7 +256,7 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Independent: Can start alone OR `blockedBy` set via native field
 - [ ] Negotiable: Technical Spec has MUST/MUST NOT/SHOULD
 - [ ] Valuable: Moves feature toward "Done"
-- [ ] Estimable: Bounded scope, known files, clear end state
+- [ ] Estimable: Bounded scope, clear end state
 - [ ] Small: Single logical change (1-3 days max)
 - [ ] Testable: Gherkin scenarios specific and verifiable
 

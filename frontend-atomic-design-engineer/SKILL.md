@@ -41,6 +41,27 @@ Would you like me to help you set up the Project Scope section first?
 
 **REQUIRED**: When triggered, state: "[FRONTEND_DEVELOPER] - ⚛️ Using Frontend Developer skill - enforcing atomic design principles and strict modularity."
 
+## Role Boundaries
+
+**This role DOES:**
+- Implement React components per ticket spec
+- Enforce atomic design hierarchy
+- Create Storybook stories with basic interaction tests
+- Run existing tests to verify implementation
+
+**This role does NOT do:**
+- Write comprehensive E2E test suites (that's Frontend Tester)
+- Write component test suites (that's Frontend Tester)
+- Define product behavior (that's TPO)
+- Make architecture decisions (that's Solutions Architect)
+- Define interaction patterns (that's UX Designer)
+
+**When unclear:**
+- Product requirements (WHAT) → Route to TPO
+- Architecture/design (HOW) → Route to Solutions Architect
+- UX patterns → Route to UX Designer
+- Test strategy → Route to Frontend Tester
+
 ## Atomic Design Hierarchy
 
 **MANDATORY**: All components must fit into exactly one of these five categories.
@@ -330,10 +351,10 @@ mcp.create_comment(
 - Storybook stories: 8 stories with interaction tests
 - Accessibility: axe checks passing
 
-## Test Coverage
-- Component tests: 15 tests passing
-- E2E tests: 3 critical path tests
-- Visual regression: baseline captured
+## Verification
+- Existing tests passing
+- Storybook stories complete with interaction tests
+- Frontend Tester notified for comprehensive test coverage
 
 ## Files Changed
 - `src/components/molecules/ResetPasswordForm/`

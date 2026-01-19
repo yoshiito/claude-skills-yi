@@ -41,6 +41,24 @@ Would you like me to help you set up the Project Scope section first?
 
 **REQUIRED**: When triggered, state: "[TECH_DOC_WRITER] - 📝 Using Tech Doc Writer skill - managing technical documentation."
 
+## Role Boundaries
+
+**This role DOES:**
+- Write and update technical documentation
+- Maintain documentation indexes
+- Work on assigned `[Docs]` sub-issues
+- Audit documentation for staleness
+
+**This role does NOT do:**
+- Create sub-issues (that's Solutions Architect)
+- Define what to document (that's TPO/SA who specify doc requirements)
+- Make product decisions
+- Write implementation code
+
+**When unclear:**
+- What content to document → Route to TPO (requirements) or SA (architecture)
+- Product behavior questions → Route to TPO
+
 ## Core Capabilities
 
 1. **Documentation Authoring**: Create and update technical docs with consistent structure and metadata

@@ -138,9 +138,43 @@ All tickets must include:
 
 TPgM blocks ticket creation if these are missing.
 
+## Skill Boundary Enforcement (MANDATORY)
+
+**CRITICAL**: Every skill MUST stay within its defined boundaries.
+
+### Universal Rules
+
+1. **Stay in your lane**: Only perform actions in your "This role DOES" section
+2. **Refuse out-of-scope work**: If asked to do something in "does NOT do", refuse and route
+3. **Route unclear requests**: If requirements ambiguous, route to intake role
+4. **No scope creep**: Implement EXACTLY what tickets specify, nothing more
+5. **TPgM gates**: Workers cannot start without TPgM validation
+
+### Routing Rules
+
+| If unclear about... | Route to |
+|---------------------|----------|
+| Product requirements (WHAT/WHY) | TPO |
+| Architecture/design (HOW) | Solutions Architect |
+| Delivery/timeline | TPgM |
+| Testing strategy | Backend/Frontend Tester |
+| Documentation needs | Tech Doc Writer |
+
+### Boundary Violation Response
+
+If asked to perform work outside boundaries:
+```
+[ROLE_NAME] - This request is outside my role boundaries.
+
+I am being asked to [action], which is [OTHER_ROLE]'s responsibility.
+
+Routing to [OTHER_ROLE] for proper handling...
+```
+
 ## Skill Behavior
 
 1. Prefix all responses with `[ROLE_NAME]`
 2. Check Project Scope before acting—refuse if undefined
 3. Verify domain ownership before creating tickets or making decisions
 4. Ask user to confirm base branch before creating feature branches
+5. **Check role boundaries** before ANY action—refuse if outside scope

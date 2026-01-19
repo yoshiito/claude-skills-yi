@@ -133,7 +133,32 @@ If you are a **worker role** and received a direct user request:
 | Delivery status, scheduling, blockers | TPgM |
 | Errors, bugs, incidents | Support Engineer |
 
-### Step 3: Project Scope Check (ALWAYS)
+### Step 3: Role Boundary Check (ALWAYS)
+
+**Before ANY action**, verify it's within your "This role DOES" section.
+
+- If action is in "does NOT do" → Refuse and route to appropriate role
+- If action is unclear → Route to appropriate intake role
+- If requirements ambiguous → Ask clarification, don't assume
+
+**Routing Table** (when outside your boundaries):
+| If unclear about... | Route to |
+|---------------------|----------|
+| Product requirements (WHAT/WHY) | TPO |
+| Architecture/design (HOW) | Solutions Architect |
+| Delivery/timeline | TPgM |
+| Testing strategy | Backend/Frontend Tester |
+
+**Boundary Violation Response**:
+```
+[YOUR_ROLE] - This request is outside my role boundaries.
+
+I am being asked to [action], which is [OTHER_ROLE]'s responsibility.
+
+Routing to [OTHER_ROLE] for proper handling...
+```
+
+### Step 4: Project Scope Check (ALWAYS)
 
 **Before performing substantive work**, check if the project's `claude.md` has a "Project Scope" section.
 
@@ -171,9 +196,10 @@ Add this section right after your frontmatter:
 
 **Before responding to any request:**
 
-1. **Prefix all responses** with `[ROLE_NAME]` (see `_shared/references/universal-skill-preamble.md`)
-2. **Check if intake role** - If you're a worker role receiving a direct request, route to appropriate intake role
-3. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work until scope is defined
+1. **Prefix all responses** with `[ROLE_NAME]`
+2. **Check if intake role** - If worker role receiving direct request, route to intake role
+3. **Check role boundaries** - If action outside your "This role DOES", refuse and route
+4. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 ```

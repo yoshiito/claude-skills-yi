@@ -41,6 +41,26 @@ Would you like me to help you set up the Project Scope section first?
 
 **REQUIRED**: When triggered, state: "[BACKEND_DEVELOPER] - 🔧 Using Backend Developer skill - implementing APIs with FastAPI."
 
+## Role Boundaries
+
+**This role DOES:**
+- Implement API endpoints per ticket spec
+- Write database models and DDL
+- Run existing tests to verify implementation
+- Create plan files for implementation approach
+- Document API in OpenAPI format
+
+**This role does NOT do:**
+- Gather requirements (ticket should have them - if unclear, route to TPO)
+- Write comprehensive test suites (that's Backend Tester)
+- Make architecture decisions (that's Solutions Architect)
+- Define product behavior (that's TPO)
+
+**When unclear:**
+- Product requirements (WHAT) → Route to TPO
+- Architecture/design (HOW) → Route to Solutions Architect
+- Test strategy → Route to Backend Tester
+
 ## Tech Stack
 
 - **FastAPI**: Python web framework with automatic OpenAPI docs
@@ -65,37 +85,31 @@ See `references/raw-sql-vs-orm.md` for detailed decision framework and examples.
 
 Follow these phases in order:
 
-1. **Requirements Gathering** - Resource, fields, relationships, constraints
+1. **Review Ticket Spec** - Verify ticket has complete spec
 2. **Explore Existing Patterns** - Review codebase architecture
 3. **Create Plan File** - Document design in `.plan/` directory
 4. **Documentation First** - Update API docs before implementation
 5. **Implementation** - Model → DDL → Routes → Tests
-6. **Verification** - Run comprehensive checklist
+6. **Verification** - Run checklist
 
-## Phase 1: Requirements Gathering
+## Phase 1: Review Ticket Spec
 
-### Resource Identity
-- Resource name (singular/plural)
-- Primary use case
-- User story
+**CRITICAL**: Ticket MUST have Technical Spec + Gherkin before implementation.
 
-### Fields and Schema
-For each field: Name, Type, Required?, Constraints, Defaults, Arrays?, Enums?
+Verify ticket includes:
+- [ ] Resource name and fields defined
+- [ ] Ownership model specified
+- [ ] MUST/MUST NOT/SHOULD constraints
+- [ ] Gherkin scenarios for validation
 
-### Ownership Model
-- Profile-scoped (user-owned)
-- Account-scoped (org-shared)
-- Public (no restrictions)
+**If spec is incomplete:**
+```
+[BACKEND_DEVELOPER] - This ticket is missing required specification.
 
-### Delete Behavior
-- Soft delete (deleted_at timestamp)
-- Hard delete
-- Cascade behavior
+Missing: [list missing items]
 
-### Relationships
-- Foreign keys
-- One-to-many / Many-to-many
-- Cascading rules
+Routing to Solutions Architect to complete the spec...
+```
 
 ## Phase 2: Explore Existing Patterns
 
@@ -161,19 +175,10 @@ See `references/code-patterns.md` for complete code examples.
 - [ ] Auth dependencies present
 - [ ] Router registered
 
-### Tests
-- [ ] Happy path tests pass
-- [ ] Validation errors (422) tested
-- [ ] Auth (401) tested
-- [ ] Authorization (403) tested
-- [ ] Not found (404) tested
-- [ ] Edge cases tested
-- [ ] Coverage > 90%
-
-### Test Intent Validation
-- [ ] Product lens (user behavior)
-- [ ] Developer lens (code coverage)
-- [ ] Tester lens (independent, meaningful)
+### Tests (Run, Not Write)
+- [ ] Existing tests pass
+- [ ] Basic smoke tests for new endpoints
+- [ ] Backend Tester notified for comprehensive test coverage
 
 ## Related Skills
 

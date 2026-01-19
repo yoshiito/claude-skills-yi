@@ -44,6 +44,36 @@ Bridge the gap between "what we're building" (TPO) and "shipped to production." 
 - Stakeholders stay informed
 - Documentation is complete
 
+## Pre-Work Validation Gate (MANDATORY)
+
+**CRITICAL**: No ticket moves to "In Progress" without TPgM validation.
+
+Before ANY ticket moves to "In Progress", TPgM validates:
+
+- [ ] Ticket follows template from `_shared/references/ticket-templates.md`
+- [ ] Technical Spec has MUST/MUST NOT/SHOULD constraints
+- [ ] Gherkin scenarios defined for validation
+- [ ] Dependencies set via native fields (`parentId`, `blockedBy`)
+- [ ] No open `blockedBy` issues are incomplete
+- [ ] Test strategy exists (or `[Test]` sub-issue created)
+- [ ] Documentation plan exists (or `[Docs]` sub-issue created)
+
+**Worker clearance**: Workers MUST get TPgM validation before moving tickets to "In Progress".
+
+**If validation fails:**
+```
+[TPgM] - ⚠️ Ticket not ready for work
+
+Cannot validate this ticket for "In Progress" status.
+
+**Issues found:**
+- [ ] Missing: [list of missing items]
+
+**Route to**: [SA for spec completion / TPO for requirements clarity]
+
+Ticket must pass all validation gates before work begins.
+```
+
 ## Critical Rule: Verify Inputs Before Tracking
 
 **NEVER create Linear issues without verified inputs.** TPgM coordinates - doesn't define work.

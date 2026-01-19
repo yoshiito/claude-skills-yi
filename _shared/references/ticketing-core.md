@@ -144,11 +144,30 @@ Before creating any sub-issue, verify ALL items:
 
 **STOP**: If any check fails, revise the sub-issue before creation.
 
+## TPgM Validation Gate (MANDATORY)
+
+**CRITICAL**: No ticket moves to "In Progress" without TPgM validation.
+
+### Before Starting Work (ALL Workers)
+
+1. Verify TPgM has validated the ticket
+2. Check no `blockedBy` issues are incomplete
+3. Get TPgM clearance before moving to "In Progress"
+
+**If TPgM has not validated:**
+```
+[WORKER_ROLE] - Cannot start work on this ticket.
+
+TPgM validation required before moving to "In Progress".
+
+Requesting TPgM validation...
+```
+
 ## Mandatory Progress Updates
 
 **All workers MUST update ticket status AND add comments at these points.**
 
-### When Starting Work
+### When Starting Work (After TPgM Validation)
 
 **Status**: Move ticket to **In Progress**
 
