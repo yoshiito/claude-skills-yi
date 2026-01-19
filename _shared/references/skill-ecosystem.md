@@ -35,6 +35,7 @@ When working in the skills library itself, Skill Creator is the **default intake
 | Frontend Developer | `[FRONTEND_DEVELOPER]` | SA, TPgM (via tickets) |
 | Backend Tester | `[BACKEND_TESTER]` | Developers, TPgM |
 | Frontend Tester | `[FRONTEND_TESTER]` | Developers, TPgM |
+| **Code Reviewer** | `[CODE_REVIEWER]` | **Developers (when PR ready)** |
 | API Designer | `[API_DESIGNER]` | SA, TPO |
 | Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` | SA |
 | AI Integration Engineer | `[AI_INTEGRATION_ENGINEER]` | SA, TPO |
@@ -71,6 +72,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | **API Designer** | Design pragmatic, developer-friendly APIs | OpenAPI specs, error catalogs |
 | **Backend Developer** | Implement APIs with FastAPI/PostgreSQL | Working endpoints, database schemas |
 | **Frontend Developer** | Build React components with atomic design | UI components, Storybook stories |
+| **Code Reviewer** | Review PRs against coding standards | Review feedback, approval status |
 | **Data Platform Engineer** | Design data pipelines and storage | Data models, ETL pipelines, vector search |
 | **MCP Server Developer** | Build Model Context Protocol servers | MCP tools, resources, prompts |
 | **AI Integration Engineer** | Evaluate and implement AI features | AI patterns, prompt engineering, RAG |
@@ -129,10 +131,12 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         LAYER 4: QUALITY & TESTING                       │
 │                                                                          │
-│   ┌──────────────────┐    ┌──────────────────┐                         │
-│   │ Backend Tester   │    │ Frontend Tester  │                         │
-│   │ (pytest)         │    │ (RTL, Playwright)│                         │
-│   └──────────────────┘    └──────────────────┘                         │
+│   ┌──────────────────┐  ┌──────────────────┐  ┌──────────────────┐     │
+│   │ Backend Tester   │  │ Frontend Tester  │  │ Code Reviewer    │     │
+│   │ (pytest)         │  │ (RTL, Playwright)│  │ (PR Standards)   │     │
+│   └──────────────────┘  └──────────────────┘  └──────────────────┘     │
+│                                                                          │
+│   Code Reviewer: Quality gate invoked by developers before "Done"       │
 │                                                                          │
 └──────────────────────────────────┬───────────────────────────────────────┘
                                    │
@@ -182,14 +186,16 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 ```
 1. Backend Developer → Implement endpoints, database
 2. Backend Tester    → Write test coverage
-3. Tech Doc Writer   → Document APIs
+3. Code Reviewer     → Review PR before merge
+4. Tech Doc Writer   → Document APIs
 ```
 
 ### Implementing Frontend
 ```
 1. Frontend Developer → Build components (atomic design)
 2. Frontend Tester    → Write component/E2E tests
-3. Material Design UX → Consult for UI patterns
+3. Code Reviewer      → Review PR before merge
+4. Material Design UX → Consult for UI patterns
 ```
 
 ### Adding AI Features
@@ -348,6 +354,7 @@ Quick reference for when to involve other skills:
 | Tool integrations for AI | MCP Server Developer |
 | UI/UX decisions | Material Design UX |
 | Test strategy | Backend/Frontend Tester |
+| **PR ready for review** | **Code Reviewer** |
 | Documentation needed | Tech Doc Writer |
 | Delivery planning | TPgM |
 | Vector search/RAG | Data Platform Engineer |

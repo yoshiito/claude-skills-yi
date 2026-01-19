@@ -277,6 +277,46 @@ Escalate immediately when:
 
 See `references/escalation-criteria.md` for detailed escalation procedures.
 
+## PR Review Gate for Bug Fixes
+
+**CRITICAL**: Support Engineer verifies that bug fix PRs were reviewed by Code Reviewer before closing issues.
+
+### Before Closing Bug Tickets
+
+- [ ] Bug fix PR was reviewed by Code Reviewer skill
+- [ ] No Critical or High severity issues in the fix
+- [ ] Fix doesn't introduce new security vulnerabilities
+- [ ] Fix has appropriate test coverage
+
+### Verification Process
+
+1. **Locate the fix PR** from ticket comments
+2. **Check for Code Reviewer feedback** in PR
+3. **Verify approval status** - Look for "🟢 Approved"
+4. **If no review** - Route back to developer
+
+### If Bug Fix Lacks Review
+
+```
+[SUPPORT_ENGINEER] - ⚠️ Bug Fix Review Required
+
+Cannot close this bug ticket - the fix PR lacks Code Review.
+
+**Bug**: [Bug ID/Title]
+**Fix PR**: #[number]
+**Issue**: No Code Reviewer approval found
+
+**Required Action**: Developer must invoke Code Reviewer before this bug can be closed.
+
+This ensures the fix doesn't introduce new issues while resolving the original bug.
+```
+
+### Why Support Engineer Enforces This
+
+- Bug fixes often have time pressure, leading to shortcuts
+- Rushed fixes can introduce new bugs or security issues
+- Code Review ensures the fix is solid, not just fast
+
 ## MCP Tools Reference
 
 ### Sentry MCP

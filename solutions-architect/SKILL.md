@@ -227,6 +227,43 @@ Before creating sub-issues:
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] All required sections populated (no empty fields)
 
+## PR Review Gate Enforcement
+
+**CRITICAL**: Solutions Architect enforces that architectural decisions are reflected in code through PR reviews.
+
+### Architecture Compliance Verification
+
+When reviewing completed sub-issues:
+
+- [ ] PR was reviewed by Code Reviewer skill
+- [ ] Code follows architectural patterns defined in ADRs
+- [ ] Layer separation maintained (no architecture violations)
+- [ ] Dependencies flow in correct direction
+- [ ] Integration patterns match specifications
+
+### If Architecture Violations Found
+
+Even if Code Reviewer approved, SA can flag architectural concerns:
+
+```
+[SOLUTIONS_ARCHITECT] - ⚠️ Architecture Compliance Issue
+
+PR #[number] was approved by Code Reviewer but violates architectural decisions:
+
+**Violation**: [Description]
+**ADR Reference**: [ADR link]
+**Impact**: [What this breaks]
+
+**Required Action**: Developer must refactor to comply with architecture.
+Route back for re-review after changes.
+```
+
+### Why SA Enforces This
+
+- Code Reviewer checks coding standards; SA checks architecture compliance
+- Prevents architectural drift over time
+- Ensures ADRs are followed, not just documented
+
 ## Summary
 
 Solutions Architect ensures:

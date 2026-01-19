@@ -160,6 +160,118 @@ Add project-specific clarifications here:
 - All API contract changes need API Designer approval
 ```
 
+---
+
+## Coding Standards
+
+**REQUIRED for Code Reviewer**: This section defines project-specific coding standards that Code Reviewer enforces alongside baseline standards.
+
+### Standards Hierarchy
+
+Code Reviewer uses:
+1. **Baseline Standards** (always apply) - `_shared/references/coding-standards-baseline.md`
+2. **Project Standards** (this section) - Override or extend baseline
+
+### Architecture Patterns
+
+Define your project's architecture patterns:
+
+```markdown
+| Pattern | Rule | Example |
+|---------|------|---------|
+| Data Access | Repository pattern | `UserRepository`, not direct DB calls |
+| Business Logic | Service layer | `UserService.create()`, not in controllers |
+| API Structure | Controller → Service → Repository | No skipping layers |
+| Dependency Injection | Constructor injection | No `new Service()` in business logic |
+```
+
+### Naming Conventions
+
+Define project-specific naming:
+
+```markdown
+| Element | Convention | Example |
+|---------|------------|---------|
+| Files | kebab-case | `user-service.ts`, `order-repository.py` |
+| Classes | PascalCase | `UserService`, `OrderRepository` |
+| Functions | camelCase (TS/JS) or snake_case (Python) | `getUserById`, `get_user_by_id` |
+| Variables | Same as functions | `userId`, `user_id` |
+| Constants | SCREAMING_SNAKE_CASE | `MAX_RETRIES`, `API_TIMEOUT` |
+| Database tables | snake_case, plural | `users`, `order_items` |
+| API endpoints | kebab-case | `/api/v1/user-profiles` |
+```
+
+### API Standards
+
+Define your API conventions:
+
+```markdown
+- **Authentication**: All endpoints authenticated except `/health`, `/docs`
+- **Versioning**: URL prefix `/api/v1/`
+- **Error Format**: RFC 7807 Problem Details
+- **Pagination**: Cursor-based, max 100 items
+- **Rate Limiting**: 100 req/min per user
+```
+
+### Testing Requirements
+
+Define testing expectations:
+
+```markdown
+| Type | Coverage | Required For |
+|------|----------|--------------|
+| Unit Tests | 80%+ | Business logic, utilities |
+| Integration Tests | Required | All API endpoints |
+| E2E Tests | Required | Critical user flows |
+| Performance Tests | Optional | High-traffic endpoints |
+
+**Test Naming**: `test_<function>_<condition>_<expected_result>`
+Example: `test_create_user_with_duplicate_email_returns_409`
+```
+
+### Code Review Criteria
+
+Define what Code Reviewer should specifically check:
+
+```markdown
+**Always Check:**
+- [ ] Follows Repository/Service/Controller pattern
+- [ ] No business logic in controllers
+- [ ] Database queries use ORM, no raw SQL
+- [ ] API responses match OpenAPI spec
+- [ ] Error handling returns proper HTTP codes
+- [ ] New endpoints have integration tests
+
+**Project-Specific Rules:**
+- [ ] [Add your project-specific rules]
+- [ ] [Add your project-specific rules]
+```
+
+### Overrides from Baseline
+
+If you need to override baseline standards, document explicitly:
+
+```markdown
+| Baseline Rule | Project Override | Rationale |
+|---------------|------------------|-----------|
+| 80% test coverage | 70% for legacy modules | Migration in progress |
+| No raw SQL | Raw SQL allowed in reports/ | Performance-critical queries |
+```
+
+### Approved Libraries/Patterns
+
+List pre-approved choices to avoid bikeshedding:
+
+```markdown
+| Category | Approved Choice | Alternatives Rejected |
+|----------|-----------------|----------------------|
+| HTTP Client | axios | fetch (no interceptors), request (deprecated) |
+| ORM | SQLAlchemy | Django ORM (not using Django) |
+| Testing | pytest | unittest (less readable) |
+| Validation | Pydantic | marshmallow (slower) |
+| Logging | structlog | stdlib logging (no structure) |
+```
+
 ### Domain Boundaries Diagram (Optional)
 
 ```

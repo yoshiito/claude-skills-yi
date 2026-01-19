@@ -213,12 +213,46 @@ TPgM updates registry statuses during delivery:
 
 See `_shared/references/plan-registry-schema.md` and `_shared/references/integration-catalog-schema.md`.
 
+## PR Review Gate Enforcement
+
+**CRITICAL**: TPgM enforces that all implementation PRs are reviewed by Code Reviewer before marking tickets "Done".
+
+### Before Marking Any Sub-Issue "Done"
+
+- [ ] PR was reviewed by Code Reviewer skill
+- [ ] All Critical severity issues addressed
+- [ ] All High severity issues addressed
+- [ ] Medium severity issues addressed or explicitly deferred (with rationale)
+- [ ] Re-review completed if changes were required
+
+### Verification Process
+
+1. **Check PR comments** for Code Reviewer feedback
+2. **Verify review status** - Look for "🟢 Approved" from Code Reviewer
+3. **If no review found** - Route back to developer to invoke Code Reviewer
+4. **If review incomplete** - Block "Done" status until addressed
+
+### Enforcement Response
+
+If a developer marks a ticket "Done" without Code Review:
+
+```
+[TPgM] - ⚠️ PR Review Gate Failed
+
+This sub-issue cannot be marked "Done" - no Code Review found.
+
+**Required Action**: Developer must invoke Code Reviewer before completion.
+
+See `code-reviewer/SKILL.md` for review process.
+```
+
 ## Ticket Traceability Verification
 
 Before closing any parent Issue:
 
 - [ ] All sub-issues are in "Done" status
 - [ ] Each sub-issue has completion comment with PR link
+- [ ] **PR was reviewed by Code Reviewer** (NEW GATE)
 - [ ] All commits reference `[LIN-XXX]` in message
 - [ ] Test coverage documented
 - [ ] Regression gates passed

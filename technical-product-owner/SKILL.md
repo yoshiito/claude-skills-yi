@@ -255,6 +255,38 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 
 **If sub-issues don't follow template:** Route back to SA for correction before TPgM begins delivery planning.
 
+## PR Review Gate Verification
+
+**CRITICAL**: TPO verifies that implementation PRs were reviewed by Code Reviewer during acceptance.
+
+### During Feature Acceptance
+
+Before accepting a completed feature:
+
+- [ ] All sub-issues have PR review from Code Reviewer
+- [ ] No Critical or High severity issues remain open
+- [ ] Code adheres to project standards defined in `claude.md` → `## Coding Standards`
+
+### If PR Review Missing
+
+```
+[TPO] - ⚠️ Cannot Accept Feature - PR Review Gate Not Met
+
+The following sub-issues lack Code Reviewer approval:
+- [Sub-issue ID]: No review found
+- [Sub-issue ID]: Critical issues unresolved
+
+**Required Action**: Route back to developer to complete Code Review process.
+
+Feature cannot be accepted until all PRs pass Code Review.
+```
+
+### Why TPO Enforces This
+
+- Ensures delivered code meets quality standards
+- Prevents technical debt from accumulating
+- Validates that implementation matches requirements AND coding standards
+
 ## Related Skills
 
 | Skill | Relationship |

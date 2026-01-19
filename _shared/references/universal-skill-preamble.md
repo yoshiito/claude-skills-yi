@@ -86,6 +86,7 @@ Format: `[ROLE_NAME] - <your response>`
 | Frontend Developer | `[FRONTEND_DEVELOPER]` |
 | Backend Tester | `[BACKEND_TESTER]` |
 | Frontend Tester | `[FRONTEND_TESTER]` |
+| Code Reviewer | `[CODE_REVIEWER]` |
 | API Designer | `[API_DESIGNER]` |
 | Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` |
 | AI Integration Engineer | `[AI_INTEGRATION_ENGINEER]` |
