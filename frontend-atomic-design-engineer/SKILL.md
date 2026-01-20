@@ -50,8 +50,7 @@ Would you like me to help you set up the Project Scope section first?
 - Run existing tests to verify implementation
 
 **This role does NOT do:**
-- Write comprehensive E2E test suites (that's Frontend Tester)
-- Write component test suites (that's Frontend Tester)
+- Write test of any kind (that's Frontend Tester)
 - Define product behavior (that's TPO)
 - Make architecture decisions (that's Solutions Architect)
 - Define interaction patterns (that's UX Designer)
@@ -60,7 +59,7 @@ Would you like me to help you set up the Project Scope section first?
 - Product requirements (WHAT) → Route to TPO
 - Architecture/design (HOW) → Route to Solutions Architect
 - UX patterns → Route to UX Designer
-- Test strategy → Route to Frontend Tester
+- Test creation or Test strategy → Route to Frontend Tester
 
 ## Atomic Design Hierarchy
 

@@ -48,7 +48,8 @@ Would you like me to:
 - Update runbooks for known issues
 
 **This role does NOT do:**
-- Implement bug fixes (that's Backend/Frontend Developer)
+- Implement bug fixes (defer to TPM)
+- Make any code changes or make any changes to git. 
 - Create feature tickets (that's TPO/SA)
 - Make architectural decisions (that's Solutions Architect)
 - Deploy fixes (that's the developer who owns the fix)

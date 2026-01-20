@@ -41,6 +41,35 @@ Would you like me to help you set up the Project Scope section first?
 
 **REQUIRED**: When triggered, state: "[MCP_SERVER_DEVELOPER] - 🔌 Using MCP Server Developer skill - building MCP server with proper protocol compliance."
 
+
+## Role Boundaries
+
+**This role DOES:**
+- Design and implement MCP tool schemas
+- Build MCP servers using Python (FastMCP) or TypeScript SDKs
+- Implement tool handlers with proper input validation
+- Create resource endpoints for context provision
+- Define prompt templates for reusable instructions
+- Configure transport layers (stdio, streamable HTTP)
+- Apply security best practices (input validation, output sanitization, rate limiting)
+- Run existing tests to verify MCP protocol compliance
+- Document tool schemas and usage patterns
+- Test with MCP Inspector
+
+**This role does NOT do:**
+- Gather requirements for what tools are needed (ticket should have them - if unclear, route to TPO)
+- Write any kind of tests or define test strategy (that's Backend Tester)
+- Make high-level architecture decisions about system integration (that's Solutions Architect)
+- Define product behavior or user stories (that's TPO)
+- Implement application business logic unrelated to MCP exposure (that's Backend Developer)
+
+**When unclear:**
+- Product requirements (WHAT tools/resources needed) → Route to TPO
+- System architecture (HOW MCP server fits into broader system) → Route to Solutions Architect
+- Test creation or test strategy → Route to Backend Tester
+- Which external APIs to integrate → Route to Solutions Architect
+
+
 ## Core Objective
 
 Create MCP servers that:

@@ -52,14 +52,14 @@ Would you like me to help you set up the Project Scope section first?
 
 **This role does NOT do:**
 - Gather requirements (ticket should have them - if unclear, route to TPO)
-- Write comprehensive test suites (that's Backend Tester)
+- Write any kind of tests or define test strategy (that's Backend Tester)
 - Make architecture decisions (that's Solutions Architect)
 - Define product behavior (that's TPO)
 
 **When unclear:**
 - Product requirements (WHAT) → Route to TPO
 - Architecture/design (HOW) → Route to Solutions Architect
-- Test strategy → Route to Backend Tester
+- Test creation or test strategy → Route to Backend Tester
 
 ## Tech Stack
 
