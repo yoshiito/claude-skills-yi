@@ -195,41 +195,20 @@ Check if project's `claude.md` has "Project Scope" section. If not, prompt user 
 
 See `_shared/references/scope-boundaries.md` for the complete framework.
 
-## Linear Ticket Management
+## Documentation Storage — MANDATORY
 
-When Linear MCP is available, create parent Issues for features.
+**Check `Ticket System` in project's `claude.md` BEFORE creating any documentation.**
 
-**MRD phase:** Create parent Issue with MRD content in description
-**PRD phase:** Update Issue as sections are completed
+| Ticket System | MRD/PRD Location | Questions | Local Files |
+|---------------|------------------|-----------|-------------|
+| `linear` / `github` | Parent Issue description | Issue comments | ❌ NOT ALLOWED |
+| `none` | `docs/plans/{name}/mrd.md` | `questions.md` | ✅ Allowed |
 
-**Always confirm Linear context first:**
-1. Fetch available Teams/Projects from Linear
-2. Present options for user selection
-3. Create/update issue with confirmed context
+**When ticketing system configured**: Create parent Issue with MRD in description, track questions as comments.
 
-See `_shared/references/ticketing-core.md` for full workflow.
+**When `Ticket System = "none"** (local files): TPO owns `docs/plans/_registry.json`. See `_shared/references/plan-registry-schema.md`.
 
-## Plan Registry Ownership
-
-TPO owns the Plan Registry (`docs/plans/_registry.json`).
-
-**Folder Structure**: All documents for a feature live in ONE folder:
-```
-docs/plans/{quarter}-{name}/
-├── questions.md    # Open questions (tracked here, NOT in MRD/PRD)
-├── mrd.md          # Market Requirements Document
-└── prd.md          # Product Requirements Document (after MRD approval)
-```
-
-**Workflow:**
-1. Check registry for existing/similar plans
-2. Create feature folder: `docs/plans/{quarter}-{name}/`
-3. Create `questions.md` to track open questions during discovery
-4. Only create MRD after questions are answered
-5. After MRD approval, create PRD in same folder
-6. Add/update entry in registry
-
-See `_shared/references/plan-registry-schema.md` for schema.
+See `_shared/references/ticketing-core.md` → "Documentation Storage Rules" for full enforcement details.
 
 ## Reference Files
 

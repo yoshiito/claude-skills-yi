@@ -6,6 +6,15 @@ This repository contains reusable Claude Code skills for software engineering te
 
 **IMPORTANT**: When working in this repository, ALWAYS use the **Skill Creator** skill.
 
+## Critical Distinction: This File vs Boilerplate
+
+| File | Purpose | When to Edit |
+|------|---------|--------------|
+| `CLAUDE.md` (this file) | Instructions for working on the skills library itself | Changes to how skills are created/managed |
+| `_shared/references/boilerplate-claude-md.md` | Template for projects that USE these skills | Changes to how projects route requests, enforce boundaries, etc. |
+
+**NEVER edit this file when the request is about project behavior.** If someone reports issues with how skills behave in their project (routing, role activation, worker boundaries), edit the boilerplate template instead.
+
 All requests in this skills library should be handled by Skill Creator, which:
 - Creates new skills following best practices
 - Validates skills against quality gates
