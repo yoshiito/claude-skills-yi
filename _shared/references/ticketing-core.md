@@ -31,11 +31,52 @@ Universal rules for all ticket systems. System-specific mappings and commands ar
 - Use `docs/plans/` when Linear/GitHub is configured
 - Assume "no MCP available" without checking
 - Fall back to markdown "temporarily"
+- Create local MRD/PRD/ADR files when ticketing system is configured
+- Create `questions.md` files when ticketing system is configured
 
 **IF PM tool is unavailable** (MCP not connected, API error):
 1. STOP and inform user: "Linear MCP is not available. Please connect it or change Ticket System to 'none'."
 2. DO NOT proceed with markdown fallback
 3. Wait for user decision
+
+## Documentation Storage Rules (MANDATORY)
+
+**CRITICAL**: ALL documentation content must be stored in the ticketing system when one is configured.
+
+### What Goes Where
+
+| Ticket System | MRD/PRD | ADRs | Questions | Specs |
+|---------------|---------|------|-----------|-------|
+| `linear` | Parent Issue description | Sub-issue descriptions or comments | Issue comments | Sub-issue descriptions |
+| `github` | Parent Issue description | Sub-issue descriptions or comments | Issue comments | Sub-issue descriptions |
+| `none` | `docs/plans/{name}/mrd.md` | `docs/integrations/{vendor}/adr.md` | `docs/plans/{name}/questions.md` | Local files |
+
+### Enforcement
+
+When `Ticket System = "linear"` or `"github"`:
+
+```
+✅ ALLOWED:
+- Store MRD content in parent Issue description
+- Store PRD content in parent Issue description (updated)
+- Store ADRs in sub-issue descriptions or linked comments
+- Track questions in Issue comments
+- Store Technical Specs in sub-issue descriptions
+
+❌ NOT ALLOWED:
+- Create docs/plans/*.md files
+- Create docs/integrations/*.md files
+- Create questions.md files
+- Create mrd.md or prd.md files
+- Create any local documentation files
+```
+
+### Why This Matters
+
+1. **Single source of truth** - All context lives in ticketing system
+2. **Traceability** - Direct link from requirements to implementation
+3. **AI agent efficiency** - Agents find context in tickets, not scattered files
+4. **No orphaned docs** - Documentation doesn't get out of sync with tickets
 
 ### Example Enforcement Check
 
@@ -144,7 +185,44 @@ Before creating any sub-issue, verify ALL items:
 
 **STOP**: If any check fails, revise the sub-issue before creation.
 
-## TPgM Validation Gate (MANDATORY)
+## TPgM Mission Modes
+
+**CRITICAL**: TPgM operates in one of two modes, selected at session start.
+
+### Drive Mode (Active)
+
+**PREREQUISITE**: Before Drive Mode can start, TPgM verifies **Definition of Ready** for ALL tickets.
+
+See `definition-of-ready.md` for full checklist. Key checks:
+- Parent Issue exists with MRD
+- Sub-issues have Technical Spec + Gherkin scenarios + Testing Notes
+- Dependencies set via native fields
+- Assigned skill prefix (`[Backend]`, `[Frontend]`, etc.)
+- No open questions
+- `[Test]` sub-issue exists (MANDATORY - validates Gherkin scenarios)
+- `[Docs]` sub-issue exists (for user-facing features)
+
+**If DoR fails**: TPgM routes back to SA/TPO to complete definitions. Cannot drive incomplete work.
+
+**If DoR passes**: TPgM actively pushes work to completion:
+
+1. **Assigns tickets** to appropriate worker skills
+2. **Invokes worker skills** directly to start work
+3. **Monitors progress** and pushes for completion
+4. **Resolves blockers** immediately - doesn't wait
+5. **Validates completion** before moving to next ticket
+
+**Workers in Drive Mode**: TPgM tells you what to do. Execute and report back.
+
+### Track Mode (Passive)
+
+In Track Mode, TPgM responds to requests:
+
+1. Validates tickets when asked
+2. Reports status when asked
+3. Waits for workers to initiate
+
+## TPgM Validation Gate (MANDATORY - Both Modes)
 
 **CRITICAL**: No ticket moves to "In Progress" without TPgM validation.
 
@@ -291,11 +369,13 @@ See `git-workflow.md` for complete Git workflow including:
 - Does NOT create implementation tickets
 
 **`technical-program-manager`**
-- Tracks progress across all sub-issues
+- **In Drive Mode**: Actively assigns work, invokes worker skills, pushes to completion
+- **In Track Mode**: Passively monitors, validates on request, reports status
 - Validates tickets meet quality standards before work begins
 - Verifies traceability before closing parent
 - Escalates blockers
 - Does NOT create implementation sub-issues
+- Does NOT define requirements or architecture (routes to TPO/SA)
 
 ## Scope Boundary Check
 
@@ -317,50 +397,7 @@ Before marking any work as done:
 
 ## Ticket Templates
 
-### Story/Task Template
-
-```markdown
-## Description
-[What needs to be implemented]
-
-## Context
-- Parent Issue: [TICKET-ID - Parent name]
-- ADR: [Link if applicable]
-- API Spec: [Link if applicable]
-
-## Acceptance Criteria
-- [ ] [Specific, testable criterion]
-- [ ] [Specific, testable criterion]
-
-## Implementation Notes
-[Technical guidance, patterns to follow]
-
-## Testing
-[Scenarios to cover, edge cases]
-```
-
-### Bug Template
-
-```markdown
-## Environment
-[Platform, version, environment]
-
-## Impact
-[Critical/High/Medium/Low - business impact]
-
-## Steps to Reproduce
-1. [Step]
-2. [Step]
-
-## Actual Result
-[What happens]
-
-## Expected Result
-[What should happen]
-
-## Testing Notes
-[How to verify fix]
-```
+See `ticket-templates.md` for Story/Task and Bug templates.
 
 ## System-Specific References
 

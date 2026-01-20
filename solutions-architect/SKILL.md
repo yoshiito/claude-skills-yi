@@ -132,6 +132,8 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 
 **SA is the ONLY role that creates implementation sub-issues.** This responsibility includes ensuring quality via INVEST.
 
+**NOTE**: Sub-issues must pass **Definition of Ready** (see `_shared/references/definition-of-ready.md`). TPgM will gate on this before driving work - incomplete tickets block execution.
+
 ### Pre-Creation Workflow
 
 1. Fetch parent issue details
@@ -217,17 +219,20 @@ Set relationships via native fields, NOT in issue body text:
 | `[Docs]` | `tech-doc-writer-manager` | API docs, guides |
 | `[Test]` | `backend-fastapi-pytest-tester` or `frontend-tester` | Dedicated QA effort |
 
-## Integration Catalog Ownership
+## Documentation Storage — MANDATORY
 
-Solutions Architect owns the Integration Catalog (`docs/integrations/_catalog.json`).
+**Check `Ticket System` in project's `claude.md` BEFORE creating any documentation.**
 
-Before adding a new integration:
-1. Check catalog for existing entries
-2. Write ADR explaining selection rationale
-3. Create docs in `docs/integrations/{vendor}/`
-4. Add entry to catalog
+| Ticket System | ADRs / Specs Location | Local Files |
+|---------------|----------------------|-------------|
+| `linear` / `github` | Sub-issue descriptions or Issue comments | ❌ NOT ALLOWED |
+| `none` | `docs/integrations/{vendor}/` | ✅ Allowed |
 
-See `_shared/references/integration-catalog-schema.md` for schema.
+**When ticketing system configured**: Store ADRs in sub-issue descriptions, link to implementation sub-issues.
+
+**When `Ticket System = "none"** (local files): SA owns `docs/integrations/_catalog.json`. See `_shared/references/integration-catalog-schema.md`.
+
+See `_shared/references/ticketing-core.md` → "Documentation Storage Rules" for full enforcement details.
 
 ## Reference Files
 
