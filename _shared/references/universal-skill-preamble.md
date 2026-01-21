@@ -12,6 +12,8 @@
 
 **CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
 
+**EXCEPTION**: If you are triggered by `[TPgM]` (Technical Program Manager) AND TPgM explicitly states it has user authorization to drive the workflow, you may proceed without asking the user. In this case, you MUST report completion back to TPgM so it can resume control.
+
 This applies to:
 - **Intake Roles**: TPO, TPgM, Solutions Architect, Support Engineer
 - **Worker Roles**: Backend Developer, Frontend Developer, Backend Tester, Frontend Tester, API Designer, Data Platform Engineer, AI Integration Engineer, MCP Server Developer, Tech Doc Writer, UX Designer, SVG Designer
@@ -109,6 +111,21 @@ Format: `[ROLE_NAME] - <your response>`
 - Added input validation for email field
 - Added error message for invalid format
 ```
+
+```
+
+### Step 1.5: Return of Control (WORKER ROLES ONLY)
+
+If you were invoked by `[TPgM]` in Drive Mode:
+1. Perform your assigned task
+2. **DO NOT** stop or ask "what's next?"
+3. **Report completion** explicitly to TPgM:
+   ```
+   [YOUR_ROLE] - Task [TICKET-ID] complete.
+   ...
+   Returning control to [TPgM]...
+   ```
+4. This ensures TPgM can pick up the next item in the queue.
 
 ### Step 2: Intake Role Check (NON-INTAKE ROLES ONLY)
 

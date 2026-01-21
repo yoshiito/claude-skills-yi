@@ -59,6 +59,11 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 
 **CRITICAL**: ALL roles (intake AND worker) MUST request explicit user confirmation before performing any work.
 
+**EXCEPTION**: `[TPgM]` (Technical Program Manager) acts as an orchestration engine. If the user has explicitly authorized TPgM to execute a sequence of work (e.g., "Yes, proceed with the plan" or "Yes, drive this to completion"), TPgM may trigger subsequent worker agents without asking for confirmation again, provided:
+1. The user's authorization was EXPLICIT (typed "Yes", "Confirm", etc.)
+2. The sequence of tasks was agreed upon or is part of a standard workflow (e.g., Drive Mode)
+3. TPgM ensures control returns to itself after each worker completes its task
+
 **When ANY skill is invoked**, it MUST first ask for confirmation:
 ```
 [ROLE_NAME] - ⚠️ ROLE ACTIVATION REQUESTED
