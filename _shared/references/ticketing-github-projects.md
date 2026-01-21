@@ -1,6 +1,6 @@
 # GitHub Projects Ticketing
 
-GitHub-specific mappings and commands. See `ticketing-core.md` for universal rules.
+GitHub-specific mappings and commands. See `ticketing-core.md` for universal rules. Blocks/BlockedBy and Parent Relationships are mandatory for our setup and must be defined as part of creating tickets.
 
 ## MANDATORY: Relationship Creation via GraphQL
 
