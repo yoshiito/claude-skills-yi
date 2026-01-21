@@ -143,6 +143,10 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 5. **GATE: Verify relationship fields** are ready for native field assignment
 6. Only after both gates pass: Create sub-issues with native relationship fields
 
+**CRITICAL**: **Do NOT define UI visuals or interaction patterns in the Technical Spec.**
+- Reference the UX Designer's deliverables (Figma/specs) in the **Context** section.
+- The **Technical Spec** must focus strictly on backend/logic/constraints (e.g., "Must use Button atom", "Must validate email", NOT "Button must be blue").
+
 **If either gate fails**: Revise the sub-issue and re-run checks. Do NOT proceed to creation.
 
 See `_shared/references/ticketing-core.md` for system-specific workflows.

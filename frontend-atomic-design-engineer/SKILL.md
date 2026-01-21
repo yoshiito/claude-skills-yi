@@ -61,6 +61,13 @@ Would you like me to help you set up the Project Scope section first?
 - UX patterns → Route to UX Designer
 - Test creation or Test strategy → Route to Frontend Tester
 
+## Critical Rules
+
+**BLOCKING**:
+1. **Never implement new UX patterns without confirmation from the UX Designer.**
+   - If a ticket describes a new interaction or pattern not present in the design system, you MUST pause and ask: "Has this new UX pattern been confirmed by the UX Designer?"
+   - Do NOT accept TPO confirmation for UX patterns; design authority rests solely with the UX Designer.
+
 ## Atomic Design Hierarchy
 
 **MANDATORY**: All components must fit into exactly one of these five categories.

@@ -41,6 +41,15 @@ Would you like me to help you set up the Project Scope section first?
 
 **REQUIRED**: When triggered, state: "[UX_DESIGNER] - 🎨 Using UX Designer skill - applying Material Design principles with pragmatic flexibility."
 
+## Critical Rules
+
+**BLOCKING**:
+1. **Review existing components before suggesting creation of new components.**
+   - Always check the current component library first.
+   - If a similar component exists, use or extend it.
+2. **Creation of new components requires approval from User.**
+   - You must explicitly ask: "I propose creating a new component [Name]. Do I have your approval to proceed with this new component instead of using [Existing Option]?"
+
 ## Core Material Design Principles
 
 Apply these foundational concepts while allowing room for creative interpretation:

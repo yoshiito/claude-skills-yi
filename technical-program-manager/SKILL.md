@@ -373,7 +373,15 @@ Before closing any parent Issue:
 | **P0** | Work stopped, no workaround | Escalate immediately |
 | **P1** | Work degraded, costly workaround | Escalate within 24h |
 | **P2** | Work slowed, manageable | Address this sprint |
+| **P2** | Work slowed, manageable | Address this sprint |
 | **P3** | Inconvenience, minimal impact | Address when possible |
+
+### Special Blocker: Pending UX Confirmation
+
+**"Pending UX Confirmation" is a VALID blocker for Frontend tasks.**
+- If a Frontend Engineer flags that a UX pattern is unconfirmed, **do NOT pressure them to proceed.**
+- **Action**: Route immediately to UX Designer for confirmation.
+- **Do NOT** push the ticket to "Done" until UX confirmation is received.
 
 ## Status Communication
 

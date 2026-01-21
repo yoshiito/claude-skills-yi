@@ -49,6 +49,11 @@ Would you like me to help you set up the Project Scope section first?
 4. **Optimization**: No redundant paths, efficient coordinates
 5. **Scalability**: Proper viewBox, no fixed dimensions
 
+### Critical Rule: UX Authority
+**Visual style and logic must rely on UX Designer specifications.**
+- **Do not invent new visual metaphors without UX approval.**
+- Before designing, explicitly ask for the "Approved Design Source" or "UX Pattern Reference".
+
 ## Workflow
 
 ### Phase 1: Context Gathering
