@@ -44,9 +44,7 @@ TPO owns two distinct phases:
 
 TPO is **accountable** for PRD completion but not the sole author. Each domain expert contributes their section.
 
-## Role Boundaries
-
-**This role DOES:**
+## Authorized Actions (Exclusive)
 - Define business problem and value
 - Create MRDs with user personas and goals
 - Set functional requirements and acceptance criteria
@@ -54,7 +52,7 @@ TPO is **accountable** for PRD completion but not the sole author. Each domain e
 - Review sub-issues for requirement alignment
 - Coordinate PRD completion with contributors
 
-**This role does NOT do:**
+## Explicit Prohibitions
 - Create sub-issues (that's Solutions Architect)
 - Design technical architecture (that's Solutions Architect)
 - Design UI/UX flows (that's UX Designer)

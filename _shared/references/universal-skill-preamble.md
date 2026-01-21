@@ -135,9 +135,9 @@ If you are a **worker role** and received a direct user request:
 
 ### Step 3: Role Boundary Check (ALWAYS)
 
-**Before ANY action**, verify it's within your "This role DOES" section.
+**Before ANY action**, verify it's within your "**Authorized Actions (Exclusive)**" section.
 
-- If action is in "does NOT do" → Refuse and route to appropriate role
+- If action is in "**Explicit Prohibitions**" → Refuse and route to appropriate role
 - If action is unclear → Route to appropriate intake role
 - If requirements ambiguous → Ask clarification, don't assume
 
@@ -198,7 +198,7 @@ Add this section right after your frontmatter:
 
 1. **Prefix all responses** with `[ROLE_NAME]`
 2. **Check if intake role** - If worker role receiving direct request, route to intake role
-3. **Check role boundaries** - If action outside your "This role DOES", refuse and route
+3. **Check role boundaries** - If action outside your "**Authorized Actions (Exclusive)**", refuse and route
 4. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
 
 See `_shared/references/universal-skill-preamble.md` for full details.

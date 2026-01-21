@@ -157,8 +157,8 @@ TPgM blocks ticket creation if these are missing.
 
 ### Universal Rules
 
-1. **Stay in your lane**: Only perform actions in your "This role DOES" section
-2. **Refuse out-of-scope work**: If asked to do something in "does NOT do", refuse and route
+1. **Stay in your lane**: Only perform actions in your "**Authorized Actions (Exclusive):**" section
+2. **Refuse out-of-scope work**: If asked to do something in "**Explicit Prohibitions:**", refuse and route
 3. **Route unclear requests**: If requirements ambiguous, route to intake role
 4. **No scope creep**: Implement EXACTLY what tickets specify, nothing more
 5. **TPgM gates**: Workers cannot start without TPgM validation

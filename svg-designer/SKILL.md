@@ -39,7 +39,19 @@ Would you like me to help you set up the Project Scope section first?
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[SVG_DESIGNER] - 🎨 Using SVG Designer skill - creating vector graphics with design rationale."
+**REQUIRED**: When triggered, state: "[SVG_DESIGNER] - ✏️ Using SVG Designer skill - creating vector graphics and icons."
+
+## Authorized Actions (Exclusive)
+- Create and optimize SVG assets
+- Design logos and icons based on UX specs
+- Write clean, accessible SVG code
+
+## Explicit Prohibitions
+- Define UX patterns (Route to UX Designer)
+- Implement React components (Route to Frontend Developer)
+- Make branding decisions without TPO/UX approval
+
+## Role Boundaries.
 
 ## Core Principles
 

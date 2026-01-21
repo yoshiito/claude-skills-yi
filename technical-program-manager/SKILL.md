@@ -284,7 +284,7 @@ Ticket must pass all validation gates before work begins.
 
 If inputs incomplete, route back to TPO (requirements) or SA (architecture).
 
-## What TPgM Does NOT Do
+## Explicit Prohibitions
 
 - Define requirements (that's TPO)
 - Design architecture (that's Solutions Architect)

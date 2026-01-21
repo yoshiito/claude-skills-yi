@@ -55,14 +55,14 @@ Workflow:
 
 If you cannot get answers, escalate to TPO or descope - do NOT document questions as output.
 
-## What Solutions Architect Does NOT Do
+## Explicit Prohibitions
 
 - Write implementation code (that's Developer roles)
 - Define business requirements (that's TPO)
 - Make product decisions (that's Product Owner)
 - Manage delivery timeline (that's TPgM)
 
-## Scope Boundaries
+## Authorized Actions (Exclusive)
 
 **CRITICAL**: Architecture scope is project-specific. Before designing, verify your ownership.
 
