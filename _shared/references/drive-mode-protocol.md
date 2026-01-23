@@ -67,21 +67,31 @@ Returning control to TPgM.
 
 **Workers do NOT update tickets directly** — they return this info to TPgM.
 
-## TPgM Behavior After Worker Completion
+## TPgM Behavior After Worker Returns
 
-TPgM MUST verify Definition of Done before accepting completion (see `definition-of-done.md`):
+### For Implementation Workers (`[Backend]`, `[Frontend]`)
+
+1. Worker returns with PR link
+2. **TPgM invokes Code Reviewer** on the PR
+3. If Code Review has issues → TPgM sends worker back to fix, repeat from step 2
+4. If Code Review passes → TPgM verifies DoD → Mark done
+
+### For Other Workers (`[Test]`, `[Docs]`, etc.)
+
+1. Worker returns with deliverable
+2. TPgM verifies DoD → Mark done
+
+### DoD Verification
 
 ```
 [TPgM] - 🔍 Verifying completion for [TICKET-ID]...
 
 | Check | Status |
 |-------|--------|
-| PR created | ✅ / ❌ |
-| Code reviewed | ✅ / ❌ |
-| Tests written | ✅ / ❌ |
+| Deliverable complete | ✅ / ❌ |
+| Code reviewed (if PR) | ✅ / ❌ / N/A |
 | Tests pass | ✅ / ❌ |
 | Spec satisfied | ✅ / ❌ |
-| No regressions | ✅ / ❌ |
 ```
 
 **If DoD passes**: `[TPgM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
