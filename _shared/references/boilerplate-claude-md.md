@@ -84,6 +84,15 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 
 User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phrase activates Drive Mode.
 
+**Before Drive Mode activates**, TPgM MUST verify Definition of Ready (see `_shared/references/definition-of-ready.md`):
+- All tickets have Technical Spec + Gherkin scenarios
+- Parent-child relationships set via native fields
+- `[Test]` sub-issue exists for regression validation
+- `[Docs]` sub-issue exists (for user-facing features)
+- Work queue ends with regression testing and documentation
+
+**If DoR fails**: TPgM blocks Drive Mode and routes gaps to SA/TPO.
+
 ### Drive Mode Rules
 
 1. **TPgM orchestrates only** — assigns work, tracks progress. NEVER does implementation, design, testing, PR creation, or documentation writing.
@@ -105,13 +114,28 @@ User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phra
 Returning control to TPgM.
 ```
 
-### TPgM Behavior After Worker Completes
+### TPgM Behavior After Worker Claims Complete
+
+**TPgM MUST verify Definition of Done before accepting completion** (see `_shared/references/definition-of-done.md`):
 
 ```
-[TPgM] - ✅ [Description of what was completed]
+[TPgM] - 🔍 Verifying completion for [TICKET-ID]...
 
-Moving to next task: [Next task description]
+| Check | Status |
+|-------|--------|
+| PR created | ✅ / ❌ |
+| Code reviewed | ✅ / ❌ |
+| Tests written | ✅ / ❌ |
+| Tests pass | ✅ / ❌ |
+| Spec satisfied | ✅ / ❌ |
+| No regressions | ✅ / ❌ |
 ```
+
+**If DoD passes**: `[TPgM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
+
+**If DoD fails**: `[TPgM] - ⛔ [TICKET-ID] NOT complete. [List gaps]. Address and report back.`
+
+**NO TICKET MOVES TO DONE WITHOUT VERIFICATION.** This applies in ALL modes.
 
 ### Exiting Drive Mode
 
@@ -221,7 +245,49 @@ All tickets must include:
 - **Technical Spec**: MUST/MUST NOT/SHOULD constraints (guardrails for AI agents)
 - **Gherkin Scenarios**: Given/When/Then (validation for testers)
 
-TPgM blocks ticket creation if these are missing.
+TPgM blocks ticket work if these are missing.
+
+## Ticket Readiness Gate — MANDATORY
+
+**CRITICAL**: TPgM verifies Definition of Ready (see `_shared/references/definition-of-ready.md`) at TWO points:
+
+### 1. When Ticket is Marked "Ready for Work"
+
+Before SA or TPO declares a ticket ready:
+
+| Check | Required |
+|-------|----------|
+| Parent-child relationship set (native field) | ✅ |
+| Technical Spec with MUST/MUST NOT/SHOULD | ✅ |
+| Gherkin scenarios (Given/When/Then) | ✅ |
+| Testing Notes (what to test, edge cases) | ✅ |
+| `[Test]` sub-issue exists | ✅ |
+| `[Docs]` sub-issue exists (if user-facing) | ✅ |
+| Dependencies set via `blockedBy` field | ✅ |
+
+**If ANY check fails**: Ticket is NOT ready. Route gaps to SA/TPO.
+
+### 2. Before ANY Ticket Moves to "In Progress"
+
+TPgM re-verifies DoR before assigning work:
+
+```
+[TPgM] - 🔍 Verifying Definition of Ready for [TICKET-ID]...
+
+| Check | Status |
+|-------|--------|
+| Parent linked | ✅ / ❌ |
+| Technical Spec | ✅ / ❌ |
+| Gherkin scenarios | ✅ / ❌ |
+| Testing Notes | ✅ / ❌ |
+| [Test] sub-issue exists | ✅ / ❌ |
+| [Docs] sub-issue exists | ✅ / ❌ (or N/A) |
+| Dependencies set | ✅ / ❌ |
+```
+
+**If DoR fails**: `[TPgM] - ⛔ Cannot start [TICKET-ID]. [List gaps]. Route to SA/TPO.`
+
+**This applies in ALL modes** — Drive Mode, Track Mode, or direct ticket pickup.
 
 ## Coding Standards
 
