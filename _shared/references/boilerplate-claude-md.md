@@ -158,6 +158,12 @@ If a worker skill receives a direct request for new work, it routes to the appro
 
 ## Project Scope
 
+### Skills Library
+
+- **Skills Path**: `[skills-path]`
+
+**Path Resolution**: If a file referenced by a skill is not found in the project directory, look for it in `{Skills Path}/`.
+
 ### Team Context
 
 - **Team Slug**: `[slug]` — used in branch names (`feature/{slug}/...`), ticket assignments
@@ -283,7 +289,7 @@ If asked to perform work outside boundaries:
 I am being asked to [action], which is [OTHER_ROLE]'s responsibility.
 
 Routing to [OTHER_ROLE] for proper handling...
-```
+``` s
 
 ## Documentation Storage — MANDATORY
 
