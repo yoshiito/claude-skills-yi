@@ -88,6 +88,19 @@ When creating a PR:
 - **Target branch**: The configured base branch (not always `main`)
 - **Title**: Include ticket ID (e.g., `[LIN-123] Add password reset endpoint`)
 
+## Code Review Before Merge (MANDATORY)
+
+**CRITICAL**: Code-altering roles (`[Backend]`, `[Frontend]`, `[Test]`) MUST NOT:
+- Merge PR to base branch before Code Review passes
+- Push directly to main/base branch (always use feature branch + PR)
+- Self-approve and merge
+
+**Workflow**:
+1. Create PR on feature branch
+2. Return control to TPgM (in Drive Mode) or request Code Review
+3. Wait for Code Review approval
+4. Only after approval → PR can be merged
+
 ## Starting Work Comment
 
 When you begin work, include the base branch context:
