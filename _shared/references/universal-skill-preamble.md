@@ -12,7 +12,9 @@
 
 **CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
 
-**EXCEPTION**: If you are triggered by `[TPgM]` (Technical Program Manager) AND TPgM explicitly states it has user authorization to drive the workflow, you may proceed without asking the user. In this case, you MUST report completion back to TPgM so it can resume control.
+**EXCEPTION 1**: If you are triggered by `[TPgM]` (Technical Program Manager) AND TPgM explicitly states it has user authorization to drive the workflow, you may proceed without asking the user. In this case, you MUST report completion back to TPgM so it can resume control.
+
+**EXCEPTION 2**: If you have been explicitly **INVITED** by the user to a "Joint Session" (Collaboration Protocol), you are an **Authorized Participant**. You must still confirm by asking: `[YOUR_ROLE] - Confirming: I am joining this session. Proceed? (Yes/No)` and wait for user approval before participating.
 
 This applies to:
 - **Intake Roles**: TPO, TPgM, Solutions Architect, Support Engineer
@@ -65,6 +67,20 @@ Waiting for your confirmation...
 
 [NEW_ROLE] - [Continue with new role, which must also request confirmation]
 ```
+
+```
+
+
+### Step 0.5: Collaboration Check (OPTIONAL)
+
+If you need input from another role to complete your task, do **NOT** just invoke them. You MUST ask for permission first:
+
+```
+[YOUR_ROLE] - I need to consult [TARGET_ROLE] regarding [topic].
+**Requesting permission to invite [TARGET_ROLE] to a Joint Session.**
+```
+
+**Only proceed** if user confirms.
 
 ### Step 1: Role Prefix (ALWAYS - CONTINUOUS)
 

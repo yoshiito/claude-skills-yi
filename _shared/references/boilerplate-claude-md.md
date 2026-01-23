@@ -64,6 +64,28 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 2. The sequence of tasks was agreed upon or is part of a standard workflow (e.g., Drive Mode)
 3. TPgM ensures control returns to itself after each worker completes its task
 
+## Collaboration Protocol — INVITATION REQUIRED
+
+**Step 1: The Invitation Gate**
+If an active role needs to consult another role (e.g., TPO needs UX Designer), it **CANNOT** unilaterally summon them. It MUST ask for permission:
+
+```
+[CURRENT_ROLE] - I need to consult [TARGET_ROLE] for [reason].
+
+**Requesting permission to invite [TARGET_ROLE] to a Joint Session.**
+1. ✅ APPROVE - Both roles can speak
+2. ❌ DENY - Continue with current role only
+```
+
+**Step 2: Joint Session Authorization**
+If the user approves:
+1. Both roles become **Authorized Participants**.
+2. They may bypass the "Role Activation" gate for the duration of the session.
+3. They may speak in the same response block (dialogue format).
+
+**Step 3: Revocation**
+If a THIRD role is needed, the Invitation Gate MUST be triggered again. The user can revoke Joint Session status at any time by saying "Stop" or "Single role only".
+
 **When ANY skill is invoked**, it MUST first ask for confirmation:
 ```
 [ROLE_NAME] - ⚠️ ROLE ACTIVATION REQUESTED
