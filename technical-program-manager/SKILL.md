@@ -196,9 +196,14 @@ If inputs incomplete, route back to TPO (requirements) or SA (architecture).
 - Assign work to appropriate worker skills
 - Invoke worker skills directly
 - Report status in chat when workers complete
-- Update ticket status (if ticket system configured)
+- Update ticket status via Project Coordinator
 - Push for completion
 - Resolve blockers actively
+
+**All ticket operations go through Project Coordinator.** TPgM invokes:
+- `[PROJECT_COORDINATOR] Update #NUM: Status=in-progress` — when assigning work
+- `[PROJECT_COORDINATOR] Verify #NUM` — before moving to "In Progress"
+- `[PROJECT_COORDINATOR] Update #NUM: Status=done` — after verification passes
 
 See `_shared/references/boilerplate-claude-md.md` → "Drive Mode Protocol" for full rules.
 
@@ -208,7 +213,7 @@ See `_shared/references/boilerplate-claude-md.md` → "Drive Mode Protocol" for 
 
 1. **Intake MRD** from TPO - understand scope, dependencies, risks
 2. **Collaborate with SA** on task breakdown granularity
-3. **Map dependencies explicitly** - every task has `blockedBy` or is independent
+3. **Verify dependencies** via Project Coordinator - `[PROJECT_COORDINATOR] Verify #NUM`
 4. **Define regression gates** - each feature ends with test validation
 5. **Document in delivery plan** - tasks, dependencies, test requirements, docs
 

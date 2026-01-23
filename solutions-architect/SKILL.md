@@ -140,8 +140,8 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 2. Present Team/Project options for user selection
 3. Draft sub-issue content following Story/Task template
 4. **GATE: Run INVEST checklist** on each drafted sub-issue (see below)
-5. **GATE: Verify relationship fields** are ready for native field assignment
-6. Only after both gates pass: Create sub-issues with native relationship fields
+5. **GATE: Identify relationship fields** (parent, blockedBy)
+6. Only after both gates pass: Invoke Project Coordinator to create sub-issues
 
 **CRITICAL**: **Do NOT define UI visuals or interaction patterns in the Technical Spec.**
 - Reference the UX Designer's deliverables (Figma/specs) in the **Context** section.
@@ -149,7 +149,7 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 
 **If either gate fails**: Revise the sub-issue and re-run checks. Do NOT proceed to creation.
 
-See `_shared/references/ticketing-core.md` for system-specific workflows.
+**All ticket creation goes through Project Coordinator.** See `_shared/references/ticketing-core.md`.
 
 ### Mandatory INVEST Checklist (BLOCKING)
 
@@ -158,9 +158,9 @@ See `_shared/references/ticketing-core.md` for system-specific workflows.
 For EACH sub-issue, verify:
 
 **Independence**
-- [ ] Can start without waiting for others? → If NO, set `blockedBy` via native field
-- [ ] Dependencies set via native fields only (Linear: `blockedBy`, GitHub: GraphQL `addBlockedBy`)
-- [ ] Parent set via native field (Linear: `parentId`, GitHub: GraphQL `addSubIssue`)
+- [ ] Can start without waiting for others? → If NO, identify `blockedBy` issues
+- [ ] Dependencies will be set via Project Coordinator (not in issue body text)
+- [ ] Parent will be set via Project Coordinator (not in issue body text)
 
 **Negotiable**
 - [ ] HOW is flexible (implementation approach can vary)?
@@ -205,14 +205,21 @@ Every sub-issue MUST include:
 
 ### Relationship Fields (MANDATORY)
 
-Set relationships via native fields, NOT in issue body text:
+**All relationships are set via Project Coordinator**, which handles native fields for each system.
 
-| System | Parent | Blocked By | Notes |
-|--------|--------|------------|-------|
-| Linear | `parentId` parameter | `blockedBy` parameter | Via MCP at issue creation |
-| GitHub | GraphQL `addSubIssue` mutation | GraphQL `addBlockedBy` mutation | Requires node IDs + `-H "GraphQL-Features: sub_issues"` header |
+Invoke Project Coordinator with:
 
-**For GitHub**: See `_shared/references/ticketing-github-projects.md` for complete GraphQL workflow. CLI flags (`--parent`, `--add-blocked-by`) do NOT exist.
+```
+[PROJECT_COORDINATOR] Create:
+- Type: sub-issue
+- Title: "[Backend] Password reset API"
+- Body: [Story/Task template content]
+- Parent: #NUM
+- Blocked By: #NUM, #NUM (if dependencies exist)
+- Labels: backend
+```
+
+**DO NOT** set relationships in issue body text. Project Coordinator ensures native field assignment.
 
 ### Standard Sub-Issues
 
@@ -291,10 +298,11 @@ Before creating sub-issues (ALL gates must pass):
 - [ ] Small: Single logical change (1-3 days max)
 - [ ] Testable: Gherkin scenarios specific and verifiable
 
-**Gate 3: Native Relationship Fields** (run for EACH sub-issue)
-- [ ] Parent: Identified, will set via `parentId` (Linear) or GraphQL `addSubIssue` mutation (GitHub)
-- [ ] Blocked By: Dependencies identified, will set via `blockedBy` (Linear) or GraphQL `addBlockedBy` mutation (GitHub)
-- [ ] Blocks: Dependents identified, will set via related issues (tracked by inverse `blockedBy` relationships)
+**Gate 3: Relationship Fields** (run for EACH sub-issue)
+- [ ] Parent: Identified, will be set via Project Coordinator
+- [ ] Blocked By: Dependencies identified, will be set via Project Coordinator
+- [ ] Blocks: Dependents identified (tracked by inverse `blockedBy` relationships)
+- [ ] After creation: Verify with `[PROJECT_COORDINATOR] Verify #NUM`
 
 **STOP**: If any gate fails, revise and re-check before creating sub-issues.
 

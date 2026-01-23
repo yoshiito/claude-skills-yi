@@ -1,15 +1,26 @@
 # Definition of Ready (DoR)
 
-**Universal checklist for ticket readiness.** All roles use this to determine if a ticket is ready for work.
+**Universal checklist for ticket readiness.** Project Coordinator enforces this at ticket creation time.
 
 ## Who Uses This
 
 | Role | Uses DoR For |
 |------|--------------|
-| **Solutions Architect** | Validates sub-issues before creation |
-| **TPO** | Validates parent issues before handoff |
-| **TPgM** | Gates Drive Mode - cannot drive incomplete work |
+| **Project Coordinator** | **ENFORCES** - rejects ticket creation if DoR not met |
+| **Solutions Architect** | Prepares sub-issues to pass DoR checks |
+| **TPO** | Prepares parent issues to pass DoR checks |
+| **TPgM** | Additional validation before Drive Mode |
 | **Workers** | Understands what "ready" looks like |
+
+## Enforcement Point
+
+**Project Coordinator is the enforcer.** When any role invokes `[PROJECT_COORDINATOR] Create`, the coordinator:
+1. Parses the provided content
+2. Verifies ALL required elements exist
+3. **REJECTS with specific gaps** if checks fail
+4. Only creates ticket if ALL checks pass
+
+**Roles cannot bypass this gate.** Fix the content and retry.
 
 ## Definition of Ready Checklist
 
@@ -19,8 +30,11 @@
 |-------|----------|------------|
 | Title | ✅ | `[Feature] {name}` format |
 | MRD in description | ✅ | Problem, users, success criteria defined |
+| **UAT criteria defined** | ✅ | What TPO will verify before accepting |
 | Team assigned | ✅ | Valid team in ticket system |
 | No open questions | ✅ | All clarifications resolved |
+
+**UAT Criteria**: TPO must define specific, verifiable criteria that they will check before accepting the feature as complete. See `ticket-templates.md` for format.
 
 ### For Sub-Issues (Created by SA)
 
@@ -110,6 +124,7 @@ Fix these gaps, then invoke Drive Mode again.
 | Missing Item | Route To |
 |--------------|----------|
 | MRD/Requirements | TPO |
+| UAT criteria | TPO |
 | Technical Spec | Solutions Architect |
 | Gherkin scenarios | Solutions Architect |
 | Dependencies | Solutions Architect |
@@ -125,6 +140,7 @@ Fix these gaps, then invoke Drive Mode again.
 | No Gherkin scenarios | SA adds Given/When/Then |
 | Open questions in ticket | Resolve via comments, then update ticket |
 | Title missing prefix | Use `[Backend]`, `[Frontend]`, etc. |
+| No UAT criteria (parent) | TPO adds verifiable UAT checklist |
 
 ## Related References
 

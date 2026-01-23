@@ -156,6 +156,43 @@ These skills additionally require an existing ticket with Technical Spec + Gherk
 
 If a worker skill receives a direct request for new work, it routes to the appropriate intake role.
 
+## Utility Skills (Always Available)
+
+These skills can be invoked by ANY role at ANY time without permission:
+
+| Skill | Purpose | Invoked By |
+|-------|---------|------------|
+| **Project Coordinator** | Ticket CRUD with quality enforcement | Any role needing ticket ops |
+
+**Usage**: When you need to create, update, or verify tickets, invoke Project Coordinator. Do NOT use `gh`, Linear MCP, or plan files directly.
+
+**IMPORTANT**: Project Coordinator **enforces quality gates**:
+- **On Create**: Verifies Definition of Ready (Technical Spec, Gherkin, Testing Notes)
+- **On Status=Done**: Verifies Definition of Done (PR link, Code Review, tests)
+- **Rejects** operations that fail checks - calling role must fix and retry
+
+### Invoking Project Coordinator
+
+```
+[PROJECT_COORDINATOR] Create:
+- Type: parent | sub-issue | bug
+- Title: "..."
+- Body: "..."
+- Parent: #NUM (for sub-issues)
+- Blocked By: #NUM, #NUM (optional)
+- Labels: label1, label2
+
+[PROJECT_COORDINATOR] Update #NUM:
+- Status: backlog | in-progress | in-review | done
+- Add Comment: "..."
+
+[PROJECT_COORDINATOR] Verify #NUM:
+- Expect Parent: #NUM
+- Expect Blockers: #NUM, #NUM
+```
+
+See `project-coordinator/SKILL.md` for full interface.
+
 ## Project Scope
 
 ### Skills Library

@@ -160,7 +160,7 @@ See `references/troubleshooting-framework.md` for detailed methodology.
 
 ### Phase 4: Documentation & Handoff
 
-**Document findings and create Bug ticket.**
+**Document findings and create Bug ticket via Project Coordinator.**
 
 1. **Document findings**:
    - Root cause summary
@@ -171,14 +171,14 @@ See `references/troubleshooting-framework.md` for detailed methodology.
 4. **Update runbook** if this is a recurring issue
 
 ```
-# Create issue for tracking
-mcp__linear-server__create_issue(
-  title="[Bug] Description of the issue",
-  team="...",
-  description="## Root Cause\n...\n\n## Fix Applied\n...",
-  labels=["bug"]
-)
+[PROJECT_COORDINATOR] Create:
+- Type: bug
+- Title: "[Bug] Description of the issue"
+- Body: [Bug template content with root cause, steps to reproduce, etc.]
+- Labels: bug
 ```
+
+Project Coordinator handles the tool-specific complexity (GitHub, Linear, or plan files).
 
 ## Scope Boundaries
 
@@ -337,7 +337,7 @@ This ensures the fix doesn't introduce new issues while resolving the original b
 
 ## MCP Tools Reference
 
-### Sentry MCP
+### Sentry MCP (Direct Access)
 | Tool | Purpose |
 |------|---------|
 | `list_issues` | Query issues by project, status, date range |
@@ -345,12 +345,15 @@ This ensures the fix doesn't introduce new issues while resolving the original b
 | `get_latest_event` | View most recent occurrence with full stack trace |
 | `list_projects` | Discover available Sentry projects |
 
-### Linear MCP
-| Tool | Purpose |
-|------|---------|
-| `create_issue` | Create bug ticket for tracking |
-| `update_issue` | Update status, add findings |
-| `create_comment` | Add investigation notes |
+### Ticket Operations (Via Project Coordinator)
+
+**DO NOT use Linear MCP or GitHub CLI directly.** All ticket operations go through Project Coordinator:
+
+| Operation | Invoke Project Coordinator With |
+|-----------|--------------------------------|
+| Create bug ticket | `[PROJECT_COORDINATOR] Create: Type=bug` |
+| Update status | `[PROJECT_COORDINATOR] Update #NUM: Status=...` |
+| Add comment | `[PROJECT_COORDINATOR] Update #NUM: Add Comment=...` |
 
 ### File System
 | Tool | Purpose |

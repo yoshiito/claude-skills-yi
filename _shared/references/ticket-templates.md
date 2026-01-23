@@ -1,6 +1,68 @@
 # Ticket Templates
 
-**MANDATORY**: All sub-issues MUST use these templates. Solutions Architect creates sub-issues, TPO reviews, TPgM validates.
+**MANDATORY**: All tickets MUST use these templates. TPO creates parent issues, Solutions Architect creates sub-issues.
+
+---
+
+## Parent Issue Template
+
+For feature-level issues created by Technical Product Owner.
+
+| Section | Content |
+|---------|---------|
+| **Problem Statement** | What user problem are we solving? |
+| **Target Users** | Who experiences this problem? |
+| **Success Criteria** | How do we know we've solved it? |
+| **UAT Criteria** | What TPO will verify before accepting |
+| **Out of Scope** | What this feature does NOT include |
+| **References** | Related initiatives, research, competitors |
+
+### UAT Criteria Format
+
+**MANDATORY**: TPO defines what they will verify before accepting the feature as complete.
+
+```markdown
+## UAT Criteria
+
+Before this feature can be marked complete, TPO will verify:
+
+- [ ] [Specific user flow works end-to-end]
+- [ ] [Specific data displays correctly]
+- [ ] [Error handling behaves as expected]
+- [ ] [Performance meets requirements]
+```
+
+### Example: Parent Issue
+
+**Title:** `[Feature] Password Reset Flow`
+
+**Problem Statement:** Users who forget their password have no way to recover their accounts, leading to support tickets and account abandonment.
+
+**Target Users:** Registered users who have forgotten their password (estimated 5% of login attempts).
+
+**Success Criteria:**
+- Users can reset password via email link
+- Support tickets for password issues reduced by 80%
+- Reset flow completes in < 3 minutes
+
+**UAT Criteria:**
+
+Before this feature can be marked complete, TPO will verify:
+- [ ] User receives reset email within 2 minutes
+- [ ] Reset link expires after 24 hours
+- [ ] New password works on next login
+- [ ] Invalid/expired links show helpful error message
+- [ ] Mobile and desktop email clients render correctly
+
+**Out of Scope:**
+- SMS-based reset (Phase 2)
+- Security questions (not implementing)
+
+**References:**
+- Initiative: Q1 User Retention
+- Competitor analysis: /docs/research/password-reset-ux.md
+
+---
 
 ## Story/Task Template
 
@@ -184,14 +246,29 @@ Use ticket system's native fields. See `ticketing-*.md` for system-specific comm
 
 ---
 
-## Quality Checklist
+## Quality Checklists
 
-Before submitting:
+### Parent Issue Checklist (TPO)
+
+Before creating:
+
+- [ ] Problem statement clearly defines user problem
+- [ ] Target users identified
+- [ ] Success criteria are measurable
+- [ ] UAT criteria defined (what TPO will verify)
+- [ ] Out of scope clearly stated
+- [ ] Title uses `[Feature]` prefix
+
+### Sub-Issue Checklist (SA)
+
+Before creating:
 
 - [ ] Story written as user story
 - [ ] Context provides background
 - [ ] Technical Spec has MUST/MUST NOT/SHOULD
 - [ ] Gherkin scenarios cover happy path + errors
+- [ ] Testing Notes section included
 - [ ] References linked (Parent, ADR, specs)
 - [ ] Dependencies set via native fields (NOT in issue body)
-- [ ] Assignee set
+- [ ] Assigned role set
+- [ ] Title uses correct prefix (`[Backend]`, `[Frontend]`, etc.)

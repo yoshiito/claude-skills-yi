@@ -205,20 +205,32 @@ Check if project's `claude.md` has "Project Scope" section. If not, prompt user 
 
 See `_shared/references/scope-boundaries.md` for the complete framework.
 
-## Documentation Storage — MANDATORY
+## Ticket Operations — MANDATORY
 
-**Check `Ticket System` in project's `claude.md` BEFORE creating any documentation.**
+**All ticket operations go through Project Coordinator.**
 
-| Ticket System | MRD/PRD Location | Questions | Local Files |
-|---------------|------------------|-----------|-------------|
-| `linear` / `github` | Parent Issue description | Issue comments | ❌ NOT ALLOWED |
-| `none` | `docs/plans/{name}/mrd.md` | `questions.md` | ✅ Allowed |
+### Creating Parent Issues
 
-**When ticketing system configured**: Create parent Issue with MRD in description, track questions as comments.
+After MRD is approved, invoke Project Coordinator:
 
-**When `Ticket System = "none"** (local files): TPO owns `docs/plans/_registry.json`. See `_shared/references/plan-registry-schema.md`.
+```
+[PROJECT_COORDINATOR] Create:
+- Type: parent
+- Title: "[Feature] Feature Name"
+- Body: [MRD content]
+- Labels: feature
+```
 
-See `_shared/references/ticketing-core.md` → "Documentation Storage Rules" for full enforcement details.
+Project Coordinator handles tool-specific complexity (GitHub, Linear, or plan files).
+
+### Documentation Storage
+
+| Ticket System | MRD/PRD Location | Questions |
+|---------------|------------------|-----------|
+| `linear` / `github` | Parent Issue description (via Project Coordinator) | Issue comments |
+| `none` | Plan files (via Project Coordinator) | `questions.md` |
+
+See `_shared/references/ticketing-core.md` for routing rules.
 
 ## Reference Files
 
@@ -250,10 +262,10 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Testable: Gherkin scenarios specific and verifiable
 
 **Gate 3: Native Relationship Fields**
-- [ ] Parent set via native field (Linear: `parentId`, GitHub: GraphQL `addSubIssue` mutation)
-- [ ] Blocked By set via native field if dependencies exist (Linear: `blockedBy`, GitHub: GraphQL `addBlockedBy` mutation)
+- [ ] Parent set via Project Coordinator (sets native field, not body text)
+- [ ] Blocked By set via Project Coordinator if dependencies exist
 - [ ] Relationships NOT duplicated in issue body text
-- [ ] For GitHub: Verify relationship with GraphQL query (see `ticketing-github-projects.md`)
+- [ ] Invoke `[PROJECT_COORDINATOR] Verify #NUM` to confirm relationships are set
 
 **If any gate fails:** Route back to SA for correction before TPgM begins delivery planning.
 
