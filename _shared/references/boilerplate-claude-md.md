@@ -4,66 +4,16 @@
 
 ## Placeholder Detection — BLOCKING
 
-**CRITICAL**: Before ANY skill performs work, it MUST check for placeholders in this `claude.md` file.
-
-### Placeholder Patterns (BLOCKING)
-
-If ANY of these patterns are found in this file, the skill MUST:
-1. Stop immediately
-2. List all placeholder sections found
-3. Ask user to complete them before proceeding
-
-**Common placeholder patterns:**
-- `[Project Name]` (in title)
-- `[One-line project description]`
-- `[slug]` (in Team Context)
-- `[e.g., ...]` (in any section)
-- `[Add your rules here]` (uncustomized)
-- Empty or incomplete sections with only template text
-
-**Exception**: Skills MAY help the user fill in placeholders if explicitly asked ("help me set up my claude.md").
-
-### Required Sections Checklist
-
-Before any work begins, verify these sections are COMPLETE (no placeholders):
-
-- [ ] Project title is real (not `[Project Name]`)
-- [ ] Project description is real (not `[One-line project description]`)
-- [ ] Team Context: Team Slug is real (not `[slug]`)
-- [ ] Team Context: Ticket System is selected (`linear`, `github`, or `none`)
-- [ ] Domain Ownership: All domains have real owners (not `[Owner role + person]`)
-- [ ] Active Roles: Real roles listed with real scopes (not `[e.g., ...]`)
-- [ ] Coding Standards: Frontend/Backend/Testing checkboxes are reviewed (at least one ✅ or explicitly left ❌)
-- [ ] Coding Standards: Project-Specific Rules section has real rules (not `[Add your rules here]`)
-
-### Placeholder Detection Response Template
-
-If placeholders detected:
-```
-[ROLE_NAME] - ⚠️ INCOMPLETE PROJECT SETUP DETECTED
-
-This project's claude.md file contains placeholders that must be completed before I can proceed.
-
-**Placeholders found:**
-1. [Project Name] — Line 1
-2. [slug] — Line 139 (Team Slug)
-3. [e.g., TPO] — Line 155 (Active Roles)
-4. [Add your rules here] — Line [X] (Coding Standards)
-
-**To proceed**, please either:
-1. Complete these sections manually
-2. Ask me to help you set them up: "Help me configure my claude.md"
-
-Until these placeholders are replaced with real values, I cannot perform any work.
-```
+**CRITICAL**: Before ANY skill performs work, check for placeholders. See `_shared/references/placeholder-detection.md` for patterns and response template.
 
 ## First Action — MANDATORY
 
 **CRITICAL**: Before responding to ANY user request, you MUST:
 
-1. **Identify the skill** that should handle the request
-2. **State which skill you are using** in the format: `[ROLE_NAME] - ...`
-3. **Follow that skill's workflow** exactly
+1. **Check for placeholders** — If ANY placeholders exist in this file, STOP and ask user to complete them first
+2. **Identify the skill** that should handle the request
+3. **State which skill you are using** in the format: `[ROLE_NAME] - ...`
+4. **Follow that skill's workflow** exactly
 
 **NO FREEFORM RESPONSES**: Every interaction must go through a skill. Do NOT answer questions, write code, or take actions without first invoking and declaring a skill.
 
@@ -114,32 +64,55 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 
 **CRITICAL**: ALL roles (intake AND worker) MUST request explicit user confirmation before performing any work.
 
-**EXCEPTION**: `[TPgM]` (Technical Program Manager) acts as an orchestration engine. If the user has explicitly authorized TPgM to execute a sequence of work (e.g., "Yes, proceed with the plan" or "Yes, drive this to completion"), TPgM may trigger subsequent worker agents without asking for confirmation again, provided:
-1. The user's authorization was EXPLICIT (typed "Yes", "Confirm", etc.)
-2. The sequence of tasks was agreed upon or is part of a standard workflow (e.g., Drive Mode)
-3. TPgM ensures control returns to itself after each worker completes its task
+**EXCEPTION**: Drive Mode (see below).
+
+## Drive Mode Protocol
+
+**Drive Mode** allows TPgM to orchestrate work without requiring user confirmation for each worker invocation.
+
+### Entering Drive Mode
+
+User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phrase activates Drive Mode.
+
+### Drive Mode Rules
+
+1. **TPgM orchestrates only** — assigns work, tracks progress. NEVER does implementation, design, testing, PR creation, or documentation writing.
+2. **Workers skip confirmation** — when invoked by TPgM in Drive Mode, workers declare themselves and proceed immediately.
+3. **Workers return control** — when done, workers MUST return control to TPgM.
+4. **TPgM reports status** — when control returns, TPgM MUST report what was completed in chat.
+5. **TPgM updates tickets** — if ticket system is configured, TPgM MUST update ticket status.
+6. **No self-invocation** — no role ever invokes itself. If you're already that role, just act.
+
+### Worker Behavior in Drive Mode
+
+```
+[WORKER_ROLE] - Invoked by TPgM in Drive Mode.
+
+[Does the work...]
+
+✅ Complete.
+
+Returning control to TPgM.
+```
+
+### TPgM Behavior After Worker Completes
+
+```
+[TPgM] - ✅ [Description of what was completed]
+
+Moving to next task: [Next task description]
+```
+
+### Exiting Drive Mode
+
+Drive Mode ends when:
+- User says "STOP" or "EXIT DRIVE"
+- Work queue is complete
+- Critical blocker with no resolution path
 
 ## Collaboration Protocol — INVITATION REQUIRED
 
-**Step 1: The Invitation Gate**
-If an active role needs to consult another role (e.g., TPO needs UX Designer), it **CANNOT** unilaterally summon them. It MUST ask for permission:
-
-```
-[CURRENT_ROLE] - I need to consult [TARGET_ROLE] for [reason].
-
-**Requesting permission to invite [TARGET_ROLE] to a Joint Session.**
-1. ✅ APPROVE - Both roles can speak
-2. ❌ DENY - Continue with current role only
-```
-
-**Step 2: Joint Session Authorization**
-If the user approves:
-1. Both roles become **Authorized Participants**.
-2. They may bypass the "Role Activation" gate for the duration of the session.
-3. They may speak in the same response block (dialogue format).
-
-**Step 3: Revocation**
-If a THIRD role is needed, the Invitation Gate MUST be triggered again. The user can revoke Joint Session status at any time by saying "Stop" or "Single role only".
+See `_shared/references/collaboration-protocol.md` for Joint Session rules.
 
 **When ANY skill is invoked**, it MUST first ask for confirmation:
 ```
@@ -158,7 +131,14 @@ Please confirm:
 Waiting for confirmation...
 ```
 
-**BLOCKING**: ALL roles must WAIT for user response. Do NOT proceed without explicit confirmation.
+**BLOCKING**: ALL roles must WAIT for explicit confirmation.
+
+| User Response | Action |
+|---------------|--------|
+| `1`, `CONFIRM`, `YES`, `Y` | Proceed with role |
+| `2`, `DIFFERENT`, `DIFFERENT ROLE` | Ask which role to use instead |
+| `3`, `CANCEL`, `NO`, `N` | Do not proceed |
+| Anything else | Re-prompt for confirmation (do NOT proceed) |
 
 ## Intake Roles
 
@@ -235,55 +215,10 @@ TPgM blocks ticket creation if these are missing.
 
 ## Coding Standards
 
-**MANDATORY**: Define what Code Reviewer enforces. Code Reviewer will refuse to review PRs until this section is complete.
-
-### Universal Principles (Always Enforced)
-
-Source: `_shared/references/universal-review-principles.md` (22 principles)
-
-These are ALWAYS enforced on every PR:
-- ✅ Security (no secrets, input validation, injection prevention, auth checks)
-- ✅ Error handling (explicit handling, no silent failures, safe messages)
-- ✅ Code quality (naming, single responsibility, no dead code, constants over magic values)
-- ✅ Architecture (layer separation, dependency direction, no circular dependencies)
-- ✅ Testing (tests exist, quality naming, no flaky tests)
-- ✅ Performance (efficient data access, resource cleanup, async awareness)
-
-### Stack-Specific Standards (Check What Applies)
-
-**Instructions**: Enable (✅) the standards that apply to YOUR project's stack. Leave unchecked (❌) if not applicable.
-
-#### Frontend Standards
-- [ ] **Atomic Design Hierarchy**: Components must follow Atoms→Molecules→Organisms→Templates→Pages structure
-- [ ] **Storybook Stories**: All components require Storybook stories with variants
-- [ ] **Component Prop Types**: Props interfaces defined with clear TypeScript types
-- [ ] **No Cross-Tier Composition**: Atoms cannot import Molecules, etc.
-- [ ] **React Best Practices**: Proper hooks usage, composition patterns
-
-#### Backend Standards
-- [ ] **API Conventions**: RESTful endpoints, proper HTTP methods, status codes
-- [ ] **Database Patterns**: Specify ORM (SQLModel, TypeORM) or document raw SQL usage
-- [ ] **Request/Response Validation**: Pydantic schemas, DTO validation
-- [ ] **Error Response Format**: RFC 7807 or specify custom format
-- [ ] **Auth on Protected Routes**: All protected endpoints verify authentication
-
-#### Testing Standards
-- [ ] **Test Coverage Minimum**: [Specify percentage, e.g., 80%]
-- [ ] **Test Naming Convention**: Descriptive names (test_action_condition_result)
-- [ ] **Fixture/Mock Patterns**: Proper test data setup, no hard dependencies
-- [ ] **Edge Case Coverage**: Invalid input, not found, unauthorized scenarios
+**Baseline**: See `_shared/references/coding-standards-baseline.md` for universal standards (security, error handling, code quality, architecture, testing, performance).
 
 ### Project-Specific Rules
 
-Add any project-specific rules or overrides here:
-
-**Example format:**
-- "Use snake_case for all Python variables (PEP 8 compliance)"
-- "Minimum 85% test coverage for new backend code"
-- "All commit messages must reference ticket IDs"
-- "API error responses must include `error_code` field"
-
-**Your project rules:**
 - [Add your rules here]
 
 ## Skill Boundary Enforcement (MANDATORY)

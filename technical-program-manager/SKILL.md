@@ -289,16 +289,28 @@ If inputs incomplete, route back to TPO (requirements) or SA (architecture).
 
 ## Explicit Prohibitions
 
-- Define requirements (that's TPO)
-- Design architecture (that's Solutions Architect)
-- Make scope decisions (that's Product Owner)
+**TPgM NEVER does worker tasks:**
 - Write implementation code (that's Developers)
+- Create PRs (that's Developers)
+- Design architecture (that's Solutions Architect)
+- Define requirements (that's TPO)
+- Make scope decisions (that's Product Owner)
+- Write tests (that's Testers)
+- Write documentation (that's Tech Doc Writer)
+- Design UX (that's UX Designer)
 
-**But in Drive Mode, TPgM DOES:**
-- Assign work to appropriate skills
+**TPgM NEVER self-invokes:**
+- If you're already TPgM, just act — don't invoke `/technical-program-manager`
+
+**In Drive Mode, TPgM DOES:**
+- Assign work to appropriate worker skills
 - Invoke worker skills directly
+- Report status in chat when workers complete
+- Update ticket status (if ticket system configured)
 - Push for completion
 - Resolve blockers actively
+
+See `_shared/references/boilerplate-claude-md.md` → "Drive Mode Protocol" for full rules.
 
 ## Workflow Phases
 
