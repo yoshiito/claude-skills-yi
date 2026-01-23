@@ -97,12 +97,47 @@ User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phra
 
 1. **TPgM orchestrates only** — assigns work, tracks progress. NEVER does implementation, design, testing, PR creation, or documentation writing.
 2. **Workers skip confirmation** — when invoked by TPgM in Drive Mode, workers declare themselves and proceed immediately.
-3. **Workers return control** — when done, workers MUST return control to TPgM.
+3. **Workers return control** — when done, workers MUST return control to TPgM with a summary of what was done (PR link, files changed, etc.).
 4. **TPgM reports status** — when control returns, TPgM MUST report what was completed in chat.
-5. **TPgM updates tickets** — if ticket system is configured, TPgM MUST update ticket status.
+5. **TPgM updates tickets at EVERY phase** — TPgM MUST add ticket comments at each lifecycle transition (see below). This is NOT optional.
 6. **No self-invocation** — no role ever invokes itself. If you're already that role, just act.
 
+### TPgM Ticket Comment Requirements (MANDATORY)
+
+**TPgM is the SINGLE POINT of ticket updates.** Workers return information to TPgM; TPgM writes it to tickets.
+
+#### Implementation Tickets (`[Backend]`, `[Frontend]`)
+
+| Phase | Status | Comment Template |
+|-------|--------|------------------|
+| Work starts | → In Progress | `🚀 **Started** - Branch: {branch}, Approach: {summary}` |
+| PR created | → In Review | `🔍 **PR Ready** - PR: {link}, Changes: {summary}` |
+| Code review done | (keep In Review) | `✅ **Code Review Passed** - Reviewer: Code Reviewer` |
+| Work complete | → Done | `✅ **Completed** - PR merged: {link}, Files: {list}` |
+| Blocked | (keep current) | `⚠️ **Blocked** - Blocker: {description}, Action: {next step}` |
+
+#### Test Tickets (`[Test]`)
+
+| Phase | Status | Comment Template |
+|-------|--------|------------------|
+| Testing starts | → In Progress | `🧪 **Testing Started** - Scope: {what's being tested}` |
+| Tests written | (keep In Progress) | `📝 **Tests Written** - Coverage: {summary}, PR: {link}` |
+| Tests passing | → In Review | `🔍 **Tests Ready for Review** - All scenarios covered` |
+| Testing complete | → Done | `✅ **Testing Complete** - {X} tests, {Y}% coverage, PR merged: {link}` |
+
+#### Documentation Tickets (`[Docs]`)
+
+| Phase | Status | Comment Template |
+|-------|--------|------------------|
+| Docs starts | → In Progress | `📝 **Docs Started** - Scope: {what's being documented}` |
+| Draft ready | → In Review | `🔍 **Draft Ready** - PR: {link}, Pages: {list}` |
+| Docs complete | → Done | `✅ **Docs Complete** - PR merged: {link}, Published: {location}` |
+
+**CRITICAL**: If TPgM does not add these comments, there is NO audit trail. This defeats the purpose of ticket tracking.
+
 ### Worker Behavior in Drive Mode
+
+Workers MUST provide TPgM with enough information to update tickets:
 
 ```
 [WORKER_ROLE] - Invoked by TPgM in Drive Mode.
@@ -111,8 +146,16 @@ User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phra
 
 ✅ Complete.
 
+**Summary for ticket update:**
+- PR: #123 (link)
+- Branch: feature/team/TICKET-ID-description
+- Files changed: [list key files]
+- Implementation: [brief summary]
+
 Returning control to TPgM.
 ```
+
+**Workers do NOT update tickets directly** — they return this info to TPgM.
 
 ### TPgM Behavior After Worker Claims Complete
 
