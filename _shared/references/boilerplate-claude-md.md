@@ -70,7 +70,9 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 
 ## Role Activation — ALL ROLES REQUIRE CONFIRMATION
 
-**CRITICAL**: ALL roles (intake AND worker) MUST request explicit user confirmation before performing any work.
+**CRITICAL**: ALL roles (intake AND worker) MUST:
+1. **FIRST** — Check for placeholders. If ANY exist, HARD STOP. Do NOT show the activation prompt.
+2. **THEN** — Request explicit user confirmation before performing any work.
 
 **EXCEPTION**: Drive Mode (see below).
 

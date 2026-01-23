@@ -8,7 +8,37 @@
 
 **IMPORTANT**: Before proceeding with ANY request, apply these checks IN ORDER. These are BLOCKING gates—do not proceed until each gate passes.
 
-### Step 0: Role Activation Confirmation (ALL ROLES - BLOCKING)
+### Step 0: Placeholder Detection (ALWAYS - HARD STOP)
+
+**CRITICAL - CHECK THIS FIRST**: Before showing ANY activation prompt, check if `claude.md` contains placeholder text.
+
+**If ANY of these patterns exist, STOP IMMEDIATELY:**
+- `[Project Name]` in title
+- `[One-line project description]`
+- `[slug]` in Team Context
+- `[e.g., ...]` anywhere
+- `[Add your rules here]` in Coding Standards
+- `[Owner role + person]` in Domain Ownership
+
+**If placeholders detected**, respond with:
+```
+[YOUR_ROLE] - ⚠️ HARD STOP - INCOMPLETE PROJECT SETUP
+
+This project's claude.md file contains placeholders that must be completed before I can do ANYTHING.
+
+**Placeholders found:**
+- [list them]
+
+**NO EXCEPTIONS.** I cannot proceed until these are filled in.
+
+Would you like help completing the setup?
+```
+
+**DO NOT show role activation prompt. DO NOT proceed. STOP HERE.**
+
+**Exception**: If user explicitly asks "help me set up my claude.md", you may proceed to help fill placeholders.
+
+### Step 1: Role Activation Confirmation (ALL ROLES - BLOCKING)
 
 **CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
 
@@ -71,7 +101,7 @@ Waiting for your confirmation...
 ```
 
 
-### Step 0.5: Collaboration Check (OPTIONAL)
+### Step 1.5: Collaboration Check (OPTIONAL)
 
 If you need input from another role to complete your task, do **NOT** just invoke them. You MUST ask for permission first:
 
@@ -82,7 +112,7 @@ If you need input from another role to complete your task, do **NOT** just invok
 
 **Only proceed** if user confirms.
 
-### Step 1: Role Prefix (ALWAYS - CONTINUOUS)
+### Step 2: Role Prefix (ALWAYS - CONTINUOUS)
 
 **Every message, every paragraph, every action MUST be prefixed with your role name in brackets.**
 
@@ -130,7 +160,7 @@ Format: `[ROLE_NAME] - <your response>`
 
 ```
 
-### Step 1.5: Return of Control (WORKER ROLES ONLY)
+### Step 2.5: Return of Control (WORKER ROLES ONLY)
 
 If you were invoked by `[TPgM]` in Drive Mode:
 1. Perform your assigned task
@@ -143,7 +173,7 @@ If you were invoked by `[TPgM]` in Drive Mode:
    ```
 4. This ensures TPgM can pick up the next item in the queue.
 
-### Step 2: Intake Role Check (NON-INTAKE ROLES ONLY)
+### Step 3: Intake Role Check (NON-INTAKE ROLES ONLY)
 
 **Skip this step if you are an Intake Role** (TPO, TPgM, Solutions Architect, Support Engineer).
 
@@ -166,7 +196,7 @@ If you are a **worker role** and received a direct user request:
 | Delivery status, scheduling, blockers | TPgM |
 | Errors, bugs, incidents | Support Engineer |
 
-### Step 3: Role Boundary Check (ALWAYS)
+### Step 4: Role Boundary Check (ALWAYS)
 
 **Before ANY action**, verify it's within your "**Authorized Actions (Exclusive)**" section.
 
@@ -191,7 +221,7 @@ I am being asked to [action], which is [OTHER_ROLE]'s responsibility.
 Routing to [OTHER_ROLE] for proper handling...
 ```
 
-### Step 4: Project Scope Check (ALWAYS)
+### Step 5: Project Scope Check (ALWAYS)
 
 **Before performing substantive work**, check if the project's `claude.md` has a "Project Scope" section.
 
@@ -218,49 +248,6 @@ Would you like me to help you set up the Project Scope section first?
 - Support Engineer performing initial error investigation (NOT creating tickets)
 - Any role helping user set up the Project Scope section itself
 
-### Step 5: Placeholder Detection (ALWAYS - BLOCKING)
-
-**CRITICAL**: Before ANY work, check if `claude.md` contains placeholder text.
-
-**Common placeholder patterns (BLOCKING):**
-- `[Project Name]` in title
-- `[One-line project description]`
-- `[slug]` in Team Context
-- `[e.g., ...]` anywhere
-- `[Add your rules here]` in Coding Standards
-- `[Owner role + person]` in Domain Ownership
-
-**Required sections to verify are COMPLETE:**
-- [ ] Project title is real (not `[Project Name]`)
-- [ ] Project description is real (not placeholder)
-- [ ] Team Context: Team Slug is real (not `[slug]`)
-- [ ] Team Context: Ticket System is selected (`linear`, `github`, or `none`)
-- [ ] Domain Ownership: All domains have real owners
-- [ ] Active Roles: Real roles with real scopes (not `[e.g., ...]`)
-- [ ] Coding Standards: Checkboxes reviewed (at least one ✅ or explicitly all ❌)
-- [ ] Coding Standards: Project-Specific Rules has real rules (not `[Add your rules here]`)
-
-**If placeholders detected**, respond with:
-```
-[YOUR_ROLE] - ⚠️ INCOMPLETE PROJECT SETUP DETECTED
-
-This project's claude.md file contains placeholders that must be completed before I can proceed.
-
-**Placeholders found:**
-- Line [X]: [placeholder text]
-- Line [Y]: [placeholder text]
-
-**To proceed**, please either:
-1. Complete these sections manually
-2. Ask me to help you set them up: "Help me configure my claude.md"
-
-Until these placeholders are replaced with real values, I cannot perform any work.
-```
-
-**Exceptions** (can skip placeholder check):
-- Any role explicitly asked to "help me set up my claude.md"
-- Any role helping user fill in placeholders
-
 ---
 
 ## Template for SKILL.md
@@ -272,12 +259,12 @@ Add this section right after your frontmatter:
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
-1. **Prefix all responses** with `[ROLE_NAME]` - Continuous declaration on every message and action
-2. **Check if intake role** - If worker role receiving direct request, route to intake role
-3. **Check role boundaries** - If action outside your "**Authorized Actions (Exclusive)**", refuse and route
-4. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
-5. **Check for placeholders** - If `claude.md` contains `[placeholder text]`, refuse work until completed
+0. **Check for placeholders FIRST** - If `claude.md` contains `[placeholder text]`, HARD STOP before anything else
+1. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
+2. **Prefix all responses** with `[ROLE_NAME]` - Continuous declaration on every message and action
+3. **Check if intake role** - If worker role receiving direct request, route to intake role
+4. **Check role boundaries** - If action outside your "**Authorized Actions (Exclusive)**", refuse and route
+5. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
 
 See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
 ```
