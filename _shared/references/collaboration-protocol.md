@@ -1,25 +1,94 @@
 # Collaboration Protocol — Joint Sessions
 
-When an active role needs to consult another role, it cannot unilaterally summon them.
+When roles need to collaborate, a Joint Session must be established.
 
-## Step 1: The Invitation Gate
+## Step 1: Starting a Joint Session
+
+A Joint Session can start in two ways:
+
+**Option A — User requests it:**
+```
+User: "I want SA, UX Designer, and Frontend Dev to work together"
+```
+
+**Option B — Skill suggests it:**
+```
+[CURRENT_ROLE] - This task requires collaboration.
+
+**Requesting permission to start a Joint Session with:**
+- [ROLE_1] for [reason]
+- [ROLE_2] for [reason]
+- (add more as needed)
+
+1. ✅ APPROVE
+2. ❌ DENY
+```
+
+**WAIT for user response.**
+
+| Valid Response | Action |
+|----------------|--------|
+| `1`, `APPROVE` | Start Joint Session |
+| `2`, `DENY` | Do not start |
+| Anything else | Re-prompt (do NOT proceed) |
+
+## Step 2: Joining Confirmation
+
+Once user approves, each invited role confirms joining:
 
 ```
-[CURRENT_ROLE] - I need to consult [TARGET_ROLE] for [reason].
-
-**Requesting permission to invite [TARGET_ROLE] to a Joint Session.**
-1. ✅ APPROVE - Both roles can speak
-2. ❌ DENY - Continue with current role only
+[INVITED_ROLE] - Joining Joint Session. (Y/N)
 ```
 
-## Step 2: Joint Session Authorization
+**WAIT for user response.**
 
-If the user approves:
-1. Both roles become **Authorized Participants**
-2. They may bypass the "Role Activation" gate for the session duration
-3. They may speak in the same response block (dialogue format)
+| Valid Response | Action |
+|----------------|--------|
+| `Y`, `YES` | Role joins session |
+| `N`, `NO` | Role does not join |
+| Anything else | Re-prompt (do NOT proceed) |
 
-## Step 3: Revocation
+## Step 3: Active Joint Session
 
-- If a THIRD role is needed, the Invitation Gate MUST be triggered again
-- User can revoke Joint Session status at any time by saying "Stop" or "Single role only"
+**Once user confirms Y, the role joins the active Joint Session.**
+
+**During an active Joint Session:**
+- All participating roles talk to each other **freely WITHOUT asking the user**
+- No confirmation prompts between participating roles
+- Roles collaborate in the same response
+- Any number of roles can participate
+- Continue until work is complete or user revokes
+
+**Correct behavior:**
+```
+[UX_DESIGNER] - Here's the component layout...
+
+[SOLUTIONS_ARCHITECT] - That works. Adjusting data flow...
+
+[FRONTEND_DEVELOPER] - I can implement that pattern...
+
+[UX_DESIGNER] - One concern about loading state...
+
+[SOLUTIONS_ARCHITECT] - Good point. Let's address that...
+```
+
+**WRONG behavior (do NOT do this):**
+```
+[UX_DESIGNER] - Here's my recommendation...
+
+[SOLUTIONS_ARCHITECT] - Should I respond? ← WRONG - just respond
+```
+
+## Step 4: Adding More Roles Mid-Session
+
+To add another role to an active Joint Session:
+1. Any participating role can suggest inviting new role(s)
+2. User must approve (`1` or `APPROVE`)
+3. New role(s) confirm joining (`Y` or `YES`)
+4. New role(s) join the active session
+
+## Step 5: Ending the Session
+
+Joint Session ends when:
+- User says `STOP` or `EXIT`
+- Work is complete and roles sign off

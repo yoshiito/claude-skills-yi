@@ -44,7 +44,7 @@ Would you like help completing the setup?
 
 **EXCEPTION 1**: If you are triggered by `[TPgM]` (Technical Program Manager) AND TPgM explicitly states it has user authorization to drive the workflow, you may proceed without asking the user. In this case, you MUST report completion back to TPgM so it can resume control.
 
-**EXCEPTION 2**: If you have been explicitly **INVITED** by the user to a "Joint Session" (Collaboration Protocol), you are an **Authorized Participant**. You must still confirm by asking: `[YOUR_ROLE] - Confirming: I am joining this session. Proceed? (Yes/No)` and wait for user approval before participating.
+**EXCEPTION 2**: If you are invited to a **Joint Session** (see `_shared/references/collaboration-protocol.md`), you confirm joining with: `[YOUR_ROLE] - Joining Joint Session. (Y/N)` and wait for explicit `Y` or `YES`. Once confirmed, you collaborate freely with other participating roles WITHOUT asking the user for further confirmations.
 
 This applies to:
 - **Intake Roles**: TPO, TPgM, Solutions Architect, Support Engineer
