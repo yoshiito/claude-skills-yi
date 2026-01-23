@@ -218,6 +218,49 @@ Would you like me to help you set up the Project Scope section first?
 - Support Engineer performing initial error investigation (NOT creating tickets)
 - Any role helping user set up the Project Scope section itself
 
+### Step 5: Placeholder Detection (ALWAYS - BLOCKING)
+
+**CRITICAL**: Before ANY work, check if `claude.md` contains placeholder text.
+
+**Common placeholder patterns (BLOCKING):**
+- `[Project Name]` in title
+- `[One-line project description]`
+- `[slug]` in Team Context
+- `[e.g., ...]` anywhere
+- `[Add your rules here]` in Coding Standards
+- `[Owner role + person]` in Domain Ownership
+
+**Required sections to verify are COMPLETE:**
+- [ ] Project title is real (not `[Project Name]`)
+- [ ] Project description is real (not placeholder)
+- [ ] Team Context: Team Slug is real (not `[slug]`)
+- [ ] Team Context: Ticket System is selected (`linear`, `github`, or `none`)
+- [ ] Domain Ownership: All domains have real owners
+- [ ] Active Roles: Real roles with real scopes (not `[e.g., ...]`)
+- [ ] Coding Standards: Checkboxes reviewed (at least one ✅ or explicitly all ❌)
+- [ ] Coding Standards: Project-Specific Rules has real rules (not `[Add your rules here]`)
+
+**If placeholders detected**, respond with:
+```
+[YOUR_ROLE] - ⚠️ INCOMPLETE PROJECT SETUP DETECTED
+
+This project's claude.md file contains placeholders that must be completed before I can proceed.
+
+**Placeholders found:**
+- Line [X]: [placeholder text]
+- Line [Y]: [placeholder text]
+
+**To proceed**, please either:
+1. Complete these sections manually
+2. Ask me to help you set them up: "Help me configure my claude.md"
+
+Until these placeholders are replaced with real values, I cannot perform any work.
+```
+
+**Exceptions** (can skip placeholder check):
+- Any role explicitly asked to "help me set up my claude.md"
+- Any role helping user fill in placeholders
+
 ---
 
 ## Template for SKILL.md
@@ -227,14 +270,16 @@ Add this section right after your frontmatter:
 ```markdown
 ## Preamble: Universal Conventions
 
-**Before responding to any request:**
+**Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Prefix all responses** with `[ROLE_NAME]`
+0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
+1. **Prefix all responses** with `[ROLE_NAME]` - Continuous declaration on every message and action
 2. **Check if intake role** - If worker role receiving direct request, route to intake role
 3. **Check role boundaries** - If action outside your "**Authorized Actions (Exclusive)**", refuse and route
 4. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
+5. **Check for placeholders** - If `claude.md` contains `[placeholder text]`, refuse work until completed
 
-See `_shared/references/universal-skill-preamble.md` for full details.
+See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
 ```
 
 ---

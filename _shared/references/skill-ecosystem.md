@@ -72,7 +72,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | **API Designer** | Design pragmatic, developer-friendly APIs | OpenAPI specs, error catalogs |
 | **Backend Developer** | Implement APIs with FastAPI/PostgreSQL | Working endpoints, database schemas |
 | **Frontend Developer** | Build React components with atomic design | UI components, Storybook stories |
-| **Code Reviewer** | Review PRs against coding standards | Review feedback, approval status |
+| **Code Reviewer** | Review PRs against universal principles + stack-specific standards | Review feedback, approval status |
 | **Data Platform Engineer** | Design data pipelines and storage | Data models, ETL pipelines, vector search |
 | **MCP Server Developer** | Build Model Context Protocol servers | MCP tools, resources, prompts |
 | **AI Integration Engineer** | Evaluate and implement AI features | AI patterns, prompt engineering, RAG |
@@ -293,6 +293,78 @@ AI Integration Engineer (evaluate approach)
 ├── MCP Server Developer (if tool use needed)
 └── Backend Developer (API integration)
 ```
+
+### Code Review Flow (Declared Standards)
+
+**Code Reviewer uses a three-tier standards system with EXPLICIT project declaration:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ TIER 1: Universal Principles (Always Enforced)              │
+│ Source: _shared/references/universal-review-principles.md    │
+│ - 22 language-agnostic principles                           │
+│ - Security, error handling, code quality, architecture      │
+│ - Testing, performance                                      │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│ TIER 2: Stack-Specific Standards (Declared in claude.md)    │
+│ Source: Project's claude.md → ## Coding Standards           │
+│                                                              │
+│ Project explicitly enables standards with checkboxes:       │
+│                                                              │
+│ #### Frontend Standards                                     │
+│ - ✅ Atomic Design Hierarchy          ← ENFORCED            │
+│ - ❌ Storybook Stories                ← SKIPPED             │
+│ - ✅ Component Prop Types             ← ENFORCED            │
+│                                                              │
+│ #### Backend Standards                                      │
+│ - ✅ API Conventions                  ← ENFORCED            │
+│ - ✅ Database Patterns                ← ENFORCED            │
+│                                                              │
+│ Code Reviewer enforces ONLY checked (✅) items              │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│ TIER 3: Project-Specific Rules (Always Enforced)            │
+│ Source: Project's claude.md → ## Coding Standards           │
+│                                                              │
+│ Custom rules defined by project:                            │
+│ - "Use snake_case for all variables"                        │
+│ - "Minimum 85% test coverage"                               │
+│ - "All API errors include error_code field"                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Benefits of this approach:**
+- ✅ **No stack lock-in** - projects pick exactly what they want
+- ✅ **No false assumptions** - explicit checkboxes, no auto-detection
+- ✅ **Maximum clarity** - everyone knows what will be enforced
+- ✅ **Simple logic** - read checkboxes, no complex detection
+- ✅ **Forces intentionality** - projects must think about their standards
+
+**Example**:
+```markdown
+## Coding Standards in project's claude.md
+
+### Stack-Specific Standards
+- ✅ Atomic Design Hierarchy
+- ❌ Storybook Stories (we don't use Storybook)
+- ✅ Component Prop Types
+- ✅ API Conventions
+- ✅ Database Patterns
+
+### Project-Specific Rules
+- "Use snake_case for all Python variables (PEP 8)"
+- "Minimum 85% test coverage for new backend code"
+
+→ Code Reviewer will enforce:
+  1. Universal: 22 principles (always)
+  2. Stack: Atomic Design, Prop Types, API Conventions, Database Patterns
+  3. Project: snake_case rule, 85% coverage requirement
+```
+
+**CRITICAL**: Code Reviewer REFUSES to review PRs if `## Coding Standards` section contains placeholders.
 
 ## Project Documentation Registries
 

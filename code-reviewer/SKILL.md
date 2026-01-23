@@ -39,10 +39,13 @@ Would you like me to help you set up the Project Scope section first?
 ## Core Objective
 
 Ensure code quality through systematic review against:
-1. **Baseline Standards** - Universal coding standards (security, error handling, naming)
-2. **Project Standards** - Project-specific patterns and conventions from `claude.md`
+1. **Universal Principles** - Language-agnostic security, quality, and architecture standards (always enforced)
+2. **Stack-Specific Standards** - Explicitly declared by project in `claude.md` → `## Coding Standards`
+3. **Project-Specific Rules** - Custom rules defined by project in `claude.md`
 
 **Key Principle**: Code Reviewer is a quality gate, not a gatekeeper. The goal is to help developers ship better code, not block progress.
+
+**CRITICAL**: Code Reviewer REFUSES to review PRs if `## Coding Standards` section is incomplete or contains placeholders.
 
 ## Role Boundaries
 
@@ -65,17 +68,32 @@ Ensure code quality through systematic review against:
 
 ## Standards Hierarchy
 
-Code Reviewer uses a two-tier standards system:
+Code Reviewer uses a three-tier standards system:
 
-| Tier | Source | Scope |
-|------|--------|-------|
-| **Baseline** | `_shared/references/coding-standards-baseline.md` | Universal standards (all projects) |
-| **Project** | Project's `claude.md` → `## Coding Standards` | Project-specific patterns |
+| Tier | Source | Enforcement |
+|------|--------|-------------|
+| **Universal** | `_shared/references/universal-review-principles.md` | ALWAYS enforced (22 principles) |
+| **Stack-Specific** | Project's `claude.md` → `## Coding Standards` (checkboxes) | Enforced if checked (✅) |
+| **Project-Specific** | Project's `claude.md` → `## Coding Standards` (custom rules) | ALWAYS enforced |
 
-**Merge Logic:**
-1. Baseline standards always apply
-2. Project standards override baseline where specified
-3. If project standard contradicts baseline, project wins (it's intentional)
+**How It Works:**
+1. **Universal principles** (security, error handling, code quality, architecture, testing, performance) are ALWAYS enforced on every PR
+2. **Stack-specific standards** are enforced ONLY if explicitly enabled (✅) in project's Coding Standards section
+3. **Project-specific rules** defined in the custom rules section are ALWAYS enforced
+4. If project rule contradicts universal/stack standard, project wins (it's intentional)
+
+**Example:**
+```markdown
+## Coding Standards
+
+### Stack-Specific Standards
+- ✅ Atomic Design Hierarchy  ← Code Reviewer WILL enforce
+- ❌ Storybook Stories        ← Code Reviewer WILL NOT enforce
+- ✅ API Conventions          ← Code Reviewer WILL enforce
+
+### Project-Specific Rules
+- "Use snake_case for all variables"  ← Code Reviewer WILL enforce
+```
 
 ## How to Invoke Code Reviewer
 
@@ -101,57 +119,106 @@ Review PR #123 against our coding standards.
 
 ## Workflow
 
-### Phase 1: Context Gathering
+### Phase 1: Context Gathering & Standards Loading
 
-Before reviewing, gather:
+Before reviewing, gather context and load standards:
 
-1. **PR Details** - Branch, commits, changed files
-2. **Ticket Context** - What was the requirement? (from linked ticket)
-3. **Project Standards** - Read `## Coding Standards` from project's `claude.md`
-4. **Baseline Standards** - Read `_shared/references/coding-standards-baseline.md`
+1. **Check for Placeholders** - Verify project's `claude.md` → `## Coding Standards` section is complete:
+   - If section missing or contains `[Add your rules here]` → REFUSE to review, ask user to complete it
+   - If all checkboxes are unchecked (no ✅) → WARN user that only Universal Principles will be enforced
+
+2. **PR Details** - Branch, commits, changed files
+
+3. **Ticket Context** - What was the requirement? (from linked ticket)
+
+4. **Load Universal Principles** - Read `_shared/references/universal-review-principles.md` (22 principles - always enforced)
+
+5. **Load Stack-Specific Standards** - Read project's `claude.md` → `## Coding Standards` → Stack-Specific section:
+   ```markdown
+   #### Frontend Standards
+   - ✅ Atomic Design Hierarchy          ← Enforce this
+   - ❌ Storybook Stories                ← Skip this
+   - ✅ Component Prop Types             ← Enforce this
+
+   #### Backend Standards
+   - ✅ API Conventions                  ← Enforce this
+   - ✅ Database Patterns                ← Enforce this
+   ```
+   Extract only items marked with ✅ (checked)
+
+6. **Load Project-Specific Rules** - Read project's `claude.md` → `## Coding Standards` → Project-Specific Rules:
+   ```markdown
+   - "Use snake_case for all Python variables"
+   - "Minimum 85% test coverage for new backend code"
+   ```
+   All rules in this section are enforced
 
 ### Phase 2: Systematic Review
 
-Review each changed file against the checklist:
+Review each changed file against the three-tier standards loaded in Phase 1:
 
-#### Security Review
-- [ ] No hardcoded secrets, API keys, or credentials
-- [ ] Input validation on all external data
-- [ ] SQL injection prevention (parameterized queries)
-- [ ] XSS prevention (output encoding)
-- [ ] Authentication/authorization checks in place
-- [ ] Sensitive data not logged
+#### Tier 1: Universal Principles (Always Enforced)
 
-#### Error Handling
-- [ ] Errors are caught and handled appropriately
-- [ ] Error messages don't leak sensitive information
-- [ ] Graceful degradation where appropriate
-- [ ] No silent failures (errors are logged or surfaced)
+Apply all 22 principles from `universal-review-principles.md`:
+- [ ] Security: No secrets, input validation, injection prevention, auth checks, no sensitive data leakage
+- [ ] Error Handling: Explicit handling, no silent failures, safe error messages
+- [ ] Code Quality: Self-documenting names, single responsibility, no dead code, constants over magic values, comments explain why
+- [ ] Architecture: Layer separation, proper dependency direction, no circular dependencies
+- [ ] Testing: Tests exist, test quality (descriptive names, coverage), no flaky tests
+- [ ] Performance: Efficient data access (no N+1), resource cleanup, async awareness
 
-#### Code Quality
-- [ ] Clear, descriptive naming (variables, functions, classes)
-- [ ] Functions have single responsibility
-- [ ] No dead code or commented-out code
-- [ ] Magic numbers/strings extracted to constants
-- [ ] Appropriate code comments (why, not what)
+#### Tier 2: Stack-Specific Standards (Enforced if ✅)
 
-#### Architecture Alignment
-- [ ] Follows project's established patterns
-- [ ] Proper layer separation (controller/service/repository)
-- [ ] Dependencies flow in correct direction
-- [ ] No circular dependencies introduced
+Apply ONLY standards marked with ✅ in project's `claude.md`:
 
-#### Testing
-- [ ] Tests exist for new functionality
-- [ ] Tests cover happy path and edge cases
-- [ ] Test names clearly describe what they test
-- [ ] No flaky test patterns (timeouts, race conditions)
+**If ✅ Atomic Design Hierarchy:**
+- [ ] Components follow 5-tier hierarchy (Atoms→Molecules→Organisms→Templates→Pages)
+- [ ] No cross-tier composition violations (e.g., Atom importing Molecule)
 
-#### Performance
-- [ ] No N+1 query patterns
-- [ ] Appropriate use of caching (if applicable)
-- [ ] No blocking operations in async contexts
-- [ ] Resource cleanup (connections, files, etc.)
+**If ✅ Storybook Stories:**
+- [ ] Each component has a Storybook story with variants
+
+**If ✅ Component Prop Types:**
+- [ ] Props interfaces defined with clear TypeScript types
+
+**If ✅ API Conventions:**
+- [ ] Endpoints follow RESTful conventions
+- [ ] Proper HTTP methods and status codes
+
+**If ✅ Database Patterns:**
+- [ ] ORM models properly defined with relationships (if using ORM)
+- [ ] Raw SQL is documented (if not using ORM)
+
+**If ✅ Request/Response Validation:**
+- [ ] Pydantic schemas or DTOs for validation
+
+**If ✅ Error Response Format:**
+- [ ] Error responses follow specified format (RFC 7807 or custom)
+
+**If ✅ Auth on Protected Routes:**
+- [ ] All protected endpoints verify authentication
+
+**If ✅ Test Coverage Minimum:**
+- [ ] New code meets specified coverage percentage
+
+**If ✅ Test Naming Convention:**
+- [ ] Tests follow specified naming pattern
+
+**If ✅ Fixture/Mock Patterns:**
+- [ ] Tests use proper fixtures and mocks
+
+**If ✅ Edge Case Coverage:**
+- [ ] Tests cover invalid input, not found, unauthorized scenarios
+
+#### Tier 3: Project-Specific Rules (Always Enforced)
+
+Apply ALL rules from project's `claude.md` → `## Coding Standards` → `Project-Specific Rules` section.
+
+**Example rules to check:**
+- Snake_case vs camelCase naming conventions
+- Specific test coverage percentages
+- Commit message formats
+- API response field requirements
 
 ### Phase 3: Feedback Generation
 
@@ -296,18 +363,21 @@ See `_shared/references/project-scope-template.md` for the full template includi
 
 ## Reference Files
 
-- `_shared/references/coding-standards-baseline.md` - Universal baseline standards
-- `_shared/references/project-scope-template.md` - Template including Coding Standards section
+- `_shared/references/universal-review-principles.md` - Language-agnostic principles (22 principles - always enforced)
+- `_shared/references/boilerplate-claude-md.md` - Template with Coding Standards section (projects copy this)
+- `_shared/references/coding-standards-baseline.md` - Deprecated, use universal-review-principles.md
 
 ## Quality Checklist
 
 Before completing a review:
 
-- [ ] Read project's `## Coding Standards` section (if exists)
-- [ ] Read baseline standards
-- [ ] Reviewed all changed files systematically
-- [ ] Categorized issues by severity
-- [ ] Provided specific file:line references
+- [ ] Verified `claude.md` → `## Coding Standards` section is complete (no placeholders)
+- [ ] Loaded universal principles (22 principles)
+- [ ] Loaded stack-specific standards (only ✅ items from project's Coding Standards)
+- [ ] Loaded project-specific rules (all items from Project-Specific Rules section)
+- [ ] Reviewed all changed files systematically against three tiers
+- [ ] Categorized issues by severity (Critical/High/Medium/Low)
+- [ ] Provided specific file:line references for each issue
 - [ ] Suggested fix direction (not implementation)
 - [ ] Included positive feedback where warranted
 - [ ] Clear approval criteria stated
