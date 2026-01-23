@@ -62,139 +62,44 @@ Which mode? (1 or 2)
 
 ## Drive Mode: Definition of Ready Gate (BLOCKING)
 
-**CRITICAL**: Before Drive Mode can execute, ALL work must be fully defined.
+Before Drive Mode can execute, ALL work must be fully defined. See `_shared/references/definition-of-ready.md` for full checklist.
 
-### Pre-Drive Checklist
-
-When user selects Drive Mode, TPgM MUST verify all tickets against `_shared/references/definition-of-ready.md`.
-
-```
-[TPgM] - 🔍 Checking Definition of Ready before driving...
-
-Scanning tickets for completeness...
-```
-
-**For EACH ticket in scope, verify (see `_shared/references/definition-of-ready.md` for full details):**
-
-| Check | Route if Missing |
-|-------|------------------|
-| Parent Issue exists with MRD | → TPO |
-| Sub-issues created with Technical Spec | → Solutions Architect |
-| Gherkin scenarios (Given/When/Then) | → Solutions Architect |
-| Testing Notes (what tests, edge cases) | → Solutions Architect |
-| Dependencies set via native fields (`blockedBy`) | → Solutions Architect |
-| Assigned skill prefix (`[Backend]`, `[Frontend]`, etc.) | → Solutions Architect |
-| No open questions in ticket body | → TPO or SA |
-| INVEST checklist passed | → Solutions Architect |
-
-**For feature-level completeness (MANDATORY):**
-
-| Check | Route if Missing |
-|-------|------------------|
-| `[Test]` sub-issue exists | → Solutions Architect |
-| `[Docs]` sub-issue exists (for user-facing features) | → Solutions Architect |
-
-**No exceptions.** Without `[Test]`, Gherkin scenarios are just documentation - not enforcement.
-
-### If Definition of Ready Fails
-
-```
-[TPgM] - ⛔ Cannot enter Drive Mode
-
-**Definition of Ready not met.** The following tickets are incomplete:
-
-| Ticket | Missing | Route To |
-|--------|---------|----------|
-| [ID-1] | Technical Spec | SA |
-| [ID-2] | Gherkin scenarios | SA |
-| [ID-3] | Dependencies not set | SA |
-
-**Action Required**: Fix these gaps, then invoke Drive Mode again.
-```
-
-**DO NOT START DRIVING** until all tickets pass Definition of Ready.
-
-### If Definition of Ready Passes
-
-```
-[TPgM] - ✅ Definition of Ready: PASSED
-
-All [N] tickets verified against definition-of-ready.md.
-
-**Work Queue:**
-| # | Ticket | Skill | Blocked By |
-|---|--------|-------|------------|
-| 1 | [ID] | [Skill] | None |
-| 2 | [ID] | [Skill] | #1 |
-| ... | ... | ... | ... |
-| N-1 | [TEST-ID] | [Test] | Implementation tickets |
-| N | [DOCS-ID] | [Docs] | Implementation tickets |
-
-✅ Work queue ends with regression testing and documentation.
-
-Beginning execution...
-```
-
-**CRITICAL**: Work queue MUST end with:
-1. `[Test]` sub-issue (regression validation)
-2. `[Docs]` sub-issue (if user-facing feature)
-
-If the queue doesn't end with these, the work plan is incomplete.
-
-Then proceed to Drive Mode execution.
+**On fail**: List gaps with routing (TPO for requirements, SA for technical), block Drive Mode.
+**On pass**: Build work queue ending with `[Test]` and `[Docs]` sub-issues, begin execution.
 
 ## Drive Mode Behavior (When Selected)
 
 **In Drive Mode, TPgM is the ENGINE that pushes work forward.**
 
-### Drive Mode Principles
+See `_shared/references/drive-mode-protocol.md` for full protocol details.
 
-1. **Act, don't wait** - Proactively move to next action
-2. **Assign explicitly** - Tell workers exactly what to do
-3. **Follow up relentlessly** - Check completion, push blockers
-4. **Own the outcome** - Feature ships or TPgM explains why not
+### Key Principles
 
-### Drive Mode Workflow
+1. **Act, don't wait** — proactively move to next action
+2. **Never pause** — if you think "should I continue?", just continue
+3. **Gates still apply** — DoR before starting, DoD before accepting, ticket comments always
+4. **Own the outcome** — feature ships or TPgM explains why not
 
-```
-LOOP until all work complete:
-  1. Identify next ready ticket (no blockers, validated)
-  2. Invoke appropriate worker skill
-  3. Monitor worker progress
-  4. On completion → validate → move to next
-  5. On blocker → escalate → find alternative path
-  6. Repeat
-```
-
-### Drive Mode: Assigning Work
-
-When a ticket is ready, TPgM MUST:
+### Assigning Work
 
 ```
 [TPgM] - 🚀 Assigning work
 
 **Ticket**: [TICKET-ID] - [Title]
 **Assigned to**: [Skill Name]
-**Action**: Starting implementation now
-
-Invoking [skill-name] skill...
 
 ---
 [TPgM → WORKER] Handoff:
-
 You are assigned: [TICKET-ID]
 - Read the ticket in full
 - Implement per Technical Spec
 - Create PR when complete
-- Report back when done (Control MUST return to TPgM)
+- Report back when done
 
 Begin now.
 ```
 
-**CRITICAL**: ensure the worker role exists in `_shared/references/skill-ecosystem.md` before invoking.
-```
-
-Then **immediately invoke the worker skill** using the Skill tool or by continuing as that role.
+Then **immediately invoke the worker skill**. Workers DO NOT ask for confirmation in Drive Mode.
 
 ### Drive Mode: Work Assignment Queue
 
@@ -245,127 +150,19 @@ This is the passive mode for status checks and reporting.
 
 ## Definition of Ready Gate (Both Modes)
 
-**CRITICAL**: TPgM enforces Definition of Ready at TWO checkpoints.
+**CRITICAL**: TPgM enforces DoR at TWO checkpoints. See `_shared/references/definition-of-ready.md` for full checklist.
 
-See `_shared/references/definition-of-ready.md` for full checklist.
+**Checkpoint 1**: When ticket is declared "Ready" by SA/TPO
+**Checkpoint 2**: Before ticket moves to "In Progress"
 
-### Checkpoint 1: When Ticket is Declared "Ready"
-
-When SA or TPO marks a ticket as ready for work, TPgM verifies:
-
-```
-[TPgM] - 🔍 Verifying ticket readiness for [TICKET-ID]...
-
-| Check | Status |
-|-------|--------|
-| Parent-child linked (native field) | ✅ / ❌ |
-| Technical Spec (MUST/MUST NOT/SHOULD) | ✅ / ❌ |
-| Gherkin scenarios (Given/When/Then) | ✅ / ❌ |
-| Testing Notes (what to test, edge cases) | ✅ / ❌ |
-| `[Test]` sub-issue exists | ✅ / ❌ |
-| `[Docs]` sub-issue exists (if user-facing) | ✅ / ❌ (or N/A) |
-| Dependencies set via `blockedBy` | ✅ / ❌ |
-```
-
-**If ANY check fails:**
-```
-[TPgM] - ⛔ Ticket NOT ready
-
-[TICKET-ID] failed Definition of Ready:
-
-| Missing | Route To |
-|---------|----------|
-| [gap] | SA / TPO |
-
-Ticket cannot be marked ready until gaps are addressed.
-```
-
-### Checkpoint 2: Before Moving to "In Progress"
-
-Before ANY ticket moves to "In Progress", TPgM re-verifies DoR:
-
-- [ ] All Checkpoint 1 checks still pass
-- [ ] No open `blockedBy` issues are incomplete
-- [ ] Work queue includes `[Test]` and `[Docs]` at the end (for features)
-
-**If validation fails:**
-```
-[TPgM] - ⚠️ Cannot start [TICKET-ID]
-
-Definition of Ready not met:
-
-| Missing | Route To |
-|---------|----------|
-| [gap] | SA / TPO |
-
-Ticket must pass all gates before work begins.
-```
-
-**This applies in ALL modes** — Drive Mode, Track Mode, or direct pickup.
+**On failure**: Report gaps, route to SA/TPO, do NOT proceed.
 
 ## Completion Verification Gate (Both Modes)
 
-**CRITICAL**: No ticket moves to "Done" without TPgM verification.
+**CRITICAL**: No ticket moves to "Done" without TPgM verification. See `_shared/references/definition-of-done.md` for full checklist.
 
-When ANY worker claims a ticket is complete, TPgM MUST verify against Definition of Done (see `_shared/references/definition-of-done.md`).
-
-### Completion Checklist
-
-For implementation tickets (`[Backend]`, `[Frontend]`):
-
-- [ ] PR created and link provided
-- [ ] PR reviewed by Code Reviewer (all Critical/High issues addressed)
-- [ ] Tests written (covering Gherkin scenarios from ticket)
-- [ ] Tests pass (CI green or manual confirmation)
-- [ ] Technical Spec satisfied (all MUST/MUST NOT constraints met)
-- [ ] No regressions introduced (existing tests still pass)
-
-For test tickets (`[Test]`):
-
-- [ ] All Gherkin scenarios validated
-- [ ] Edge cases covered (per Testing Notes)
-- [ ] Test results documented
-- [ ] Regression suite updated
-
-For documentation tickets (`[Docs]`):
-
-- [ ] Documentation created/updated
-- [ ] Matches actual implementation
-- [ ] Reviewed for accuracy
-
-### Verification Response
-
-**If DoD passes:**
-```
-[TPgM] - ✅ [TICKET-ID] verified complete
-
-Definition of Done checks:
-| Check | Status |
-|-------|--------|
-| PR created | ✅ |
-| Code reviewed | ✅ |
-| Tests written | ✅ |
-| Tests pass | ✅ |
-| Spec satisfied | ✅ |
-| No regressions | ✅ |
-
-Moving ticket to Done.
-```
-
-**If DoD fails:**
-```
-[TPgM] - ⛔ [TICKET-ID] NOT complete
-
-Definition of Done not met:
-
-| Missing | Action Required |
-|---------|-----------------|
-| [gap] | [specific action] |
-
-Ticket remains In Progress. Address gaps and report back.
-```
-
-**DO NOT accept "Done" without verification.** This applies in both Drive Mode and Track Mode.
+**On pass**: Mark ticket Done, move to next task.
+**On fail**: List gaps, keep ticket "In Progress", return to worker.
 
 ## Critical Rule: Verify Inputs Before Tracking
 

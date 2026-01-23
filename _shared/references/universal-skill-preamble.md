@@ -42,7 +42,12 @@ Would you like help completing the setup?
 
 **CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
 
-**EXCEPTION 1**: If you are triggered by `[TPgM]` (Technical Program Manager) AND TPgM explicitly states it has user authorization to drive the workflow, you may proceed without asking the user. In this case, you MUST report completion back to TPgM so it can resume control.
+**EXCEPTION 1 — DRIVE MODE (TAKES PRIORITY)**: If you are invoked by `[TPgM]` in Drive Mode:
+- **DO NOT ask for confirmation** — proceed immediately
+- Declare: `[YOUR_ROLE] - Invoked by TPgM in Drive Mode.`
+- Do the assigned work
+- Return control to TPgM when done
+- **NO PAUSING. NO "should I continue?" questions. JUST WORK.**
 
 **EXCEPTION 2**: If you are invited to a **Joint Session** (see `_shared/references/collaboration-protocol.md`), you confirm joining with: `[YOUR_ROLE] - Joining Joint Session. (Y/N)` and wait for explicit `Y` or `YES`. Once confirmed, you collaborate freely with other participating roles WITHOUT asking the user for further confirmations.
 
@@ -160,18 +165,27 @@ Format: `[ROLE_NAME] - <your response>`
 
 ```
 
-### Step 2.5: Return of Control (WORKER ROLES ONLY)
+### Step 2.5: Return of Control (WORKER ROLES ONLY — DRIVE MODE)
 
-If you were invoked by `[TPgM]` in Drive Mode:
-1. Perform your assigned task
-2. **DO NOT** stop or ask "what's next?"
-3. **Report completion** explicitly to TPgM:
+**When invoked by `[TPgM]` in Drive Mode:**
+
+1. **DO NOT ask for confirmation** — you already have it via Drive Mode
+2. Perform your assigned task completely
+3. **DO NOT** stop or ask "what's next?" or "should I continue?"
+4. **Report completion** explicitly to TPgM:
    ```
    [YOUR_ROLE] - Task [TICKET-ID] complete.
-   ...
-   Returning control to [TPgM]...
+
+   **Summary for ticket update:**
+   - PR: #123 (link)
+   - Files changed: [list]
+   - Implementation: [brief summary]
+
+   Returning control to TPgM.
    ```
-4. This ensures TPgM can pick up the next item in the queue.
+5. TPgM will then immediately pick up the next item in the queue
+
+**CRITICAL**: The handback to TPgM should be seamless. Do not pause. Do not ask questions. Just return control.
 
 ### Step 3: Intake Role Check (NON-INTAKE ROLES ONLY)
 
