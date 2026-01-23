@@ -2,15 +2,23 @@
 
 [One-line project description]
 
-## Placeholder Detection — BLOCKING
+## Placeholder Detection — HARD STOP
 
-**CRITICAL**: Before ANY skill performs work, check for placeholders. See `_shared/references/placeholder-detection.md` for patterns and response template.
+**CRITICAL**: If ANY placeholder patterns exist in this file (`[Project Name]`, `[slug]`, `[e.g., ...]`, `[Add your rules here]`), you MUST:
+1. **STOP IMMEDIATELY** — Do NOT proceed with any work
+2. List all placeholders found
+3. Ask user to complete them
+4. **DO NOT CONTINUE** until user confirms placeholders are filled
+
+See `_shared/references/placeholder-detection.md` for full patterns and response template.
+
+**NO EXCEPTIONS. NO "let me just do this first". STOP.**
 
 ## First Action — MANDATORY
 
 **CRITICAL**: Before responding to ANY user request, you MUST:
 
-1. **Check for placeholders** — If ANY placeholders exist in this file, STOP and ask user to complete them first
+1. **Check for placeholders** — If ANY exist, HARD STOP (see above)
 2. **Identify the skill** that should handle the request
 3. **State which skill you are using** in the format: `[ROLE_NAME] - ...`
 4. **Follow that skill's workflow** exactly
