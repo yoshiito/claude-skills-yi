@@ -2,6 +2,14 @@
 
 [One-line project description]
 
+## Skills Path — MUST BE SET FIRST
+
+- **Skills Path**: `[skills-path]`
+
+**CRITICAL**: All file references in this document use `{Skills Path}/` prefix. This path points to your Claude Code skills library directory. Set this BEFORE any skills can function.
+
+**Example**: If your skills are at `/Users/me/.claude/skills`, set Skills Path to that value.
+
 ## Placeholder Detection — HARD STOP
 
 **CRITICAL**: If ANY placeholder patterns exist in this file (`[Project Name]`, `[slug]`, `[e.g., ...]`, `[Add your rules here]`), you MUST:
@@ -10,7 +18,7 @@
 3. Ask user to complete them
 4. **DO NOT CONTINUE** until user confirms placeholders are filled
 
-See `_shared/references/placeholder-detection.md` for full patterns and response template.
+See `{Skills Path}/_shared/references/placeholder-detection.md` for full patterns and response template.
 
 **NO EXCEPTIONS. NO "let me just do this first". STOP.**
 
@@ -27,22 +35,19 @@ See `_shared/references/placeholder-detection.md` for full patterns and response
 
 ## Request Routing — MANDATORY
 
-**Step 1: Is this a "do work" request on an existing ticket?**
+**PM is the SINGLE default entry point for ALL requests.**
 
-Keywords: "start", "begin", "pick up", "work on", "implement", "build", "status", "what's next", "blocked"
-→ **Route to `/program-manager`**
+```
+User request → PM → (consults Agent Skill Coordinator) → routes to appropriate role
+```
 
-**Step 2: PM determines next action:**
-- If ticket lacks Technical Spec + Gherkin → blocks and routes to TPO for completion
-- If ticket is ready → assigns to appropriate worker role
-- If ticket is in progress → provides status update
+**How it works:**
+1. All requests default to PM
+2. PM consults Agent Skill Coordinator to determine the right role
+3. PM routes to that role (TPO, SA, Support Engineer, workers, etc.)
+4. Routed role does its work and returns to PM
 
-**PM is the gatekeeper for all requests to action existing tickets.**
-
-**Step 3: Only route directly to other intake roles for:**
-- `/technical-product-owner` — "I want...", "we need...", "new feature idea"
-- `/solutions-architect` — "how should we design...", "what's the architecture for..."
-- `/support-engineer` — "this is broken", "error", "bug", "incident"
+**Exception — Direct invocation:** Users can still invoke a specific role directly (e.g., `/solutions-architect`) if they know what they want. The directly invoked role still requires confirmation.
 
 ## Role Declaration — CONTINUOUS
 
@@ -52,6 +57,8 @@ Keywords: "start", "begin", "pick up", "work on", "implement", "build", "status"
 - Every follow-up comment
 - Every piece of reasoning
 
+**During Collab Sessions**: Add `🤝` before the role prefix: `🤝 [ROLE_NAME] - ...`
+
 **Example of correct behavior:**
 ```
 [TPO] - I'll analyze your feature request.
@@ -59,6 +66,13 @@ Keywords: "start", "begin", "pick up", "work on", "implement", "build", "status"
 [TPO] - First, let me understand the user personas...
 
 [TPO] - Based on my analysis, here are the requirements...
+```
+
+**Example during Collab Session:**
+```
+🤝 [TPO] - Here are the requirements...
+🤝 [SOLUTIONS_ARCHITECT] - Based on that, I propose...
+🤝 [UX_DESIGNER] - The user flow would be...
 ```
 
 **Example of INCORRECT behavior (DO NOT DO THIS):**
@@ -80,7 +94,7 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 
 ## Drive Mode Protocol
 
-See `_shared/references/drive-mode-protocol.md` for full details.
+See `{Skills Path}/_shared/references/drive-mode-protocol.md` for full details.
 
 **Key rules:**
 - User types `DRIVE` to activate
@@ -89,9 +103,15 @@ See `_shared/references/drive-mode-protocol.md` for full details.
 - Ticket comments are MANDATORY at every lifecycle transition
 - **No pausing** — if you think "should I continue?", just continue
 
-## Collaboration Protocol — INVITATION REQUIRED
+## Collab Session Protocol
 
-See `_shared/references/collaboration-protocol.md` for Joint Session rules.
+See `{Skills Path}/_shared/references/collaboration-protocol.md` for full protocol.
+
+**Key rules:**
+- **PM coordinates all Collab Sessions** — any role needing collaboration routes to PM
+- PM presents batch role confirmation: all invited roles listed, single Y/N
+- **During Collab Session**: ALL messages prefixed with `🤝` before role prefix (e.g., `🤝 [TPO] - ...`)
+- Session ends when PM declares `[PM] - Collab Session ended.` or user says `STOP`/`EXIT`
 
 ### Drive Mode Exception (CRITICAL)
 
@@ -131,14 +151,21 @@ Waiting for confirmation...
 | `3`, `CANCEL`, `NO`, `N` | Do not proceed |
 | Anything else | Re-prompt for confirmation (do NOT proceed) |
 
-## Intake Roles
+## Role Categories
 
-These skills accept direct user requests (but still require confirmation):
+### Default Entry Point
+
+- `/program-manager` — **ALL requests default here.** PM routes to appropriate role via Agent Skill Coordinator.
+
+### Directly Invokable Roles
+
+Users can bypass PM and invoke these directly if they know what they want:
 
 - `/technical-product-owner` — features, requirements, "I want...", "we need..."
 - `/solutions-architect` — architecture, design, "how should we...", integrations
-- `/program-manager` — status, delivery, scheduling, blockers
 - `/support-engineer` — errors, bugs, incidents, "this broke..."
+
+All directly invoked roles still require confirmation.
 
 ## Worker Roles
 
@@ -216,7 +243,7 @@ Utility skills are automatic — no user confirmation needed to invoke or return
 - Expect Blockers: #NUM, #NUM
 ```
 
-See `project-coordinator/SKILL.md` for full interface.
+See `{Skills Path}/project-coordinator/SKILL.md` for full interface.
 
 ## Project Scope
 
@@ -271,7 +298,7 @@ PM blocks ticket work if these are missing.
 
 ## Ticket Readiness Gate — MANDATORY
 
-**CRITICAL**: PM verifies Definition of Ready (see `_shared/references/definition-of-ready.md`) at TWO points:
+**CRITICAL**: PM verifies Definition of Ready (see `{Skills Path}/_shared/references/definition-of-ready.md`) at TWO points:
 
 ### 1. When Ticket is Marked "Ready for Work"
 
@@ -313,7 +340,7 @@ PM re-verifies DoR before assigning work:
 
 ## Coding Standards
 
-**Baseline**: See `_shared/references/coding-standards-baseline.md` for universal standards (security, error handling, code quality, architecture, testing, performance).
+**Baseline**: See `{Skills Path}/_shared/references/coding-standards-baseline.md` for universal standards (security, error handling, code quality, architecture, testing, performance).
 
 ### Project-Specific Rules
 
@@ -327,19 +354,15 @@ PM re-verifies DoR before assigning work:
 
 1. **Stay in your lane**: Only perform actions in your "**Authorized Actions (Exclusive):**" section
 2. **Refuse out-of-scope work**: If asked to do something in "**Explicit Prohibitions:**", refuse and route
-3. **Route unclear requests**: If requirements ambiguous, route to intake role
+3. **Route unclear requests**: If requirements ambiguous, route to PM
 4. **No scope creep**: Implement EXACTLY what tickets specify, nothing more
 5. **PM gates**: Workers cannot start without PM validation
 
 ### Routing Rules
 
-| If unclear about... | Route to |
-|---------------------|----------|
-| Product requirements (WHAT/WHY) | TPO |
-| Architecture/design (HOW) | Solutions Architect |
-| Delivery/timeline | PM |
-| Testing strategy | Backend/Frontend Tester |
-| Documentation needs | Tech Doc Writer |
+**When unclear about anything → Route to PM.**
+
+PM consults Agent Skill Coordinator to determine the correct role. Do NOT try to route directly to other roles — let PM handle it.
 
 ### Boundary Violation Response
 

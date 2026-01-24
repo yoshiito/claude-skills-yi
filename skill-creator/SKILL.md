@@ -23,17 +23,37 @@ Create, validate, and maintain Claude Code skills with consistent quality and cl
 
 **CRITICAL**: Understand how this library is used before making changes.
 
-### Propagation Flow
+### Deployment Model (MUST UNDERSTAND)
 
 ```
-boilerplate-claude-md.md (TEMPLATE) → copied to → project/claude.md → invokes → skills/*.SKILL.md → references → _shared/references/*.md
+SKILLS LIBRARY (~/.claude/skills/)          END-USER PROJECT (~/projects/app/)
+├── _shared/references/                     ├── claude.md  ← COPIED from boilerplate
+│   ├── boilerplate-claude-md.md ──────────────┘
+│   ├── universal-skill-preamble.md
+│   └── *.md
+├── program-manager/SKILL.md
+└── ...
 ```
+
+**WHY THIS MATTERS**:
+- `boilerplate-claude-md.md` is COPIED to projects → lives OUTSIDE skills library → needs `{Skills Path}/` prefix
+- All other files STAY in skills library → relative paths work → NO prefix needed
+
+### Path Resolution Rule
+
+| File | Where It Lives | Path Style |
+|------|----------------|------------|
+| `boilerplate-claude-md.md` | Copied to project's `claude.md` | `{Skills Path}/path/to/file.md` |
+| SKILL.md files | Inside skills library | `_shared/references/file.md` (relative) |
+| `_shared/references/*.md` | Inside skills library | `../other-file.md` (relative) |
+
+**NEVER add `{Skills Path}/` prefix to files that stay in the skills library.**
 
 ### Key Files
 
 | File | Purpose |
 |------|---------|
-| `boilerplate-claude-md.md` | Template for project claude.md - **copied to end-user projects** |
+| `boilerplate-claude-md.md` | Template for project claude.md - **ONLY file deployed to projects** |
 | `universal-skill-preamble.md` | Preamble template for all skills |
 | `ticketing-*.md` | System-specific ticketing commands |
 | `skill-ecosystem.md` | How skills relate |

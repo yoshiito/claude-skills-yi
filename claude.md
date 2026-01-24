@@ -15,6 +15,26 @@ This repository contains reusable Claude Code skills for software engineering te
 
 **NEVER edit this file when the request is about project behavior.** If someone reports issues with how skills behave in their project (routing, role activation, worker boundaries), edit the boilerplate template instead.
 
+### Deployment Model (CRITICAL — MUST UNDERSTAND)
+
+```
+SKILLS LIBRARY                              END-USER PROJECT
+~/.claude/skills/                           ~/projects/my-app/
+├── boilerplate-claude-md.md ──COPIED TO──► claude.md
+├── SKILL.md files          ──STAY HERE──
+└── _shared/references/*.md ──STAY HERE──
+```
+
+**Path prefix rule**:
+| File | Where It Ends Up | Path Style |
+|------|------------------|------------|
+| `boilerplate-claude-md.md` | Copied to project's `claude.md` | `{Skills Path}/path/to/file.md` |
+| All other files | Stay inside skills library | Relative paths (no prefix) |
+
+**WHY**: When boilerplate is deployed to a project, it lives OUTSIDE the skills library. References like `_shared/references/foo.md` won't resolve because there's no `_shared/` in the project. The `{Skills Path}/` prefix tells it where to find skills library files.
+
+**NEVER add `{Skills Path}/` prefix to SKILL.md files or `_shared/references/*.md` — they stay in the library and relative paths work.**
+
 All requests in this skills library should be handled by Skill Creator, which:
 - Creates new skills following best practices
 - Validates skills against quality gates
