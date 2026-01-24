@@ -323,7 +323,7 @@ Code Reviewer returns feedback to the invoking role:
 
 ### Intake Roles → Enforcement
 
-Intake roles (TPgM, TPO, SA, Support Engineer) enforce the PR review gate:
+Intake roles (PM, TPO, SA, Support Engineer) enforce the PR review gate:
 - Verify PR was reviewed by Code Reviewer before marking "Done"
 - Check all Critical/High issues were addressed
 - Ensure re-review was done if changes were required
@@ -389,7 +389,7 @@ Before completing a review:
 | Backend Developer | Invokes Code Reviewer for PR review; receives feedback |
 | Frontend Developer | Invokes Code Reviewer for PR review; receives feedback |
 | Solutions Architect | Defines architecture patterns Code Reviewer enforces |
-| TPgM | Enforces PR review gate before marking tickets "Done" |
+| PM | Enforces PR review gate before marking tickets "Done" |
 | TPO | Verifies PR review gate during acceptance |
 | Support Engineer | Verifies bug fixes were reviewed before closing |
 

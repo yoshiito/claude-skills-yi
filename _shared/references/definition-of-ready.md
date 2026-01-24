@@ -9,7 +9,7 @@
 | **Project Coordinator** | **ENFORCES** - rejects ticket creation if DoR not met |
 | **Solutions Architect** | Prepares sub-issues to pass DoR checks |
 | **TPO** | Prepares parent issues to pass DoR checks |
-| **TPgM** | Additional validation before Drive Mode |
+| **PM** | Additional validation before Drive Mode |
 | **Workers** | Understands what "ready" looks like |
 
 ## Enforcement Point
@@ -50,7 +50,7 @@
 | No open questions | ✅ | All clarifications resolved in ticket |
 | INVEST passed | ✅ | See checklist below |
 
-### For Feature-Level Completeness (Verified by SA/TPgM)
+### For Feature-Level Completeness (Verified by SA/PM)
 
 **MANDATORY**: Before a feature can be driven, ALL of these must exist:
 
@@ -72,7 +72,7 @@
 - API consumers need updated docs
 - Without `[Docs]`, feature is incomplete even if code works
 
-**If missing**: SA must create the sub-issue before TPgM can drive.
+**If missing**: SA must create the sub-issue before PM can drive.
 
 ### INVEST Checklist (Sub-Issues Only)
 
@@ -102,12 +102,12 @@ Missing:
 Action: Complete these before creating ticket.
 ```
 
-### When Entering Drive Mode (TPgM)
+### When Entering Drive Mode (PM)
 
 Before driving, verify ALL tickets pass DoR. If any fail:
 
 ```
-[TPgM] - ⛔ Cannot enter Drive Mode
+[PM] - ⛔ Cannot enter Drive Mode
 
 Definition of Ready not met:
 

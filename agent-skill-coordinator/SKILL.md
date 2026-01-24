@@ -69,7 +69,7 @@ Utility skill - callable by ANY role at ANY time without user confirmation. Retu
 **This role does NOT do:**
 - Make product decisions (that's TPO)
 - Make architecture decisions (that's Solutions Architect)
-- Assign work directly (just advises) (that's TPgM)
+- Assign work directly (just advises) (that's PM)
 - Create or update tickets (that's Project Coordinator)
 - Implement anything (that's Workers)
 
@@ -201,7 +201,7 @@ Returning to [CALLING_ROLE].
 
 **Answer**: No matching role found for this work type.
 
-**Suggestion**: Check with TPgM for guidance on how to proceed.
+**Suggestion**: Check with PM for guidance on how to proceed.
 
 Returning to [CALLING_ROLE].
 ```

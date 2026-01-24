@@ -7,7 +7,7 @@
 | Role | Uses DoD For |
 |------|--------------|
 | **Project Coordinator** | **ENFORCES** - rejects status=done if DoD not met |
-| **TPgM** | Additional verification after coordinator accepts |
+| **PM** | Additional verification after coordinator accepts |
 | **Workers** | Understands what "complete" means before claiming done |
 | **Code Reviewer** | Validates implementation quality |
 
@@ -87,12 +87,12 @@ Reading comments for completion evidence...
 
 **If checks fail**: REJECT with missing items, do NOT update status.
 
-### Second Line: TPgM (Drive Mode)
+### Second Line: PM (Drive Mode)
 
-In Drive Mode, TPgM may do additional verification after Project Coordinator accepts:
+In Drive Mode, PM may do additional verification after Project Coordinator accepts:
 
 ```
-[TPgM] - ✅ [TICKET-ID] verified complete
+[PM] - ✅ [TICKET-ID] verified complete
 
 Project Coordinator accepted completion.
 All Definition of Done checks passed.

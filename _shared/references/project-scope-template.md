@@ -127,7 +127,7 @@ Define who owns what on this project. Each row should have ONE owner - avoid sha
 | API Contracts | API Designer | @api-designer | Customer-facing APIs |
 | Product Requirements (Portal) | TPO | @portal-tpo | Customer portal features |
 | Product Requirements (Admin) | TPO | @admin-tpo | Admin dashboard features |
-| Delivery Coordination | TPgM | @tpgm | All workstreams |
+| Delivery Coordination | PM | @tpgm | All workstreams |
 
 ### Active Roles on This Project
 
@@ -137,7 +137,7 @@ List which skill roles are active and who fills them:
 |------|-------------|-------|
 | Solutions Architect | @sa-name | Frontend + Backend architecture |
 | TPO | @tpo-name | Customer Portal features only |
-| TPgM | @tpgm-name | All workstreams |
+| PM | @tpgm-name | All workstreams |
 | API Designer | @api-name | /api/v1/* endpoints |
 | Data Platform Engineer | @dpe-name | Customer DB, Analytics DW |
 
@@ -312,7 +312,7 @@ Each role with a "Scope Boundaries" section in their SKILL.md will:
 ### Common Questions
 
 **Q: What if a domain has no owner listed?**
-A: Route to project lead / TPgM to assign ownership before proceeding.
+A: Route to project lead / PM to assign ownership before proceeding.
 
 **Q: What if I disagree with current boundaries?**
 A: Discuss with project lead. Don't act outside boundaries without agreement.

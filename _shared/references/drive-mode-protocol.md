@@ -1,35 +1,35 @@
 # Drive Mode Protocol
 
-Drive Mode allows TPgM to orchestrate work autonomously without requiring user confirmation for each worker invocation.
+Drive Mode allows PM to orchestrate work autonomously without requiring user confirmation for each worker invocation.
 
 ## Entering Drive Mode
 
-User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phrase activates Drive Mode.
+User must explicitly type `DRIVE` when PM asks for mission mode. No other phrase activates Drive Mode.
 
-**Before Drive Mode activates**, TPgM MUST verify Definition of Ready (see `definition-of-ready.md`):
+**Before Drive Mode activates**, PM MUST verify Definition of Ready (see `definition-of-ready.md`):
 - All tickets have Technical Spec + Gherkin scenarios
 - Parent-child relationships set via native fields
 - `[Test]` sub-issue exists for regression validation
 - `[Docs]` sub-issue exists (for user-facing features)
 - Work queue ends with regression testing and documentation
 
-**If DoR fails**: TPgM blocks Drive Mode and routes gaps to SA/TPO.
+**If DoR fails**: PM blocks Drive Mode and routes gaps to SA/TPO.
 
 ## Core Rules
 
-1. **TPgM orchestrates only** — assigns work, tracks progress. NEVER does implementation, design, testing, PR creation, or documentation writing.
-2. **Workers skip confirmation** — when invoked by TPgM in Drive Mode, workers declare themselves and proceed immediately.
-3. **Workers return control** — when done, workers MUST return control to TPgM with a summary (PR link, files changed, etc.).
-4. **TPgM reports status** — when control returns, TPgM MUST report what was completed in chat.
-5. **TPgM updates tickets at EVERY phase** — TPgM MUST add ticket comments at each lifecycle transition. This is NOT optional.
+1. **PM orchestrates only** — assigns work, tracks progress. NEVER does implementation, design, testing, PR creation, or documentation writing.
+2. **Workers skip confirmation** — when invoked by PM in Drive Mode, workers declare themselves and proceed immediately.
+3. **Workers return control** — when done, workers MUST return control to PM with a summary (PR link, files changed, etc.).
+4. **PM reports status** — when control returns, PM MUST report what was completed in chat.
+5. **PM updates tickets at EVERY phase** — PM MUST add ticket comments at each lifecycle transition. This is NOT optional.
 6. **No self-invocation** — no role ever invokes itself.
 
 ## No Pausing Rule
 
-**Drive Mode is CONTINUOUS.** Neither TPgM nor workers should pause for user confirmation:
-- Workers invoked by TPgM proceed immediately (no confirmation prompt)
-- When workers complete, they return control to TPgM
-- TPgM immediately assigns the next ticket
+**Drive Mode is CONTINUOUS.** Neither PM nor workers should pause for user confirmation:
+- Workers invoked by PM proceed immediately (no confirmation prompt)
+- When workers complete, they return control to PM
+- PM immediately assigns the next ticket
 - The only pauses are for actual blockers (missing info, failing tests, etc.)
 
 **If you find yourself asking "should I continue?" — DON'T. Just continue.**
@@ -47,10 +47,10 @@ User must explicitly type `DRIVE` when TPgM asks for mission mode. No other phra
 
 ## Worker Behavior in Drive Mode
 
-When invoked by TPgM:
+When invoked by PM:
 
 ```
-[WORKER_ROLE] - Invoked by TPgM in Drive Mode.
+[WORKER_ROLE] - Invoked by PM in Drive Mode.
 
 [Does the work...]
 
@@ -62,29 +62,29 @@ When invoked by TPgM:
 - Files changed: [list key files]
 - Implementation: [brief summary]
 
-Returning control to TPgM.
+Returning control to PM.
 ```
 
-**Workers do NOT update tickets directly** — they return this info to TPgM.
+**Workers do NOT update tickets directly** — they return this info to PM.
 
-## TPgM Behavior After Worker Returns
+## PM Behavior After Worker Returns
 
 ### For Implementation Workers (`[Backend]`, `[Frontend]`)
 
 1. Worker returns with PR link
-2. **TPgM invokes Code Reviewer** on the PR
-3. If Code Review has issues → TPgM sends worker back to fix, repeat from step 2
-4. If Code Review passes → TPgM verifies DoD → Mark done
+2. **PM invokes Code Reviewer** on the PR
+3. If Code Review has issues → PM sends worker back to fix, repeat from step 2
+4. If Code Review passes → PM verifies DoD → Mark done
 
 ### For Other Workers (`[Test]`, `[Docs]`, etc.)
 
 1. Worker returns with deliverable
-2. TPgM verifies DoD → Mark done
+2. PM verifies DoD → Mark done
 
 ### DoD Verification
 
 ```
-[TPgM] - 🔍 Verifying completion for [TICKET-ID]...
+[PM] - 🔍 Verifying completion for [TICKET-ID]...
 
 | Check | Status |
 |-------|--------|
@@ -94,9 +94,9 @@ Returning control to TPgM.
 | Spec satisfied | ✅ / ❌ |
 ```
 
-**If DoD passes**: `[TPgM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
+**If DoD passes**: `[PM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
 
-**If DoD fails**: `[TPgM] - ⛔ [TICKET-ID] NOT complete. [List gaps]. Address and report back.`
+**If DoD fails**: `[PM] - ⛔ [TICKET-ID] NOT complete. [List gaps]. Address and report back.`
 
 ## Ticket Comment Requirements
 

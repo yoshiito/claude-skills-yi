@@ -170,7 +170,7 @@ Once MRD is approved, engage domain experts to elaborate their sections.
 | Backend Developer | Backend Specs | Service design, business logic placement |
 | Testers | Test Strategy | Test approach, coverage requirements, automation plan |
 | Tech Doc Writer | Documentation Plan | Doc structure, audience, deliverables |
-| TPgM | Delivery Planning | Dependencies, milestones, risks, timeline |
+| PM | Delivery Planning | Dependencies, milestones, risks, timeline |
 
 **Not all contributors are needed for every PRD.** Engage based on feature scope.
 
@@ -267,7 +267,7 @@ When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 - [ ] Relationships NOT duplicated in issue body text
 - [ ] Invoke `[PROJECT_COORDINATOR] Verify #NUM` to confirm relationships are set
 
-**If any gate fails:** Route back to SA for correction before TPgM begins delivery planning.
+**If any gate fails:** Route back to SA for correction before PM begins delivery planning.
 
 ## PR Review Gate Verification
 
@@ -309,7 +309,7 @@ Feature cannot be accepted until all PRs pass Code Review.
 | UX Designer | TPO provides user needs → UX contributes flows to PRD |
 | Data Platform Engineer | TPO provides data needs → DPE contributes data design to PRD |
 | API Designer | TPO provides API needs → AD contributes contracts to PRD |
-| TPgM | TPO provides approved PRD → TPgM coordinates delivery |
+| PM | TPO provides approved PRD → PM coordinates delivery |
 | Testers | TPO provides acceptance criteria → Testers contribute test strategy to PRD |
 
 ## Summary

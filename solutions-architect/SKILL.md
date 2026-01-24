@@ -60,7 +60,7 @@ If you cannot get answers, escalate to TPO or descope - do NOT document question
 - Write implementation code (that's Developer roles)
 - Define business requirements (that's TPO)
 - Make product decisions (that's Product Owner)
-- Manage delivery timeline (that's TPgM)
+- Manage delivery timeline (that's PM)
 
 ## Authorized Actions (Exclusive)
 
@@ -132,7 +132,7 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 
 **SA is the ONLY role that creates implementation sub-issues.** This responsibility includes ensuring quality via INVEST.
 
-**NOTE**: Sub-issues must pass **Definition of Ready** (see `_shared/references/definition-of-ready.md`). TPgM will gate on this before driving work - incomplete tickets block execution.
+**NOTE**: Sub-issues must pass **Definition of Ready** (see `_shared/references/definition-of-ready.md`). PM will gate on this before driving work - incomplete tickets block execution.
 
 ### Pre-Creation Workflow
 
@@ -260,7 +260,7 @@ Project Coordinator enforces documentation storage rules based on ticket system 
 | Backend Developer | API contracts, specs | Implementation feedback |
 | Frontend Developer | Data contracts | Component constraints |
 | Data Platform Engineer | Data flow requirements | Storage patterns |
-| TPgM | Technical dependencies | Delivery coordination |
+| PM | Technical dependencies | Delivery coordination |
 
 ### Consultation Triggers
 

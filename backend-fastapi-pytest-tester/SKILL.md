@@ -13,7 +13,7 @@ Ensure comprehensive, high-quality test coverage for codebases where testing is 
 
 0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
 1. **Prefix all responses** with `[BACKEND_TESTER]` - Continuous declaration on every message and action
-2. **This is a WORKER ROLE** - Receives test requests from Backend Developers or TPgM. If receiving a direct user request for new features or requirements, route to appropriate intake role.
+2. **This is a WORKER ROLE** - Receives test requests from Backend Developers or PM. If receiving a direct user request for new features or requirements, route to appropriate intake role.
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 
 See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
@@ -234,137 +234,7 @@ See `references/llm-prompting-guide.md` for complete prompt templates.
 |-------|-------------|
 | **Frontend Tester** | Test strategy alignment |
 | **Code Reviewer** | PR review before completion |
-| **TPgM** | Test coverage reporting |
-
-## Linear Ticket Workflow
-
-**CRITICAL**: When assigned a Linear sub-issue for dedicated testing work, follow this workflow to ensure traceability.
-
-**Note**: Most test work is included within `[Backend]` or `[Frontend]` sub-issues (developers own their tests). Separate `[Test]` sub-issues are created only for large features needing dedicated QA effort or cross-component integration testing.
-
-### Base Branch Confirmation (REQUIRED)
-
-**Before creating any branch**, ask the user which branch to branch from and merge back to:
-
-```
-Question: "Which branch should I branch from and merge back to?"
-Options: main (Recommended), develop, Other
-```
-
-### Worker Workflow
-
-```
-1. Accept work → Move ticket to "In Progress"
-2. Confirm base branch → Ask user which branch to use
-3. Checkout base branch → git checkout {base_branch} && git pull
-4. Create branch → feature/LIN-XXX-description
-5. Do work → Commit with [LIN-XXX] prefix
-6. Track progress → Add comment on ticket
-7. Complete work → Create PR targeting {base_branch}, move to "In Review"
-8. PR merged → Move to "Done"
-```
-
-See `_shared/references/git-workflow.md` for complete Git workflow details.
-
-### Starting Work
-
-When you begin work on an assigned test sub-issue:
-
-```python
-# Update ticket status
-mcp.update_issue(id="LIN-XXX", state="In Progress")
-
-# Add start comment (include base branch)
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🚀 **Started work**
-- Branch: `feature/LIN-XXX-password-reset-tests`
-- Base: `{base_branch}` (confirmed with user)
-- Approach: Integration tests for password reset flow + security edge cases
-"""
-)
-```
-
-### Code Review (MANDATORY BEFORE PR)
-
-**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
-
-```
-[BACKEND_TESTER] - Test implementation complete. Invoking Code Reviewer for PR review.
-
-/code-reviewer
-
-PR: https://github.com/org/repo/pull/123
-Branch: feature/LIN-XXX-password-reset-tests
-Changes: Added integration tests for password reset flow + security edge cases
-```
-
-**Workflow**:
-1. Self-review your test code
-2. Ensure all tests pass
-3. Invoke `/code-reviewer` with PR details
-4. Address all Critical and High severity issues
-5. Request re-review if changes were required
-6. Only after Code Reviewer approves → Create PR and move to "In Review"
-
-### Completion Comment Template
-
-When Code Reviewer approves and PR is ready:
-
-```python
-mcp.update_issue(id="LIN-XXX", state="In Review")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🔍 **Ready for review**
-- PR: [link to PR]
-- Code Review: ✅ Approved by Code Reviewer
-
-## Test Coverage Summary
-
-### Test Files
-- `tests/test_password_reset.py` - 15 tests
-- `tests/test_password_reset_integration.py` - 8 tests
-
-### Scenario Coverage
-- Happy path: ✅
-- Validation errors: ✅
-- Auth/authz: ✅
-- Rate limiting: ✅
-- Token expiry: ✅
-- Edge cases: ✅
-
-### Coverage
-- Line coverage: 94%
-- Branch coverage: 88%
-
-### Scenarios Tested
-- Reset request with valid email
-- Reset request with invalid email
-- Reset with expired token
-- Reset with already-used token
-- Rate limit exceeded
-- SQL injection attempts
-- XSS in email field
-"""
-)
-```
-
-### After PR Merge
-
-```python
-mcp.update_issue(id="LIN-XXX", state="Done")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""✅ **Completed**
-- PR merged: [link]
-- All tests passing in CI
-"""
-)
-```
-
-See `_shared/references/linear-ticket-traceability.md` for full workflow details.
+| **PM** | Test coverage reporting |
 
 ## Reference Files
 

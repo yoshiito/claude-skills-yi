@@ -40,7 +40,7 @@ boundaries:
     - action: Make architecture decisions
       owner: Solutions Architect
     - action: Assign work directly (just advises)
-      owner: TPgM
+      owner: PM
     - action: Create or update tickets
       owner: Project Coordinator
     - action: Implement anything
@@ -109,8 +109,8 @@ roleRegistry:
         - API contract documentation
 
     # Orchestration Roles
-    - prefix: TPgM
-      displayName: Technical Program Manager
+    - prefix: PM
+      displayName: Program Manager
       type: orchestration
       handles:
         - Delivery coordination
@@ -226,13 +226,13 @@ roleRegistry:
   flowRules:
     # Where completed work returns to
     completionReturn:
-      default: TPgM  # All work returns to TPgM by default
+      default: PM  # All work returns to PM by default
       exceptions:
         - from: TPO
           to: SOLUTIONS_ARCHITECT
           reason: "Requirements → Architecture breakdown"
         - from: SOLUTIONS_ARCHITECT
-          to: TPgM
+          to: PM
           reason: "Architecture → Ready for implementation"
 
     # Who can invoke whom
@@ -243,8 +243,8 @@ roleRegistry:
           - PROJECT_COORDINATOR
           - AGENT_SKILL_COORDINATOR
 
-      # TPgM can invoke all workers (orchestration)
-      - role: TPgM
+      # PM can invoke all workers (orchestration)
+      - role: PM
         canInvoke:
           - BACKEND_DEVELOPER
           - FRONTEND_DEVELOPER
@@ -276,7 +276,7 @@ roleRegistry:
         reason: "Architecture decisions"
 
       - keywords: ["status", "blocked", "what's next", "progress", "delivery"]
-        routeTo: TPgM
+        routeTo: PM
         reason: "Delivery coordination"
 
       - keywords: ["error", "bug", "broken", "incident", "failing"]
@@ -390,7 +390,7 @@ responseFormats:
 
       **Answer**: No matching role found for this work type.
 
-      **Suggestion**: Check with TPgM for guidance on how to proceed.
+      **Suggestion**: Check with PM for guidance on how to proceed.
 
       Returning to [CALLING_ROLE].
 

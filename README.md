@@ -24,7 +24,7 @@ To use these skills in your project:
 
 | Type | Skills | Accepts |
 |------|--------|---------|
-| **Intake** | TPO, Solutions Architect, TPgM, Support Engineer | Direct user requests |
+| **Intake** | TPO, Solutions Architect, PM, Support Engineer | Direct user requests |
 | **Worker** | All others | Only tickets with Technical Spec + Gherkin |
 
 Worker skills route new feature requests to intake roles.
@@ -44,7 +44,7 @@ Worker skills route new feature requests to intake roles.
 | **ai-integration-engineer** | Evaluate and implement AI-powered features |
 | **mcp-server-developer** | Build Model Context Protocol servers |
 | **tech-doc-writer-manager** | Technical documentation authoring and maintenance |
-| **technical-program-manager** | Cross-functional delivery coordination with Linear |
+| **program-manager** | Cross-functional delivery coordination with Linear |
 | **support-engineer** | Error triage, log analysis, and incident investigation |
 | **material-ux-designer** | UI/UX guidance based on Material Design |
 | **svg-designer** | Create logos, icons, and vector illustrations |
@@ -71,7 +71,7 @@ LAYER 4: QUALITY ASSURANCE
 
 LAYER 5: DOCUMENTATION & DELIVERY
   ├── Tech Doc Writer → API docs, guides
-  └── Technical Program Manager → Linear tickets, delivery
+  └── Program Manager → Linear tickets, delivery
 ```
 
 ## Structure
@@ -106,7 +106,7 @@ Required sections that skills check before acting:
 - Branch names: `{type}/{team-slug}/{TICKET-ID}-{description}`
 
 ### Ticket Requirements
-All tickets need Technical Spec (MUST/MUST NOT/SHOULD) + Gherkin scenarios. TPgM blocks creation without these.
+All tickets need Technical Spec (MUST/MUST NOT/SHOULD) + Gherkin scenarios. PM blocks creation without these.
 
 ### Skill Behavior
 1. Prefix responses with `[ROLE_NAME]`

@@ -141,7 +141,7 @@ qualityGates:
 
 ---
 
-## 5. Mission Modes (TPgM Example)
+## 5. Mission Modes (PM Example)
 
 ### YAML Input
 
@@ -169,7 +169,7 @@ missionModes:
 ```markdown
 ## Mission Mode Selection (MANDATORY - ASK FIRST)
 
-**CRITICAL**: At session start, TPgM MUST ask the user which mission mode to operate in.
+**CRITICAL**: At session start, PM MUST ask the user which mission mode to operate in.
 
 ```
 Which mode should I operate in?
@@ -284,14 +284,14 @@ customSections:
 ```yaml
 handoff:
   receivesWorkFrom:
-    - TPgM
+    - PM
     - Solutions Architect
-  returnsTo: TPgM
+  returnsTo: PM
   canInvoke:
     - Code Reviewer
     - Project Coordinator
   invokedBy:
-    - TPgM
+    - PM
 ```
 
 ### Generated MD Output
@@ -299,10 +299,10 @@ handoff:
 ```markdown
 ## Handoff Patterns
 
-**Receives work from**: TPgM, Solutions Architect
-**Returns completed work to**: TPgM
+**Receives work from**: PM, Solutions Architect
+**Returns completed work to**: PM
 **Can invoke**: Code Reviewer, Project Coordinator
-**Invoked by**: TPgM
+**Invoked by**: PM
 ```
 
 ---

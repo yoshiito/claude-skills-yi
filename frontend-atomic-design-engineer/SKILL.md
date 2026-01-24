@@ -13,7 +13,7 @@ Enforce atomic design principles and modular architecture with zero compromise. 
 
 0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
 1. **Prefix all responses** with `[FRONTEND_DEVELOPER]` - Continuous declaration on every message and action
-2. **This is a WORKER ROLE** - Receives tickets from SA/TPgM. If receiving a direct user request for new features or requirements, route to appropriate intake role.
+2. **This is a WORKER ROLE** - Receives tickets from SA/PM. If receiving a direct user request for new features or requirements, route to appropriate intake role.
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 
 See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
@@ -235,7 +235,7 @@ Code reviews must reject:
 | **Backend Developer** | API contract alignment |
 | **Tech Doc Writer** | Component documentation |
 | **Code Reviewer** | PR review before completion |
-| **TPgM** | Progress tracking, blockers |
+| **PM** | Progress tracking, blockers |
 
 ### Consultation Triggers
 
@@ -251,140 +251,8 @@ Code reviews must reject:
 □ Frontend Tester has test strategy
 □ Accessibility validated
 □ Code Reviewer approved PR (MANDATORY)
-□ TPgM updated on progress
+□ PM updated on progress
 ```
-
-## Linear Ticket Workflow
-
-**CRITICAL**: When assigned a Linear sub-issue, follow this workflow to ensure traceability.
-
-### Base Branch Confirmation (REQUIRED)
-
-**Before creating any branch**, ask the user which branch to branch from and merge back to:
-
-```
-Question: "Which branch should I branch from and merge back to?"
-Options: main (Recommended), develop, Other
-```
-
-### Worker Workflow
-
-```
-1. Accept work → Move ticket to "In Progress"
-2. Confirm base branch → Ask user which branch to use
-3. Checkout base branch → git checkout {base_branch} && git pull
-4. Create branch → {type}/{team}/LIN-XXX-description (team from claude.md)
-5. Do work → Commit with [LIN-XXX] prefix
-6. Track progress → Add comment on ticket
-7. Complete work → Create PR targeting {base_branch}, move to "In Review"
-8. PR merged → Move to "Done"
-```
-
-**Branch Pattern**: `{type}/{team}/{LIN-XXX}-{description}`
-- `type`: `feature`, `fix`, `refactor`, `docs`, `test`
-- `team`: From project's `claude.md` Team Context (e.g., `portal`)
-- Example: `feature/portal/LIN-101-password-reset-form`
-
-See `_shared/references/git-workflow.md` for complete Git workflow details.
-
-### Starting Work
-
-When you begin work on an assigned sub-issue:
-
-```python
-# Update ticket status
-mcp.update_issue(id="LIN-XXX", state="In Progress")
-
-# Add start comment (include base branch)
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🚀 **Started work**
-- Branch: `feature/portal/LIN-XXX-password-reset-form`
-- Base: `{base_branch}` (confirmed with user)
-- Approach: Creating ResetPasswordForm molecule with validation
-"""
-)
-```
-
-### Commit Message Format
-
-```
-[LIN-XXX] Brief description of change
-
-- Detail 1
-- Detail 2
-
-Ticket: https://linear.app/team/issue/LIN-XXX
-```
-
-### Code Review (MANDATORY BEFORE PR)
-
-**CRITICAL**: Before creating a PR or moving to "In Review", invoke Code Reviewer.
-
-```
-[FRONTEND_DEVELOPER] - Implementation complete. Invoking Code Reviewer for PR review.
-
-/code-reviewer
-
-PR: https://github.com/org/repo/pull/123
-Branch: feature/portal/LIN-XXX-password-reset-form
-Changes: Created ResetPasswordForm molecule with validation
-```
-
-**Workflow**:
-1. Self-review your changes first
-2. Ensure all tests pass
-3. Invoke `/code-reviewer` with PR details
-4. Address all Critical and High severity issues
-5. Request re-review if changes were required
-6. Only after Code Reviewer approves → Create PR and move to "In Review"
-
-### Completion Comment Template
-
-When Code Reviewer approves and PR is ready:
-
-```python
-mcp.update_issue(id="LIN-XXX", state="In Review")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""🔍 **Ready for review**
-- PR: [link to PR]
-- Code Review: ✅ Approved by Code Reviewer
-
-## Implementation Summary
-- Components: ResetPasswordForm (molecule), PasswordInput (atom)
-- Storybook stories: 8 stories with interaction tests
-- Accessibility: axe checks passing
-
-## Verification
-- Existing tests passing
-- Storybook stories complete with interaction tests
-- Frontend Tester notified for comprehensive test coverage
-
-## Files Changed
-- `src/components/molecules/ResetPasswordForm/`
-- `src/components/atoms/PasswordInput/`
-- `src/pages/ResetPasswordPage.jsx`
-"""
-)
-```
-
-### After PR Merge
-
-```python
-mcp.update_issue(id="LIN-XXX", state="Done")
-
-mcp.create_comment(
-    issueId="LIN-XXX",
-    body="""✅ **Completed**
-- PR merged: [link]
-- Storybook deployed
-"""
-)
-```
-
-See `_shared/references/linear-ticket-traceability.md` for full workflow details.
 
 ## Reference Files
 

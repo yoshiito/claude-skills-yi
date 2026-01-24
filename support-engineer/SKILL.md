@@ -366,7 +366,7 @@ This ensures the fix doesn't introduce new issues while resolving the original b
 
 | Skill | Interaction |
 |-------|-------------|
-| **Technical Program Manager** | Escalate blockers, track incidents in Linear |
+| **Program Manager (PM)** | Escalate blockers, track incidents in Linear |
 | **Tech Doc Writer** | Create/update runbooks for recurring issues |
 | **Solutions Architect** | Consult on architectural root causes |
 | **FastAPI/Frontend Developers** | Hand off implementation fixes |

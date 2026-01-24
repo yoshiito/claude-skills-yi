@@ -153,7 +153,7 @@ Questions to resolve:
 
 ## Scope/Timeline Flag
 
-**Recommend consulting: Technical Program Manager**
+**Recommend consulting: Program Manager (PM)**
 
 ### When to Trigger
 
@@ -172,7 +172,7 @@ Questions to resolve:
 ⚠️ SCOPE/TIMELINE FLAG
 Requirement: "Full audit logging with retention, search, export, and compliance reports - needed in 2 weeks"
 Concern: Comprehensive audit system typically requires 4-6 weeks; 2-week timeline suggests scope reduction needed
-Recommend consulting: Technical Program Manager
+Recommend consulting: Program Manager (PM)
 Questions to resolve:
 - What's the hard deadline driver (compliance audit, customer contract)?
 - Can we phase: basic logging now, search/export in phase 2?
@@ -184,7 +184,7 @@ Questions to resolve:
 ⚠️ SCOPE/TIMELINE FLAG
 Requirement: "Integrate with billing system for usage-based pricing"
 Concern: Billing integration requires coordination with Billing team, Finance for pricing rules, and potentially Legal for contract changes
-Recommend consulting: Technical Program Manager
+Recommend consulting: Program Manager (PM)
 Questions to resolve:
 - What's Billing team's availability and sprint commitments?
 - Is pricing model finalized or still in flux?
@@ -196,7 +196,7 @@ Questions to resolve:
 ⚠️ SCOPE/TIMELINE FLAG
 Requirement: "Support for custom fields on all entity types"
 Concern: Custom fields across all entities is a platform-level feature; phased rollout likely needed
-Recommend consulting: Technical Program Manager
+Recommend consulting: Program Manager (PM)
 Questions to resolve:
 - Which entity types are highest priority for customers?
 - Can we launch with 1-2 entity types and expand?
@@ -208,7 +208,7 @@ Questions to resolve:
 ⚠️ SCOPE/TIMELINE FLAG
 Requirement: "Feature must launch before industry conference on [date]"
 Concern: Conference-driven deadline is fixed; need to right-size scope to achievable target
-Recommend consulting: Technical Program Manager
+Recommend consulting: Program Manager (PM)
 Questions to resolve:
 - What's the minimum viable demo for the conference?
 - What can be "coming soon" vs fully functional?
@@ -311,7 +311,7 @@ Questions to resolve:
 ⚠️ SCOPE/TIMELINE FLAG
 Requirement: "Real-time collaborative document editing"
 Concern: Collaboration is a major feature typically requiring 2-3 months; may need phasing
-Recommend consulting: Technical Program Manager
+Recommend consulting: Program Manager (PM)
 Questions to resolve:
 - Is view-only sharing acceptable for MVP?
 - Can we launch with turn-based editing (lock-based) first?

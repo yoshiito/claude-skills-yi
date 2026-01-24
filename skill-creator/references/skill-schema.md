@@ -66,7 +66,7 @@ role:
     requiresActivationConfirmation: boolean  # Needs user confirmation? (false for utilities)
     requiresProjectScope: boolean       # Needs Project Scope in claude.md?
     isUtility: boolean                  # Is this a utility role?
-    isOrchestrator: boolean             # Optional: manages work assignment (TPgM)
+    isOrchestrator: boolean             # Optional: manages work assignment (PM)
 ```
 
 **Template uses capabilities to generate:**
@@ -129,7 +129,7 @@ qualityChecklist:
 qualityChecklist:
   sections:
     - name: string
-      items:
+      checks:
         - string
         - string
 ```

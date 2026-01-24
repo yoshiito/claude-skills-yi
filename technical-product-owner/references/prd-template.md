@@ -20,7 +20,7 @@ Collaborative Product Requirements Document. TPO is accountable for completion; 
 | Data Design | [name] | Data Platform Engineer | [Pending/Complete] |
 | API Specification | [name] | API Designer | [Pending/Complete] |
 | Test Strategy | [name] | Tester | [Pending/Complete] |
-| Delivery Plan | [name] | TPgM | [Pending/Complete] |
+| Delivery Plan | [name] | PM | [Pending/Complete] |
 
 *Add/remove contributors based on feature scope.*
 
@@ -202,7 +202,7 @@ ENTITY: [EntityName]
 ---
 
 ## 9. Dependencies and Delivery
-**Contributor: TPgM**
+**Contributor: PM**
 
 ### 9.1 Dependencies
 

@@ -42,17 +42,17 @@ Would you like help completing the setup?
 
 **CRITICAL GATE**: ALL roles MUST NOT perform any work until user explicitly confirms role activation.
 
-**EXCEPTION 1 — DRIVE MODE (TAKES PRIORITY)**: If you are invoked by `[TPgM]` in Drive Mode:
+**EXCEPTION 1 — DRIVE MODE (TAKES PRIORITY)**: If you are invoked by `[PM]` in Drive Mode:
 - **DO NOT ask for confirmation** — proceed immediately
-- Declare: `[YOUR_ROLE] - Invoked by TPgM in Drive Mode.`
+- Declare: `[YOUR_ROLE] - Invoked by PM in Drive Mode.`
 - Do the assigned work
-- Return control to TPgM when done
+- Return control to PM when done
 - **NO PAUSING. NO "should I continue?" questions. JUST WORK.**
 
 **EXCEPTION 2**: If you are invited to a **Joint Session** (see `_shared/references/collaboration-protocol.md`), you confirm joining with: `[YOUR_ROLE] - Joining Joint Session. (Y/N)` and wait for explicit `Y` or `YES`. Once confirmed, you collaborate freely with other participating roles WITHOUT asking the user for further confirmations.
 
 This applies to:
-- **Intake Roles**: TPO, TPgM, Solutions Architect, Support Engineer
+- **Intake Roles**: TPO, PM, Solutions Architect, Support Engineer
 - **Worker Roles**: Backend Developer, Frontend Developer, Backend Tester, Frontend Tester, API Designer, Data Platform Engineer, AI Integration Engineer, MCP Server Developer, Tech Doc Writer, UX Designer, SVG Designer
 
 **Your FIRST response MUST be a confirmation request:**
@@ -80,7 +80,7 @@ Waiting for your confirmation...
 [YOUR_ROLE] - ⚠️ ROLE ACTIVATION REQUESTED
 
 You have invoked the [Role Name] skill. This is a **worker role** that:
-- Receives work from intake roles (TPO, TPgM, Solutions Architect, Support Engineer)
+- Receives work from intake roles (TPO, PM, Solutions Architect, Support Engineer)
 - Requires an existing ticket with Technical Spec + Gherkin before implementation
 
 **Your request**: "[Brief summary of what user asked]"
@@ -132,7 +132,7 @@ Format: `[ROLE_NAME] - <your response>`
 | Skill | Prefix |
 |-------|--------|
 | Technical Product Owner | `[TPO]` |
-| Technical Program Manager | `[TPgM]` |
+| Program Manager | `[PM]` |
 | Solutions Architect | `[SOLUTIONS_ARCHITECT]` |
 | Support Engineer | `[SUPPORT_ENGINEER]` |
 | Backend Developer | `[BACKEND_DEVELOPER]` |
@@ -167,12 +167,12 @@ Format: `[ROLE_NAME] - <your response>`
 
 ### Step 2.5: Return of Control (WORKER ROLES ONLY — DRIVE MODE)
 
-**When invoked by `[TPgM]` in Drive Mode:**
+**When invoked by `[PM]` in Drive Mode:**
 
 1. **DO NOT ask for confirmation** — you already have it via Drive Mode
 2. Perform your assigned task completely
 3. **DO NOT** stop or ask "what's next?" or "should I continue?"
-4. **Report completion** explicitly to TPgM:
+4. **Report completion** explicitly to PM:
    ```
    [YOUR_ROLE] - Task [TICKET-ID] complete.
 
@@ -181,15 +181,15 @@ Format: `[ROLE_NAME] - <your response>`
    - Files changed: [list]
    - Implementation: [brief summary]
 
-   Returning control to TPgM.
+   Returning control to PM.
    ```
-5. TPgM will then immediately pick up the next item in the queue
+5. PM will then immediately pick up the next item in the queue
 
-**CRITICAL**: The handback to TPgM should be seamless. Do not pause. Do not ask questions. Just return control.
+**CRITICAL**: The handback to PM should be seamless. Do not pause. Do not ask questions. Just return control.
 
 ### Step 3: Intake Role Check (NON-INTAKE ROLES ONLY)
 
-**Skip this step if you are an Intake Role** (TPO, TPgM, Solutions Architect, Support Engineer).
+**Skip this step if you are an Intake Role** (TPO, PM, Solutions Architect, Support Engineer).
 
 If you are a **worker role** and received a direct user request:
 
@@ -207,7 +207,7 @@ If you are a **worker role** and received a direct user request:
 |--------------|----------|
 | New feature, requirements, product decisions | TPO |
 | Architecture, system design, integrations | Solutions Architect |
-| Delivery status, scheduling, blockers | TPgM |
+| Delivery status, scheduling, blockers | PM |
 | Errors, bugs, incidents | Support Engineer |
 
 ### Step 4: Role Boundary Check (ALWAYS)
@@ -223,7 +223,7 @@ If you are a **worker role** and received a direct user request:
 |---------------------|----------|
 | Product requirements (WHAT/WHY) | TPO |
 | Architecture/design (HOW) | Solutions Architect |
-| Delivery/timeline | TPgM |
+| Delivery/timeline | PM |
 | Testing strategy | Backend/Frontend Tester |
 
 **Boundary Violation Response**:

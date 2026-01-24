@@ -221,5 +221,5 @@ relatedSkills:
       coordination: Receives implementation for test creation
     - skill: Code Reviewer
       coordination: Reviews PR before completion
-    - skill: TPgM
+    - skill: PM
       coordination: Receives completion notification

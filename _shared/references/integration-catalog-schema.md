@@ -12,7 +12,7 @@ The Integration Catalog enables Claude to:
 ## Ownership
 
 - **Owner**: Solutions Architect
-- **Consumers**: TPO, TPgM, Backend Developer, Tech Doc Writer
+- **Consumers**: TPO, PM, Backend Developer, Tech Doc Writer
 
 ## File Location
 
@@ -525,7 +525,7 @@ existing_email = next((i for i in catalog["integrations"]
                        if i["category"] == "email" and i["status"] == "active"), None)
 ```
 
-### TPgM: Before Creating Delivery Plan
+### PM: Before Creating Delivery Plan
 
 ```python
 # Check integration dependencies for the feature
@@ -565,7 +565,7 @@ doc_paths = [i["docs_path"] for i in catalog["integrations"]
 | New integration added | Add entry, create docs, write ADR | Solutions Architect |
 | Integration deprecated | Update status, document migration | Solutions Architect |
 | API version updated | Update api_version field | Backend Developer |
-| Contract renewed | Update contract info | TPgM |
+| Contract renewed | Update contract info | PM |
 | Quarterly review | Update last_reviewed, verify all fields | Solutions Architect |
 
 ### Quarterly Review Checklist

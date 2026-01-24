@@ -49,7 +49,7 @@ skills/
 │       └── plan-file-operations.md  # Local file fallback
 ├── technical-product-owner/  # TPO skill (what/why)
 ├── solutions-architect/      # SA skill (how it fits together)
-├── technical-program-manager/# TPgM skill (delivery coordination)
+├── program-manager/          # PM skill (delivery coordination)
 ├── backend-*/                # Backend development skills
 ├── frontend-*/               # Frontend development skills
 ├── *-tester/                 # Testing skills
@@ -93,13 +93,13 @@ Sub-issues follow INVEST adapted for AI agents:
 | Implementation | Backend/Frontend Developers | Build it |
 | Quality | Testers | Verify it |
 | Documentation | Tech Doc Writer | Document it |
-| Delivery | TPgM | Coordinate it |
+| Delivery | PM | Coordinate it |
 
 ## When Editing Skills
 
 1. **Read the existing skill** before making changes
 2. **Check `_shared/references/`** for templates and standards
-3. **Maintain consistency** with related skills (TPO ↔ SA ↔ TPgM)
+3. **Maintain consistency** with related skills (TPO ↔ SA ↔ PM)
 4. **Update checklists** when adding new requirements
 5. **Test the skill** by invoking it with a sample task
 
@@ -256,13 +256,13 @@ All ticket operations go through Project Coordinator. See `project-coordinator/S
 | Intake Role | Handles Requests For |
 |-------------|---------------------|
 | **Technical Product Owner (TPO)** | New features, requirements, product decisions |
-| **Technical Program Manager (TPgM)** | Delivery coordination, status, scheduling, blockers |
+| **Program Manager (PM)** | Delivery coordination, status, scheduling, blockers |
 | **Solutions Architect** | Architecture decisions, system design, integration patterns |
 | **Support Engineer** | Errors, bugs, incidents, troubleshooting |
 
 **All other roles are "worker roles"** that receive work from intake roles:
-- Backend/Frontend Developers → Receive tickets from SA/TPgM
-- Testers → Receive test requests from Developers/TPgM
+- Backend/Frontend Developers → Receive tickets from SA/PM
+- Testers → Receive test requests from Developers/PM
 - API Designer → Receives design requests from SA/TPO
 - Data Platform Engineer → Receives data design requests from SA
 - Tech Doc Writer → Receives documentation requests from any role

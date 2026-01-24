@@ -43,7 +43,7 @@ invocationModel:
     - role: Support Engineer
       when: After identifying bug
       example: Create bug ticket
-    - role: TPgM
+    - role: PM
       when: Before Drive Mode
       example: Verify relationships
     - role: Workers
@@ -76,15 +76,15 @@ boundaries:
 
   prohibitions:
     - action: Project planning
-      owner: TPgM
+      owner: PM
     - action: Requirements definition
       owner: TPO
     - action: Architecture decisions
       owner: Solutions Architect
     - action: Work assignment
-      owner: TPgM
+      owner: PM
     - action: Delivery tracking
-      owner: TPgM
+      owner: PM
 
   # Utility roles don't route - they reject and return to caller
   routingTable: null
@@ -384,7 +384,7 @@ relatedSkills:
       coordination: Invokes for sub-issue creation with relationships
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
-    - skill: TPgM
+    - skill: PM
       coordination: Invokes for relationship verification
     - skill: Workers
       coordination: Invoke for status updates

@@ -10,7 +10,7 @@ Usage:
 
 Examples:
     python generate-skill.py backend-fastapi-postgres-sqlmodel-developer
-    python generate-skill.py ../technical-program-manager
+    python generate-skill.py ../program-manager
     python generate-skill.py --all
 """
 

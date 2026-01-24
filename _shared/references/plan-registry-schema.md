@@ -12,7 +12,7 @@ The Plan Registry enables Claude to:
 ## Ownership
 
 - **Owner**: Technical Product Owner (TPO)
-- **Consumers**: Solutions Architect, TPgM, all implementation skills
+- **Consumers**: Solutions Architect, PM, all implementation skills
 
 ## File Location
 
@@ -251,8 +251,8 @@ your-project/
 |--------|-------------|-------------------|
 | `draft` | Plan is being written, not ready for review | TPO |
 | `approved` | Plan reviewed and approved, ready for architecture | TPO + Stakeholders |
-| `in_progress` | Active development underway | TPgM (when work starts) |
-| `completed` | All planned work delivered | TPgM (when delivered) |
+| `in_progress` | Active development underway | PM (when work starts) |
+| `completed` | All planned work delivered | PM (when delivered) |
 | `cancelled` | Plan abandoned (keep for historical reference) | TPO |
 
 ## Usage Patterns
@@ -292,7 +292,7 @@ blocking_plans = [p for p in registry["plans"]
                   if p["status"] in ["draft", "approved", "in_progress"]]
 ```
 
-### TPgM: Before Creating Linear Tickets
+### PM: Before Creating Linear Tickets
 
 ```python
 # Before creating tickets, verify plan exists and is approved
@@ -317,8 +317,8 @@ if plan["status"] != "approved":
 |---------|--------|----------------|
 | New plan created | Add entry, update summary | TPO |
 | Plan approved | Update status, add approved_date | TPO |
-| Work starts | Update status to in_progress, add Linear IDs | TPgM |
-| Work completes | Update status to completed, add completed_date | TPgM |
+| Work starts | Update status to in_progress, add Linear IDs | PM |
+| Work completes | Update status to completed, add completed_date | PM |
 | Plan cancelled | Update status to cancelled | TPO |
 | Plan modified | Update fields, update last_updated | TPO |
 

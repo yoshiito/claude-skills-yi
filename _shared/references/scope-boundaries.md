@@ -4,7 +4,7 @@ This document defines how roles manage their boundaries on a project-by-project 
 
 ## The Problem
 
-Roles like Solutions Architect, TPgM, and TPO often work across multiple domains. On Project A, an SA might own Frontend architecture. On Project B, they might only advise. Without clear boundaries, roles may:
+Roles like Solutions Architect, PM, and TPO often work across multiple domains. On Project A, an SA might own Frontend architecture. On Project B, they might only advise. Without clear boundaries, roles may:
 
 - Create work items for teams outside their scope
 - Make architectural decisions for domains they don't own
@@ -131,10 +131,10 @@ If creating [Frontend] sub-issue:
   → If NO: Document as dependency, tag Frontend SA
 ```
 
-### Technical Program Manager
+### Program Manager
 
 **Owns**: Delivery coordination, status tracking, escalation
-**Boundary Check**: TPgM tracks all domains but creates issues only after domain owners define them
+**Boundary Check**: PM tracks all domains but creates issues only after domain owners define them
 
 ```
 Creating issues: ONLY after domain owner (SA, TPO) has defined requirements

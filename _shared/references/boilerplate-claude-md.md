@@ -30,14 +30,14 @@ See `_shared/references/placeholder-detection.md` for full patterns and response
 **Step 1: Is this a "do work" request on an existing ticket?**
 
 Keywords: "start", "begin", "pick up", "work on", "implement", "build", "status", "what's next", "blocked"
-→ **Route to `/technical-program-manager`**
+→ **Route to `/program-manager`**
 
-**Step 2: TPgM determines next action:**
+**Step 2: PM determines next action:**
 - If ticket lacks Technical Spec + Gherkin → blocks and routes to TPO for completion
 - If ticket is ready → assigns to appropriate worker role
 - If ticket is in progress → provides status update
 
-**TPgM is the gatekeeper for all requests to action existing tickets.**
+**PM is the gatekeeper for all requests to action existing tickets.**
 
 **Step 3: Only route directly to other intake roles for:**
 - `/technical-product-owner` — "I want...", "we need...", "new feature idea"
@@ -85,7 +85,7 @@ See `_shared/references/drive-mode-protocol.md` for full details.
 **Key rules:**
 - User types `DRIVE` to activate
 - Workers skip confirmation and proceed immediately
-- TPgM verifies DoR before starting, DoD before accepting completion
+- PM verifies DoR before starting, DoD before accepting completion
 - Ticket comments are MANDATORY at every lifecycle transition
 - **No pausing** — if you think "should I continue?", just continue
 
@@ -95,13 +95,13 @@ See `_shared/references/collaboration-protocol.md` for Joint Session rules.
 
 ### Drive Mode Exception (CRITICAL)
 
-**In Drive Mode, workers DO NOT ask for confirmation.** When TPgM invokes a worker:
-1. Worker declares itself: `[ROLE_NAME] - Invoked by TPgM in Drive Mode.`
+**In Drive Mode, workers DO NOT ask for confirmation.** When PM invokes a worker:
+1. Worker declares itself: `[ROLE_NAME] - Invoked by PM in Drive Mode.`
 2. Worker proceeds immediately with the assigned ticket
-3. Worker returns control to TPgM when complete
+3. Worker returns control to PM when complete
 4. **NO confirmation prompt. NO waiting. Just work.**
 
-This exception applies ONLY to workers invoked by TPgM during an active Drive Mode session.
+This exception applies ONLY to workers invoked by PM during an active Drive Mode session.
 
 ### Standard Mode (Outside Drive Mode)
 
@@ -137,7 +137,7 @@ These skills accept direct user requests (but still require confirmation):
 
 - `/technical-product-owner` — features, requirements, "I want...", "we need..."
 - `/solutions-architect` — architecture, design, "how should we...", integrations
-- `/technical-program-manager` — status, delivery, scheduling, blockers
+- `/program-manager` — status, delivery, scheduling, blockers
 - `/support-engineer` — errors, bugs, incidents, "this broke..."
 
 ## Worker Roles
@@ -267,11 +267,11 @@ All tickets must include:
 - **Technical Spec**: MUST/MUST NOT/SHOULD constraints (guardrails for AI agents)
 - **Gherkin Scenarios**: Given/When/Then (validation for testers)
 
-TPgM blocks ticket work if these are missing.
+PM blocks ticket work if these are missing.
 
 ## Ticket Readiness Gate — MANDATORY
 
-**CRITICAL**: TPgM verifies Definition of Ready (see `_shared/references/definition-of-ready.md`) at TWO points:
+**CRITICAL**: PM verifies Definition of Ready (see `_shared/references/definition-of-ready.md`) at TWO points:
 
 ### 1. When Ticket is Marked "Ready for Work"
 
@@ -291,10 +291,10 @@ Before SA or TPO declares a ticket ready:
 
 ### 2. Before ANY Ticket Moves to "In Progress"
 
-TPgM re-verifies DoR before assigning work:
+PM re-verifies DoR before assigning work:
 
 ```
-[TPgM] - 🔍 Verifying Definition of Ready for [TICKET-ID]...
+[PM] - 🔍 Verifying Definition of Ready for [TICKET-ID]...
 
 | Check | Status |
 |-------|--------|
@@ -307,7 +307,7 @@ TPgM re-verifies DoR before assigning work:
 | Dependencies set | ✅ / ❌ |
 ```
 
-**If DoR fails**: `[TPgM] - ⛔ Cannot start [TICKET-ID]. [List gaps]. Route to SA/TPO.`
+**If DoR fails**: `[PM] - ⛔ Cannot start [TICKET-ID]. [List gaps]. Route to SA/TPO.`
 
 **This applies in ALL modes** — Drive Mode, Track Mode, or direct ticket pickup.
 
@@ -329,7 +329,7 @@ TPgM re-verifies DoR before assigning work:
 2. **Refuse out-of-scope work**: If asked to do something in "**Explicit Prohibitions:**", refuse and route
 3. **Route unclear requests**: If requirements ambiguous, route to intake role
 4. **No scope creep**: Implement EXACTLY what tickets specify, nothing more
-5. **TPgM gates**: Workers cannot start without TPgM validation
+5. **PM gates**: Workers cannot start without PM validation
 
 ### Routing Rules
 
@@ -337,7 +337,7 @@ TPgM re-verifies DoR before assigning work:
 |---------------------|----------|
 | Product requirements (WHAT/WHY) | TPO |
 | Architecture/design (HOW) | Solutions Architect |
-| Delivery/timeline | TPgM |
+| Delivery/timeline | PM |
 | Testing strategy | Backend/Frontend Tester |
 | Documentation needs | Tech Doc Writer |
 

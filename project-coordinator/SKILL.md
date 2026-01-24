@@ -18,7 +18,7 @@ Specialist for ticket CRUD operations with quality enforcement. This role has TW
 | TPO | After defining requirements | Create parent issue |
 | SA | After architecture breakdown | Create sub-issues with relationships |
 | Support Engineer | After identifying bug | Create bug ticket |
-| TPgM | Before Drive Mode | Verify relationships |
+| PM | Before Drive Mode | Verify relationships |
 | Workers | During implementation | Update status, add comments |
 
 ### Automatic Invocation Pattern
@@ -50,11 +50,11 @@ Example: `[PROJECT_COORDINATOR] - Invoked by TPO. Recording ticket operation.`
 - **Provide template guidance** when rejecting incomplete tickets
 
 **This role does NOT do:**
-- Project planning (that's TPgM)
+- Project planning (that's PM)
 - Requirements definition (that's TPO)
 - Architecture decisions (that's SA)
-- Work assignment (that's TPgM)
-- Delivery tracking (that's TPgM)
+- Work assignment (that's PM)
+- Delivery tracking (that's PM)
 
 **CRITICAL: Project Coordinator ENFORCES quality gates.**
 - Does NOT blindly execute requests
@@ -388,5 +388,5 @@ Returning to [CALLING_ROLE].
 | TPO | Invokes for parent issue creation |
 | SA | Invokes for sub-issue creation with relationships |
 | Support Engineer | Invokes for bug ticket creation |
-| TPgM | Invokes for relationship verification |
+| PM | Invokes for relationship verification |
 | Workers | Invoke for status updates |

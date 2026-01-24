@@ -23,7 +23,7 @@ When working in the skills library itself, Skill Creator is the **default intake
 | Role | Prefix | Handles |
 |------|--------|---------|
 | **Technical Product Owner (TPO)** | `[TPO]` | New features, requirements, product decisions |
-| **Technical Program Manager (TPgM)** | `[TPgM]` | Delivery coordination, status, scheduling, blockers |
+| **Program Manager (PM)** | `[PM]` | Delivery coordination, status, scheduling, blockers |
 | **Solutions Architect** | `[SOLUTIONS_ARCHITECT]` | Architecture decisions, system design, integrations |
 | **Support Engineer** | `[SUPPORT_ENGINEER]` | Errors, bugs, incidents, troubleshooting |
 
@@ -31,10 +31,10 @@ When working in the skills library itself, Skill Creator is the **default intake
 
 | Role | Prefix | Receives Work From |
 |------|--------|--------------------|
-| Backend Developer | `[BACKEND_DEVELOPER]` | SA, TPgM (via tickets) |
-| Frontend Developer | `[FRONTEND_DEVELOPER]` | SA, TPgM (via tickets) |
-| Backend Tester | `[BACKEND_TESTER]` | Developers, TPgM |
-| Frontend Tester | `[FRONTEND_TESTER]` | Developers, TPgM |
+| Backend Developer | `[BACKEND_DEVELOPER]` | SA, PM (via tickets) |
+| Frontend Developer | `[FRONTEND_DEVELOPER]` | SA, PM (via tickets) |
+| Backend Tester | `[BACKEND_TESTER]` | Developers, PM |
+| Frontend Tester | `[FRONTEND_TESTER]` | Developers, PM |
 | **Code Reviewer** | `[CODE_REVIEWER]` | **Developers (when PR ready)** |
 | API Designer | `[API_DESIGNER]` | SA, TPO |
 | Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` | SA |
@@ -79,7 +79,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | **Backend Tester** | Ensure API test coverage | pytest test suites, coverage reports |
 | **Frontend Tester** | Ensure UI test coverage | RTL tests, Playwright E2E, a11y audits |
 | **Tech Doc Writer** | Create and maintain documentation | API docs, guides, runbooks |
-| **Technical Program Manager (TPgM)** | Coordinate delivery across teams | Delivery plans, status updates, Linear tickets |
+| **Program Manager (PM)** | Coordinate delivery across teams | Delivery plans, status updates, Linear tickets |
 | **Support Engineer** | Error triage, log analysis, incident investigation | Issue diagnosis, root cause analysis |
 | **Material Design UX** | Guide UI/UX decisions | Design patterns, accessibility guidance |
 | **SVG Designer** | Create vector graphics | Logos, icons, illustrations |
@@ -156,7 +156,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 │                                                                          │
 │   ┌──────────────────┐                                                  │
 │   │ Technical Program│  Coordinates across all layers                   │
-│   │ Manager (TPgM)   │  Tracks in Linear, manages delivery              │
+│   │ Manager (PM)   │  Tracks in Linear, manages delivery              │
 │   └──────────────────┘                                                  │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -179,7 +179,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 1. TPO           → Define requirements (MRD)
 2. Solutions Architect → Design system architecture
 3. API Designer  → Design API contracts (if APIs needed)
-4. TPgM          → Create Linear tickets, plan delivery
+4. PM          → Create Linear tickets, plan delivery
 ```
 
 ### Implementing Backend
@@ -216,7 +216,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 1. Support Engineer    → Triage errors (Sentry), analyze logs
 2. Backend Developer   → Fix code issues if identified
 3. Frontend Developer  → Fix UI issues if identified
-4. TPgM                → Track issue in Linear if escalation needed
+4. PM                → Track issue in Linear if escalation needed
 5. Tech Doc Writer     → Update runbooks with resolution
 ```
 
@@ -235,7 +235,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | Backend Tester | Backend Developer |
 | Frontend Tester | Frontend Developer |
 | Tech Doc Writer | API Designer, Solutions Architect, TPO, Support Engineer (runbook updates) |
-| TPgM | All skills (for status tracking) |
+| PM | All skills (for status tracking) |
 | Support Engineer | Sentry (errors), logs, user reports |
 
 ### Who Consumes Output From Whom
@@ -248,10 +248,10 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | Backend Developer | Backend Tester, Frontend Developer (API consumer) |
 | Frontend Developer | Frontend Tester |
 | Data Platform Engineer | Backend Developer, AI Integration Engineer |
-| Backend Tester | TPgM (quality gates) |
-| Frontend Tester | TPgM (quality gates) |
+| Backend Tester | PM (quality gates) |
+| Frontend Tester | PM (quality gates) |
 | Tech Doc Writer | External consumers, Support Engineer (runbooks) |
-| Support Engineer | Backend Developer, Frontend Developer (bug fixes), TPgM (escalations) |
+| Support Engineer | Backend Developer, Frontend Developer (bug fixes), PM (escalations) |
 
 ## Common Collaboration Patterns
 
@@ -375,7 +375,7 @@ Two key registries maintain project knowledge across sessions:
 | Aspect | Detail |
 |--------|--------|
 | **Owner** | TPO (creates/updates plans) |
-| **Consumers** | Solutions Architect, TPgM, all skills |
+| **Consumers** | Solutions Architect, PM, all skills |
 | **Purpose** | Index of all product plans, MRDs, and their status |
 | **Schema** | See `plan-registry-schema.md` |
 
@@ -384,7 +384,7 @@ Two key registries maintain project knowledge across sessions:
 | Aspect | Detail |
 |--------|--------|
 | **Owner** | Solutions Architect (creates/updates integrations) |
-| **Consumers** | TPO, TPgM, Backend Developer, Tech Doc Writer |
+| **Consumers** | TPO, PM, Backend Developer, Tech Doc Writer |
 | **Purpose** | Index of all external integrations, vendors, and dependencies |
 | **Schema** | See `integration-catalog-schema.md` |
 
@@ -406,7 +406,7 @@ Two key registries maintain project knowledge across sessions:
                                                    │ consumes
                                                    ▼
                                         ┌─────────────────────┐
-                                        │       TPgM          │
+                                        │       PM          │
                                         │ (updates status,    │
                                         │  creates tickets)   │
                                         └─────────────────────┘
@@ -428,7 +428,7 @@ Quick reference for when to involve other skills:
 | Test strategy | Backend/Frontend Tester |
 | **PR ready for review** | **Code Reviewer** |
 | Documentation needed | Tech Doc Writer |
-| Delivery planning | TPgM |
+| Delivery planning | PM |
 | Vector search/RAG | Data Platform Engineer |
 | Prompt engineering | AI Integration Engineer |
 | Error investigation | Support Engineer |
@@ -439,7 +439,7 @@ Quick reference for when to involve other skills:
 
 ## Ticket Traceability
 
-All implementation skills (developers, testers, TPgM) must follow ticketing conventions to ensure code commits reference work items.
+All implementation skills (developers, testers, PM) must follow ticketing conventions to ensure code commits reference work items.
 
 **All ticket operations go through Project Coordinator.** See `project-coordinator/SKILL.md`.
 
