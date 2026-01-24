@@ -203,7 +203,7 @@ See `project-coordinator/SKILL.md` for full interface.
 
 ### Team Context
 
-- **Team Slug**: `[slug]` — used in branch names (`feature/{slug}/...`), ticket assignments
+- **Team Slug**: `[slug]` — used in ticket assignments
 - **Ticket System**: `linear` | `github` | `none`
 - **Main Branch**: `main`
 
@@ -234,7 +234,6 @@ When work involves a domain you don't own:
 ## Naming
 
 - **Plan names**: Feature description only. No dates, quarters, sprints, or years. Confirm with user before using.
-- **Branch names**: `{type}/{team-slug}/{TICKET-ID}-{description}`
 
 ## Ticket Requirements
 
@@ -339,6 +338,6 @@ Project Coordinator enforces this when ticket system is configured.
 1. Prefix all responses with `[ROLE_NAME]`
 2. Check Project Scope before acting—refuse if undefined
 3. Verify domain ownership before creating tickets or making decisions
-4. Ask user to confirm base branch before creating feature branches
-5. **Check role boundaries** before ANY action—refuse if outside scope
-6. **Store documentation in ticketing system** when configured—never create local files
+4. **Check role boundaries** before ANY action—refuse if outside scope
+5. **Store documentation in ticketing system** when configured—never create local files
+6. **Commit to current branch only** — user manages all branch creation/merging

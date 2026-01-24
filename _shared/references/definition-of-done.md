@@ -27,9 +27,9 @@
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| PR created | ✅ | Link provided in completion message |
+| PR created (if applicable) | ✅ | Link provided in completion message |
 | PR reviewed by Code Reviewer | ✅ | Review completed, issues addressed |
-| **PR merged to target branch** | ✅ | Code is in target branch, not just approved |
+| **Code merged** | ✅ | Code is in target branch (user merges PR or direct commit) |
 | Tests written | ✅ | Covers Gherkin scenarios in ticket |
 | Tests pass | ✅ | CI green or manual confirmation |
 | Technical Spec satisfied | ✅ | All MUST/MUST NOT constraints met |
@@ -157,18 +157,16 @@ Workers should add structured comments at each stage for tracking and verificati
 
 ```markdown
 🚀 **Started**
-- Branch: `{branch-name}`
-- Base: `{base_branch}` (confirmed with user)
 - Approach: [Brief implementation approach]
 ```
 
-### When PR Created
+### When Ready for Review
 
 **Status**: In Review
 
 ```markdown
 🔍 **Ready for review**
-- PR: [link] (targeting {base_branch})
+- PR: [link] (if applicable)
 - Changes: [Brief summary]
 - Tests: [What's covered]
 ```
@@ -179,7 +177,7 @@ Workers should add structured comments at each stage for tracking and verificati
 
 ```markdown
 ✅ **Completed**
-- PR merged: [link]
+- Code merged: [commit or PR link]
 - Files: [Key files changed]
 - Notes: [Anything for QA/next steps]
 ```
@@ -188,8 +186,8 @@ Workers should add structured comments at each stage for tracking and verificati
 
 | Gap | Resolution |
 |-----|------------|
-| No PR link | Worker must provide PR link |
-| PR not merged | Worker must merge PR after approval |
+| No PR/commit link | Worker must provide PR or commit link |
+| Code not merged | User must merge (Claude does not merge) |
 | No code review | Worker must invoke Code Reviewer |
 | Tests missing | Worker must write tests per Gherkin scenarios |
 | Tests failing | Worker must fix failures |
