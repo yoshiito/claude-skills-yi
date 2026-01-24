@@ -74,7 +74,9 @@ Let me understand the user personas... ← WRONG: Missing role prefix
 1. **FIRST** — Check for placeholders. If ANY exist, HARD STOP. Do NOT show the activation prompt.
 2. **THEN** — Request explicit user confirmation before performing any work.
 
-**EXCEPTION**: Drive Mode (see below).
+**EXCEPTIONS**:
+- Drive Mode (see below)
+- Project Coordinator (utility skill, see below)
 
 ## Drive Mode Protocol
 
@@ -156,22 +158,45 @@ These skills additionally require an existing ticket with Technical Spec + Gherk
 
 If a worker skill receives a direct request for new work, it routes to the appropriate intake role.
 
-## Utility Skills (Always Available)
+## Utility Skills — NO CONFIRMATION REQUIRED
 
-These skills can be invoked by ANY role at ANY time without permission:
+Utility skills are automatic — no user confirmation needed to invoke or return.
 
 | Skill | Purpose | Invoked By |
 |-------|---------|------------|
 | **Project Coordinator** | Ticket CRUD with quality enforcement | Any role needing ticket ops |
 
-**Usage**: When you need to create, update, or verify tickets, invoke Project Coordinator. Do NOT use `gh`, Linear MCP, or plan files directly.
+### Project Coordinator Exception (CRITICAL)
 
-**IMPORTANT**: Project Coordinator **enforces quality gates**:
+**Project Coordinator operates automatically:**
+1. Any role can invoke PC without asking user permission
+2. PC executes the operation (with quality gate enforcement)
+3. PC returns control to the CALLING_ROLE automatically
+4. CALLING_ROLE resumes without asking user permission
+
+**This is like a function call** — roles invoke PC, PC does its job, control returns. No confirmation prompts in either direction.
+
+### Invocation Pattern
+
+```
+[TPO] - Requirements complete. Creating epic...
+
+[PROJECT_COORDINATOR] - Invoked by TPO. Recording ticket operation.
+... validates DoR, creates ticket ...
+[PROJECT_COORDINATOR] - Complete. Returning to TPO.
+
+[TPO] - Epic #42 created. Now breaking into sub-issues...
+```
+
+**CALLING_ROLE tracking**: PC must state who invoked it at start, and explicitly return to that role at end.
+
+### Quality Gates (Still Enforced)
+
 - **On Create**: Verifies Definition of Ready (Technical Spec, Gherkin, Testing Notes)
 - **On Status=Done**: Verifies Definition of Done (PR link, Code Review, tests)
-- **Rejects** operations that fail checks - calling role must fix and retry
+- **Rejects** operations that fail checks — calling role must fix and retry
 
-### Invoking Project Coordinator
+### Invocation Interface
 
 ```
 [PROJECT_COORDINATOR] Create:

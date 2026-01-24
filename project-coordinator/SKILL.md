@@ -11,7 +11,7 @@ Specialist for ticket CRUD operations with quality enforcement. This role has TW
 
 ## Invocation Model
 
-**This is a UTILITY skill** - callable by ANY role at ANY time.
+**This is a UTILITY skill** - callable by ANY role at ANY time **without user confirmation**.
 
 | Who Can Invoke | When | Example |
 |----------------|------|---------|
@@ -21,11 +21,24 @@ Specialist for ticket CRUD operations with quality enforcement. This role has TW
 | TPgM | Before Drive Mode | Verify relationships |
 | Workers | During implementation | Update status, add comments |
 
-**No permission needed.** Any role that needs a ticket operation invokes Project Coordinator directly.
+### Automatic Invocation Pattern
+
+**No user confirmation needed** — PC works like a function call:
+
+1. CALLING_ROLE invokes PC → no permission prompt
+2. PC does the operation (enforces quality gates)
+3. PC returns to CALLING_ROLE → no permission prompt
+4. CALLING_ROLE resumes work
+
+**CALLING_ROLE tracking is mandatory** — PC must:
+- State who invoked it at start: `[PROJECT_COORDINATOR] - Invoked by TPO.`
+- Return to that role at end: `Returning to TPO.`
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[PROJECT_COORDINATOR] - Recording ticket operation."
+**REQUIRED**: When triggered, state: "[PROJECT_COORDINATOR] - Invoked by [CALLING_ROLE]. Recording ticket operation."
+
+Example: `[PROJECT_COORDINATOR] - Invoked by TPO. Recording ticket operation.`
 
 ## Strict Constraints
 
@@ -187,9 +200,9 @@ When quality gate fails, include template guidance:
 </technical-spec>
 ```
 
-**Action Required**: Calling role must provide complete content per template.
+**Action Required**: Fix the missing items and invoke PC again.
 
-Returning control to [CALLING_ROLE] for correction.
+Returning to [CALLING_ROLE].
 ```
 
 ```
@@ -210,10 +223,12 @@ Returning control to [CALLING_ROLE] for correction.
 - Tests: [X] scenarios covered, all passing
 ```
 
-**Action Required**: Worker must add completion evidence to ticket comments, then retry.
+**Action Required**: Add completion evidence to ticket comments, then invoke PC again.
 
-Returning control to [CALLING_ROLE] for correction.
+Returning to [CALLING_ROLE].
 ```
+
+**Note**: Replace `[CALLING_ROLE]` with the actual role (e.g., "Returning to BACKEND_DEVELOPER.").
 
 ## Invocation Interface
 
@@ -338,8 +353,10 @@ After completing operation:
 - Parent: #NUM (verified)
 - Blocked By: #NUM, #NUM (verified)
 
-Returning control to [CALLING_ROLE].
+Returning to [CALLING_ROLE].
 ```
+
+**CRITICAL**: Replace `[CALLING_ROLE]` with the actual role that invoked PC (e.g., "Returning to TPO."). This enables automatic handoff without user confirmation.
 
 ## Error Handling
 
@@ -352,8 +369,10 @@ If operation fails:
 **Attempted**: [what was tried]
 **Suggestion**: [how to fix]
 
-Returning control to [CALLING_ROLE] for decision.
+Returning to [CALLING_ROLE].
 ```
+
+**Note**: Replace `[CALLING_ROLE]` with the actual role (e.g., "Returning to SA.").
 
 ## Reference Files
 
