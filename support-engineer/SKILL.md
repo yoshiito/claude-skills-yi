@@ -166,7 +166,7 @@ See `references/troubleshooting-framework.md` for detailed methodology.
    - Root cause summary
    - Recommended fix approach
    - Prevention recommendations
-2. **Create Bug ticket** using Bug Template from `_shared/references/ticket-templates.md`
+2. **Create Bug ticket** via Project Coordinator (provides template guidance if needed)
 3. **Route to appropriate developer** based on domain ownership
 4. **Update runbook** if this is a recurring issue
 

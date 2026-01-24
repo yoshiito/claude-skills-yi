@@ -147,6 +147,43 @@ Checking UAT verification status...
 Feature accepted.
 ```
 
+## Progress Comment Formats (Guidance)
+
+Workers should add structured comments at each stage for tracking and verification.
+
+### When Starting Work
+
+**Status**: In Progress
+
+```markdown
+🚀 **Started**
+- Branch: `{branch-name}`
+- Base: `{base_branch}` (confirmed with user)
+- Approach: [Brief implementation approach]
+```
+
+### When PR Created
+
+**Status**: In Review
+
+```markdown
+🔍 **Ready for review**
+- PR: [link] (targeting {base_branch})
+- Changes: [Brief summary]
+- Tests: [What's covered]
+```
+
+### When Complete
+
+**Status**: Done
+
+```markdown
+✅ **Completed**
+- PR merged: [link]
+- Files: [Key files changed]
+- Notes: [Anything for QA/next steps]
+```
+
 ## Common Gaps
 
 | Gap | Resolution |
@@ -163,5 +200,4 @@ Feature accepted.
 ## Related References
 
 - `definition-of-ready.md` - Pre-work checklist
-- `ticket-templates.md` - Ticket body templates
 - `code-reviewer/SKILL.md` - Code review process

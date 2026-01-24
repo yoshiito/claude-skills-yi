@@ -30,10 +30,11 @@ Specialist for ticket CRUD operations with quality enforcement. This role has TW
 ## Strict Constraints
 
 **This role ONLY does:**
-- Create tickets (parent, sub-issue, bug) **with quality verification**
+- Create tickets (epic, sub-issue, bug, subtask) **with quality verification**
 - Update ticket fields (title, body, status, labels) **with completion verification**
 - Set/update relationships (parent, blockers)
 - Verify ticket relationships exist
+- **Provide template guidance** when rejecting incomplete tickets
 
 **This role does NOT do:**
 - Project planning (that's TPgM)
@@ -62,7 +63,18 @@ Before creating ANY ticket, Project Coordinator MUST:
 2. **Verify required elements exist**
 3. **REJECT if incomplete** with specific missing items
 
-#### For Sub-Issues
+#### For Epics (Parent Issues)
+
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+| Title prefix | Title starts with `[Feature]` | Missing prefix |
+| Problem Statement | Body contains "Problem Statement" section | Missing or empty |
+| Target Users | Body contains "Target Users" section | Missing section |
+| Success Criteria | Body contains "Success Criteria" section | Missing section |
+| UAT Criteria | Body contains "UAT Criteria" with checklist items `- [ ]` | Missing or empty UAT |
+| Open Questions | Body has no unchecked `- [ ]` in "Open Questions" section | Unresolved questions |
+
+#### For Sub-Issues (Story/Task)
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
@@ -71,21 +83,25 @@ Before creating ANY ticket, Project Coordinator MUST:
 | Gherkin scenarios | Body contains `Given`/`When`/`Then` keywords | Missing scenarios |
 | Parent specified | `Parent: #NUM` provided in request | Missing parent |
 | Testing Notes | Body contains "Testing Notes" section | Missing section |
-
-#### For Parent Issues
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with `[Feature]` | Missing prefix |
-| MRD content | Body is not empty, contains problem/users/success sections | Empty or stub content |
-| UAT criteria | Body contains "UAT Criteria" section with checklist items | Missing or empty UAT |
+| Open Questions | Body has no unchecked `- [ ]` in "Open Questions" section | Unresolved questions |
 
 #### For Bug Reports
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
 | Title prefix | Title starts with `[Bug]` | Missing prefix |
-| Required sections | Body contains: Environment, Steps, Actual, Expected | Missing sections |
+| Environment | Body contains "Environment" section | Missing section |
+| Steps to Reproduce | Body contains numbered steps | Missing steps |
+| Actual Result | Body contains "Actual" section | Missing section |
+| Expected Result | Body contains "Expected" section | Missing section |
+
+#### For Subtasks
+
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+| Title prefix | Title starts with `[Subtask]` | Missing prefix |
+| Parent specified | `Parent: #NUM` provided in request | Missing parent |
+| Description | Body is not empty | Empty body |
 
 ### Gate 2: Definition of Done (On Status=Done)
 
@@ -118,9 +134,18 @@ Before updating ANY ticket to `status=done`, Project Coordinator MUST:
 | Doc link | Comment contains link to created/updated docs | No doc link |
 | Review | Comment mentions review completed | No review evidence |
 
-#### For Parent Issues (`[Feature]`)
+#### For Bug Reports (`[Bug]`)
 
-**CRITICAL**: Only TPO can mark parent issues as Done.
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+| PR link | Comment contains PR URL | No PR link found |
+| PR merged | Comment states "merged" or check PR status via API | PR not merged |
+| Code review | Comment mentions "Code Review" or reviewer approval | No review evidence |
+| Regression test | Comment mentions test added to prevent recurrence | No test evidence |
+
+#### For Epics (`[Feature]`)
+
+**CRITICAL**: Only TPO can mark epics as Done.
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
@@ -128,9 +153,15 @@ Before updating ANY ticket to `status=done`, Project Coordinator MUST:
 | UAT verified by TPO | Comment contains "UAT Complete" with checked items | No UAT verification |
 | Caller is TPO | Request came from TPO role | Non-TPO trying to close |
 
+#### For Subtasks (`[Subtask]`)
+
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+| Work completed | Description of completion in comment | No completion evidence |
+
 ### Rejection Response Format
 
-When quality gate fails:
+When quality gate fails, include template guidance:
 
 ```
 [PROJECT_COORDINATOR] - ❌ REJECTED: Definition of Ready not met.
@@ -142,8 +173,21 @@ When quality gate fails:
 - [ ] Technical Spec: No <technical-spec> block found in body
 - [ ] Gherkin: No Given/When/Then scenarios found
 - [ ] Testing Notes: Section not found
+- [ ] Open Questions: Unresolved questions found
 
-**Action Required**: Calling role must provide complete content.
+**Required Template Format** (see `references/ticket-templates.md`):
+```xml
+<technical-spec>
+  <must>
+    - [Required behaviors]
+  </must>
+  <must-not>
+    - [Prohibited approaches]
+  </must-not>
+</technical-spec>
+```
+
+**Action Required**: Calling role must provide complete content per template.
 
 Returning control to [CALLING_ROLE] for correction.
 ```
@@ -158,7 +202,15 @@ Returning control to [CALLING_ROLE] for correction.
 - [ ] PR Link: No pull request URL found in comments
 - [ ] Code Review: No Code Reviewer approval found
 
-**Action Required**: Worker must complete these items before marking done.
+**Required Completion Comment Format**:
+```markdown
+✅ **Completed**
+- PR merged: [link]
+- Code Review: Approved by [reviewer]
+- Tests: [X] scenarios covered, all passing
+```
+
+**Action Required**: Worker must add completion evidence to ticket comments, then retry.
 
 Returning control to [CALLING_ROLE] for correction.
 ```
@@ -171,13 +223,21 @@ Other roles invoke with structured requests:
 
 ```
 [PROJECT_COORDINATOR] Create:
-- Type: parent | sub-issue | bug
+- Type: epic | sub-issue | bug | subtask
 - Title: "..."
 - Body: "..."
-- Parent: #NUM (required for sub-issues)
+- Parent: #NUM (required for sub-issues and subtasks)
 - Blocked By: #NUM, #NUM (optional)
 - Labels: label1, label2
 ```
+
+**Type mapping:**
+| Type | Title Prefix | Created By |
+|------|--------------|------------|
+| `epic` | `[Feature]` | TPO |
+| `sub-issue` | `[Backend]`/`[Frontend]`/`[Docs]`/`[Test]` | SA |
+| `bug` | `[Bug]` | Support Engineer |
+| `subtask` | `[Subtask]` | Worker |
 
 ### Update Ticket
 
@@ -297,6 +357,7 @@ Returning control to [CALLING_ROLE] for decision.
 
 ## Reference Files
 
+- `references/ticket-templates.md` - All ticket templates with DoR/DoD checklists
 - `references/github-operations.md` - GitHub Issues + GraphQL mutations
 - `references/linear-operations.md` - Linear MCP commands
 - `references/plan-file-operations.md` - Local plan file format

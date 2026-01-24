@@ -38,12 +38,15 @@ Build and maintain a library of AI coding agent skills that:
 ```
 skills/
 ├── _shared/references/       # Shared documentation used by multiple skills
-│   ├── ticket-templates.md   # Story/Task and Bug templates (MANDATORY)
-│   ├── ticketing-core.md     # Universal ticketing rules
-│   ├── ticketing-linear.md   # Linear-specific commands
-│   ├── ticketing-github-projects.md  # GitHub Projects commands
-│   ├── ticketing-plan-file.md        # No-system tracking
-│   └── skill-ecosystem.md    # How skills relate to each other
+│   ├── definition-of-ready.md   # DoR checklist (PC enforces)
+│   ├── definition-of-done.md    # DoD checklist (PC enforces)
+│   └── skill-ecosystem.md       # How skills relate to each other
+├── project-coordinator/      # Utility skill for ticket CRUD + quality gates
+│   └── references/
+│       ├── ticket-templates.md      # Story/Task and Bug templates
+│       ├── github-operations.md     # GitHub Issues + GraphQL
+│       ├── linear-operations.md     # Linear MCP commands
+│       └── plan-file-operations.md  # Local file fallback
 ├── technical-product-owner/  # TPO skill (what/why)
 ├── solutions-architect/      # SA skill (how it fits together)
 ├── technical-program-manager/# TPgM skill (delivery coordination)
@@ -164,7 +167,7 @@ This role interacts with project management systems:
 - **Updates**: [ticket types this role updates]
 - **Reads**: [what this role needs to read]
 
-See `_shared/references/ticketing-core.md` for system-specific commands.
+All ticket operations go through Project Coordinator. See `project-coordinator/SKILL.md`.
 
 ## Workflow
 
@@ -185,15 +188,15 @@ See `_shared/references/ticketing-core.md` for system-specific commands.
 3. Verify no contradictions introduced
 
 ### Updating Ticket Templates
-1. Edit `_shared/references/ticket-templates.md`
-2. Update corresponding checklists in TPO, SA, TPgM skills
-3. Update `ticketing-core.md` INVEST checklist if needed
+1. Edit `project-coordinator/references/ticket-templates.md`
+2. Update corresponding checks in `project-coordinator/SKILL.md`
+3. Update `_shared/references/definition-of-ready.md` if checklist changes
 
 ### Adding a New Ticketing System
-1. Create `_shared/references/ticketing-{system}.md`
+1. Create `project-coordinator/references/{system}-operations.md`
 2. Map 4-level hierarchy (Initiative → Project → Issue → Sub-Issue)
 3. Add CLI/MCP commands for CRUD operations
-4. Add to system list in `ticketing-core.md`
+4. Add to routing table in `project-coordinator/SKILL.md`
 
 ## Quality Standards
 
@@ -209,7 +212,7 @@ See `_shared/references/ticketing-core.md` for system-specific commands.
 ### Content Standards
 
 - No open questions in final documents (MRDs, PRDs, ADRs)
-- All tickets follow templates from `ticket-templates.md`
+- All tickets follow templates (Project Coordinator enforces)
 - Technical Spec defines guardrails for AI Coding Agents
 - Gherkin scenarios define validation for Agent Testers
 - Progress comments required at lifecycle points

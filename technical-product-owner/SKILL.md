@@ -230,7 +230,7 @@ Project Coordinator handles tool-specific complexity (GitHub, Linear, or plan fi
 | `linear` / `github` | Parent Issue description (via Project Coordinator) | Issue comments |
 | `none` | Plan files (via Project Coordinator) | `questions.md` |
 
-See `_shared/references/ticketing-core.md` for routing rules.
+All ticket operations go through Project Coordinator.
 
 ## Reference Files
 
@@ -245,7 +245,7 @@ See `_shared/references/ticketing-core.md` for routing rules.
 When SA creates sub-issues from TPO's parent Issue, TPO reviews for alignment:
 
 **Gate 1: Template Compliance**
-- [ ] Sub-issues follow Story/Task template from `_shared/references/ticket-templates.md`
+- [ ] Sub-issues follow Story/Task template (Project Coordinator enforces)
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] Story written in user story format (As a... I want... so that...)
 - [ ] Context provides enough background for unfamiliar reader

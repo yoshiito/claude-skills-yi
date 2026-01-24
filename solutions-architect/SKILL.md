@@ -149,7 +149,7 @@ After architecture design, break down TPO's parent Issue into sub-issues.
 
 **If either gate fails**: Revise the sub-issue and re-run checks. Do NOT proceed to creation.
 
-**All ticket creation goes through Project Coordinator.** See `_shared/references/ticketing-core.md`.
+**All ticket creation goes through Project Coordinator.** See `project-coordinator/SKILL.md`.
 
 ### Mandatory INVEST Checklist (BLOCKING)
 
@@ -190,7 +190,7 @@ For EACH sub-issue, verify:
 
 ### Mandatory Template Usage
 
-Before creating any sub-issue, read `_shared/references/ticket-templates.md` and apply the Story/Task template.
+Before creating any sub-issue, prepare content following the Story/Task template. Project Coordinator enforces template compliance and provides guidance if missing.
 
 Every sub-issue MUST include:
 - **Assigned Role** - Which skill/role completes the work
@@ -243,7 +243,7 @@ Invoke Project Coordinator with:
 
 **When `Ticket System = "none"** (local files): SA owns `docs/integrations/_catalog.json`. See `_shared/references/integration-catalog-schema.md`.
 
-See `_shared/references/ticketing-core.md` → "Documentation Storage Rules" for full enforcement details.
+Project Coordinator enforces documentation storage rules based on ticket system configuration.
 
 ## Reference Files
 
@@ -285,7 +285,7 @@ Before delivering architecture:
 Before creating sub-issues (ALL gates must pass):
 
 **Gate 1: Template Compliance**
-- [ ] Read `_shared/references/ticket-templates.md`
+- [ ] Content follows Story/Task template (Project Coordinator enforces)
 - [ ] All sub-issues follow Story/Task template
 - [ ] Each sub-issue has Assigned Role specified
 - [ ] All required sections populated (no empty fields)

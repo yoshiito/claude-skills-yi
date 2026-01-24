@@ -441,13 +441,12 @@ Quick reference for when to involve other skills:
 
 All implementation skills (developers, testers, TPgM) must follow ticketing conventions to ensure code commits reference work items.
 
-### Ticketing References
+**All ticket operations go through Project Coordinator.** See `project-coordinator/SKILL.md`.
 
-| File | When to Use |
-|------|-------------|
-| `ticketing-core.md` | Universal rules (always read first) |
-| `ticketing-linear.md` | Linear ticket system |
-| `ticketing-github-projects.md` | GitHub Projects |
-| `ticketing-plan-file.md` | No external ticket system |
+Project Coordinator handles tool-specific complexity internally via its reference files:
+- `project-coordinator/references/github-operations.md`
+- `project-coordinator/references/linear-operations.md`
+- `project-coordinator/references/plan-file-operations.md`
+- `project-coordinator/references/ticket-templates.md`
 
 Configure your ticket system in project's `claude.md` under Team Context.

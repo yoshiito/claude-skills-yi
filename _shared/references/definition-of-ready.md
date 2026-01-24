@@ -31,10 +31,10 @@
 | Title | ✅ | `[Feature] {name}` format |
 | MRD in description | ✅ | Problem, users, success criteria defined |
 | **UAT criteria defined** | ✅ | What TPO will verify before accepting |
-| Team assigned | ✅ | Valid team in ticket system |
+| Team assigned | ✅ | From project's `Team Slug` in claude.md |
 | No open questions | ✅ | All clarifications resolved |
 
-**UAT Criteria**: TPO must define specific, verifiable criteria that they will check before accepting the feature as complete. See `ticket-templates.md` for format.
+**UAT Criteria**: TPO must define specific, verifiable criteria that they will check before accepting the feature as complete. Project Coordinator will provide template guidance if missing.
 
 ### For Sub-Issues (Created by SA)
 
@@ -144,5 +144,5 @@ Fix these gaps, then invoke Drive Mode again.
 
 ## Related References
 
-- `ticket-templates.md` - Full ticket body templates
-- `ticketing-core.md` - INVEST checklist details, workflow rules
+- `definition-of-done.md` - Completion checklist
+- `project-coordinator/SKILL.md` - Ticket operations and quality enforcement

@@ -332,7 +332,7 @@ Routing to [OTHER_ROLE] for proper handling...
 
 **CRITICAL**: When `Ticket System = "linear"` or `"github"`, store ALL documentation (MRDs, PRDs, ADRs, specs) in the ticketing system. Local files (`docs/plans/`, `docs/integrations/`) are ONLY allowed when `Ticket System = "none"`.
 
-See `_shared/references/ticketing-core.md` → "Documentation Storage Rules" for full details.
+Project Coordinator enforces this when ticket system is configured.
 
 ## Skill Behavior
 
