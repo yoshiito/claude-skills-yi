@@ -22,7 +22,7 @@ When working in the skills library itself, Skill Creator is the **default intake
 
 | Role | Prefix | Handles |
 |------|--------|---------|
-| **Technical Product Owner (TPO)** | `[TPO]` | New features, requirements, product decisions |
+| **Technical Product Owner (TPO)** | `[TPO]` | New features, requirements, product decisions (PRDs when asked) |
 | **Program Manager (PM)** | `[PM]` | Delivery coordination, status, scheduling, blockers |
 | **Solutions Architect** | `[SOLUTIONS_ARCHITECT]` | Architecture decisions, system design, integrations |
 | **Support Engineer** | `[SUPPORT_ENGINEER]` | Errors, bugs, incidents, troubleshooting |
@@ -43,6 +43,7 @@ When working in the skills library itself, Skill Creator is the **default intake
 | Tech Doc Writer | `[TECH_DOC_WRITER]` | Any role |
 | UX Designer | `[UX_DESIGNER]` | TPO, SA |
 | SVG Designer | `[SVG_DESIGNER]` | TPO, UX Designer |
+| **Market Researcher** | `[MARKET_RESEARCHER]` | TPO, SA, PM (for market research, MRDs) |
 
 ### Request Routing Rules
 
@@ -67,7 +68,8 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | Skill | Purpose | Primary Output |
 |-------|---------|----------------|
 | **Skill Creator** | Manage skills in this library (meta-role) | Validated SKILL.md files, ecosystem updates |
-| **Technical Product Owner (TPO)** | Translate business goals into requirements | Master Requirement Documents (MRDs) |
+| **Technical Product Owner (TPO)** | Translate business goals into requirements | PRDs (when requested), requirement coordination |
+| **Market Researcher** | Conduct market research and business impact assessment | Market Requirements Documents (MRDs) |
 | **Solutions Architect** | Design system architecture and integrations | ADRs, system diagrams, API contracts |
 | **API Designer** | Design pragmatic, developer-friendly APIs | OpenAPI specs, error catalogs |
 | **Backend Developer** | Implement APIs with FastAPI/PostgreSQL | Working endpoints, database schemas |
@@ -90,10 +92,12 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                         LAYER 1: PRODUCT DEFINITION                      │
 │                                                                          │
-│   ┌──────────────────┐                                                  │
-│   │ Technical Product │  Defines WHAT to build                          │
-│   │ Owner (TPO)       │  Output: MRDs with requirements                 │
-│   └────────┬─────────┘                                                  │
+│   ┌──────────────────┐    ┌──────────────────┐                         │
+│   │ Technical Product │    │ Market Researcher│                         │
+│   │ Owner (TPO)       │◄───│                  │                         │
+│   │ Defines WHAT      │    │ Creates MRDs     │                         │
+│   │ Output: PRDs      │    │ via web research │                         │
+│   └────────┬─────────┘    └──────────────────┘                         │
 │            │                                                             │
 └────────────│─────────────────────────────────────────────────────────────┘
              │
@@ -176,10 +180,11 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 
 ### Starting a New Feature
 ```
-1. TPO           → Define requirements (MRD)
-2. Solutions Architect → Design system architecture
-3. API Designer  → Design API contracts (if APIs needed)
-4. PM          → Create Linear tickets, plan delivery
+1. Market Researcher → Conduct market research (MRD)
+2. TPO              → Define requirements (PRD, if requested)
+3. Solutions Architect → Design system architecture
+4. API Designer     → Design API contracts (if APIs needed)
+5. PM               → Create Linear tickets, plan delivery
 ```
 
 ### Implementing Backend
@@ -226,7 +231,8 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 
 | Skill | Receives Input From |
 |-------|---------------------|
-| Solutions Architect | TPO, Data Platform Engineer, AI Integration Engineer |
+| Market Researcher | TPO, SA, PM (research requests) |
+| Solutions Architect | TPO, Market Researcher, Data Platform Engineer, AI Integration Engineer |
 | API Designer | TPO, Solutions Architect |
 | Backend Developer | TPO, Solutions Architect, API Designer, Support Engineer (bug reports) |
 | Frontend Developer | TPO, Solutions Architect, Material Design UX, Support Engineer (bug reports) |
@@ -242,6 +248,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 
 | Skill | Output Consumed By |
 |-------|-------------------|
+| Market Researcher | TPO (MRDs for PRD elaboration), SA (market context) |
 | TPO | All downstream skills |
 | Solutions Architect | All implementation skills, Tech Doc Writer |
 | API Designer | Backend Developer, Frontend Developer, Tech Doc Writer |
@@ -418,6 +425,7 @@ Quick reference for when to involve other skills:
 
 | Situation | Consult |
 |-----------|---------|
+| Market research needed | Market Researcher |
 | Requirements unclear | TPO |
 | System design needed | Solutions Architect |
 | API contract design | API Designer |
