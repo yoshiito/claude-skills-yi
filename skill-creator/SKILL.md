@@ -37,6 +37,9 @@ boilerplate-claude-md.md (TEMPLATE) → copied to → project/claude.md → invo
 | `universal-skill-preamble.md` | Preamble template for all skills |
 | `ticketing-*.md` | System-specific ticketing commands |
 | `skill-ecosystem.md` | How skills relate |
+| `skill-template.md.j2` | Jinja2 template for generating SKILL.md |
+| `generate-skill.py` | Script to generate SKILL.md from skill.yaml |
+| `skill-schema.md` | YAML schema documentation |
 
 ### Where to Put Rules
 
@@ -117,7 +120,20 @@ Before creating/updating any skill:
 
 ### Phase 3: Skill Creation/Modification
 
-Follow template structure strictly. See `_shared/references/skill-ecosystem.md` for examples.
+**Use the YAML-based generation system for new skills:**
+
+1. Create `{skill-name}/skill.yaml` using example YAMLs as reference
+2. Run `python skill-creator/references/generate-skill.py {skill-name}`
+3. Review generated SKILL.md
+4. Iterate on skill.yaml until output is correct
+
+**Key files:**
+- `skill-creator/references/skill-template.md.j2` - Jinja2 template
+- `skill-creator/references/generate-skill.py` - Generator script
+- `skill-creator/references/skill-schema.md` - YAML schema documentation
+- `skill-creator/references/example-*.yaml` - Example YAMLs for each role type
+
+**For existing skills:** Edit SKILL.md directly until converted to YAML.
 
 ### Phase 4: Validation
 

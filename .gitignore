@@ -19,3 +19,6 @@ Icon\r
 Thumbs.db
 desktop.ini
 more-features.txt
+
+# Claude Code local settings
+.claude/

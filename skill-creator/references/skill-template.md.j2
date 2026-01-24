@@ -1,0 +1,379 @@
+{# =============================================================================
+   SKILL.md Generator Template
+
+   This Jinja2 template generates SKILL.md from skill.yaml
+   Usage: python generate-skill.py <skill-directory>
+   ============================================================================= #}
+---
+name: {{ meta.name }}
+description: {{ meta.description | trim }}
+---
+
+# {{ meta.displayName }}
+
+{{ role.corePurpose if role.corePurpose else meta.description | trim }}
+
+## Preamble: Universal Conventions
+
+**Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
+
+{% if role.capabilities.requiresActivationConfirmation -%}
+0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
+{% endif -%}
+1. **Prefix all responses** with `[{{ role.prefix }}]` - Continuous declaration on every message and action
+{% if role.capabilities.canIntakeUserRequests -%}
+2. **This is an INTAKE ROLE** - Can receive direct user requests
+{% elif role.capabilities.isUtility -%}
+2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
+{% else -%}
+2. **This is a WORKER ROLE** - Receives tickets from intake roles. Route direct requests appropriately.
+{% endif -%}
+{% if role.capabilities.requiresProjectScope -%}
+3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
+{% else -%}
+3. **No project scope check required** - This skill operates on the skills library itself
+{% endif %}
+
+See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+{% if not role.capabilities.canIntakeUserRequests and not role.capabilities.isUtility %}
+**If receiving a direct request that should be routed:**
+```
+[{{ role.prefix }}] - This request is outside my authorized scope.
+Checking with Agent Skill Coordinator for proper routing...
+```
+{% endif %}
+{% if role.capabilities.requiresProjectScope %}
+**If scope is NOT defined**, respond with:
+```
+[{{ role.prefix }}] - I cannot proceed with this request.
+
+This project does not have scope boundaries defined in its claude.md file.
+Until we know our scopes and boundaries, I cannot help you.
+
+To proceed, please define a Project Scope section in this project's claude.md.
+See `_shared/references/project-scope-template.md` for a template.
+
+Would you like me to help you set up the Project Scope section first?
+```
+{% endif %}
+
+## Usage Notification
+
+**REQUIRED**: When triggered, state: "[{{ role.prefix }}] - {{ meta.emoji }} Using {{ meta.displayName }} skill - [what you're doing]."
+{% if invocationModel %}
+
+## Invocation Model
+
+{{ invocationModel.description }}
+
+| Who Can Invoke | When | Example |
+|----------------|------|---------|
+{% for caller in invocationModel.callers -%}
+| {{ caller.role }} | {{ caller.when }} | {{ caller.example }} |
+{% endfor %}
+
+### Automatic Invocation Pattern
+
+{{ invocationModel.pattern.description }}
+{% if invocationModel.callingRoleTracking.required %}
+**CALLING_ROLE tracking is mandatory** — {{ role.prefix }} must:
+- State who invoked it at start: `{{ invocationModel.callingRoleTracking.onStart }}`
+- Return to that role at end: `{{ invocationModel.callingRoleTracking.onEnd }}`
+{% endif %}
+{% endif %}
+
+## Role Boundaries
+
+**This role DOES:**
+{% for action in boundaries.authorizedActions -%}
+- {{ action }}
+{% endfor %}
+
+**This role does NOT do:**
+{% for prohibition in boundaries.prohibitions -%}
+- {{ prohibition.action }} (that's {{ prohibition.owner }})
+{% endfor %}
+{% if boundaries.routingTable %}
+
+**When unclear:**
+
+| If unclear about... | Route to |
+|---------------------|----------|
+{% for route in boundaries.routingTable -%}
+| {{ route.unclear }} | {{ route.routeTo }} |
+{% endfor %}
+{% endif %}
+{% if missionModes %}
+
+## Mission Mode Selection (MANDATORY - ASK FIRST)
+
+**CRITICAL**: At session start, {{ role.prefix }} MUST ask the user which mission mode to operate in.
+
+```
+{{ missionModes.prompt }}
+```
+
+**DO NOT PROCEED** until user selects a mode. This is non-negotiable.
+{% for mode_name, mode in missionModes.modes.items() %}
+
+### {{ mode_name | title }} Mode
+
+{{ mode.description }}
+
+**Behaviors:**
+{% for behavior in mode.behaviors -%}
+- {{ behavior }}
+{% endfor %}
+{% if mode.preConditions %}
+**Pre-conditions:**
+{% for condition in mode.preConditions -%}
+- {{ condition }}
+{% endfor %}
+{% endif %}
+{% if mode.postConditions %}
+**Post-conditions:**
+{% for condition in mode.postConditions -%}
+- {{ condition }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if qualityGates %}
+
+## Quality Gates
+{% if qualityGates.definitionOfReady %}
+
+### Definition of Ready (On Create)
+
+**Enforce at**: {{ qualityGates.definitionOfReady.enforceAt }}
+{% for ticket_type, config in qualityGates.definitionOfReady.ticketTypes.items() %}
+
+#### For {{ ticket_type | title }}
+
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+{% if config.titlePrefix -%}
+| Title prefix | Title starts with `{{ config.titlePrefix }}` | Missing prefix |
+{% endif -%}
+{% if config.titlePrefixes -%}
+| Title prefix | Title starts with `{{ config.titlePrefixes | join('`, `') }}` | Missing/invalid prefix |
+{% endif -%}
+{% for section in config.requiredSections -%}
+| {{ section.name }} | {{ section.verify }} | Missing or empty |
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if qualityGates.definitionOfDone %}
+
+### Definition of Done (On Status=Done)
+
+**Enforce at**: {{ qualityGates.definitionOfDone.enforceAt }}
+{% for ticket_type, config in qualityGates.definitionOfDone.ticketTypes.items() %}
+
+#### For {{ ticket_type | title }}
+
+| Check | How to Verify | Reject If |
+|-------|---------------|-----------|
+{% for check in config.checks -%}
+| {{ check.name }} | {{ check.verify }} | Missing |
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if qualityGates.rejectionFormat %}
+
+### Rejection Response Format
+
+```
+{{ qualityGates.rejectionFormat.template }}
+```
+{% endif %}
+{% endif %}
+{% if invocationInterface %}
+
+## Invocation Interface
+
+### Create Ticket
+
+```
+{{ invocationInterface.create.format }}
+```
+
+**Type mapping:**
+
+| Type | Title Prefix | Created By |
+|------|--------------|------------|
+{% for mapping in invocationInterface.create.typeMapping -%}
+| `{{ mapping.type }}` | `{{ mapping.titlePrefix if mapping.titlePrefix else mapping.titlePrefixes | join('`/`') }}` | {{ mapping.createdBy }} |
+{% endfor %}
+
+### Update Ticket
+
+```
+{{ invocationInterface.update.format }}
+```
+
+### Set Relationships
+
+```
+{{ invocationInterface.relationships.format }}
+```
+
+### Verify Relationships
+
+```
+{{ invocationInterface.verify.format }}
+```
+
+Returns: {{ invocationInterface.verify.returns }}
+{% endif %}
+
+## Workflow
+{% for phase in workflow.phases %}
+
+### Phase {{ loop.index }}: {{ phase.name }}
+{% if phase.description %}
+
+{{ phase.description }}
+{% endif %}
+{% if phase.condition %}
+
+*Condition: {{ phase.condition }}*
+{% endif %}
+{% if phase.steps is iterable and phase.steps is not string %}
+
+{% for step in phase.steps -%}
+{% if step is string -%}
+{{ loop.index }}. {{ step }}
+{% else -%}
+{{ loop.index }}. **{{ step.action }}**{% if step.description %} - {{ step.description }}{% endif %}
+
+{% if step.checklist -%}
+{% for item in step.checklist %}   - [ ] {{ item }}
+{% endfor %}
+{% endif -%}
+{% if step.includes %}   Includes:
+{% for item in step.includes %}   - {{ item }}
+{% endfor %}
+{% endif -%}
+{% if step.lookFor %}   | File | Check For |
+   |------|-----------|
+{% for item in step.lookFor %}   | `{{ item.file }}` | {{ item.checkFor }} |
+{% endfor %}
+{% endif -%}
+{% if step.template %}   ```
+{{ step.template }}   ```
+{% endif -%}
+{% endif -%}
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+## Quality Checklist
+
+Before marking work complete:
+{% if qualityChecklist is iterable and qualityChecklist[0] is string %}
+
+{% for item in qualityChecklist -%}
+- [ ] {{ item }}
+{% endfor %}
+{% else %}
+{% for section in qualityChecklist.sections %}
+
+### {{ section.name }}
+
+{% for item in section.items -%}
+- [ ] {{ item }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% for section in customSections %}
+
+## {{ section.title }}
+
+{{ section.content | trim }}
+{% endfor %}
+{% if responseFormats %}
+
+## Response Formats
+
+### Success
+
+```
+{{ responseFormats.success.template }}
+```
+
+### Failure
+
+```
+{{ responseFormats.failure.template }}
+```
+{% endif %}
+{# NOTE: Handoff patterns removed - Agent Skill Coordinator owns role routing #}
+{% if modes %}
+
+## Mode Behaviors
+
+**Supported modes**: {{ modes.supported | join(', ') }}
+{% for mode_name, config in modes.items() if mode_name != 'supported' %}
+
+### {{ mode_name | title }} Mode
+{% for key, value in config.items() %}
+- **{{ key }}**: {{ value }}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+## Reference Files
+{% if references.local %}
+
+### Local References
+{% for ref in references.local %}
+- `{{ ref.path }}` - {{ ref.purpose }}
+{% endfor %}
+{% endif %}
+{% if references.shared %}
+
+### Shared References
+{% for ref in references.shared %}
+- `{{ ref.path }}` - {{ ref.purpose }}
+{% endfor %}
+{% endif %}
+
+## Related Skills
+{% if relatedSkills.upstream %}
+
+### Upstream (Provides Input)
+
+| Skill | Provides |
+|-------|----------|
+{% for skill in relatedSkills.upstream -%}
+| **{{ skill.skill }}** | {{ skill.provides }} |
+{% endfor %}
+{% endif %}
+{% if relatedSkills.downstream %}
+
+### Downstream/Parallel
+
+| Skill | Coordination |
+|-------|--------------|
+{% for skill in relatedSkills.downstream -%}
+| **{{ skill.skill }}** | {{ skill.coordination }} |
+{% endfor %}
+{% endif %}
+{% if relatedSkills.consultationTriggers %}
+
+### Consultation Triggers
+{% for trigger in relatedSkills.consultationTriggers %}
+- **{{ trigger.skill }}**: {{ trigger.when }}
+{% endfor %}
+{% endif %}
+{% if relatedSkills.handoffChecklist %}
+
+### Handoff Checklist
+
+```
+{% for item in relatedSkills.handoffChecklist -%}
+□ {{ item }}
+{% endfor %}
+```
+{% endif %}
