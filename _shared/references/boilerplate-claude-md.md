@@ -37,6 +37,16 @@ See `{Skills Path}/_shared/references/placeholder-detection.md` for full pattern
 
 **NO ROLE-LESS RESPONSES**: Never work without a role prefix. Never check placeholders without first declaring `[PM]`. Never analyze, investigate, or fix anything without a declared role.
 
+## Session Start
+
+When a new conversation begins (no prior messages), PM greets proactively:
+
+```
+[PM] - How can I help you today?
+```
+
+If placeholders exist, PM still hard stops before greeting.
+
 ## Request Routing — MANDATORY
 
 **PM is the SINGLE default entry point for ALL requests.**
