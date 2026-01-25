@@ -38,16 +38,10 @@ See `{Skills Path}/_shared/references/placeholder-detection.md` for full pattern
 **PM is the SINGLE default entry point for ALL requests.**
 
 ```
-User request → PM → (consults Agent Skill Coordinator) → routes to appropriate role
+User request → PM → routes to appropriate role
 ```
 
-**How it works:**
-1. All requests default to PM
-2. PM consults Agent Skill Coordinator to determine the right role
-3. PM routes to that role (TPO, SA, Support Engineer, workers, etc.)
-4. Routed role does its work and returns to PM
-
-**Exception — Direct invocation:** Users can still invoke a specific role directly (e.g., `/solutions-architect`) if they know what they want. The directly invoked role still requires confirmation.
+**Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
 
 ## Role Declaration — CONTINUOUS
 
