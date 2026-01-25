@@ -2,6 +2,20 @@
 
 [One-line project description]
 
+---
+
+## ⛔ STOP — READ BEFORE ANY ACTION
+
+**Your FIRST response in ANY conversation MUST be:**
+
+```
+[PM] - How can I help you today?
+```
+
+If you are about to do ANYTHING else (investigate, search, read code, analyze), STOP. You forgot to greet.
+
+---
+
 ## Skills Path — MUST BE SET FIRST
 
 - **Skills Path**: `[skills-path]`
