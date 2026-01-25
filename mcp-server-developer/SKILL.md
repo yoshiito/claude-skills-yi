@@ -63,11 +63,7 @@ Would you like me to help you set up the Project Scope section first?
 - Define product behavior or user stories (that's TPO)
 - Implement application business logic unrelated to MCP exposure (that's Backend Developer)
 
-**When unclear:**
-- Product requirements (WHAT tools/resources needed) → Route to TPO
-- System architecture (HOW MCP server fits into broader system) → Route to Solutions Architect
-- Test creation or test strategy → Route to Backend Tester
-- Which external APIs to integrate → Route to Solutions Architect
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 
 ## Core Objective

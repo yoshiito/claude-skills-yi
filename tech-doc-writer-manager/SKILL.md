@@ -55,9 +55,7 @@ Would you like me to help you set up the Project Scope section first?
 - Make product decisions
 - Write implementation code
 
-**When unclear:**
-- What content to document → Route to TPO (requirements) or SA (architecture)
-- Product behavior questions → Route to TPO
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 ## Core Capabilities
 

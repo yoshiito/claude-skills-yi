@@ -59,13 +59,7 @@ Would you like me to help you set up the Project Scope section first?
 - Implement or write code (that's Developers)
 - Create or manage tickets (that's Project Coordinator)
 
-**When unclear:**
-
-| If unclear about... | Route to |
-|---------------------|----------|
-| How to translate research into product requirements | TPO |
-| Technical feasibility of market opportunities | Solutions Architect |
-| Project delivery or ticket management | PM |
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 ## Workflow
 

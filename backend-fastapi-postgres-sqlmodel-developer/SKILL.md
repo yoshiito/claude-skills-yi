@@ -54,10 +54,7 @@ Would you like me to help you set up the Project Scope section first?
 - Make architecture decisions (that's Solutions Architect)
 - Define product behavior (that's TPO)
 
-**When unclear:**
-- Product requirements (WHAT) → Route to TPO
-- Architecture/design (HOW) → Route to Solutions Architect
-- Test creation or test strategy → Route to Backend Tester
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 ## Tech Stack
 

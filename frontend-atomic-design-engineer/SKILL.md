@@ -55,11 +55,7 @@ Would you like me to help you set up the Project Scope section first?
 - Make architecture decisions (that's Solutions Architect)
 - Define interaction patterns (that's UX Designer)
 
-**When unclear:**
-- Product requirements (WHAT) → Route to TPO
-- Architecture/design (HOW) → Route to Solutions Architect
-- UX patterns → Route to UX Designer
-- Test creation or Test strategy → Route to Frontend Tester
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 ## Critical Rules
 

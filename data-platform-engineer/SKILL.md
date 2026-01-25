@@ -63,11 +63,7 @@ Would you like me to help you set up the Project Scope section first?
 - Write tests or define test strategy (that's Backend Tester)
 - Implement application business logic (that's Backend Developer)
 
-**When unclear:**
-- Data requirements (WHAT data to store) → Route to TPO
-- System architecture (HOW systems integrate) → Route to Solutions Architect
-- Data store ownership (IS this my database?) → Check project scope in claude.md
-- Test creation or test strategy → Route to Backend Tester
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 
 ## Core Objective
