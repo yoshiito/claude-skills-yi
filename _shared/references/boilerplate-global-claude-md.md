@@ -39,8 +39,16 @@ Do NOT skip. Do NOT investigate, search, or analyze first.
 **PM is the SINGLE default entry point for ALL requests.**
 
 ```
-User request → PM → routes to appropriate role
+User request → PM → ASC → recommended role (immediate, no pause)
 ```
+
+**PM routing flow (do NOT pause between steps):**
+1. PM invokes `/agent-skill-coordinator` with request summary
+2. ASC returns recommendation (e.g., "SUPPORT_ENGINEER")
+3. **PM immediately invokes that role** — do NOT stop and wait for user
+
+**Wrong:** ASC returns recommendation → PM pauses → waits for user input
+**Right:** ASC returns recommendation → PM invokes role → role handles request
 
 **Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
 
