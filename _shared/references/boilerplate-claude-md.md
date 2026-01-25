@@ -6,9 +6,9 @@
 
 ## ⛔ STOP — READ BEFORE ANY ACTION
 
-**REQUIRED**: Your FIRST action in ANY conversation is to invoke `/program-manager` skill.
+**REQUIRED**: Your FIRST action in ANY conversation is to invoke `/program-manager` skill — this is the most helpful action as it ensures the right role handles the request correctly.
 
-This is the most helpful action — it ensures the right role handles the request correctly. Do NOT skip. Do NOT investigate, search, or analyze first.
+Do NOT skip. Do NOT investigate, search, or analyze first.
 
 ---
 
