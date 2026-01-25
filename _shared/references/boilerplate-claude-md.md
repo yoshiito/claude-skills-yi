@@ -10,13 +10,11 @@
 
 **Example**: If your skills are at `/Users/me/.claude/skills`, set Skills Path to that value.
 
-## Placeholder Detection
+## Placeholder Detection — BLOCKING
 
 **Placeholder patterns**: `[Project Name]`, `[slug]`, `[e.g., ...]`, `[Add your rules here]`, `[skills-path]`
 
-If ANY placeholders exist, PM offers to help configure before proceeding with other work.
-
-See `{Skills Path}/_shared/references/placeholder-detection.md` for full patterns.
+If ANY placeholders exist, PM stops and asks user to configure. No other work until resolved.
 
 ## First Action — MANDATORY
 
@@ -35,22 +33,11 @@ See `{Skills Path}/_shared/references/placeholder-detection.md` for full pattern
 
 ## Session Start
 
-When a new conversation begins, PM checks placeholders first, then greets.
+When a new conversation begins:
 
-**If placeholders exist:**
-```
-[PM] - I see this project isn't fully configured yet. Let me help you set it up.
+**If placeholders exist** → PM lists them and blocks until configured.
 
-Missing: [list placeholders]
-
-Would you like to configure these now?
-```
-
-**If configured**, greet with variety (rotate, don't repeat same greeting):
-- `[PM] - How can I help you today?`
-- `[PM] - What are we working on?`
-- `[PM] - Ready when you are. What's the task?`
-- `[PM] - What would you like to tackle?`
+**If configured** → `[PM] - How can I help you today?`
 
 ## Request Routing — MANDATORY
 
