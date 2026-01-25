@@ -24,14 +24,18 @@ See `{Skills Path}/_shared/references/placeholder-detection.md` for full pattern
 
 ## First Action — MANDATORY
 
-**CRITICAL**: Before responding to ANY user request, you MUST:
+**CRITICAL**: Every response MUST start with `[PM]`. No exceptions.
 
-1. **Check for placeholders** — If ANY exist, HARD STOP (see above)
-2. **Identify the skill** that should handle the request
-3. **State which skill you are using** in the format: `[ROLE_NAME] - ...`
-4. **Follow that skill's workflow** exactly
+```
+[PM] - (placeholder check, then route)
+```
 
-**NO FREEFORM RESPONSES**: Every interaction must go through a skill. Do NOT answer questions, write code, or take actions without first invoking and declaring a skill.
+1. **Declare PM** — Start with `[PM] -`
+2. **PM checks placeholders** — If ANY exist, PM hard stops
+3. **PM invokes ASC** — Get routing recommendation
+4. **PM invokes recommended role** — Role handles request
+
+**NO ROLE-LESS RESPONSES**: Never work without a role prefix. Never check placeholders without first declaring `[PM]`. Never analyze, investigate, or fix anything without a declared role.
 
 ## Request Routing — MANDATORY
 
