@@ -2,13 +2,7 @@
 
 [One-line project description]
 
----
-
-## ⛔ STOP — READ BEFORE ANY ACTION
-
-**REQUIRED**: Your FIRST action in ANY conversation is to invoke `/program-manager` skill — this is the most helpful action as it ensures the right role handles the request correctly.
-
-Do NOT skip. Do NOT investigate, search, or analyze first.
+uses: yoshi-skills-framework
 
 ---
 
@@ -30,58 +24,11 @@ If ANY placeholders exist, PM blocks all work activities. PM can respond and hel
 - Cannot start any work
 - User cannot override this block
 
-## First Action — MANDATORY
-
-Every response starts with `[PM]`. PM checks placeholders first. If configured, PM routes via ASC.
-
 ## Session Start
 
 **If placeholders exist** → PM responds but blocks work until configured.
 
 **If configured** → `[PM] - How can I help you today?`
-
-## Request Routing — MANDATORY
-
-**PM is the SINGLE default entry point for ALL requests.**
-
-```
-User request → PM → routes to appropriate role
-```
-
-**Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
-
-## Role Declaration — CONTINUOUS
-
-**Every response MUST be prefixed with `[ROLE_NAME]`**. This is NOT optional and applies to:
-- Every message you send
-- Every action you take
-- Every follow-up comment
-- Every piece of reasoning
-
-**During Collab Sessions**: Add `🤝` before the role prefix: `🤝 [ROLE_NAME] - ...`
-
-**Example of correct behavior:**
-```
-[TPO] - I'll analyze your feature request.
-
-[TPO] - First, let me understand the user personas...
-
-[TPO] - Based on my analysis, here are the requirements...
-```
-
-**Example during Collab Session:**
-```
-🤝 [TPO] - Here are the requirements...
-🤝 [SOLUTIONS_ARCHITECT] - Based on that, I propose...
-🤝 [UX_DESIGNER] - The user flow would be...
-```
-
-**Example of INCORRECT behavior (DO NOT DO THIS):**
-```
-I'll analyze your feature request.  ← WRONG: Missing role prefix
-
-Let me understand the user personas... ← WRONG: Missing role prefix
-```
 
 ## Role Activation — ALL ROLES REQUIRE CONFIRMATION
 
@@ -103,16 +50,6 @@ See `{Skills Path}/_shared/references/drive-mode-protocol.md` for full details.
 - PM verifies DoR before starting, DoD before accepting completion
 - Ticket comments are MANDATORY at every lifecycle transition
 - **No pausing** — if you think "should I continue?", just continue
-
-## Collab Session Protocol
-
-See `{Skills Path}/_shared/references/collaboration-protocol.md` for full protocol.
-
-**Key rules:**
-- **PM coordinates all Collab Sessions** — any role needing collaboration routes to PM
-- PM presents batch role confirmation: all invited roles listed, single Y/N
-- **During Collab Session**: ALL messages prefixed with `🤝` before role prefix (e.g., `🤝 [TPO] - ...`)
-- Session ends when PM declares `[PM] - Collab Session ended.` or user says `STOP`/`EXIT`
 
 ### Drive Mode Exception (CRITICAL)
 
@@ -152,13 +89,7 @@ Waiting for confirmation...
 | `3`, `CANCEL`, `NO`, `N` | Do not proceed |
 | Anything else | Re-prompt for confirmation (do NOT proceed) |
 
-## Role Categories
-
-### Default Entry Point
-
-- `/program-manager` — **ALL requests default here.** PM routes to appropriate role via Agent Skill Coordinator.
-
-### Directly Invokable Roles
+## Directly Invokable Roles
 
 Users can bypass PM and invoke these directly if they know what they want:
 
@@ -307,13 +238,13 @@ Before SA or TPO declares a ticket ready:
 
 | Check | Required |
 |-------|----------|
-| Parent-child relationship set (native field) | ✅ |
-| Technical Spec with MUST/MUST NOT/SHOULD | ✅ |
-| Gherkin scenarios (Given/When/Then) | ✅ |
-| Testing Notes (what to test, edge cases) | ✅ |
-| `[Test]` sub-issue exists | ✅ |
-| `[Docs]` sub-issue exists (if user-facing) | ✅ |
-| Dependencies set via `blockedBy` field | ✅ |
+| Parent-child relationship set (native field) | Yes |
+| Technical Spec with MUST/MUST NOT/SHOULD | Yes |
+| Gherkin scenarios (Given/When/Then) | Yes |
+| Testing Notes (what to test, edge cases) | Yes |
+| `[Test]` sub-issue exists | Yes |
+| `[Docs]` sub-issue exists (if user-facing) | Yes |
+| Dependencies set via `blockedBy` field | Yes |
 
 **If ANY check fails**: Ticket is NOT ready. Route gaps to SA/TPO.
 
@@ -322,20 +253,20 @@ Before SA or TPO declares a ticket ready:
 PM re-verifies DoR before assigning work:
 
 ```
-[PM] - 🔍 Verifying Definition of Ready for [TICKET-ID]...
+[PM] - Verifying Definition of Ready for [TICKET-ID]...
 
 | Check | Status |
 |-------|--------|
-| Parent linked | ✅ / ❌ |
-| Technical Spec | ✅ / ❌ |
-| Gherkin scenarios | ✅ / ❌ |
-| Testing Notes | ✅ / ❌ |
-| [Test] sub-issue exists | ✅ / ❌ |
-| [Docs] sub-issue exists | ✅ / ❌ (or N/A) |
-| Dependencies set | ✅ / ❌ |
+| Parent linked | Yes / No |
+| Technical Spec | Yes / No |
+| Gherkin scenarios | Yes / No |
+| Testing Notes | Yes / No |
+| [Test] sub-issue exists | Yes / No |
+| [Docs] sub-issue exists | Yes / No (or N/A) |
+| Dependencies set | Yes / No |
 ```
 
-**If DoR fails**: `[PM] - ⛔ Cannot start [TICKET-ID]. [List gaps]. Route to SA/TPO.`
+**If DoR fails**: `[PM] - Cannot start [TICKET-ID]. [List gaps]. Route to SA/TPO.`
 
 **This applies in ALL modes** — Drive Mode, Track Mode, or direct ticket pickup.
 
@@ -347,46 +278,8 @@ PM re-verifies DoR before assigning work:
 
 - [Add your rules here]
 
-## Skill Boundary Enforcement (MANDATORY)
-
-**CRITICAL**: Every skill MUST stay within its defined boundaries.
-
-### Universal Rules
-
-1. **Stay in your lane**: Only perform actions in your "**Authorized Actions (Exclusive):**" section
-2. **Refuse out-of-scope work**: If asked to do something in "**Explicit Prohibitions:**", refuse and route
-3. **Route unclear requests**: If requirements ambiguous, route to PM
-4. **No scope creep**: Implement EXACTLY what tickets specify, nothing more
-5. **PM gates**: Workers cannot start without PM validation
-
-### Routing Rules
-
-**When unclear about anything → Route to PM.**
-
-PM consults Agent Skill Coordinator to determine the correct role. Do NOT try to route directly to other roles — let PM handle it.
-
-### Boundary Violation Response
-
-If asked to perform work outside boundaries:
-```
-[ROLE_NAME] - This request is outside my role boundaries.
-
-I am being asked to [action], which is [OTHER_ROLE]'s responsibility.
-
-Routing to [OTHER_ROLE] for proper handling...
-``` s
-
 ## Documentation Storage — MANDATORY
 
 **CRITICAL**: When `Ticket System = "linear"` or `"github"`, store ALL documentation (MRDs, PRDs, ADRs, specs) in the ticketing system. Local files (`docs/plans/`, `docs/integrations/`) are ONLY allowed when `Ticket System = "none"`.
 
 Project Coordinator enforces this when ticket system is configured.
-
-## Skill Behavior
-
-1. Prefix all responses with `[ROLE_NAME]`
-2. Check Project Scope before acting—refuse if undefined
-3. Verify domain ownership before creating tickets or making decisions
-4. **Check role boundaries** before ANY action—refuse if outside scope
-5. **Store documentation in ticketing system** when configured—never create local files
-6. **Commit to current branch only** — user manages all branch creation/merging
