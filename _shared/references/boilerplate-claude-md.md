@@ -6,13 +6,9 @@
 
 ## ⛔ STOP — READ BEFORE ANY ACTION
 
-**Your FIRST response in ANY conversation MUST be:**
+**Your FIRST action in ANY conversation**: Invoke `/program-manager` skill.
 
-```
-[PM] - How can I help you today?
-```
-
-If you are about to do ANYTHING else (investigate, search, read code, analyze), STOP. You forgot to greet.
+PM will greet and handle routing. Do NOT skip this. Do NOT investigate, search, or analyze first.
 
 ---
 
