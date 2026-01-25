@@ -4,21 +4,38 @@ A collection of specialized skills for Claude Code that enable role-based AI ass
 
 ## Quick Start
 
-To use these skills in your project:
+### 1. Set Up Global Configuration
 
-1. Copy `_shared/references/boilerplate-claude-md.md` to your project as `claude.md`
-2. Fill in the `[placeholders]` for your project
-3. Skills will enforce the rules defined in your `claude.md`
+Copy `_shared/references/boilerplate-global-claude-md.md` to `~/.claude/CLAUDE.md`
+
+This contains universal framework rules that activate conditionally based on project opt-in.
+
+### 2. Set Up Project Configuration
+
+Copy `_shared/references/boilerplate-project-claude-md.md` to your project as `claude.md`
+
+Fill in the `[placeholders]`:
+- `[Project Name]` — Your project name
+- `[skills-path]` — Path to this skills library (e.g., `~/.claude/skills`)
+- `[slug]` — Team slug for tickets
+- Domain ownership and active roles
+
+### 3. Framework Activation
+
+The project `claude.md` declares `uses: yoshi-skills-framework` which activates the global rules. Projects without this declaration use normal Claude behavior.
 
 ## How It Works
 
-**Every interaction goes through a skill.** No freeform responses.
+**Program Manager (PM) is the entry point for ALL requests.**
 
-1. User makes a request
-2. Claude selects and invokes the appropriate skill
-3. Skill checks project scope (refuses if undefined)
-4. Skill verifies domain ownership before acting
-5. Skill prefixes response with `[ROLE_NAME]`
+```
+User request → PM → Agent Skill Coordinator → recommended role (immediate, no pause)
+```
+
+1. PM receives request, invokes Agent Skill Coordinator
+2. ASC returns the appropriate role
+3. PM immediately invokes that role (no pause, no waiting)
+4. Role handles the request with `[ROLE_NAME]` prefix
 
 ### Intake vs Worker Roles
 
@@ -33,6 +50,7 @@ Worker skills route new feature requests to intake roles.
 
 | Skill | Purpose |
 |-------|---------|
+| **program-manager** | Entry point, routes via ASC, verifies DoR/DoD |
 | **technical-product-owner** | Translate business goals into MRDs and coordinate PRD development |
 | **solutions-architect** | Design system architecture, ADRs, and integration patterns |
 | **api-designer** | Create pragmatic REST API designs with OpenAPI specs |
@@ -44,10 +62,16 @@ Worker skills route new feature requests to intake roles.
 | **ai-integration-engineer** | Evaluate and implement AI-powered features |
 | **mcp-server-developer** | Build Model Context Protocol servers |
 | **tech-doc-writer-manager** | Technical documentation authoring and maintenance |
-| **program-manager** | Cross-functional delivery coordination with Linear |
 | **support-engineer** | Error triage, log analysis, and incident investigation |
 | **material-ux-designer** | UI/UX guidance based on Material Design |
 | **svg-designer** | Create logos, icons, and vector illustrations |
+
+### Utility Skills (No confirmation required)
+
+| Skill | Purpose |
+|-------|---------|
+| **project-coordinator** | Ticket CRUD with DoR/DoD enforcement |
+| **agent-skill-coordinator** | Role registry and routing decisions |
 
 ## Skill Workflow Layers
 
@@ -71,49 +95,62 @@ LAYER 4: QUALITY ASSURANCE
 
 LAYER 5: DOCUMENTATION & DELIVERY
   ├── Tech Doc Writer → API docs, guides
-  └── Program Manager → Linear tickets, delivery
+  └── Program Manager → Delivery coordination
 ```
 
 ## Structure
 
 ```
 skills/
-├── _shared/              # Cross-skill references and templates
-│   └── references/
+├── _shared/references/
+│   ├── boilerplate-global-claude-md.md   # → ~/.claude/CLAUDE.md
+│   ├── boilerplate-project-claude-md.md  # → project/claude.md
+│   ├── definition-of-ready.md
+│   └── definition-of-done.md
 ├── <skill-name>/
 │   ├── SKILL.md          # Main skill definition
-│   ├── references/       # Skill-specific guidelines
-│   └── assets/           # Templates and schemas
+│   ├── skill.yaml        # Skill configuration (source of truth)
+│   └── references/       # Skill-specific guidelines
 ```
 
-## Using the Boilerplate
+## Configuration Files
 
-The boilerplate (`_shared/references/boilerplate-claude-md.md`) is a template for your project's `claude.md`. It enforces:
+### Global (`~/.claude/CLAUDE.md`)
 
-### First Action
-Skills must be invoked before any response. No freeform chat.
+Universal framework rules:
+- PM as entry point
+- Role declaration (`[ROLE_NAME]` prefix)
+- Routing flow (PM → ASC → role, no pause)
+- Drive/Collab mode protocols
+- Skill boundary enforcement
+- Role categories and activation rules
 
-### Project Scope
-Required sections that skills check before acting:
+### Project (`claude.md`)
 
-- **Team Context** — Team slug for branch names, ticket system (`linear`/`github`/`none`), main branch
-- **Domain Ownership** — Who owns what. Skills cannot create tickets or make decisions outside owned domains.
-- **Active Roles** — Which skills are enabled. Skills not listed cannot be invoked.
-- **Cross-Domain Protocol** — How to handle work outside your domain (flag, don't action)
+Project-specific configuration:
+- `uses: yoshi-skills-framework` — Activates global rules
+- Skills Path — Where to find skill files
+- Team Context — Slug, ticket system, main branch
+- Domain Ownership — Who owns what
+- Active Roles — Which skills are enabled
+- Coding Standards — Project-specific rules
 
-### Naming Rules
-- Plan names: Feature description only. No dates/quarters/sprints.
-- Branch names: `{type}/{team-slug}/{TICKET-ID}-{description}`
+## Modes
 
-### Ticket Requirements
-All tickets need Technical Spec (MUST/MUST NOT/SHOULD) + Gherkin scenarios. PM blocks creation without these.
+### Standard Mode
+Roles require user confirmation before proceeding.
 
-### Skill Behavior
-1. Prefix responses with `[ROLE_NAME]`
-2. Refuse work if Project Scope undefined
-3. Check domain ownership before acting
-4. Confirm base branch before creating feature branches
+### Drive Mode
+User types `DRIVE` to activate. Workers skip confirmation and proceed immediately. PM verifies DoR/DoD.
+
+### Collab Mode
+Multiple roles collaborate. Messages prefixed with `🤝` before role prefix.
+
+### Exploration Mode
+User-directed discovery. PM tracks and documents afterward.
 
 ## Invocation
 
-Skills are invoked via slash commands: `/technical-product-owner`, `/solutions-architect`, etc.
+Skills are invoked via slash commands: `/program-manager`, `/technical-product-owner`, `/solutions-architect`, etc.
+
+Default entry: All requests go to PM first, which routes via ASC.
