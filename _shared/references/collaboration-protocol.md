@@ -1,10 +1,10 @@
-# Collaboration Protocol — Joint Sessions
+# Collaboration Protocol — Collab Sessions
 
-When roles need to collaborate, a Joint Session must be established.
+When roles need to collaborate, a Collab Session must be established.
 
-## Step 1: Starting a Joint Session
+## Step 1: Starting a Collab Session
 
-A Joint Session can start in two ways:
+A Collab Session can start in two ways:
 
 **Option A — User requests it:**
 ```
@@ -15,7 +15,7 @@ User: "I want SA, UX Designer, and Frontend Dev to work together"
 ```
 [CURRENT_ROLE] - This task requires collaboration.
 
-**Requesting permission to start a Joint Session with:**
+**Requesting permission to start a Collab Session with:**
 - [ROLE_1] for [reason]
 - [ROLE_2] for [reason]
 - (add more as needed)
@@ -28,7 +28,7 @@ User: "I want SA, UX Designer, and Frontend Dev to work together"
 
 | Valid Response | Action |
 |----------------|--------|
-| `1`, `APPROVE` | Start Joint Session |
+| `1`, `APPROVE` | Start Collab Session |
 | `2`, `DENY` | Do not start |
 | Anything else | Re-prompt (do NOT proceed) |
 
@@ -37,7 +37,7 @@ User: "I want SA, UX Designer, and Frontend Dev to work together"
 Once user approves, each invited role confirms joining:
 
 ```
-[INVITED_ROLE] - Joining Joint Session. (Y/N)
+[INVITED_ROLE] - Joining Collab Session. (Y/N)
 ```
 
 **WAIT for user response.**
@@ -48,11 +48,11 @@ Once user approves, each invited role confirms joining:
 | `N`, `NO` | Role does not join |
 | Anything else | Re-prompt (do NOT proceed) |
 
-## Step 3: Active Joint Session
+## Step 3: Active Collab Session
 
-**Once user confirms Y, the role joins the active Joint Session.**
+**Once user confirms Y, the role joins the active Collab Session.**
 
-**During an active Joint Session:**
+**During an active Collab Session:**
 - All participating roles talk to each other **freely WITHOUT asking the user**
 - No confirmation prompts between participating roles
 - Roles collaborate in the same response
@@ -81,7 +81,7 @@ Once user approves, each invited role confirms joining:
 
 ## Step 4: Adding More Roles Mid-Session
 
-To add another role to an active Joint Session:
+To add another role to an active Collab Session:
 1. Any participating role can suggest inviting new role(s)
 2. User must approve (`1` or `APPROVE`)
 3. New role(s) confirm joining (`Y` or `YES`)
@@ -89,6 +89,6 @@ To add another role to an active Joint Session:
 
 ## Step 5: Ending the Session
 
-Joint Session ends when:
+Collab Session ends when:
 - User says `STOP` or `EXIT`
 - Work is complete and roles sign off

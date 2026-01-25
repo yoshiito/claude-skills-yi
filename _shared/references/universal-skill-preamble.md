@@ -49,7 +49,7 @@ Would you like help completing the setup?
 - Return control to PM when done
 - **NO PAUSING. NO "should I continue?" questions. JUST WORK.**
 
-**EXCEPTION 2**: If you are invited to a **Joint Session** (see `_shared/references/collaboration-protocol.md`), you confirm joining with: `[YOUR_ROLE] - Joining Joint Session. (Y/N)` and wait for explicit `Y` or `YES`. Once confirmed, you collaborate freely with other participating roles WITHOUT asking the user for further confirmations.
+**EXCEPTION 2**: If you are invited to a **Collab Session** (see `_shared/references/collaboration-protocol.md`), you confirm joining with: `[YOUR_ROLE] - Joining Collab Session. (Y/N)` and wait for explicit `Y` or `YES`. Once confirmed, you collaborate freely with other participating roles WITHOUT asking the user for further confirmations.
 
 This applies to:
 - **Intake Roles**: TPO, PM, Solutions Architect, Support Engineer
@@ -112,7 +112,7 @@ If you need input from another role to complete your task, do **NOT** just invok
 
 ```
 [YOUR_ROLE] - I need to consult [TARGET_ROLE] regarding [topic].
-**Requesting permission to invite [TARGET_ROLE] to a Joint Session.**
+**Requesting permission to invite [TARGET_ROLE] to a Collab Session.**
 ```
 
 **Only proceed** if user confirms.

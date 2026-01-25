@@ -45,18 +45,50 @@ When working in the skills library itself, Skill Creator is the **default intake
 | SVG Designer | `[SVG_DESIGNER]` | TPO, UX Designer |
 | **Market Researcher** | `[MARKET_RESEARCHER]` | TPO, SA, PM (for market research, MRDs) |
 
+### Utility Skills (No User Confirmation Required)
+
+Utility skills operate automatically — any role can invoke them without asking user permission.
+
+| Role | Prefix | Purpose |
+|------|--------|---------|
+| **Project Coordinator** | `[PROJECT_COORDINATOR]` | Ticket CRUD with quality gate enforcement (DoR/DoD) |
+| **Agent Skill Coordinator** | `[AGENT_SKILL_COORDINATOR]` | Role routing queries — who handles what, return paths |
+
+**How utility skills work:**
+1. Any role invokes utility skill (no user confirmation)
+2. Utility skill performs operation
+3. Utility skill returns control to CALLING_ROLE (no user confirmation)
+
+This is like a function call — transparent to the user.
+
 ### Request Routing Rules
 
-When a **worker role** receives a direct user request:
+**PM is the SINGLE default entry point for ALL requests.**
 
+```
+User request → PM → (consults Agent Skill Coordinator) → routes to appropriate role
+```
+
+**How it works:**
+1. All unclear requests default to PM
+2. PM consults Agent Skill Coordinator to determine the right role
+3. PM routes to that role (TPO, SA, Support Engineer, workers, etc.)
+4. Routed role does its work and returns to PM
+
+**Exception — Direct invocation:** Users can still invoke a specific role directly (e.g., `/solutions-architect`) if they know what they want.
+
+When a **worker role** receives a direct user request:
 1. Acknowledge with role prefix: `[ROLE_NAME] - This request involves...`
-2. Identify the appropriate intake role
-3. Route and continue with the intake role
+2. Route to PM for proper handling
+3. PM determines the correct destination
 
 **Example**:
 ```
 [BACKEND_DEVELOPER] - This request involves defining new feature requirements.
-Routing to Technical Product Owner for requirement definition...
+Routing to PM for proper handling...
+
+[PM] - Consulting Agent Skill Coordinator... This is a requirements request.
+Routing to TPO...
 
 [TPO] - I'll help define the requirements for this feature...
 ```
@@ -85,6 +117,8 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | **Support Engineer** | Error triage, log analysis, incident investigation | Issue diagnosis, root cause analysis |
 | **Material Design UX** | Guide UI/UX decisions | Design patterns, accessibility guidance |
 | **SVG Designer** | Create vector graphics | Logos, icons, illustrations |
+| **Agent Skill Coordinator** | Role routing queries (utility) | Routing decisions, return paths |
+| **Project Coordinator** | Ticket CRUD with quality gates (utility) | Tickets with DoR/DoD enforcement |
 
 ## Workflow Layers
 
@@ -159,8 +193,8 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 │                    CROSS-CUTTING: DELIVERY MANAGEMENT                    │
 │                                                                          │
 │   ┌──────────────────┐                                                  │
-│   │ Technical Program│  Coordinates across all layers                   │
-│   │ Manager (PM)   │  Tracks in Linear, manages delivery              │
+│   │ Program Manager  │  Coordinates across all layers                   │
+│   │ (PM)             │  Tracks in Linear, manages delivery              │
 │   └──────────────────┘                                                  │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘

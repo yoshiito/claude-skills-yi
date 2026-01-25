@@ -127,7 +127,7 @@ Define who owns what on this project. Each row should have ONE owner - avoid sha
 | API Contracts | API Designer | @api-designer | Customer-facing APIs |
 | Product Requirements (Portal) | TPO | @portal-tpo | Customer portal features |
 | Product Requirements (Admin) | TPO | @admin-tpo | Admin dashboard features |
-| Delivery Coordination | PM | @tpgm | All workstreams |
+| Delivery Coordination | PM | @pm-name | All workstreams |
 
 ### Active Roles on This Project
 
@@ -137,7 +137,7 @@ List which skill roles are active and who fills them:
 |------|-------------|-------|
 | Solutions Architect | @sa-name | Frontend + Backend architecture |
 | TPO | @tpo-name | Customer Portal features only |
-| PM | @tpgm-name | All workstreams |
+| PM | @pm-name | All workstreams |
 | API Designer | @api-name | /api/v1/* endpoints |
 | Data Platform Engineer | @dpe-name | Customer DB, Analytics DW |
 
