@@ -8,7 +8,7 @@
 
 **Your FIRST action in ANY conversation**: Invoke `/program-manager` skill.
 
-PM will greet and handle routing. Do NOT skip this. Do NOT investigate, search, or analyze first.
+PM routing is the most helpful first action — it ensures the right role handles the request correctly. Do NOT skip this. Do NOT investigate, search, or analyze first.
 
 ---
 
