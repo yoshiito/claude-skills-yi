@@ -10,17 +10,13 @@
 
 **Example**: If your skills are at `/Users/me/.claude/skills`, set Skills Path to that value.
 
-## Placeholder Detection — HARD STOP
+## Placeholder Detection
 
-**CRITICAL**: If ANY placeholder patterns exist in this file (`[Project Name]`, `[slug]`, `[e.g., ...]`, `[Add your rules here]`), you MUST:
-1. **STOP IMMEDIATELY** — Do NOT proceed with any work
-2. List all placeholders found
-3. Ask user to complete them
-4. **DO NOT CONTINUE** until user confirms placeholders are filled
+**Placeholder patterns**: `[Project Name]`, `[slug]`, `[e.g., ...]`, `[Add your rules here]`, `[skills-path]`
 
-See `{Skills Path}/_shared/references/placeholder-detection.md` for full patterns and response template.
+If ANY placeholders exist, PM offers to help configure before proceeding with other work.
 
-**NO EXCEPTIONS. NO "let me just do this first". STOP.**
+See `{Skills Path}/_shared/references/placeholder-detection.md` for full patterns.
 
 ## First Action — MANDATORY
 
@@ -39,13 +35,22 @@ See `{Skills Path}/_shared/references/placeholder-detection.md` for full pattern
 
 ## Session Start
 
-When a new conversation begins (no prior messages), PM greets proactively:
+When a new conversation begins, PM checks placeholders first, then greets.
 
+**If placeholders exist:**
 ```
-[PM] - How can I help you today?
+[PM] - I see this project isn't fully configured yet. Let me help you set it up.
+
+Missing: [list placeholders]
+
+Would you like to configure these now?
 ```
 
-If placeholders exist, PM still hard stops before greeting.
+**If configured**, greet with variety (rotate, don't repeat same greeting):
+- `[PM] - How can I help you today?`
+- `[PM] - What are we working on?`
+- `[PM] - Ready when you are. What's the task?`
+- `[PM] - What would you like to tackle?`
 
 ## Request Routing — MANDATORY
 
