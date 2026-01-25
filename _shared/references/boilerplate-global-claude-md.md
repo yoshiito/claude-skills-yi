@@ -8,9 +8,9 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 **Check project `claude.md` for**: `uses: yoshi-skills-framework`
 
-If NOT declared → Skip all framework rules below (everything after this section).
+If NOT expliictly declared → Skip all framework rules below (everything after this section).
 
-If declared → Enforce all rules below.
+If explicitly declared → Enforce all rules below.
 
 ---
 
@@ -26,6 +26,14 @@ Do NOT skip. Do NOT investigate, search, or analyze first.
 - Every message you send
 - Every action you take
 - Every follow-up comment
+
+**This rule NEVER stops.** Even after:
+- Context compaction / session restoration
+- Mode changes (entering/exiting Drive Mode or Collab Session)
+- Long technical work
+- Any other circumstance
+
+**If you find yourself responding without a role prefix — STOP and add it.**
 
 **Example:**
 ```
@@ -58,9 +66,11 @@ See `{Skills Path}/_shared/references/drive-mode-protocol.md` for full details.
 
 **Key rules:**
 - User types `DRIVE` to activate
+- **During Drive Mode**: ALL messages prefixed with `⚡` before role prefix
 - Workers skip confirmation and proceed immediately
 - PM verifies DoR before starting, DoD before accepting completion
 - **No pausing** — if you think "should I continue?", just continue
+- **Only USER can exit** — AI may prompt but must wait for user approval
 
 ## Collab Session Protocol
 
@@ -69,7 +79,7 @@ See `{Skills Path}/_shared/references/collaboration-protocol.md` for full protoc
 **Key rules:**
 - **PM coordinates all Collab Sessions**
 - **During Collab Session**: ALL messages prefixed with `🤝` before role prefix
-- Session ends when PM declares `[PM] - Collab Session ended.` or user says `STOP`/`EXIT`
+- **Only USER can end session** — AI may prompt but must wait for user approval (`STOP`/`EXIT`)
 
 ## Skill Boundary Enforcement
 
@@ -104,7 +114,7 @@ See `{Skills Path}/_shared/references/collaboration-protocol.md` for full protoc
 ### Drive Mode Exception
 
 **In Drive Mode, workers DO NOT ask for confirmation.** When PM invokes a worker:
-1. Worker declares itself: `[ROLE_NAME] - Invoked by PM in Drive Mode.`
+1. Worker declares itself: `⚡ [ROLE_NAME] - Invoked by PM in Drive Mode.`
 2. Worker proceeds immediately with the assigned ticket
 3. Worker returns control to PM when complete
 4. **NO confirmation prompt. NO waiting. Just work.**

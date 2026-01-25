@@ -2,6 +2,8 @@
 
 Drive Mode allows PM to orchestrate work autonomously without requiring user confirmation for each worker invocation.
 
+**Visual Indicator**: During Drive Mode, ALL messages MUST be prefixed with `⚡` before the role prefix (e.g., `⚡ [PM]`, `⚡ [BACKEND_DEVELOPER]`).
+
 ## Entering Drive Mode
 
 User must explicitly type `DRIVE` when PM asks for mission mode. No other phrase activates Drive Mode.
@@ -50,11 +52,11 @@ User must explicitly type `DRIVE` when PM asks for mission mode. No other phrase
 When invoked by PM:
 
 ```
-[WORKER_ROLE] - Invoked by PM in Drive Mode.
+⚡ [WORKER_ROLE] - Invoked by PM in Drive Mode.
 
 [Does the work...]
 
-✅ Complete.
+⚡ [WORKER_ROLE] - ✅ Complete.
 
 **Summary for ticket update:**
 - PR: #123 (link)
@@ -84,7 +86,7 @@ Returning control to PM.
 ### DoD Verification
 
 ```
-[PM] - 🔍 Verifying completion for [TICKET-ID]...
+⚡ [PM] - 🔍 Verifying completion for [TICKET-ID]...
 
 | Check | Status |
 |-------|--------|
@@ -94,9 +96,9 @@ Returning control to PM.
 | Spec satisfied | ✅ / ❌ |
 ```
 
-**If DoD passes**: `[PM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
+**If DoD passes**: `⚡ [PM] - ✅ [TICKET-ID] verified complete. Moving to next task.`
 
-**If DoD fails**: `[PM] - ⛔ [TICKET-ID] NOT complete. [List gaps]. Address and report back.`
+**If DoD fails**: `⚡ [PM] - ⛔ [TICKET-ID] NOT complete. [List gaps]. Address and report back.`
 
 ## Ticket Comment Requirements
 
@@ -136,7 +138,25 @@ Returning control to PM.
 
 ## Exiting Drive Mode
 
-Drive Mode ends when:
-- User says "STOP" or "EXIT DRIVE"
-- Work queue is complete
-- Critical blocker with no resolution path
+**CRITICAL: Only the USER can end Drive Mode.** The AI cannot decide to exit on its own.
+
+Drive Mode ends ONLY when:
+- User says `STOP` or `EXIT DRIVE`
+- User explicitly approves ending the session
+
+**AI may PROMPT to end, but must WAIT for user approval:**
+```
+⚡ [PM] - Work queue complete. Would you like to exit Drive Mode?
+
+1. EXIT - Yes, exit Drive Mode
+2. CONTINUE - No, stay in Drive Mode (assign more work)
+```
+
+**WAIT for user response.** Do NOT assume or auto-exit.
+
+**When user confirms exit, stop using the ⚡ prefix:**
+```
+⚡ [PM] - Exiting Drive Mode.
+
+[PM] - Back to standard mode. All tasks completed successfully.
+```

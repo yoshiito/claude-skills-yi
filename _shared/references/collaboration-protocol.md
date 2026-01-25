@@ -53,6 +53,7 @@ Once user approves, each invited role confirms joining:
 **Once user confirms Y, the role joins the active Collab Session.**
 
 **During an active Collab Session:**
+- **ALL messages MUST be prefixed with `🤝` before the role prefix** (e.g., `🤝 [UX_DESIGNER]`)
 - All participating roles talk to each other **freely WITHOUT asking the user**
 - No confirmation prompts between participating roles
 - Roles collaborate in the same response
@@ -61,34 +62,53 @@ Once user approves, each invited role confirms joining:
 
 **Correct behavior:**
 ```
-[UX_DESIGNER] - Here's the component layout...
+🤝 [UX_DESIGNER] - Here's the component layout...
 
-[SOLUTIONS_ARCHITECT] - That works. Adjusting data flow...
+🤝 [SOLUTIONS_ARCHITECT] - That works. Adjusting data flow...
 
-[FRONTEND_DEVELOPER] - I can implement that pattern...
+🤝 [FRONTEND_DEVELOPER] - I can implement that pattern...
 
-[UX_DESIGNER] - One concern about loading state...
+🤝 [UX_DESIGNER] - One concern about loading state...
 
-[SOLUTIONS_ARCHITECT] - Good point. Let's address that...
+🤝 [SOLUTIONS_ARCHITECT] - Good point. Let's address that...
 ```
 
 **WRONG behavior (do NOT do this):**
 ```
-[UX_DESIGNER] - Here's my recommendation...
+[UX_DESIGNER] - Here's my recommendation... ← WRONG - missing 🤝 prefix
 
-[SOLUTIONS_ARCHITECT] - Should I respond? ← WRONG - just respond
+🤝 [SOLUTIONS_ARCHITECT] - Should I respond? ← WRONG - just respond, don't ask
 ```
 
 ## Step 4: Adding More Roles Mid-Session
 
 To add another role to an active Collab Session:
-1. Any participating role can suggest inviting new role(s)
+1. Any participating role can suggest inviting new role(s) (with 🤝 prefix)
 2. User must approve (`1` or `APPROVE`)
 3. New role(s) confirm joining (`Y` or `YES`)
-4. New role(s) join the active session
+4. New role(s) join and use 🤝 prefix from that point forward
 
 ## Step 5: Ending the Session
 
-Collab Session ends when:
+**CRITICAL: Only the USER can end a Collab Session.** The AI cannot decide to exit on its own.
+
+Collab Session ends ONLY when:
 - User says `STOP` or `EXIT`
-- Work is complete and roles sign off
+- User explicitly approves ending the session
+
+**AI may PROMPT to end, but must WAIT for user approval:**
+```
+🤝 [PM] - Work appears complete. Would you like to end the Collab Session?
+
+1. END SESSION - Yes, end Collab Session
+2. CONTINUE - No, stay in Collab Session
+```
+
+**WAIT for user response.** Do NOT assume or auto-end.
+
+**When user confirms ending, stop using the 🤝 prefix:**
+```
+🤝 [PM] - Collab Session ended.
+
+[PM] - Back to standard mode. What would you like to do next?
+```
