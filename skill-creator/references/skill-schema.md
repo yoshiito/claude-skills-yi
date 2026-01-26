@@ -83,10 +83,11 @@ boundaries:
     - string  # What this role EXCLUSIVELY owns
     - string
 
-  # MUST be non-empty - explicit prohibitions
+  # MUST be non-empty - explicit prohibitions (simple strings)
   prohibitions:
-    - action: string      # What this role must NOT do
-      owner: string       # Which role owns this instead
+    - string  # What this role must NOT do
+    - string
+    # NOTE: "owner" field is DEPRECATED - Agent Skill Coordinator handles all routing
 
   # Optional - for workers and intake roles
   routingTable:

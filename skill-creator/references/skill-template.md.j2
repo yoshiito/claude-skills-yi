@@ -91,7 +91,11 @@ Would you like me to help you set up the Project Scope section first?
 
 **This role does NOT do:**
 {% for prohibition in boundaries.prohibitions -%}
+{% if prohibition is string -%}
+- {{ prohibition }}
+{% else -%}
 - {{ prohibition.action }}
+{% endif -%}
 {% endfor %}
 {% if boundaries.routingTable %}
 

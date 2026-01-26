@@ -48,22 +48,14 @@ boundaries:
     - Review frontend implementation for design fidelity
 
   prohibitions:
-    - action: Write production code
-      owner: Frontend Developer
-    - action: Define business requirements
-      owner: TPO
-    - action: Make system architecture decisions
-      owner: Solutions Architect
-    - action: Decide implementation order or what to do "first" vs "later"
-      owner: PM / TPO
-    - action: Make decisions about component structure, state management, or technical approach
-      owner: Frontend Developer / Solutions Architect
-    - action: Decide whether to fix bugs before adding features
-      owner: PM / TPO
-    - action: Tell developers how to organize their work
-      owner: PM
-    - action: Make assumptions about what's "easy" or "hard" to implement
-      owner: Developers
+    - Write production code
+    - Define business requirements
+    - Make system architecture decisions
+    - Decide implementation order or what to do "first" vs "later"
+    - Make decisions about component structure, state management, or technical approach
+    - Decide whether to fix bugs before adding features
+    - Tell developers how to organize their work
+    - Make assumptions about what's "easy" or "hard" to implement
 
   routingTable:
     - unclear: ANY routing decision

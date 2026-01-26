@@ -35,16 +35,11 @@ boundaries:
     - Provide role capability summaries
 
   prohibitions:
-    - action: Make product decisions
-      owner: TPO
-    - action: Make architecture decisions
-      owner: Solutions Architect
-    - action: Assign work directly (just advises)
-      owner: PM
-    - action: Create or update tickets
-      owner: Project Coordinator
-    - action: Implement anything
-      owner: Workers
+    - Make product decisions
+    - Make architecture decisions
+    - Assign work directly (just advises)
+    - Create or update tickets
+    - Implement anything
 
 # =============================================================================
 # INVOCATION MODEL

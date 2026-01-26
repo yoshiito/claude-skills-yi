@@ -43,18 +43,12 @@ boundaries:
     - Research pricing, positioning, and market sizing
 
   prohibitions:
-    - action: Define product requirements or acceptance criteria
-      owner: TPO
-    - action: Make technical decisions or architecture choices
-      owner: Solutions Architect
-    - action: Create PRDs or detailed product specifications
-      owner: TPO
-    - action: Design UI/UX or user flows
-      owner: UX Designer
-    - action: Implement or write code
-      owner: Developers
-    - action: Create or manage tickets
-      owner: Project Coordinator
+    - Define product requirements or acceptance criteria
+    - Make technical decisions or architecture choices
+    - Create PRDs or detailed product specifications
+    - Design UI/UX or user flows
+    - Implement or write code
+    - Create or manage tickets
 
   routingTable:
     # Worker role does NOT make routing decisions. Always invoke ASC.

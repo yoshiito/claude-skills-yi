@@ -126,7 +126,7 @@ def validate_schema(data: dict, skill_name: str) -> list[str]:
                 if not isinstance(action, str):
                     errors.append(f"boundaries.authorizedActions[{i}] must be string")
 
-        # prohibitions must be non-empty list with 'action' field
+        # prohibitions must be non-empty list of strings (preferred) or objects with 'action'
         prohibitions = boundaries.get("prohibitions", [])
         if not prohibitions:
             errors.append("boundaries.prohibitions cannot be empty")
@@ -134,10 +134,18 @@ def validate_schema(data: dict, skill_name: str) -> list[str]:
             errors.append("boundaries.prohibitions must be a list")
         else:
             for i, prohibition in enumerate(prohibitions):
-                if not isinstance(prohibition, dict):
-                    errors.append(f"boundaries.prohibitions[{i}] must be an object with 'action' field")
-                elif "action" not in prohibition:
-                    errors.append(f"boundaries.prohibitions[{i}] missing required 'action' field")
+                if isinstance(prohibition, str):
+                    # Simple string format (preferred)
+                    pass
+                elif isinstance(prohibition, dict):
+                    # Object format - 'action' required, 'owner' deprecated (ignored)
+                    if "action" not in prohibition:
+                        errors.append(f"boundaries.prohibitions[{i}] missing required 'action' field")
+                    if "owner" in prohibition:
+                        # Warn but don't error - owner is deprecated
+                        print(f"  ⚠️  Warning: prohibitions[{i}].owner is deprecated (ASC handles routing)")
+                else:
+                    errors.append(f"boundaries.prohibitions[{i}] must be string or object with 'action'")
 
     # Validate workflow structure
     if "workflow" in data:

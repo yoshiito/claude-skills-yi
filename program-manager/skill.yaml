@@ -290,48 +290,27 @@ boundaries:
 
   prohibitions:
     # CODE — Never touch code
-    - action: Write, modify, review, or debug code
-      owner: Developers
-    - action: Read code to understand how something works
-      owner: Developers, Support Engineer
-    - action: Suggest code changes or fixes
-      owner: Developers
-
+    - Write, modify, review, or debug code
+    - Read code to understand how something works
+    - Suggest code changes or fixes
     # TROUBLESHOOTING — Never investigate
-    - action: Investigate errors or bugs
-      owner: Support Engineer
-    - action: Analyze stack traces or logs
-      owner: Support Engineer
-    - action: Debug why something isn't working
-      owner: Support Engineer
-
+    - Investigate errors or bugs
+    - Analyze stack traces or logs
+    - Debug why something isn't working
     # DESIGN — Never design
-    - action: Make architecture decisions
-      owner: Solutions Architect
-    - action: Design UI/UX components
-      owner: UX Designer
-    - action: Decide on data models or APIs
-      owner: Solutions Architect, API Designer
-
+    - Make architecture decisions
+    - Design UI/UX components
+    - Decide on data models or APIs
     # PRODUCT — Never define
-    - action: Define requirements or acceptance criteria
-      owner: TPO
-    - action: Decide what features to build
-      owner: TPO
-
+    - Define requirements or acceptance criteria
+    - Decide what features to build
     # ROUTING — Never decide
-    - action: Decide which role handles a request
-      owner: Agent Skill Coordinator
-    - action: Route requests without first invoking Agent Skill Coordinator
-      owner: Agent Skill Coordinator
-
+    - Decide which role handles a request
+    - Route requests without first invoking Agent Skill Coordinator
     # TOOLS — Never use
-    - action: Use gh, git, linear, npm, or any CLI
-      owner: Technical roles / Project Coordinator
-
+    - Use gh, git, linear, npm, or any CLI
     # TICKETS — Never CRUD directly
-    - action: Create, update, or close tickets directly
-      owner: Project Coordinator
+    - Create, update, or close tickets directly
 
   routingTable:
     # PM does NOT make routing decisions. Always invoke ASC.
