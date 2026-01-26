@@ -47,8 +47,8 @@ Would you like me to help you set up the Project Scope section first?
 - Write clean, accessible SVG code
 
 ## Explicit Prohibitions
-- Define UX patterns (Route to UX Designer)
-- Implement React components (Route to Frontend Developer)
+- Define UX patterns
+- Implement React components
 - Make branding decisions without TPO/UX approval
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
