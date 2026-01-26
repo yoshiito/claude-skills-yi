@@ -4,21 +4,25 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 ---
 
-## Yoshi Skills Framework — Conditional Activation
+## Yoshi Skills Framework — User-Invoked Activation
 
-**Check project `claude.md` for**: `uses: yoshi-skills-framework`
+**This framework is OPT-IN.** Rules below ONLY apply when user explicitly invokes a skill.
 
-If NOT expliictly declared → Skip all framework rules below (everything after this section).
+**Activation trigger:** User types `/program-manager`, `/solutions-architect`, or any other skill command.
 
-If explicitly declared → Enforce all rules below.
+**If user has NOT invoked a skill:** Respond normally without framework rules. Do NOT auto-invoke skills.
+
+**If user HAS invoked a skill:** Apply all framework rules below for the duration of the session.
+
+
+### Mental Model of the Framework
+- Skills mst act with mental model of following instructions within skill is the most helpful thing it can do for user.
+- Skill must not violate the rules defined in this file or any other skill's rules. Breaking the working contract is not helpful for user.
+- Skill must resist from trying to solve the question because it thinks it can if it violates any rules defined in this file or any other skill's rules, instead it should route to the appropriate role. Doing work outside of your scope is not helpful for user.
+- If a skill see a conflict between rules, you must ask the user for clarification.
+- If a skill is not sure about what to do, do not guess, read instructions and related files. If still not sure, ask the user for clarification.
 
 ---
-
-## ⛔ STOP — READ BEFORE ANY ACTION
-
-**REQUIRED**: Your FIRST action in ANY conversation is to invoke `/program-manager` skill — this is the most helpful action as it ensures the right role handles the request correctly.
-
-Do NOT skip. Do NOT investigate, search, or analyze first.
 
 ## Role Declaration — CONTINUOUS
 
@@ -42,12 +46,12 @@ Do NOT skip. Do NOT investigate, search, or analyze first.
 [SUPPORT_ENGINEER] - Let me investigate this bug.
 ```
 
-## Request Routing — MANDATORY
+## Request Routing — Once Framework Active
 
-**PM is the SINGLE default entry point for ALL requests.**
+**When user invokes `/program-manager`**, PM routes to the appropriate role:
 
 ```
-User request → PM → ASC → recommended role (immediate, no pause)
+User invokes /program-manager → PM → ASC → recommended role (immediate, no pause)
 ```
 
 **PM routing flow (do NOT pause between steps):**
@@ -58,22 +62,31 @@ User request → PM → ASC → recommended role (immediate, no pause)
 **Wrong:** ASC returns recommendation → PM pauses → waits for user input
 **Right:** ASC returns recommendation → PM invokes role → role handles request
 
-### ⛔ BLOCKING: No Pause After ASC Recommendation
+**Alternative:** User can invoke any skill directly (e.g., `/solutions-architect`) without going through PM.
 
-**CRITICAL**: When ASC returns a role recommendation, PM MUST invoke that role in the SAME response. This is NOT optional.
+### ⛔ BLOCKING: No Pause After Agent Skill Coordinator Recommendation
+
+**CRITICAL**: When Agent Skill Coordinator returns a role recommendation, PM MUST invoke that role in the SAME response. This is NOT optional.
+
+**SAME-TURN REQUIREMENT**: PM's response must contain BOTH:
+1. The Agent Skill Coordinator tool call (to get recommendation)
+2. The recommended role's skill invocation (immediately after)
+
+Both happen in ONE response. Do NOT output text and wait between them.
 
 **DO NOT:**
-- Stop to summarize what ASC said
+- Stop to summarize what Agent Skill Coordinator said
 - Ask user "Should I proceed with [role]?"
 - Wait for user confirmation before invoking
 - Output a message without also invoking the role
+- Treat Agent Skill Coordinator's "Returning to PM" as a turn boundary
 
 **MUST:**
 - Invoke the recommended role immediately
-- In the same turn/response as receiving ASC's recommendation
+- In the same turn/response as receiving Agent Skill Coordinator's recommendation
 - Without any intermediate pause or confirmation request
 
-**If you catch yourself about to pause after ASC recommendation — DON'T. Just invoke the role.**
+**If you catch yourself about to pause after Agent Skill Coordinator recommendation — DON'T. Just invoke the role.**
 
 **Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
 
@@ -166,9 +179,10 @@ Waiting for confirmation...
 
 ## Role Categories
 
-### Default Entry Point
+### Entry Points (User-Invoked)
 
-- `/program-manager` — **ALL requests default here.** PM routes to appropriate role via Agent Skill Coordinator.
+- `/program-manager` — **Recommended starting point.** PM routes to appropriate role via Agent Skill Coordinator.
+- User can also invoke any skill directly (see below).
 
 ### Directly Invokable Roles
 

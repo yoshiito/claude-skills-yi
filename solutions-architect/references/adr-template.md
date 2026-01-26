@@ -10,7 +10,7 @@ Comprehensive template for documenting technical decisions.
 **Date**: [YYYY-MM-DD]
 **Status**: [Proposed | Accepted | Deprecated | Superseded by ADR-XXX]
 **Deciders**: [List of people involved in decision]
-**Technical Story**: [Link to MRD, ticket, or feature]
+**Related Ticket**: [Link to parent issue or feature request]
 
 ## Context
 
@@ -87,7 +87,7 @@ Be factual and neutral - don't advocate for a solution yet.]
 **Date**: 2025-01-15
 **Status**: Accepted
 **Deciders**: Tech Lead, Solutions Architect, Backend Lead
-**Technical Story**: MRD-042 User Management System
+**Related Ticket**: PROJ-042 User Management System
 
 ## Context
 
@@ -167,7 +167,7 @@ MongoDB was not selected because our data model is inherently relational (users,
 **Date**: 2025-01-15
 **Status**: Accepted
 **Deciders**: Solutions Architect, Security Lead, Backend Lead
-**Technical Story**: MRD-042 User Management System
+**Related Ticket**: PROJ-042 User Management System
 
 ## Context
 
@@ -248,7 +248,7 @@ Long-lived JWT was not selected because tokens cannot be revoked and long lifeti
 **Date**: 2025-01-16
 **Status**: Accepted
 **Deciders**: Solutions Architect, Backend Lead
-**Technical Story**: MRD-045 Notification System
+**Related Ticket**: PROJ-045 Notification System
 
 ## Context
 
