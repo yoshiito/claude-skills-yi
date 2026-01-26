@@ -55,7 +55,7 @@ Would you like me to help you set up the Project Scope section first?
 - Make product decisions
 - Write implementation code
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Core Capabilities
 

@@ -63,7 +63,7 @@ Would you like me to help you set up the Project Scope section first?
 - Define product behavior or user stories
 - Implement application business logic unrelated to MCP exposure
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 
 ## Core Objective

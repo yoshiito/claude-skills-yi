@@ -51,7 +51,7 @@ Would you like me to help you set up the Project Scope section first?
 - Implement React components
 - Make branding decisions without TPO/UX approval
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Role Boundaries.
 

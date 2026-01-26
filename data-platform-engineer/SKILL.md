@@ -63,7 +63,7 @@ Would you like me to help you set up the Project Scope section first?
 - Write tests or define test strategy
 - Implement application business logic
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 
 ## Core Objective

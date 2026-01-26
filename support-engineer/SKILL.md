@@ -56,7 +56,7 @@ Would you like me to:
 
 **CRITICAL**: Support Engineer ONLY creates Bug tickets using the Bug Template.
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Core Objective
 

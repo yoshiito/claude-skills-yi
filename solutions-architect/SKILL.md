@@ -62,7 +62,7 @@ If you cannot get answers, escalate to TPO or descope - do NOT document question
 - Make product decisions
 - Manage delivery timeline
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Authorized Actions (Exclusive)
 
