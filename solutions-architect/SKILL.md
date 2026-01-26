@@ -86,8 +86,9 @@ Gather information before designing
 1. **Break architecture into implementable sub-issues**
 2. **Apply INVEST checklist to each sub-issue**
 3. **Specify content for each sub-issue (Technical Spec + Gherkin)**
-4. **Identify relationships (parent, blockedBy)**
-5. **Route to Agent Skill Coordinator for ticket creation**
+4. **Create mandatory child tickets** (see Ticket Hierarchy Requirements below)
+5. **Identify relationships (parent, blockedBy)**
+6. **Route to Agent Skill Coordinator for ticket creation**
 
 ### Phase 4: Validation
 
@@ -110,11 +111,22 @@ Before marking work complete:
 
 ### Before Specifying Sub-Issues
 
-- [ ] INVEST checklist passed for each sub-issue
-- [ ] All required sections populated
+- [ ] INVEST checklist passed for each container
+- [ ] All required sections populated in container
 - [ ] No UI visuals in Technical Spec (reference UX deliverables instead)
 - [ ] Parent and blockedBy relationships identified
-- [ ] Assigned Role specified for each
+- [ ] **All 6 activity subtasks specified** for each container:
+  - [ ] `[Dev]` - Implementation
+  - [ ] `[Code Review]` - Code review
+  - [ ] `[Test]` - Testing
+  - [ ] `[Docs]` - Documentation (if user-facing)
+  - [ ] `[SA Review]` - SA technical acceptance
+  - [ ] `[UAT]` - TPO user acceptance
+- [ ] **Epic-level tickets specified**:
+  - [ ] `[Test] E2E Regression`
+  - [ ] `[Docs] Feature Guide`
+  - [ ] `[SA Review] Architecture`
+  - [ ] `[UAT] Feature Acceptance`
 
 ### After Sub-Issue Creation
 
@@ -149,13 +161,91 @@ Before completing work breakdown, verify each sub-issue:
 | **Valuable** | Moves feature toward Done? | Reconsider scope |
 | **Estimable** | Bounded scope, known files? | Break down further |
 | **Small** | Single logical change? | Split into smaller units |
-| **Testable** | Gherkin scenarios verifiable? | Add specific scenarios |
+| **Testable** | Gherkin verifiable? All 6 activity subtasks? | Add scenarios + create all subtasks |
 
 ### After Design Complete
 
 Once sub-issue content is fully specified, route to Agent Skill Coordinator for ticket creation.
 
 **DO NOT** execute ticket operations or create planning files directly.
+
+## Ticket Hierarchy Requirements
+
+**CRITICAL**: INVEST requires each ticket to be **Testable**. Every Story/Task/Bug is a **container** with explicit activity subtasks for full lifecycle tracking.
+
+### Mandatory Activity Subtasks (Story/Task/Bug Level)
+
+Every `[Backend]`, `[Frontend]`, or `[Bug]` container MUST have **all 6 activity subtasks**:
+
+```
+[Backend] Add password reset endpoint        ← Container (groups all activities)
+├── [Dev] Add password reset endpoint        ← Implementation
+├── [Code Review] Add password reset endpoint ← Code review
+├── [Test] Add password reset endpoint       ← Testing (QA writes all tests)
+├── [Docs] Add password reset endpoint       ← Documentation
+├── [SA Review] Add password reset endpoint  ← SA technical acceptance
+└── [UAT] Add password reset endpoint        ← TPO user acceptance
+```
+
+| Subtask | Worker | Purpose | Creates PR |
+|---------|--------|---------|------------|
+| `[Dev]` | Developer | Implementation | ✅ Yes |
+| `[Code Review]` | Code Reviewer | Review implementation | No |
+| `[Test]` | Tester | Unit + functional tests | ✅ Yes |
+| `[Docs]` | Tech Doc Writer | Documentation | ✅ Yes |
+| `[SA Review]` | Solutions Architect | Technical acceptance | No |
+| `[UAT]` | TPO | User acceptance | No |
+
+### Epic-Level Cross-Cutting Tickets
+
+In addition to story-level activities, each Epic MUST have:
+
+| Ticket | Worker | Purpose |
+|--------|--------|---------|
+| `[Test] {Feature} E2E Regression` | Tester | Full feature integration/regression testing |
+| `[Docs] {Feature} Guide` | Tech Doc Writer | Comprehensive feature documentation |
+| `[SA Review] {Feature} Architecture` | Solutions Architect | Architecture compliance across all stories |
+| `[UAT] {Feature} Acceptance` | TPO | Feature acceptance |
+
+### Workflow Sequence (per Story/Task/Bug)
+
+```
+[Dev] → [Code Review] → [Test] → [Docs] → [SA Review] → [UAT] → Container Done
+  ↓          ↓            ↓        ↓          ↓           ↓
+Developer  Code       Tester   Tech Doc      SA         TPO
+           Reviewer            Writer
+```
+
+**blockedBy relationships (activity chain):**
+- `[Dev]` → None (starts first)
+- `[Code Review]` → `[Dev]`
+- `[Test]` → `[Code Review]`
+- `[Docs]` → `[Test]`
+- `[SA Review]` → `[Docs]`
+- `[UAT]` → `[SA Review]`
+- Container → All activity subtasks
+
+**Epic-level blockedBy:**
+- Epic `[Test]` → All Story/Task/Bug containers
+- Epic `[Docs]` → Epic `[Test]`
+- Epic `[SA Review]` → Epic `[Docs]`
+- Epic `[UAT]` → Epic `[SA Review]`
+
+### If PM Tool Doesn't Support 3+ Levels
+
+When the ticketing system only supports 2 levels (Epic → Story), embed activities in the ticket body:
+
+```markdown
+## Required Activities
+- [ ] [Dev] Implementation complete
+- [ ] [Code Review] Code review passed
+- [ ] [Test] Tests written and passing (Tester: {skill-name})
+- [ ] [Docs] Documentation updated (Tech Doc Writer)
+- [ ] [SA Review] Technical acceptance (SA)
+- [ ] [UAT] User acceptance (TPO)
+```
+
+PM orchestrates handoffs between workers for the same ticket.
 
 ## Sub-Issue Content Specification
 
@@ -175,12 +265,24 @@ Every sub-issue SA specifies MUST include:
 
 ### Standard Prefixes
 
+**Container Tickets:**
+
+| Prefix | Purpose |
+|--------|---------|
+| `[Backend]` | Backend implementation container |
+| `[Frontend]` | Frontend implementation container |
+| `[Bug]` | Bug fix container |
+
+**Activity Subtasks:**
+
 | Prefix | Assigned Role |
 |--------|---------------|
-| `[Backend]` | backend-fastapi-postgres-sqlmodel-developer |
-| `[Frontend]` | frontend-atomic-design-engineer |
-| `[Docs]` | tech-doc-writer-manager |
+| `[Dev]` | backend-fastapi-postgres-sqlmodel-developer / frontend-atomic-design-engineer |
+| `[Code Review]` | code-reviewer |
 | `[Test]` | backend-fastapi-pytest-tester / frontend-tester |
+| `[Docs]` | tech-doc-writer-manager |
+| `[SA Review]` | solutions-architect |
+| `[UAT]` | technical-product-owner |
 
 **CRITICAL**: Do NOT define UI visuals in Technical Spec. Reference UX deliverables in Context section.
 

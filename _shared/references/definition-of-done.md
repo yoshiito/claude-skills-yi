@@ -9,7 +9,6 @@
 | **Project Coordinator** | **ENFORCES** - rejects status=done if DoD not met |
 | **PM** | Additional verification after coordinator accepts |
 | **Workers** | Understands what "complete" means before claiming done |
-| **Code Reviewer** | Validates implementation quality |
 
 ## Enforcement Point
 
@@ -21,181 +20,155 @@
 
 **Workers cannot mark done without evidence.** Add PR link, review confirmation, test results to ticket comments first.
 
-## Definition of Done Checklist
+## Agent vs User Responsibilities
 
-### For Implementation Sub-Issues (`[Backend]`, `[Frontend]`)
+**Agents track what agents control. User actions are NOT part of agent DoD.**
 
-| Check | Required | Validation |
-|-------|----------|------------|
-| PR created (if applicable) | ✅ | Link provided in completion message |
-| PR reviewed by Code Reviewer | ✅ | Review completed, issues addressed |
-| **Code merged** | ✅ | Code is in target branch (user merges PR or direct commit) |
-| Tests written | ✅ | Covers Gherkin scenarios in ticket |
-| Tests pass | ✅ | CI green or manual confirmation |
-| Technical Spec satisfied | ✅ | All MUST/MUST NOT constraints met |
-| No regressions introduced | ✅ | Existing tests still pass |
+| Action | Who Controls | In Agent DoD? |
+|--------|-------------|---------------|
+| Write code, create PR | Agent (`[Dev]`) | Yes |
+| Review code, approve | Agent (`[Code Review]`) | Yes |
+| **Merge PR to main** | **User** | **No** |
+| **Delete branch** | **User** | **No** |
+| Write tests | Agent (`[Test]`) | Yes |
+| Write docs | Agent (`[Docs]`) | Yes |
+| SA technical review | Agent (`[SA Review]`) | Yes |
+| UAT acceptance | Agent (`[UAT]`) | Yes |
 
-### For Test Sub-Issues (`[Test]`)
+## DoD by Activity Subtask
 
-| Check | Required | Validation |
-|-------|----------|------------|
-| All Gherkin scenarios validated | ✅ | Each Given/When/Then verified |
-| Edge cases covered | ✅ | Testing Notes from ticket addressed |
-| Test results documented | ✅ | Pass/fail status with evidence |
-| Regression suite updated | ✅ | New tests added to suite |
-
-### For Documentation Sub-Issues (`[Docs]`)
+### `[Dev]` - Implementation
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| Documentation created/updated | ✅ | PR or ticket system update |
-| Matches implementation | ✅ | Reflects actual behavior |
-| Reviewed for accuracy | ✅ | Technical review completed |
+| PR created | Yes | Link in completion comment |
+| Branch convention followed | Yes | team naming convention |
+| Technical Spec satisfied | Yes | All MUST/MUST NOT met |
 
-### For Parent Issues (`[Feature]`)
+**Note**: PR merging happens AFTER Code Review approval (user action, not agent DoD).
 
-**Parent issues have a DIFFERENT DoD than sub-issues.** All sub-issues being complete does NOT mean the parent is done.
+### `[Code Review]` - Code Review
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| All sub-issues completed | ✅ | Every child sub-issue marked Done |
-| UAT criteria verified by TPO | ✅ | TPO has verified each UAT criterion |
-| Feature works end-to-end | ✅ | Integration verified in target environment |
-| Documentation complete | ✅ | User-facing docs updated (if applicable) |
+| Code review completed | Yes | Review documented in comment |
+| No Critical/High issues | Yes | All blocking issues resolved |
+| PR approved | Yes | Approval confirmed in comment |
 
-**CRITICAL**: Only TPO can mark a parent issue as Done after UAT verification.
+**Note**: After approval, **user merges PR and deletes branch**. This is a user action.
 
-## DoD Enforcement
+### `[Test]` - Testing
 
-### First Line: Project Coordinator (Automatic)
+| Check | Required | Validation |
+|-------|----------|------------|
+| Unit tests written | Yes | Tests documented |
+| Functional tests written | Yes | Covers Gherkin scenarios |
+| All tests passing | Yes | CI green or manual confirmation |
+| Test PR created | Yes | Link in completion comment |
 
-When worker invokes `[PROJECT_COORDINATOR] Update #NUM: Status=done`:
+**Note**: User merges test PR.
+
+### `[Docs]` - Documentation
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| Documentation created | Yes | Link or location provided |
+| Matches implementation | Yes | Reflects actual behavior |
+| Review completed | Yes | Technical review done |
+| Docs PR created | Yes | Link in completion comment |
+
+**Note**: User merges docs PR.
+
+### `[SA Review]` - SA Technical Acceptance
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| Architecture compliance | Yes | ADR patterns followed |
+| Integration validated | Yes | Integration points correct |
+| Technical acceptance | Yes | SA approval confirmed |
+
+### `[UAT]` - TPO User Acceptance
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| UAT criteria verified | Yes | Each criterion checked |
+| User acceptance confirmed | Yes | TPO approval confirmed |
+| No open issues | Yes | No user-facing issues remain |
+
+## DoD for Container Tickets
+
+### `[Backend]`, `[Frontend]`, `[Bug]` Containers
+
+**Containers are Done when ALL 6 activity subtasks are Done.**
+
+| Check | Required |
+|-------|----------|
+| `[Dev]` subtask Done | Yes |
+| `[Code Review]` subtask Done | Yes |
+| `[Test]` subtask Done | Yes |
+| `[Docs]` subtask Done | Yes |
+| `[SA Review]` subtask Done | Yes |
+| `[UAT]` subtask Done | Yes |
+
+## DoD for Epic/Feature
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| All containers Done | Yes | Every child container Done |
+| Epic `[Test]` Done | Yes | E2E regression complete |
+| Epic `[Docs]` Done | Yes | Feature guide complete |
+| Epic `[SA Review]` Done | Yes | Architecture verified |
+| Epic `[UAT]` Done | Yes | TPO acceptance complete |
+| Caller is TPO | Yes | Only TPO can close epics |
+
+## DoD Enforcement Flow
+
+### Activity Subtask Completion
 
 ```
-[PROJECT_COORDINATOR] - 🔍 Verifying Definition of Done for #NUM...
-
-Fetching ticket from system...
-Reading comments for completion evidence...
+[PROJECT_COORDINATOR] - Verifying Definition of Done for #NUM...
 
 | Check | Status | Evidence |
 |-------|--------|----------|
-| PR created | ✅ / ❌ | [link or "Not found"] |
-| PR merged | ✅ / ❌ | [merged status or "Not merged"] |
-| Code reviewed | ✅ / ❌ | [reviewer or "Not found"] |
-| Tests documented | ✅ / ❌ | [mention or "Not found"] |
+| [check 1] | Pass/Fail | [where found] |
+| [check 2] | Pass/Fail | [where found] |
 ```
 
 **If checks fail**: REJECT with missing items, do NOT update status.
 
-### Second Line: PM (Drive Mode)
-
-In Drive Mode, PM may do additional verification after Project Coordinator accepts:
+### Container Completion
 
 ```
-[PM] - ✅ [TICKET-ID] verified complete
+[PROJECT_COORDINATOR] - Verifying container DoD for #NUM...
 
-Project Coordinator accepted completion.
-All Definition of Done checks passed.
+| Activity Subtask | Status |
+|------------------|--------|
+| [Dev] #X | Done/Not Done |
+| [Code Review] #X | Done/Not Done |
+| [Test] #X | Done/Not Done |
+| [Docs] #X | Done/Not Done |
+| [SA Review] #X | Done/Not Done |
+| [UAT] #X | Done/Not Done |
 ```
 
-### If DoD Fails at Project Coordinator
-
-```
-[PROJECT_COORDINATOR] - ❌ REJECTED: Definition of Done not met.
-
-**Operation**: Update #123 to Done
-**Ticket**: "[Backend] User API"
-
-**Missing Items**:
-- [ ] PR Link: No pull request URL found in comments
-- [ ] Code Review: No Code Reviewer approval found
-
-**Action Required**: Add completion evidence to ticket comments, then retry.
-
-Returning control to [CALLING_ROLE] for correction.
-```
-
-**Ticket remains In Progress.** Worker must add evidence and retry.
-
-### Parent Issue Closure (TPO Only)
-
-When TPO invokes `[PROJECT_COORDINATOR] Update #NUM: Status=done` for a parent issue:
-
-```
-[PROJECT_COORDINATOR] - 🔍 Verifying Parent Issue DoD for #NUM...
-
-Fetching parent issue and all sub-issues...
-Checking UAT verification status...
-
-| Check | Status | Evidence |
-|-------|--------|----------|
-| All sub-issues done | ✅ / ❌ | [X of Y complete] |
-| UAT verified by TPO | ✅ / ❌ | [TPO comment or "Not found"] |
-| End-to-end verified | ✅ / ❌ | [verification note or "Not found"] |
-```
-
-**If checks fail**: REJECT - parent issue cannot be closed until UAT complete.
-
-**TPO must add UAT verification comment** before closing:
-```markdown
-✅ **UAT Complete**
-- [x] User receives reset email within 2 minutes
-- [x] Reset link expires after 24 hours
-- [x] New password works on next login
-- [x] Invalid/expired links show helpful error
-
-Feature accepted.
-```
-
-## Progress Comment Formats (Guidance)
-
-Workers should add structured comments at each stage for tracking and verification.
-
-### When Starting Work
-
-**Status**: In Progress
-
-```markdown
-🚀 **Started**
-- Approach: [Brief implementation approach]
-```
-
-### When Ready for Review
-
-**Status**: In Review
-
-```markdown
-🔍 **Ready for review**
-- PR: [link] (if applicable)
-- Changes: [Brief summary]
-- Tests: [What's covered]
-```
-
-### When Complete
-
-**Status**: Done
-
-```markdown
-✅ **Completed**
-- Code merged: [commit or PR link]
-- Files: [Key files changed]
-- Notes: [Anything for QA/next steps]
-```
+**Container cannot be marked Done until ALL 6 activity subtasks are Done.**
 
 ## Common Gaps
 
 | Gap | Resolution |
 |-----|------------|
-| No PR/commit link | Worker must provide PR or commit link |
-| Code not merged | User must merge (Claude does not merge) |
-| No code review | Worker must invoke Code Reviewer |
+| No PR link | Worker must provide PR link in comment |
+| Code not merged | **User action** - not an agent DoD check |
+| Branch not deleted | **User action** - not an agent DoD check |
+| No code review approval | Worker must get Code Reviewer approval |
 | Tests missing | Worker must write tests per Gherkin scenarios |
 | Tests failing | Worker must fix failures |
 | Spec not met | Worker must address MUST/MUST NOT violations |
-| Sub-issues incomplete | Complete all sub-issues before closing parent |
-| UAT not verified | TPO must verify UAT criteria and add comment |
+| Activity subtasks incomplete | Complete all 6 activities before closing container |
+| UAT not verified | TPO must verify and add UAT comment |
 
 ## Related References
 
 - `definition-of-ready.md` - Pre-work checklist
-- `code-reviewer/SKILL.md` - Code review process
+- `project-coordinator/references/ticket-templates.md` - Full templates with DoR/DoD
+- `drive-mode-protocol.md` - Verification templates for Drive Mode

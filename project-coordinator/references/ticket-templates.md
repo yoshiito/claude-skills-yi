@@ -2,18 +2,100 @@
 
 **Project Coordinator enforces these templates.** Each template includes Definition of Ready (DoR) for creation and Definition of Done (DoD) for completion.
 
-| Template | Created By | Use Case |
-|----------|------------|----------|
-| **Epic** | TPO | Feature-level work with child sub-issues |
-| **Story/Task** | SA | Implementation work (Backend, Frontend, Docs, Test) |
-| **Bug** | Support Engineer | Defect tracking and fix |
-| **Subtask** | Worker | Breakdown of a Story/Task (optional) |
+## Template Overview
+
+| Level | Template | Content From | Use Case |
+|-------|----------|--------------|----------|
+| **Epic** | `[Feature]` | TPO | Feature-level container |
+| **Story/Task** | `[Backend]`/`[Frontend]` | SA | Container for implementation activities |
+| **Bug** | `[Bug]` | Support Engineer | Container for bug fix activities |
+| **Activity** | `[Dev]` | SA | Implementation subtask |
+| **Activity** | `[Code Review]` | SA | Code review subtask |
+| **Activity** | `[Test]` | SA | Testing subtask (QA writes all tests) |
+| **Activity** | `[Docs]` | SA | Documentation subtask |
+| **Activity** | `[SA Review]` | SA | Solutions Architect technical acceptance |
+| **Activity** | `[UAT]` | SA | TPO user acceptance testing |
+
+**Note**: All tickets are created by **Project Coordinator**. The "Content From" column indicates which role provides the ticket content when invoking PC.
+
+---
+
+## Ticket Hierarchy Model
+
+**INVEST requires each ticket to be Testable.** Every Story/Task/Bug is a **container** with explicit activity subtasks for full lifecycle tracking.
+
+### Story/Task/Bug Level (Container with Activities)
+
+```
+[Backend] Add password reset endpoint        ← Container (groups all activities)
+├── [Dev] Add password reset endpoint        ← Implementation
+├── [Code Review] Add password reset endpoint ← Code review
+├── [Test] Add password reset endpoint       ← Testing (QA writes all tests)
+├── [Docs] Add password reset endpoint       ← Documentation
+├── [SA Review] Add password reset endpoint  ← SA technical acceptance
+└── [UAT] Add password reset endpoint        ← TPO user acceptance
+```
+
+Each Story/Task/Bug includes ALL lifecycle activities as explicit subtasks:
+
+| Step | Subtask | Worker | Purpose |
+|------|---------|--------|---------|
+| 1 | `[Dev]` | Developer | Implementation |
+| 2 | `[Code Review]` | Code Reviewer | Review implementation |
+| 3 | `[Test]` | Tester | Unit + functional tests |
+| 4 | `[Docs]` | Tech Doc Writer | Documentation |
+| 5 | `[SA Review]` | Solutions Architect | Technical/architecture validation |
+| 6 | `[UAT]` | TPO | User/business acceptance |
+
+### Epic Level (Cross-Cutting)
+
+In addition to story-level activities, each Epic has cross-cutting tickets:
+
+```
+Epic: Password Reset Feature
+├── [Backend] Add reset endpoint
+│   ├── [Dev], [Code Review], [Test], [Docs], [SA Review], [UAT]
+├── [Frontend] Add reset form
+│   ├── [Dev], [Code Review], [Test], [Docs], [SA Review], [UAT]
+├── [Bug] Fix validation edge case
+│   ├── [Dev], [Code Review], [Test], [Docs], [SA Review], [UAT]
+├── [Test] Password Reset E2E Regression     ← Epic-level
+├── [Docs] Password Reset Feature Guide      ← Epic-level
+├── [SA Review] Password Reset Architecture  ← Epic-level
+└── [UAT] Password Reset Feature Acceptance  ← Epic-level
+```
+
+| Epic-Level Ticket | Purpose |
+|-------------------|---------|
+| `[Test] {Feature} E2E Regression` | Full feature integration/regression testing |
+| `[Docs] {Feature} Guide` | Comprehensive feature documentation |
+| `[SA Review] {Feature} Architecture` | SA validates architecture compliance across all stories |
+| `[UAT] {Feature} Acceptance` | TPO acceptance of complete feature |
+
+### blockedBy Relationships (Activity Chain)
+
+| Subtask | blockedBy |
+|---------|-----------|
+| `[Dev]` | None (starts first) |
+| `[Code Review]` | `[Dev]` |
+| `[Test]` | `[Code Review]` |
+| `[Docs]` | `[Test]` |
+| `[SA Review]` | `[Docs]` |
+| `[UAT]` | `[SA Review]` |
+| Parent container | All activity subtasks |
+
+| Epic-Level | blockedBy |
+|------------|-----------|
+| Epic `[Test]` | All Story/Task/Bug containers |
+| Epic `[Docs]` | Epic `[Test]` |
+| Epic `[SA Review]` | Epic `[Docs]` |
+| Epic `[UAT]` | Epic `[SA Review]` |
 
 ---
 
 ## 1. Epic Template
 
-**Created by**: Technical Product Owner
+**Content from**: Technical Product Owner
 **Title format**: `[Feature] {name}`
 
 ### Template Structure
@@ -85,10 +167,11 @@ Feature accepted.
 
 ---
 
-## 2. Story/Task Template
+## 2. Story/Task Template (Container)
 
-**Created by**: Solutions Architect
-**Title format**: `[Backend]`, `[Frontend]`, `[Docs]`, or `[Test]` prefix
+**Content from**: Solutions Architect
+**Title format**: `[Backend]` or `[Frontend]` prefix
+**Note**: This is a CONTAINER ticket. SA creates 6 activity subtasks for each container.
 
 ### Template Structure
 
@@ -158,8 +241,7 @@ Feature: [Feature name]
 
 | Check | Required | PC Validates |
 |-------|----------|--------------|
-| Title prefix | `[Backend]`, `[Frontend]`, `[Docs]`, or `[Test]` | ✅ Enforced |
-| Assigned Role | Valid skill name | ⚠️ Manual |
+| Title prefix | `[Backend]` or `[Frontend]` | ✅ Enforced |
 | Story | User story format | ⚠️ Manual |
 | Context | Not empty | ⚠️ Manual |
 | Technical Spec | `<technical-spec>` with `<must>` section | ✅ Enforced |
@@ -167,7 +249,16 @@ Feature: [Feature name]
 | Testing Notes | Section exists | ✅ Enforced |
 | Open Questions | **EMPTY** (all resolved) | ✅ Enforced |
 | Parent specified | `Parent: #NUM` in request | ✅ Enforced |
+| **Activity subtasks specified** | All 6 subtasks defined | ✅ Enforced |
 | INVEST compliant | See checklist below | ⚠️ Manual |
+
+**Activity Subtasks (SA creates all 6):**
+- [ ] `[Dev]` - Implementation subtask
+- [ ] `[Code Review]` - Code review subtask
+- [ ] `[Test]` - Testing subtask
+- [ ] `[Docs]` - Documentation subtask (if user-facing)
+- [ ] `[SA Review]` - SA technical acceptance subtask
+- [ ] `[UAT]` - TPO user acceptance subtask
 
 **INVEST Checklist (SA verifies before invoking PC):**
 - [ ] **I**ndependent: Can start without waiting (or `blockedBy` set)
@@ -175,74 +266,43 @@ Feature: [Feature name]
 - [ ] **V**aluable: Moves feature toward "Done"
 - [ ] **E**stimable: Bounded scope, known files, clear end state
 - [ ] **S**mall: Single logical change (one PR, one concern)
-- [ ] **T**estable: Technical Spec + Gherkin scenarios verifiable
+- [ ] **T**estable: Technical Spec + Gherkin verifiable; all activity subtasks specified
 
 ### DoD: Definition of Done (Before Closing)
 
-#### For `[Backend]` and `[Frontend]` Sub-Issues
+#### For `[Backend]` and `[Frontend]` Containers
+
+**These are now CONTAINERS.** They are Done when ALL activity subtasks are Done.
 
 | Check | Required | PC Validates |
 |-------|----------|--------------|
-| PR created | Link in comment | ✅ Enforced |
-| PR merged | Merged to target branch | ✅ Enforced |
-| Branch deleted | Feature branch removed after merge | ✅ Enforced |
-| Code reviewed | Code Reviewer approved | ✅ Enforced |
-| Tests written | Covers Gherkin scenarios | ✅ Enforced |
-| Tests pass | CI green or manual confirmation | ⚠️ Manual |
+| `[Dev]` subtask done | ✅ | ✅ Enforced |
+| `[Code Review]` subtask done | ✅ | ✅ Enforced |
+| `[Test]` subtask done | ✅ | ✅ Enforced |
+| `[Docs]` subtask done | ✅ (if user-facing) | ✅ Enforced |
+| `[SA Review]` subtask done | ✅ | ✅ Enforced |
+| `[UAT]` subtask done | ✅ | ✅ Enforced |
 | Technical Spec satisfied | All MUST/MUST NOT met | ⚠️ Manual |
-| No regressions | Existing tests pass | ⚠️ Manual |
 
-**Completion Comment Format:**
+**Container Completion Comment:**
 ```markdown
-✅ **Completed**
-- PR merged: [link]
-- Branch: `{branch-name}` deleted
-- Code Review: Approved by [reviewer]
-- Tests: [X] scenarios covered, all passing
-- Files: [Key files changed]
+✅ **Story/Task Complete**
+- All 6 activity subtasks: Done
+- [Dev] #{num}: ✅
+- [Code Review] #{num}: ✅
+- [Test] #{num}: ✅
+- [Docs] #{num}: ✅
+- [SA Review] #{num}: ✅
+- [UAT] #{num}: ✅
 ```
 
-#### For `[Test]` Sub-Issues
-
-| Check | Required | PC Validates |
-|-------|----------|--------------|
-| All scenarios validated | Each Given/When/Then verified | ✅ Enforced |
-| Edge cases covered | Testing Notes addressed | ⚠️ Manual |
-| Test results documented | Pass/fail with evidence | ✅ Enforced |
-| Regression suite updated | New tests added | ⚠️ Manual |
-
-**Completion Comment Format:**
-```markdown
-✅ **Test Complete**
-- Scenarios validated: [X/Y]
-- Results:
-  - [Scenario 1]: ✅ Pass
-  - [Scenario 2]: ✅ Pass
-  - [Scenario 3]: ✅ Pass
-- Edge cases: [Covered/Notes]
-```
-
-#### For `[Docs]` Sub-Issues
-
-| Check | Required | PC Validates |
-|-------|----------|--------------|
-| Documentation created | Link in comment | ✅ Enforced |
-| Matches implementation | Reflects actual behavior | ⚠️ Manual |
-| Review completed | Technical review done | ✅ Enforced |
-
-**Completion Comment Format:**
-```markdown
-✅ **Documentation Complete**
-- Doc link: [link]
-- Reviewed by: [reviewer]
-- Covers: [What's documented]
-```
+**Note**: Container tickets track overall progress. Actual work happens in activity subtasks.
 
 ---
 
 ## 3. Bug Template
 
-**Created by**: Support Engineer
+**Content from**: Support Engineer
 **Title format**: `[Bug] {description}`
 
 ### Template Structure
@@ -294,83 +354,248 @@ Feature: [Feature name]
 | Expected Result | Described | ✅ Enforced |
 | Impact | Severity specified | ⚠️ Manual |
 
+### Mandatory Activity Subtasks
+
+Like Story/Task, every Bug MUST have all 6 activity subtasks:
+
+| Subtask | Required | Purpose |
+|---------|----------|---------|
+| `[Dev]` | ✅ ALWAYS | Implement the fix |
+| `[Code Review]` | ✅ ALWAYS | Review the fix |
+| `[Test]` | ✅ ALWAYS | Regression test for the fix |
+| `[Docs]` | If user-facing | Document behavior change |
+| `[SA Review]` | ✅ ALWAYS | Technical validation |
+| `[UAT]` | ✅ ALWAYS | TPO acceptance |
+
 ### DoD: Definition of Done (Before Closing)
+
+**Bugs are now CONTAINERS.** They are Done when ALL activity subtasks are Done.
 
 | Check | Required | PC Validates |
 |-------|----------|--------------|
-| PR created | Link in comment | ✅ Enforced |
-| PR merged | Merged to target branch | ✅ Enforced |
-| Code reviewed | Code Reviewer approved | ✅ Enforced |
-| Tests written | Regression test for bug | ✅ Enforced |
-| Fix verified | Testing Notes followed | ⚠️ Manual |
+| `[Dev]` subtask done | ✅ | ✅ Enforced |
+| `[Code Review]` subtask done | ✅ | ✅ Enforced |
+| `[Test]` subtask done | ✅ | ✅ Enforced |
+| `[Docs]` subtask done | If user-facing | ⚠️ Conditional |
+| `[SA Review]` subtask done | ✅ | ✅ Enforced |
+| `[UAT]` subtask done | ✅ | ✅ Enforced |
+| Root cause documented | In `[Dev]` comment | ⚠️ Manual |
 
-**Completion Comment Format:**
+**Container Completion Comment:**
 ```markdown
 ✅ **Bug Fixed**
-- PR merged: [link]
-- Code Review: Approved by [reviewer]
 - Root cause: [Brief explanation]
-- Fix: [What was changed]
-- Regression test: Added to prevent recurrence
+- All activity subtasks: Done
+- [Dev] #{num}: ✅
+- [Code Review] #{num}: ✅
+- [Test] #{num}: ✅
+- [Docs] #{num}: ✅ / N/A
+- [SA Review] #{num}: ✅
+- [UAT] #{num}: ✅
 ```
 
 ---
 
-## 4. Subtask Template
+## 4. Activity Subtask Templates
 
-**Created by**: Worker (during implementation)
-**Title format**: `[Subtask] {description}`
+**Content from**: Solutions Architect (during work breakdown)
+**SA creates all 6 activity subtasks** for each Story/Task/Bug container.
 
-Subtasks break down a Story/Task into smaller pieces. Use when a single Story/Task has multiple distinct work items.
+---
 
-### Template Structure
+### 4.1 `[Dev]` - Implementation Subtask
 
+**Assigned to**: Developer (Backend/Frontend)
+
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| Parent container exists | ✅ | - |
+| Technical Spec available | ✅ | - |
+| PR created | - | ✅ Link in comment |
+| Technical Spec satisfied | - | ✅ Confirmed in comment |
+
+**Completion Comment:**
 ```markdown
-## Parent Task
-[TICKET-ID] - [Parent task title]
-
-## Description
-[What this subtask accomplishes]
-
-## Acceptance Criteria
-- [ ] [Specific deliverable 1]
-- [ ] [Specific deliverable 2]
-
-## Notes
-[Implementation details, files to modify]
+✅ **[Dev] Complete**
+- PR: [link]
+- Branch: `{branch-name}`
+- Files: [Key files changed]
+- Technical Spec: All MUST/MUST NOT met
+- Ready for: Code Review
 ```
 
-### DoR: Definition of Ready (Before Creation)
+**Note**: PR merging happens AFTER Code Review approval (user action, not agent DoD).
 
-| Check | Required | PC Validates |
-|-------|----------|--------------|
-| Title prefix | `[Subtask]` | ✅ Enforced |
-| Parent specified | `Parent: #NUM` in request | ✅ Enforced |
-| Description | Not empty | ⚠️ Manual |
-| Acceptance Criteria | At least one item | ⚠️ Manual |
+---
 
-### DoD: Definition of Done (Before Closing)
+### 4.2 `[Code Review]` - Code Review Subtask
 
-| Check | Required | PC Validates |
-|-------|----------|--------------|
-| Acceptance criteria met | All items checked | ⚠️ Manual |
-| Parent updated | Progress noted on parent | ⚠️ Manual |
+**Assigned to**: Code Reviewer
 
-**Note**: Subtasks typically don't require separate PRs - they contribute to the parent task's PR.
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| `[Dev]` subtask done | ✅ | - |
+| PR link available | ✅ | - |
+| Review completed | - | ✅ |
+| Issues addressed | - | ✅ (or none found) |
+| Approved | - | ✅ |
+
+**Completion Comment:**
+```markdown
+✅ **[Code Review] Complete**
+- PR: [link]
+- Status: Approved
+- Issues found: [X] (all resolved)
+- Ready for: User to merge, then Testing
+```
+
+**Note**: After Code Review approval, **user merges PR and deletes branch**. This is a user action, not part of agent workflow.
+
+---
+
+### 4.3 `[Test]` - Testing Subtask
+
+**Assigned to**: Tester (QA writes ALL tests - unit + functional)
+
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| `[Code Review]` subtask done | ✅ | - |
+| Gherkin scenarios available | ✅ | - |
+| Unit tests written | - | ✅ |
+| Functional tests written | - | ✅ |
+| All tests passing | - | ✅ |
+| Test PR created | - | ✅ Link in comment |
+
+**Completion Comment:**
+```markdown
+✅ **[Test] Complete**
+- PR: [link]
+- Unit tests: [X] tests
+- Functional tests: [Y] scenarios
+- Coverage: [Z]%
+- All passing: ✅
+- Ready for: User to merge, then Documentation
+```
+
+**Note**: User merges test PR. Agent DoD is test code written and passing.
+
+---
+
+### 4.4 `[Docs]` - Documentation Subtask
+
+**Assigned to**: Tech Doc Writer
+
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| `[Test]` subtask done | ✅ | - |
+| Implementation complete | ✅ | - |
+| Documentation created | - | ✅ |
+| Matches implementation | - | ✅ |
+| Review completed | - | ✅ |
+| Docs PR created | - | ✅ Link in comment |
+
+**Completion Comment:**
+```markdown
+✅ **[Docs] Complete**
+- PR: [link]
+- Docs updated: [list pages/sections]
+- Reviewed by: [reviewer]
+- Ready for: User to merge, then SA Review
+```
+
+**Note**: User merges docs PR. Agent DoD is documentation written and reviewed.
+
+---
+
+### 4.5 `[SA Review]` - SA Technical Acceptance Subtask
+
+**Assigned to**: Solutions Architect
+
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| `[Docs]` subtask done | ✅ | - |
+| All PRs merged | ✅ | - |
+| Architecture compliance verified | - | ✅ |
+| ADR requirements met | - | ✅ |
+| No technical debt introduced | - | ✅ |
+
+**Completion Comment:**
+```markdown
+✅ **[SA Review] Complete**
+- Architecture compliance: ✅
+- ADR requirements: Met
+- Technical debt: None introduced
+- Issues: [None / List]
+- Ready for: UAT
+```
+
+---
+
+### 4.6 `[UAT]` - TPO User Acceptance Subtask
+
+**Assigned to**: Technical Product Owner
+
+| Check | DoR (Before Start) | DoD (Before Done) |
+|-------|-------------------|-------------------|
+| `[SA Review]` subtask done | ✅ | - |
+| All previous activities complete | ✅ | - |
+| Acceptance criteria verified | - | ✅ |
+| User flows work as expected | - | ✅ |
+| Business requirements met | - | ✅ |
+
+**Completion Comment:**
+```markdown
+✅ **[UAT] Complete**
+- Acceptance criteria: All met
+- User flows: ✅ Working as expected
+- Business requirements: ✅ Satisfied
+- Story/Task/Bug: Ready to close
+```
+
+---
+
+### Activity Subtask Summary
+
+| Subtask | Worker | blockedBy | Creates PR |
+|---------|--------|-----------|------------|
+| `[Dev]` | Developer | None | ✅ Yes |
+| `[Code Review]` | Code Reviewer | `[Dev]` | No |
+| `[Test]` | Tester | `[Code Review]` | ✅ Yes |
+| `[Docs]` | Tech Doc Writer | `[Test]` | ✅ Yes |
+| `[SA Review]` | Solutions Architect | `[Docs]` | No |
+| `[UAT]` | TPO | `[SA Review]` | No |
 
 ---
 
 ## Assigned Role Values
 
-| Skill Name | When to Assign | Ticket Prefix |
-|------------|----------------|---------------|
-| `backend-fastapi-postgres-sqlmodel-developer` | FastAPI endpoints, services, DB | `[Backend]` |
-| `frontend-atomic-design-engineer` | React UI components | `[Frontend]` |
-| `tech-doc-writer-manager` | Documentation | `[Docs]` |
-| `backend-fastapi-pytest-tester` | Backend tests | `[Test]` |
-| `frontend-tester` | Frontend/E2E tests | `[Test]` |
-| `data-platform-engineer` | Data pipelines | `[Backend]` |
-| `api-designer` | API contract design | `[Backend]` |
+### Container Tickets
+
+| Ticket Prefix | Created By | Purpose |
+|---------------|------------|---------|
+| `[Backend]` | SA | Backend implementation container |
+| `[Frontend]` | SA | Frontend implementation container |
+| `[Bug]` | Support Engineer | Bug fix container |
+
+### Activity Subtasks (Mandatory for each container)
+
+| Subtask | Skill Name | Purpose |
+|---------|------------|---------|
+| `[Dev]` | `backend-fastapi-postgres-sqlmodel-developer` / `frontend-atomic-design-engineer` | Implementation |
+| `[Code Review]` | `code-reviewer` | Code review |
+| `[Test]` | `backend-fastapi-pytest-tester` / `frontend-tester` | Testing (QA writes all tests) |
+| `[Docs]` | `tech-doc-writer-manager` | Documentation |
+| `[SA Review]` | `solutions-architect` | Technical acceptance |
+| `[UAT]` | `technical-product-owner` | User acceptance |
+
+### Epic-Level Cross-Cutting Tickets
+
+| Ticket | Skill Name | Purpose |
+|--------|------------|---------|
+| `[Test] {Feature} E2E Regression` | `backend-fastapi-pytest-tester` / `frontend-tester` | Full feature regression |
+| `[Docs] {Feature} Guide` | `tech-doc-writer-manager` | Comprehensive feature docs |
+| `[SA Review] {Feature} Architecture` | `solutions-architect` | Architecture compliance |
+| `[UAT] {Feature} Acceptance` | `technical-product-owner` | Feature acceptance |
 
 ---
 

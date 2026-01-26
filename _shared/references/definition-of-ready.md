@@ -24,7 +24,7 @@
 
 ## Definition of Ready Checklist
 
-### For Parent Issues (Created by TPO)
+### For Parent Issues (Content from TPO)
 
 | Check | Required | Validation |
 |-------|----------|------------|
@@ -36,43 +36,86 @@
 
 **UAT Criteria**: TPO must define specific, verifiable criteria that they will check before accepting the feature as complete. Project Coordinator will provide template guidance if missing.
 
-### For Sub-Issues (Created by SA)
+### For Sub-Issues (Content from SA)
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| Title | ✅ | `[Type] {description}` - Type: Backend/Frontend/Docs/Test |
+| Title | ✅ | `[Type] {description}` - Type: Backend/Frontend/Bug/Docs/Test |
 | Parent linked | ✅ | Native field, not body text |
 | Technical Spec | ✅ | MUST/MUST NOT/SHOULD constraints |
 | Gherkin scenarios | ✅ | Given/When/Then for validation |
 | Testing Notes | ✅ | What tests to write, edge cases to cover |
 | Dependencies | ✅ | `blockedBy` set via native field (or explicitly "None") |
-| Skill prefix | ✅ | `[Backend]`, `[Frontend]`, `[Docs]`, `[Test]` |
+| Skill prefix | ✅ | `[Backend]`, `[Frontend]`, `[Bug]`, `[Docs]`, `[Test]` |
 | No open questions | ✅ | All clarifications resolved in ticket |
 | INVEST passed | ✅ | See checklist below |
+| **Activity subtasks specified** | ✅ | All 6 activity subtasks for implementation containers |
 
-### For Feature-Level Completeness (Verified by SA/PM)
+### For Story/Task/Bug Completeness (Verified by SA)
 
-**MANDATORY**: Before a feature can be driven, ALL of these must exist:
+**INVEST requires each ticket to be Testable.** Every implementation ticket is a **container** with **6 mandatory activity subtasks**:
 
-| Sub-Issue Type | Required | Purpose |
-|----------------|----------|---------|
-| Implementation (`[Backend]`/`[Frontend]`) | ✅ ALWAYS | Core functionality |
-| Test sub-issue (`[Test]`) | ✅ ALWAYS | Validate implementation against Gherkin scenarios |
-| Documentation (`[Docs]`) | ✅ ALWAYS for user-facing | API docs, guides, runbooks |
+| Parent Type | Required Activity Subtasks |
+|-------------|---------------------------|
+| `[Backend]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
+| `[Frontend]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
+| `[Bug]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
 
-**No exceptions.** If `[Test]` sub-issue is missing, the feature is NOT ready.
+**Activity Subtask Purposes:**
 
-**Why Testing is Mandatory:**
-- Gherkin scenarios define WHAT to validate
-- `[Test]` sub-issue ensures scenarios are ACTUALLY validated
-- Without `[Test]`, Gherkin scenarios are just documentation, not enforcement
+| Subtask | Worker | Purpose | Creates PR |
+|---------|--------|---------|------------|
+| `[Dev]` | Developer | Implementation | ✅ Yes |
+| `[Code Review]` | Code Reviewer | Review implementation | No |
+| `[Test]` | Tester | Unit + functional tests | ✅ Yes |
+| `[Docs]` | Tech Doc Writer | Documentation | ✅ Yes |
+| `[SA Review]` | Solutions Architect | Technical acceptance | No |
+| `[UAT]` | TPO | User acceptance | No |
 
-**Why Documentation is Mandatory (for user-facing):**
-- Users need to know how to use what we build
-- API consumers need updated docs
-- Without `[Docs]`, feature is incomplete even if code works
+**blockedBy relationships (activity chain):**
+- `[Dev]` → None (starts first)
+- `[Code Review]` → `[Dev]`
+- `[Test]` → `[Code Review]`
+- `[Docs]` → `[Test]`
+- `[SA Review]` → `[Docs]`
+- `[UAT]` → `[SA Review]`
+- Container → All 6 activity subtasks
 
-**If missing**: SA must create the sub-issue before PM can drive.
+**No exceptions.** If ANY activity subtask is missing, the ticket violates INVEST and is NOT ready.
+
+### For Epic-Level Completeness (Verified by SA/PM)
+
+**In addition to story-level activity subtasks**, each Epic MUST have cross-cutting tickets:
+
+| Epic-Level Ticket | Required | Purpose |
+|-------------------|----------|---------|
+| `[Test] {Feature} E2E Regression` | ✅ ALWAYS | Full feature integration/regression testing |
+| `[Docs] {Feature} Guide` | ✅ ALWAYS for user-facing | Comprehensive feature documentation |
+| `[SA Review] {Feature} Architecture` | ✅ ALWAYS | Architecture compliance across all stories |
+| `[UAT] {Feature} Acceptance` | ✅ ALWAYS | Feature acceptance by TPO |
+
+**blockedBy relationships:**
+- Epic `[Test]` → blockedBy all Story/Task/Bug containers
+- Epic `[Docs]` → blockedBy Epic `[Test]`
+- Epic `[SA Review]` → blockedBy Epic `[Docs]`
+- Epic `[UAT]` → blockedBy Epic `[SA Review]`
+
+### Why This Hierarchy?
+
+**Story-Level Activities:**
+- Each ticket is independently testable (INVEST - Testable)
+- Full lifecycle tracking: Dev → Code Review → Test → Docs → SA Review → UAT
+- QA writes unit + functional tests for each specific change
+- Each activity is a visible, trackable subtask
+
+**Epic-Level Cross-Cutting:**
+- Integration/E2E testing across all stories
+- Regression testing for the whole feature
+- Architecture compliance verification across all stories
+- Feature acceptance by TPO
+- Catches issues that only appear when components interact
+
+**If missing**: SA must create the activity subtasks/epic tickets before PM can drive.
 
 ### INVEST Checklist (Sub-Issues Only)
 
@@ -81,7 +124,7 @@
 - [ ] **V**aluable: Moves feature toward "Done"
 - [ ] **E**stimable: Bounded scope with known files and clear end state
 - [ ] **S**mall: Single logical change (one PR, one concern)
-- [ ] **T**estable: Technical Spec + Gherkin scenarios verifiable
+- [ ] **T**estable: Technical Spec + Gherkin verifiable; all 6 activity subtasks exist
 
 ## DoR Enforcement
 
@@ -128,6 +171,8 @@ Fix these gaps, then invoke Drive Mode again.
 | Technical Spec | Solutions Architect |
 | Gherkin scenarios | Solutions Architect |
 | Dependencies | Solutions Architect |
+| Activity subtasks (`[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
+| Epic-level tickets (`[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
 | Test strategy | Tester |
 | Documentation plan | Tech Doc Writer |
 
