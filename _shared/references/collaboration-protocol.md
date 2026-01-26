@@ -56,9 +56,21 @@ Once user approves, each invited role confirms joining:
 - **ALL messages MUST be prefixed with `🤝` before the role prefix** (e.g., `🤝 [UX_DESIGNER]`)
 - All participating roles talk to each other **freely WITHOUT asking the user**
 - No confirmation prompts between participating roles
-- Roles collaborate in the same response
+- **No pausing between role hand-offs** — if you think "should I wait for user?", don't
+- Roles collaborate in the same response (multiple roles can speak in ONE response)
 - Any number of roles can participate
 - Continue until work is complete or user revokes
+
+**CRITICAL — Same-Turn Hand-offs:**
+When one role finishes and hands to another, the receiving role MUST respond **in the same turn**. Do NOT pause between roles. The conversation flows like:
+
+```
+🤝 [ROLE_A] - I've completed X. Handing to ROLE_B for Y.
+
+🤝 [ROLE_B] - Received. Working on Y now...
+```
+
+Both happen in ONE Claude response. No user input between them.
 
 **Correct behavior:**
 ```

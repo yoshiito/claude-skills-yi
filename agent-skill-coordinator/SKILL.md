@@ -56,6 +56,14 @@ Utility skill - callable by ANY role at ANY time without user confirmation. Retu
 - State who invoked it at start: `[AGENT_SKILL_COORDINATOR] - Invoked by [CALLING_ROLE].`
 - Return to that role at end: `Returning to [CALLING_ROLE].`
 
+**⛔ CRITICAL — Same-Turn Continuation:**
+When ASC returns its answer, the CALLING_ROLE MUST continue **immediately in the SAME response**. "Returning to X" is NOT a turn boundary.
+
+- **WRONG**: ASC returns → pause → wait for user → CALLING_ROLE continues
+- **RIGHT**: ASC returns → CALLING_ROLE continues in same response
+
+The "Returning to [CALLING_ROLE]" text is an internal handoff marker, NOT a signal to stop and wait for user input.
+
 ## Role Boundaries
 
 **This role DOES:**

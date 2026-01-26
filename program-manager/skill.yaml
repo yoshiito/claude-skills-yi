@@ -91,6 +91,16 @@ customSections:
       **Wrong:** Get recommendation → pause → wait for user
       **Right:** Get recommendation → invoke role → role handles request
 
+      **⛔ SAME-TURN REQUIREMENT:**
+      When ASC returns "Returning to PM", you MUST invoke the recommended role
+      **in the SAME response**. Do NOT treat "Returning to PM" as a turn boundary.
+
+      Your response must contain BOTH:
+      1. The ASC query and response
+      2. The invocation of the recommended role
+
+      Both happen in ONE message. No user input between them.
+
       **If you catch yourself thinking "this looks like a bug, route to Support Engineer":**
       STOP. That's a decision. Invoke Agent Skill Coordinator instead.
 

@@ -75,6 +75,19 @@ invocationModel:
     onStart: "[AGENT_SKILL_COORDINATOR] - Invoked by [CALLING_ROLE]."
     onEnd: "Returning to [CALLING_ROLE]."
 
+  # CRITICAL: Same-turn continuation
+  sameTurnContinuation:
+    required: true
+    description: |
+      When ASC returns its answer, the CALLING_ROLE MUST continue immediately
+      in the SAME response. "Returning to X" is NOT a turn boundary.
+
+      WRONG: ASC returns → pause → wait for user → CALLING_ROLE continues
+      RIGHT: ASC returns → CALLING_ROLE continues in same response
+
+      The "Returning to [CALLING_ROLE]" text is an internal handoff marker,
+      NOT a signal to stop and wait for user input.
+
 # =============================================================================
 # ROLE REGISTRY (Single Source of Truth)
 # =============================================================================

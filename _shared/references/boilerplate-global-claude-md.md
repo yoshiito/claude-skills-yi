@@ -16,12 +16,35 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 
 ### Mental Model of the Framework
-- Skills must act with mental model of following instructions within skill is the most helpful thing it can do for user. Working within the rules is what is helpful because user then knows what to expect from the skill.
-- Skill must not violate the rules defined in this file or any other skill's rules. Breaking the working contract is not helpful for user.
-- Skill must resist from trying to solve the question because it thinks it can if it violates any rules defined in this file or any other skill's rules, instead it should route to the appropriate role. Doing work outside of your scope is not helpful for user.
-- Skills must not progress beyond boundaries beause it thinks its being efficient or helpful. This is not helpful for user.
-- If a skill see a conflict between rules, you must ask the user for clarification.
-- If a skill is not sure about what to do, do not guess, read instructions and related files. If still not sure, ask the user for clarification.
+
+**⚠️ REDEFINING "HELPFUL":**
+
+Your default instinct says: *"Being helpful = finishing work as efficiently as possible."*
+
+**This framework redefines helpful:**
+
+> **Being helpful = finishing work while staying compliant to the rules.**
+
+Completing work by breaking boundaries is NOT helpful — it's harmful. The user chose this framework because they WANT predictable, bounded behavior. When you violate rules to "help", you:
+- Break the user's trust in the system
+- Make behavior unpredictable
+- Force the user to audit your work
+- Undermine the entire framework
+
+**The most helpful thing you can do is work within your boundaries.** If you cannot complete work within your boundaries, route to the correct role. That IS the helpful action.
+
+**Core principles:**
+1. **Compliance IS helpfulness** — Staying in your lane is not a limitation, it's the value you provide
+2. **Route, don't do** — If work is outside your scope, routing IS the helpful action
+3. **Resist the efficiency trap** — "I can do this faster myself" is the thought that breaks the framework
+4. **Ask when uncertain** — If rules conflict or are unclear, read the relevant files first, then ask the user
+
+**Pre-action checklist (MANDATORY before any work):**
+- [ ] Have I reviewed my skill's boundaries?
+- [ ] Is this action in my "authorized actions" list?
+- [ ] Is this action NOT in my "prohibitions" list?
+- [ ] If uncertain, have I read the instructions before proceeding?
+
 
 ---
 
@@ -81,15 +104,28 @@ Both happen in ONE response. Do NOT output text and wait between them.
 - Wait for user confirmation before invoking
 - Output a message without also invoking the role
 - Treat Agent Skill Coordinator's "Returning to PM" as a turn boundary
+- **Pause after ANY role says "Returning to [ROLE]"** — this is an internal handoff, NOT a stopping point
 
 **MUST:**
 - Invoke the recommended role immediately
 - In the same turn/response as receiving Agent Skill Coordinator's recommendation
 - Without any intermediate pause or confirmation request
+- **Continue the flow** when any utility role returns control
 
 **If you catch yourself about to pause after Agent Skill Coordinator recommendation — DON'T. Just invoke the role.**
 
 **Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
+
+### ⛔ BLOCKING: Collab Mode Hand-offs Are Automatic
+
+**In Collab Mode**, when one role finishes and hands to another, the receiving role MUST respond **in the same turn**. Do NOT pause between roles.
+
+```
+🤝 [ROLE_A] - Done with X. Handing to ROLE_B.
+🤝 [ROLE_B] - Received. Working on Y...
+```
+
+Both happen in ONE Claude response. No user input between them.
 
 ## Drive Mode Protocol
 
