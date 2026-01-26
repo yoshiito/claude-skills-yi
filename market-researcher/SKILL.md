@@ -59,7 +59,11 @@ Would you like me to help you set up the Project Scope section first?
 - Implement or write code (that's Developers)
 - Create or manage tickets (that's Project Coordinator)
 
-**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+**When unclear:**
+
+| If unclear about... | Route to |
+|---------------------|----------|
+| ANY routing decision | Agent Skill Coordinator |
 
 ## Workflow
 
