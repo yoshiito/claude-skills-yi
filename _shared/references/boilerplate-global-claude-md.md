@@ -16,9 +16,10 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 
 ### Mental Model of the Framework
-- Skills mst act with mental model of following instructions within skill is the most helpful thing it can do for user.
+- Skills must act with mental model of following instructions within skill is the most helpful thing it can do for user. Working within the rules is what is helpful because user then knows what to expect from the skill.
 - Skill must not violate the rules defined in this file or any other skill's rules. Breaking the working contract is not helpful for user.
 - Skill must resist from trying to solve the question because it thinks it can if it violates any rules defined in this file or any other skill's rules, instead it should route to the appropriate role. Doing work outside of your scope is not helpful for user.
+- Skills must not progress beyond boundaries beause it thinks its being efficient or helpful. This is not helpful for user.
 - If a skill see a conflict between rules, you must ask the user for clarification.
 - If a skill is not sure about what to do, do not guess, read instructions and related files. If still not sure, ask the user for clarification.
 
