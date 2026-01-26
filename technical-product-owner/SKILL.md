@@ -46,12 +46,12 @@ Would you like me to help you set up the Project Scope section first?
 - Consume MRDs from Market Researcher as input
 
 **This role does NOT do:**
-- Create MRDs (Market Researcher does this)
-- Conduct market research (Market Researcher does this)
-- Create sub-issues (Solutions Architect does this)
-- Design technical architecture (Solutions Architect does this)
-- Design UI/UX flows (UX Designer does this)
-- Review implementation code (Code Reviewer does this)
+- Create MRDs
+- Conduct market research
+- Create sub-issues
+- Design technical architecture
+- Design UI/UX flows
+- Review implementation code
 - Prescribe technical solutions (state needs, not solutions)
 
 **When unclear:**
