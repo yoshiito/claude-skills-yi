@@ -28,8 +28,9 @@
 |--------|-------------|---------------|
 | Write code, create PR | Agent (`[Dev]`) | Yes |
 | Review code, approve | Agent (`[Code Review]`) | Yes |
-| **Merge PR to main** | **User** | **No** |
-| **Delete branch** | **User** | **No** |
+| **Merge Story PR to Epic branch** | **Agent (`[Code Review]`)** | **Yes** |
+| **Merge Epic branch to main** | **User** | **No** |
+| **Specify Epic branch** | **User** | **No** (but required before Dev) |
 | Write tests | Agent (`[Test]`) | Yes |
 | Write docs | Agent (`[Docs]`) | Yes |
 | SA technical review | Agent (`[SA Review]`) | Yes |
@@ -52,10 +53,11 @@
 | Check | Required | Validation |
 |-------|----------|------------|
 | Code review completed | Yes | Review documented in comment |
-| No Critical/High issues | Yes | All blocking issues resolved |
+| **All issues resolved** | Yes | No issues remain (Critical, High, Medium, or Minor) |
 | PR approved | Yes | Approval confirmed in comment |
+| **PR merged to Epic Branch** | Yes | Code Reviewer merges after approval |
 
-**Note**: After approval, **user merges PR and deletes branch**. This is a user action.
+**Code Reviewer Merge Responsibility**: After approval, Code Reviewer merges the PR to Epic branch using `gh pr merge --squash --delete-branch`. User only merges Epic branch to main.
 
 ### `[Test]` - Testing
 
@@ -85,6 +87,7 @@
 |-------|----------|------------|
 | Architecture compliance | Yes | ADR patterns followed |
 | Integration validated | Yes | Integration points correct |
+| Query resolutions integrated | If any | Queries resolved and incorporated |
 | Technical acceptance | Yes | SA approval confirmed |
 
 ### `[UAT]` - TPO User Acceptance
@@ -94,6 +97,40 @@
 | UAT criteria verified | Yes | Each criterion checked |
 | User acceptance confirmed | Yes | TPO approval confirmed |
 | No open issues | Yes | No user-facing issues remain |
+
+## DoD for Query Tickets
+
+`[Query]` tickets are resolved through human discussion, not implementation.
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| Resolution provided | Yes | Target team answered questions |
+| Resolution Summary comment | Yes | Structured summary with decision |
+| Spec/ADR updates noted | Yes | Either links provided or "No updates required" |
+| Impact documented | Yes | How originating ticket should proceed |
+| Caller is resolver | Yes | Human who resolved closes the Query |
+
+**Resolution Summary Comment Format:**
+```markdown
+✅ **Query Resolved**
+
+## Resolution
+[Technical answer to the gap/questions]
+
+## Decision
+[What was decided - proceed as-is, change needed, workaround, etc.]
+
+## Spec/ADR Updates
+- [Link to updated spec/ADR if applicable]
+- [Or "No updates required" with rationale]
+
+## Impact on Originating Ticket
+[How the originating work should proceed given this resolution]
+
+Resolved by: [Name/role]
+```
+
+**Note**: When Query is marked Done, PC automatically removes it from the originating ticket's `[Dev]` subtask's blockedBy list.
 
 ## DoD for Container Tickets
 
@@ -158,14 +195,18 @@
 | Gap | Resolution |
 |-----|------------|
 | No PR link | Worker must provide PR link in comment |
-| Code not merged | **User action** - not an agent DoD check |
-| Branch not deleted | **User action** - not an agent DoD check |
+| Story PR not merged | Code Reviewer merges to Epic branch after approval |
+| Epic not merged to main | **User action** - not an agent DoD check |
+| Branch not deleted | Handled by `--delete-branch` flag during merge |
 | No code review approval | Worker must get Code Reviewer approval |
+| **Minor/Medium issues unresolved** | Code Reviewer rejects - ALL issues must be fixed |
 | Tests missing | Worker must write tests per Gherkin scenarios |
 | Tests failing | Worker must fix failures |
 | Spec not met | Worker must address MUST/MUST NOT violations |
-| Activity subtasks incomplete | Complete all 6 activities before closing container |
+| Activity subtasks incomplete | Complete all activities before closing container |
 | UAT not verified | TPO must verify and add UAT comment |
+| Open Query blocking `[Dev]` | Resolve Query before marking `[Dev]` Done |
+| Query missing Resolution Summary | Add structured resolution comment before closing |
 
 ## Related References
 

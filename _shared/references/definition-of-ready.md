@@ -50,6 +50,21 @@
 | No open questions | ✅ | All clarifications resolved in ticket |
 | INVEST passed | ✅ | See checklist below |
 | **Activity subtasks specified** | ✅ | All 6 activity subtasks for implementation containers |
+| **No unresolved Queries** | ✅ | All linked `[Query]` tickets must be resolved |
+
+### For Query Tickets (Content from Any Role)
+
+| Check | Required | Validation |
+|-------|----------|------------|
+| Title | ✅ | `[Query] {Subject} ({Target Team})` format |
+| Parent (Epic) | ✅ | Linked via native parent field |
+| Originating Ticket | ✅ | Linked via `relatesTo` field |
+| Target Team | ✅ | Specified in body |
+| Gap Description | ✅ | "What We Found" section not empty |
+| Technical Details | ✅ | Section exists with context |
+| Questions | ✅ | At least one question for target team |
+
+**Note**: Query has no activity subtasks - it is resolved through human discussion.
 
 ### For Story/Task/Bug Completeness (Verified by SA)
 
@@ -73,13 +88,15 @@
 | `[UAT]` | TPO | User acceptance | No |
 
 **blockedBy relationships (activity chain):**
-- `[Dev]` → None (starts first)
+- `[Dev]` → None (starts first) + any open `[Query]` blockers
 - `[Code Review]` → `[Dev]`
 - `[Test]` → `[Code Review]`
 - `[Docs]` → `[Test]`
 - `[SA Review]` → `[Docs]`
 - `[UAT]` → `[SA Review]`
 - Container → All 6 activity subtasks
+
+**Query as Dynamic Blocker**: When a `[Query]` is raised against a container, PC automatically adds it to that container's `[Dev]` subtask's blockedBy list. The `[Dev]` cannot be marked Done while any Query blocker is open.
 
 **No exceptions.** If ANY activity subtask is missing, the ticket violates INVEST and is NOT ready.
 
@@ -173,6 +190,7 @@ Fix these gaps, then invoke Drive Mode again.
 | Dependencies | Solutions Architect |
 | Activity subtasks (`[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
 | Epic-level tickets (`[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
+| Unresolved `[Query]` tickets | Target Team (human resolution required) |
 | Test strategy | Tester |
 | Documentation plan | Tech Doc Writer |
 
@@ -186,6 +204,8 @@ Fix these gaps, then invoke Drive Mode again.
 | Open questions in ticket | Resolve via comments, then update ticket |
 | Title missing prefix | Use `[Backend]`, `[Frontend]`, etc. |
 | No UAT criteria (parent) | TPO adds verifiable UAT checklist |
+| Unresolved Query blocking `[Dev]` | Resolve Query with target team before proceeding |
+| Query missing target team | Specify team/domain in Query body |
 
 ## Related References
 

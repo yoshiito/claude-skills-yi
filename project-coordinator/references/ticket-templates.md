@@ -15,6 +15,7 @@
 | **Activity** | `[Docs]` | SA | Documentation subtask |
 | **Activity** | `[SA Review]` | SA | Solutions Architect technical acceptance |
 | **Activity** | `[UAT]` | SA | TPO user acceptance testing |
+| **Communication** | `[Query]` | Any Role | Cross-team/intra-team gap discovery |
 
 **Note**: All tickets are created by **Project Coordinator**. The "Content From" column indicates which role provides the ticket content when invoking PC.
 
@@ -59,30 +60,42 @@ Epic: Password Reset Feature
 │   ├── [Dev], [Code Review], [Test], [Docs], [SA Review], [UAT]
 ├── [Bug] Fix validation edge case
 │   ├── [Dev], [Code Review], [Test], [Docs], [SA Review], [UAT]
-├── [Test] Password Reset E2E Regression     ← Epic-level
-├── [Docs] Password Reset Feature Guide      ← Epic-level
-├── [SA Review] Password Reset Architecture  ← Epic-level
-└── [UAT] Password Reset Feature Acceptance  ← Epic-level
+├── [Query] API rate limit unclear (Backend)  ← Communication (no subtasks)
+│   └── (relatesTo: [Frontend] Add reset form, blocks its [Dev])
+├── [Test] Password Reset E2E Regression      ← Epic-level activity
+├── [Docs] Password Reset Feature Guide       ← Epic-level activity
+├── [SA Review] Password Reset Architecture   ← Epic-level activity
+└── [UAT] Password Reset Feature Acceptance   ← Epic-level activity
 ```
 
 | Epic-Level Ticket | Purpose |
 |-------------------|---------|
+| `[Query] {Subject} ({Target Team})` | Cross-team/intra-team gap discovery and resolution |
 | `[Test] {Feature} E2E Regression` | Full feature integration/regression testing |
 | `[Docs] {Feature} Guide` | Comprehensive feature documentation |
 | `[SA Review] {Feature} Architecture` | SA validates architecture compliance across all stories |
 | `[UAT] {Feature} Acceptance` | TPO acceptance of complete feature |
 
+**Note**: `[Query]` has no activity subtasks. It is resolved through human discussion, not implementation.
+
 ### blockedBy Relationships (Activity Chain)
 
 | Subtask | blockedBy |
 |---------|-----------|
-| `[Dev]` | None (starts first) |
+| `[Dev]` | None (starts first) + any open `[Query]` blockers |
 | `[Code Review]` | `[Dev]` |
 | `[Test]` | `[Code Review]` |
 | `[Docs]` | `[Test]` |
 | `[SA Review]` | `[Docs]` |
 | `[UAT]` | `[SA Review]` |
 | Parent container | All activity subtasks |
+
+### Query as Dynamic Blocker
+
+When a `[Query]` ticket is created:
+1. **PC auto-links** the Query to the originating ticket's `[Dev]` subtask via `blockedBy`
+2. **`[Dev]` cannot be marked Done** while any linked Query is open
+3. **Query resolution** removes the blocker relationship automatically
 
 | Epic-Level | blockedBy |
 |------------|-----------|
@@ -127,6 +140,9 @@ Before this feature can be marked complete, TPO will verify:
 ## Open Questions
 - [ ] [Any unresolved questions - MUST be empty before creation]
 
+## Branch Information
+- **Epic Branch**: `[USER MUST SPECIFY]`
+
 ## References
 - Initiative: [Related strategic initiative]
 - Research: [Links to research, competitor analysis]
@@ -143,7 +159,10 @@ Before this feature can be marked complete, TPO will verify:
 | UAT Criteria | Checklist with specific verifiable items | ✅ Enforced |
 | Out of Scope | Defined (can be "N/A") | ✅ Enforced |
 | Open Questions | **EMPTY** (all resolved) | ✅ Enforced |
+| **Epic Branch** | **User-specified branch name** | ✅ Enforced |
 | Team assigned | From project's `Team Slug` in claude.md | ✅ Auto (from config) |
+
+**Epic Branch Requirement**: User MUST specify the branch all Story/Task/Bug work will target. This cannot be assumed or defaulted. See "Branch Confirmation Protocol" below.
 
 ### DoD: Definition of Done (Before Closing)
 
@@ -396,14 +415,146 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 
 ---
 
-## 4. Activity Subtask Templates
+## 4. Query Template (Communication Protocol)
+
+**Content from**: Any role discovering a gap
+**Title format**: `[Query] {Subject} ({Target Team})`
+**Purpose**: Formalize discovery gaps that require cross-team or intra-team resolution
+
+### Hierarchy Position
+
+Query is at the **same level as Story/Task/Bug** - a child of Epic:
+
+```
+[Feature] Password Reset (Epic)
+├── [Backend] Add reset endpoint (Story)
+├── [Frontend] Add reset form (Story)  ← Gap discovered here
+├── [Bug] Fix validation (Bug)
+└── [Query] API rate limit unclear (Backend Team)  ← Sibling to Story/Task/Bug
+```
+
+**Key differences from Story/Task/Bug:**
+- **No activity subtasks** - Query is resolved through discussion, not implementation
+- **Has "Originating Ticket" link** - Separate from parent; links to the ticket where gap was found
+- **Blocks originating ticket's `[Dev]`** - Dynamic blocker until resolved
+
+### When to Use
+
+| Situation | Use [Query]? |
+|-----------|--------------|
+| Frontend discovers Backend API limitation | ✅ Yes |
+| Dev finds unclear spec during implementation | ✅ Yes |
+| Tester identifies missing edge case coverage | ✅ Yes |
+| SA needs clarification from another domain | ✅ Yes |
+| Simple bug in own team's code | ❌ No - use `[Bug]` |
+| Missing requirement | ❌ No - route to TPO |
+
+### Template Structure
+
+```markdown
+## Originating Context
+- **Originating Ticket**: [TICKET-ID] - [Title]
+- **Originating Role**: [Role that discovered the gap]
+- **Discovery Phase**: [Planning / Dev / Test / Review]
+
+## Target
+- **Target Team**: [Team slug or name]
+- **Target Domain**: [Backend API / Frontend / Data / Infrastructure / etc.]
+
+## Gap Description
+
+### What We Found
+[Describe the technical gap or limitation discovered]
+
+### What We Expected
+[What the originating team expected to exist or work]
+
+### Why This Matters
+[Impact on the originating work - why this blocks progress]
+
+## Technical Details
+[Include relevant code snippets, API calls, error messages, specs referenced]
+
+## Questions for Target Team
+1. [Specific question 1]
+2. [Specific question 2]
+3. [Specific question 3]
+
+## Proposed Solutions (Optional)
+[If the originating team has suggestions]
+
+## References
+- Related ADR: [Link if applicable]
+- Related API Spec: [Link if applicable]
+```
+
+### DoR: Definition of Ready (Before Creation)
+
+| Check | Required | PC Validates |
+|-------|----------|--------------|
+| Title format | `[Query] {Subject} ({Target Team})` | ✅ Enforced |
+| Parent (Epic) | Linked via native parent field | ✅ Enforced |
+| Originating Ticket | Linked via `relatesTo` field (separate from parent) | ✅ Enforced |
+| Target Team | Specified in body | ✅ Enforced |
+| Gap Description | "What We Found" not empty | ✅ Enforced |
+| Technical Details | Section exists | ✅ Enforced |
+| At least one question | Questions section not empty | ✅ Enforced |
+
+### DoD: Definition of Done (Before Closing)
+
+| Check | Required | PC Validates |
+|-------|----------|--------------|
+| Resolution provided | Target team answered questions | ✅ Enforced |
+| Resolution Summary comment | Structured summary added | ✅ Enforced |
+| Caller is resolver | Human in the loop closes after resolution | ✅ Enforced |
+
+**Resolution Summary Comment Format:**
+```markdown
+✅ **Query Resolved**
+
+## Resolution
+[Technical answer to the gap/questions]
+
+## Decision
+[What was decided - proceed as-is, change needed, workaround, etc.]
+
+## Spec/ADR Updates
+- [Link to updated spec/ADR if applicable]
+- [Or "No updates required" with rationale]
+
+## Impact on Originating Ticket
+[How the originating work should proceed given this resolution]
+
+Resolved by: [Name/role]
+```
+
+### Automatic Blocker Behavior
+
+**When PC creates a `[Query]` ticket:**
+
+1. Set parent to the Epic (same parent as originating Story/Task/Bug)
+2. Set `relatesTo` link to the originating Story/Task/Bug
+3. **Add Query to originating ticket's `[Dev]` subtask's `blockedBy` list**
+4. Log the blocker relationship
+
+**Workflow Constraint**: No `[Dev]` subtask can be marked "Done" if it has an open `[Query]` blocker.
+
+**When PC marks a `[Query]` as Done:**
+
+1. **Remove Query from `[Dev]`'s `blockedBy` list**
+2. Verify Resolution Summary comment exists
+3. Mark Query as Done
+
+---
+
+## 5. Activity Subtask Templates
 
 **Content from**: Solutions Architect (during work breakdown)
 **SA creates all 6 activity subtasks** for each Story/Task/Bug container.
 
 ---
 
-### 4.1 `[Dev]` - Implementation Subtask
+### 5.1 `[Dev]` - Implementation Subtask
 
 **Assigned to**: Developer (Backend/Frontend)
 
@@ -411,24 +562,45 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 |-------|-------------------|-------------------|
 | Parent container exists | ✅ | - |
 | Technical Spec available | ✅ | - |
+| **Epic Branch confirmed** | ✅ (BLOCKING) | - |
 | PR created | - | ✅ Link in comment |
+| PR targets Epic Branch | - | ✅ Verified |
 | Technical Spec satisfied | - | ✅ Confirmed in comment |
+
+**⛔ Branch Confirmation Protocol (BLOCKING)**
+
+Before starting ANY work, prompt user:
+
+```
+⛔ BRANCH CONFIRMATION REQUIRED
+
+I cannot proceed without knowing the target branch.
+
+Please confirm:
+  Epic Branch: _________________ (e.g., feature/password-reset)
+
+This branch will be the PR target for this work.
+
+Waiting for your response...
+```
+
+**Do NOT proceed until user provides explicit branch name.**
 
 **Completion Comment:**
 ```markdown
 ✅ **[Dev] Complete**
-- PR: [link]
-- Branch: `{branch-name}`
+- PR: [link] (targets `{epic-branch}`)
+- Branch: `{story-branch}`
 - Files: [Key files changed]
 - Technical Spec: All MUST/MUST NOT met
 - Ready for: Code Review
 ```
 
-**Note**: PR merging happens AFTER Code Review approval (user action, not agent DoD).
+**Note**: PR merging happens AFTER Code Review approval (Code Reviewer merges to Epic branch).
 
 ---
 
-### 4.2 `[Code Review]` - Code Review Subtask
+### 5.2 `[Code Review]` - Code Review Subtask
 
 **Assigned to**: Code Reviewer
 
@@ -436,24 +608,37 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 |-------|-------------------|-------------------|
 | `[Dev]` subtask done | ✅ | - |
 | PR link available | ✅ | - |
+| PR targets Epic Branch | ✅ | - |
 | Review completed | - | ✅ |
-| Issues addressed | - | ✅ (or none found) |
+| **All issues resolved** | - | ✅ (none remain) |
 | Approved | - | ✅ |
+| **PR merged to Epic Branch** | - | ✅ |
+
+**No issues pass through.** Code Reviewer MUST reject PRs with ANY unresolved issues (Critical, High, Medium, or Minor). Fix and re-review until clean.
+
+**Code Reviewer Merge Responsibility:**
+
+After approval, Code Reviewer merges the PR to Epic branch:
+
+```bash
+gh pr merge {PR_NUMBER} --squash --delete-branch
+```
 
 **Completion Comment:**
 ```markdown
 ✅ **[Code Review] Complete**
 - PR: [link]
-- Status: Approved
+- Status: Approved and Merged
+- Merged to: `{epic-branch}`
 - Issues found: [X] (all resolved)
-- Ready for: User to merge, then Testing
+- Ready for: Testing
 ```
 
-**Note**: After Code Review approval, **user merges PR and deletes branch**. This is a user action, not part of agent workflow.
+**Note**: Code Reviewer merges Story/Task/Bug PRs to Epic branch. User merges Epic branch to main.
 
 ---
 
-### 4.3 `[Test]` - Testing Subtask
+### 5.3 `[Test]` - Testing Subtask
 
 **Assigned to**: Tester (QA writes ALL tests - unit + functional)
 
@@ -481,7 +666,7 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 
 ---
 
-### 4.4 `[Docs]` - Documentation Subtask
+### 5.4 `[Docs]` - Documentation Subtask
 
 **Assigned to**: Tech Doc Writer
 
@@ -507,7 +692,7 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 
 ---
 
-### 4.5 `[SA Review]` - SA Technical Acceptance Subtask
+### 5.5 `[SA Review]` - SA Technical Acceptance Subtask
 
 **Assigned to**: Solutions Architect
 
@@ -518,6 +703,12 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 | Architecture compliance verified | - | ✅ |
 | ADR requirements met | - | ✅ |
 | No technical debt introduced | - | ✅ |
+| **Query resolutions integrated** | - | ✅ (if any Queries were raised) |
+
+**Query Integration Verification**: If any `[Query]` tickets were raised against this container during development, SA must verify:
+- Query resolutions were incorporated into the implementation
+- Any spec/ADR updates from Query resolutions are reflected in the code
+- No outstanding gaps remain from Query discussions
 
 **Completion Comment:**
 ```markdown
@@ -525,13 +716,14 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 - Architecture compliance: ✅
 - ADR requirements: Met
 - Technical debt: None introduced
+- Query integration: [N/A / Verified - X queries resolved and incorporated]
 - Issues: [None / List]
 - Ready for: UAT
 ```
 
 ---
 
-### 4.6 `[UAT]` - TPO User Acceptance Subtask
+### 5.6 `[UAT]` - TPO User Acceptance Subtask
 
 **Assigned to**: Technical Product Owner
 
@@ -577,6 +769,12 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 | `[Frontend]` | SA | Frontend implementation container |
 | `[Bug]` | Support Engineer | Bug fix container |
 
+### Communication Tickets (No Subtasks)
+
+| Ticket Prefix | Created By | Purpose |
+|---------------|------------|---------|
+| `[Query]` | Any role | Cross-team/intra-team gap discovery (human-resolved)
+
 ### Activity Subtasks (Mandatory for each container)
 
 | Subtask | Skill Name | Purpose |
@@ -603,13 +801,20 @@ Like Story/Task, every Bug MUST have all 6 activity subtasks:
 
 **All relationships set via Project Coordinator** using native ticket system fields.
 
-| System | Parent Field | Blocked By Field |
-|--------|--------------|------------------|
-| Linear | `parentId` | `blockedBy` |
-| GitHub | `addSubIssue` GraphQL | `addBlockedBy` GraphQL |
-| Plan Files | N/A | `(blockedBy: ...)` |
+| System | Parent Field | Blocked By Field | Relates To Field |
+|--------|--------------|------------------|------------------|
+| Linear | `parentId` | `blockedBy` | `relatedIssues` |
+| GitHub | `addSubIssue` GraphQL | `addBlockedBy` GraphQL | `convertedNoteToIssue` links |
+| Plan Files | N/A | `(blockedBy: ...)` | `(relatesTo: ...)` |
 
 **DO NOT** put relationship info in ticket body text. PC sets native fields.
+
+### Query-Specific Relationships
+
+When creating a `[Query]` ticket, PC sets:
+1. **Parent**: Epic (same as originating Story/Task/Bug)
+2. **Relates To**: The originating Story/Task/Bug where gap was discovered
+3. **Blocked By (on target)**: PC adds Query to originating ticket's `[Dev]` subtask's blockedBy list
 
 ---
 

@@ -39,6 +39,26 @@ User must explicitly type `DRIVE` when PM asks for mission mode. No other phrase
 5. **PM updates tickets at EVERY phase** — PM MUST add ticket comments at each lifecycle transition. This is NOT optional.
 6. **No self-invocation** — no role ever invokes itself.
 
+## ⛔ Container Completion Rule (MANDATORY)
+
+**PM MUST complete ALL activity subtasks for ONE container before moving to another container.**
+
+```
+✅ CORRECT (depth-first):
+   Story A: [Dev] → [Code Review] → [Test] → ... → DONE
+   Story B: [Dev] → [Code Review] → [Test] → ... → DONE
+
+❌ WRONG (breadth-first):
+   Story A: [Dev] → [Code Review]
+   Story B: [Dev] ← VIOLATION: Story A not complete
+```
+
+**Exception**: If container is BLOCKED by `[Query]` or external dependency, PM MAY start another container. PM MUST document the block and return to complete it once unblocked.
+
+**Checkpoint before starting NEW container**:
+- [ ] Previous container is DONE, OR
+- [ ] Previous container is BLOCKED (documented)
+
 ## Workflow Sequence
 
 ### Per Story/Task/Bug (Container with 6 Activity Subtasks)
@@ -166,8 +186,8 @@ Returning control to PM.
 ### For `[Code Review]` Subtask (Code Reviewer)
 
 1. Code Reviewer returns with review results
-2. If issues found → PM sends Developer back to fix `[Dev]`, repeat
-3. If Code Review passes → PM verifies DoD → Mark `[Code Review]` Done
+2. If ANY issues found (Critical, High, Medium, or Minor) → PM sends Developer back to fix, repeat
+3. If Code Review passes (zero issues) → PM verifies DoD → Mark `[Code Review]` Done
 4. **PM immediately assigns `[Test]` subtask** to Tester
 
 ### For `[Test]` Subtask (Tester)
@@ -229,8 +249,9 @@ Returning control to PM.
 | Check | Status |
 |-------|--------|
 | Code review completed | ✅ / ❌ |
-| No Critical/High issues | ✅ / ❌ |
+| All issues resolved | ✅ / ❌ |
 | PR approved | ✅ / ❌ |
+| PR merged to Epic branch | ✅ / ❌ |
 ```
 
 **Note**: User merges PR and deletes branch after Code Review approval.
@@ -334,7 +355,9 @@ Returning control to PM.
 |-------|--------|------------------|
 | Review starts | → In Progress | `🔍 **Code Review Started** - PR: {link}` |
 | Issues found | (keep In Progress) | `⚠️ **Issues Found** - {count} issues, returning to Developer` |
-| Review passed | → Done | `✅ **Code Review Passed** - PR approved: {link}, Ready for user to merge` |
+| Review passed | → Done | `✅ **Code Review Passed** - PR approved and merged to Epic branch: {link}` |
+
+**All issues must be resolved.** Code Reviewer rejects PRs with ANY unresolved issues. No exceptions for Minor/Medium.
 
 ### `[Test]` Subtasks
 
