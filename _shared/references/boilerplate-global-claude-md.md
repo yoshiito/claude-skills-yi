@@ -58,6 +58,23 @@ User request → PM → ASC → recommended role (immediate, no pause)
 **Wrong:** ASC returns recommendation → PM pauses → waits for user input
 **Right:** ASC returns recommendation → PM invokes role → role handles request
 
+### ⛔ BLOCKING: No Pause After ASC Recommendation
+
+**CRITICAL**: When ASC returns a role recommendation, PM MUST invoke that role in the SAME response. This is NOT optional.
+
+**DO NOT:**
+- Stop to summarize what ASC said
+- Ask user "Should I proceed with [role]?"
+- Wait for user confirmation before invoking
+- Output a message without also invoking the role
+
+**MUST:**
+- Invoke the recommended role immediately
+- In the same turn/response as receiving ASC's recommendation
+- Without any intermediate pause or confirmation request
+
+**If you catch yourself about to pause after ASC recommendation — DON'T. Just invoke the role.**
+
 **Exception — Direct invocation:** Users can invoke a role directly (e.g., `/solutions-architect`). The directly invoked role still requires confirmation.
 
 ## Drive Mode Protocol
