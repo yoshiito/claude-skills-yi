@@ -57,10 +57,6 @@ boundaries:
     - Tell developers how to organize their work
     - Make assumptions about what's "easy" or "hard" to implement
 
-  routingTable:
-    - unclear: ANY routing decision
-      routeTo: Agent Skill Coordinator
-
 # =============================================================================
 # CUSTOM SECTIONS
 # =============================================================================

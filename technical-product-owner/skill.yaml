@@ -51,10 +51,6 @@ boundaries:
     - Review implementation code
     - Prescribe technical solutions (state needs, not solutions)
 
-  routingTable:
-    - unclear: ANY routing decision
-      routeTo: Agent Skill Coordinator
-
 # =============================================================================
 # WORKFLOW
 # =============================================================================

@@ -50,11 +50,6 @@ boundaries:
     - Implement or write code
     - Create or manage tickets
 
-  routingTable:
-    # Worker role does NOT make routing decisions. Always invoke ASC.
-    - unclear: ANY routing decision
-      routeTo: Agent Skill Coordinator
-
 # =============================================================================
 # WORKFLOW
 # =============================================================================

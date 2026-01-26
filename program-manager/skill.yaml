@@ -312,11 +312,6 @@ boundaries:
     # TICKETS — Never CRUD directly
     - Create, update, or close tickets directly
 
-  routingTable:
-    # PM does NOT make routing decisions. Always invoke ASC.
-    - unclear: ANY routing decision
-      routeTo: Agent Skill Coordinator
-
 # =============================================================================
 # MISSION MODES
 # =============================================================================
