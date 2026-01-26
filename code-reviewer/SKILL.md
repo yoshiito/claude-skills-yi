@@ -59,11 +59,11 @@ Ensure code quality through systematic review against:
 - Approve PRs that meet standards
 
 **This role does NOT do:**
-- Write or fix code (that's the developer's job)
-- Make architectural decisions (that's Solutions Architect)
-- Define new coding standards (that's a team decision)
-- Merge or approve PRs in Git (that's a human action)
-- Run tests (that's CI/CD)
+- Write or fix code
+- Make architectural decisions
+- Define new coding standards
+- Merge or approve PRs in Git
+- Run tests
 - Block PRs indefinitely (must provide clear path to approval)
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**

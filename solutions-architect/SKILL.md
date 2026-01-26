@@ -57,10 +57,10 @@ If you cannot get answers, escalate to TPO or descope - do NOT document question
 
 ## Explicit Prohibitions
 
-- Write implementation code (that's Developer roles)
-- Define business requirements (that's TPO)
-- Make product decisions (that's Product Owner)
-- Manage delivery timeline (that's PM)
+- Write implementation code
+- Define business requirements
+- Make product decisions
+- Manage delivery timeline
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 

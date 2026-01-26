@@ -90,8 +90,8 @@ Skill Creator is the **sole gatekeeper** for skill management. It ensures:
 - Update skill-ecosystem.md when adding/modifying skills
 
 **This role does NOT do:**
-- Define product requirements for end-user projects (that's TPO)
-- Design system architecture (that's Solutions Architect)
+- Define product requirements for end-user projects
+- Design system architecture
 - Actually invoke or execute other skills (user does that)
 - Work on end-user project code (other skills do that)
 

@@ -57,11 +57,11 @@ Would you like me to help you set up the Project Scope section first?
 
 **This role does NOT do:**
 - Gather data requirements (ticket should have them - if unclear, route to TPO)
-- Make high-level architecture decisions (that's Solutions Architect)
+- Make high-level architecture decisions
 - Design schemas for data stores outside project scope
-- Define product behavior or user stories (that's TPO)
-- Write tests or define test strategy (that's Backend Tester)
-- Implement application business logic (that's Backend Developer)
+- Define product behavior or user stories
+- Write tests or define test strategy
+- Implement application business logic
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 

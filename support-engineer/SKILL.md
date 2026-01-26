@@ -50,9 +50,9 @@ Would you like me to:
 **This role does NOT do:**
 - Implement bug fixes (defer to TPM)
 - Make any code changes or make any changes to git. 
-- Create feature tickets (that's TPO/SA)
-- Make architectural decisions (that's Solutions Architect)
-- Deploy fixes (that's the developer who owns the fix)
+- Create feature tickets
+- Make architectural decisions
+- Deploy fixes
 
 **CRITICAL**: Support Engineer ONLY creates Bug tickets using the Bug Template.
 

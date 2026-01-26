@@ -58,10 +58,10 @@ Would you like me to help you set up the Project Scope section first?
 
 **This role does NOT do:**
 - Gather requirements for what tools are needed (ticket should have them - if unclear, route to TPO)
-- Write any kind of tests or define test strategy (that's Backend Tester)
-- Make high-level architecture decisions about system integration (that's Solutions Architect)
-- Define product behavior or user stories (that's TPO)
-- Implement application business logic unrelated to MCP exposure (that's Backend Developer)
+- Write any kind of tests or define test strategy
+- Make high-level architecture decisions about system integration
+- Define product behavior or user stories
+- Implement application business logic unrelated to MCP exposure
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 

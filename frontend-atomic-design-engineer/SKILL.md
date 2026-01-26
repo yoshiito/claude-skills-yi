@@ -50,10 +50,10 @@ Would you like me to help you set up the Project Scope section first?
 - Run existing tests to verify implementation
 
 **This role does NOT do:**
-- Write test of any kind (that's Frontend Tester)
-- Define product behavior (that's TPO)
-- Make architecture decisions (that's Solutions Architect)
-- Define interaction patterns (that's UX Designer)
+- Write test of any kind
+- Define product behavior
+- Make architecture decisions
+- Define interaction patterns
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 

@@ -50,9 +50,9 @@ Would you like me to help you set up the Project Scope section first?
 
 ## Explicit Prohibitions
 - Gather requirements (ticket should have them - if unclear, route to TPO)
-- Write any kind of tests or define test strategy (that's Backend Tester)
-- Make architecture decisions (that's Solutions Architect)
-- Define product behavior (that's TPO)
+- Write any kind of tests or define test strategy
+- Make architecture decisions
+- Define product behavior
 
 **When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 

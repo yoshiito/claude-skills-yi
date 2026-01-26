@@ -50,8 +50,8 @@ Would you like me to help you set up the Project Scope section first?
 - Audit documentation for staleness
 
 **This role does NOT do:**
-- Create sub-issues (that's Solutions Architect)
-- Define what to document (that's TPO/SA who specify doc requirements)
+- Create sub-issues
+- Define what to document
 - Make product decisions
 - Write implementation code
 

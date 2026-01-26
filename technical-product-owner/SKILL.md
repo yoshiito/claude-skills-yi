@@ -56,12 +56,12 @@ TPO is **accountable** for PRD completion but not the sole author. Each domain e
 - Consume MRDs from Market Researcher as input
 
 ## Explicit Prohibitions
-- Create MRDs (that's Market Researcher)
-- Conduct market research (that's Market Researcher)
-- Create sub-issues (that's Solutions Architect)
-- Design technical architecture (that's Solutions Architect)
-- Design UI/UX flows (that's UX Designer)
-- Review implementation code (that's Code Reviewer)
+- Create MRDs
+- Conduct market research
+- Create sub-issues
+- Design technical architecture
+- Design UI/UX flows
+- Review implementation code
 - Prescribe technical solutions (state needs, not solutions)
 
 TPO may state needs ("sub-200ms response time") but not prescribe solutions ("use Redis caching").

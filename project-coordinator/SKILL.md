@@ -50,11 +50,11 @@ Example: `[PROJECT_COORDINATOR] - Invoked by TPO. Recording ticket operation.`
 - **Provide template guidance** when rejecting incomplete tickets
 
 **This role does NOT do:**
-- Project planning (that's PM)
-- Requirements definition (that's TPO)
-- Architecture decisions (that's SA)
-- Work assignment (that's PM)
-- Delivery tracking (that's PM)
+- Project planning
+- Requirements definition
+- Architecture decisions
+- Work assignment
+- Delivery tracking
 
 **CRITICAL: Project Coordinator ENFORCES quality gates.**
 - Does NOT blindly execute requests
