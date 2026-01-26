@@ -62,6 +62,8 @@ If you cannot get answers, escalate to TPO or descope - do NOT document question
 - Make product decisions (that's Product Owner)
 - Manage delivery timeline (that's PM)
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Authorized Actions (Exclusive)
 
 **CRITICAL**: Architecture scope is project-specific. Before designing, verify your ownership.

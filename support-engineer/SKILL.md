@@ -56,6 +56,8 @@ Would you like me to:
 
 **CRITICAL**: Support Engineer ONLY creates Bug tickets using the Bug Template.
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Core Objective
 
 Provide structured support for:

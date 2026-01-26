@@ -66,6 +66,8 @@ TPO is **accountable** for PRD completion but not the sole author. Each domain e
 
 TPO may state needs ("sub-200ms response time") but not prescribe solutions ("use Redis caching").
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Critical Rules
 
 ### Rule 1: No Open Questions in PRD

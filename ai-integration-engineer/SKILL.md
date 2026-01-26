@@ -37,6 +37,8 @@ See `_shared/references/project-scope-template.md` for a template.
 Would you like me to help you set up the Project Scope section first?
 ```
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Usage Notification
 
 **REQUIRED**: When triggered, state: "[AI_INTEGRATION_ENGINEER] - 🤖 Using AI Integration Engineer skill - designing AI integration with systematic prompt engineering."

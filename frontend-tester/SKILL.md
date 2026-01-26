@@ -37,6 +37,8 @@ See `_shared/references/project-scope-template.md` for a template.
 Would you like me to help you set up the Project Scope section first?
 ```
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Usage Notification
 
 **REQUIRED**: When triggered, state: "[FRONTEND_TESTER] - 🧪 Using Frontend Tester skill - ensuring comprehensive frontend test coverage."

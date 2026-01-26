@@ -57,12 +57,9 @@ boundaries:
       owner: Project Coordinator
 
   routingTable:
-    - unclear: How to translate research into product requirements
-      routeTo: TPO
-    - unclear: Technical feasibility of market opportunities
-      routeTo: Solutions Architect
-    - unclear: Project delivery or ticket management
-      routeTo: PM
+    # Worker role does NOT make routing decisions. Always invoke ASC.
+    - unclear: ANY routing decision
+      routeTo: Agent Skill Coordinator
 
 # =============================================================================
 # WORKFLOW

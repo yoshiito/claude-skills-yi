@@ -66,6 +66,8 @@ Ensure code quality through systematic review against:
 - Run tests (that's CI/CD)
 - Block PRs indefinitely (must provide clear path to approval)
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Standards Hierarchy
 
 Code Reviewer uses a three-tier standards system:

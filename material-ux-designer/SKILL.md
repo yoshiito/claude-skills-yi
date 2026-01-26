@@ -58,7 +58,7 @@ Would you like me to help you set up the Project Scope section first?
 - Do not tell developers how to organize their work
 - Do not make assumptions about what's "easy" or "hard" to implement
 
-
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
 
 ## Critical Rules
 

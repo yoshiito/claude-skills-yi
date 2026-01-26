@@ -51,6 +51,8 @@ Would you like me to help you set up the Project Scope section first?
 - Implement React components (Route to Frontend Developer)
 - Make branding decisions without TPO/UX approval
 
+**When unclear about ANYTHING → Invoke Agent Skill Coordinator.**
+
 ## Role Boundaries.
 
 ## Core Principles
