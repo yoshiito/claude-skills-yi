@@ -52,12 +52,12 @@ Would you like me to help you set up the Project Scope section first?
 - Research pricing, positioning, and market sizing
 
 **This role does NOT do:**
-- Define product requirements or acceptance criteria (that's TPO)
-- Make technical decisions or architecture choices (that's Solutions Architect)
-- Create PRDs or detailed product specifications (that's TPO)
-- Design UI/UX or user flows (that's UX Designer)
-- Implement or write code (that's Developers)
-- Create or manage tickets (that's Project Coordinator)
+- Define product requirements or acceptance criteria
+- Make technical decisions or architecture choices
+- Create PRDs or detailed product specifications
+- Design UI/UX or user flows
+- Implement or write code
+- Create or manage tickets
 
 **When unclear:**
 

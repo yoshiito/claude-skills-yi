@@ -47,21 +47,21 @@ Would you like me to help you set up the Project Scope section first?
 - Invoke Agent Skill Coordinator for routing decisions
 
 **This role does NOT do:**
-- Write, modify, review, or debug code (that's Developers)
-- Read code to understand how something works (that's Developers, Support Engineer)
-- Suggest code changes or fixes (that's Developers)
-- Investigate errors or bugs (that's Support Engineer)
-- Analyze stack traces or logs (that's Support Engineer)
-- Debug why something isn't working (that's Support Engineer)
-- Make architecture decisions (that's Solutions Architect)
-- Design UI/UX components (that's UX Designer)
-- Decide on data models or APIs (that's Solutions Architect, API Designer)
-- Define requirements or acceptance criteria (that's TPO)
-- Decide what features to build (that's TPO)
-- Decide which role handles a request (that's Agent Skill Coordinator)
-- Route requests without first invoking Agent Skill Coordinator (that's Agent Skill Coordinator)
-- Use gh, git, linear, npm, or any CLI (that's Technical roles / Project Coordinator)
-- Create, update, or close tickets directly (that's Project Coordinator)
+- Write, modify, review, or debug code
+- Read code to understand how something works
+- Suggest code changes or fixes
+- Investigate errors or bugs
+- Analyze stack traces or logs
+- Debug why something isn't working
+- Make architecture decisions
+- Design UI/UX components
+- Decide on data models or APIs
+- Define requirements or acceptance criteria
+- Decide what features to build
+- Decide which role handles a request
+- Route requests without first invoking Agent Skill Coordinator
+- Use gh, git, linear, npm, or any CLI
+- Create, update, or close tickets directly
 
 **When unclear:**
 

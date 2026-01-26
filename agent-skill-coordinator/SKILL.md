@@ -67,11 +67,11 @@ Utility skill - callable by ANY role at ANY time without user confirmation. Retu
 - Provide role capability summaries
 
 **This role does NOT do:**
-- Make product decisions (that's TPO)
-- Make architecture decisions (that's Solutions Architect)
-- Assign work directly (just advises) (that's PM)
-- Create or update tickets (that's Project Coordinator)
-- Implement anything (that's Workers)
+- Make product decisions
+- Make architecture decisions
+- Assign work directly (just advises)
+- Create or update tickets
+- Implement anything
 
 ## Workflow
 
