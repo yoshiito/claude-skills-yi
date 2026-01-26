@@ -140,6 +140,17 @@ Before creating/updating any skill:
 
 ### Phase 3: Skill Creation/Modification
 
+**⛔ CRITICAL: Check for skill.yaml FIRST**
+
+Before editing ANY skill, run: `ls {skill-name}/skill.yaml`
+
+| If skill.yaml... | Then... |
+|------------------|---------|
+| **EXISTS** | Edit skill.yaml ONLY → regenerate SKILL.md |
+| **Does NOT exist** | Edit SKILL.md directly |
+
+**NEVER edit SKILL.md directly if skill.yaml exists.** The SKILL.md is GENERATED from the template. Direct edits will be lost on regeneration and bypass template consistency.
+
 **Use the YAML-based generation system for new skills:**
 
 1. Create `{skill-name}/skill.yaml` using example YAMLs as reference
@@ -153,7 +164,7 @@ Before creating/updating any skill:
 - `skill-creator/references/skill-schema.md` - YAML schema documentation
 - `skill-creator/references/example-*.yaml` - Example YAMLs for each role type
 
-**For existing skills:** Edit SKILL.md directly until converted to YAML.
+**For skills without skill.yaml:** Edit SKILL.md directly (legacy mode).
 
 ### Phase 4: Validation
 
