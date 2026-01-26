@@ -59,11 +59,7 @@ Would you like me to help you set up the Project Scope section first?
 - Implement or write code
 - Create or manage tickets
 
-**When unclear:**
-
-| If unclear about... | Route to |
-|---------------------|----------|
-| ANY routing decision | Agent Skill Coordinator |
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Workflow
 

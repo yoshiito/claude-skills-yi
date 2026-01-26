@@ -59,11 +59,7 @@ Would you like me to help you set up the Project Scope section first?
 - Tell developers how to organize their work
 - Make assumptions about what's "easy" or "hard" to implement
 
-**When unclear:**
-
-| If unclear about... | Route to |
-|---------------------|----------|
-| ANY routing decision | Agent Skill Coordinator |
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Workflow
 

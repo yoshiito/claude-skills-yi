@@ -54,11 +54,7 @@ Would you like me to help you set up the Project Scope section first?
 - Review implementation code
 - Prescribe technical solutions (state needs, not solutions)
 
-**When unclear:**
-
-| If unclear about... | Route to |
-|---------------------|----------|
-| ANY routing decision | Agent Skill Coordinator |
+**Out of scope → Route to Agent Skill Coordinator**
 
 ## Workflow
 

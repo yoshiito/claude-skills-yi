@@ -99,13 +99,7 @@ Would you like me to help you set up the Project Scope section first?
 {% endfor %}
 {% if boundaries.routingTable %}
 
-**When unclear:**
-
-| If unclear about... | Route to |
-|---------------------|----------|
-{% for route in boundaries.routingTable -%}
-| {{ route.unclear }} | {{ route.routeTo }} |
-{% endfor %}
+**Out of scope → Route to Agent Skill Coordinator**
 {% endif %}
 {% if missionModes %}
 

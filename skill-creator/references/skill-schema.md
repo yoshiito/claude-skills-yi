@@ -89,10 +89,11 @@ boundaries:
     - string
     # NOTE: "owner" field is DEPRECATED - Agent Skill Coordinator handles all routing
 
-  # Optional - for workers and intake roles
+  # Optional - triggers "Out of scope → Route to Agent Skill Coordinator"
+  # The presence of this section renders the standard routing statement
   routingTable:
-    - unclear: string     # "If unclear about X..."
-      routeTo: string     # "...route to Y"
+    - unclear: string     # Deprecated field name (kept for backwards compat)
+      routeTo: string     # Always "Agent Skill Coordinator"
 ```
 
 ### `workflow` (Required)
