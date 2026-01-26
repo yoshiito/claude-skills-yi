@@ -49,15 +49,36 @@ REQUIRED_FIELDS = {
     ],
     "boundaries": ["authorizedActions", "prohibitions"],
     "workflow": ["phases"],
+    "qualityChecklist": [],  # Required section (can be list or dict with sections)
     "references": [],  # Can be empty but must exist
     "relatedSkills": [],  # Can be empty but must exist
 }
+
+# Fields that must be boolean
+BOOLEAN_FIELDS = [
+    "role.capabilities.canIntakeUserRequests",
+    "role.capabilities.requiresActivationConfirmation",
+    "role.capabilities.requiresProjectScope",
+    "role.capabilities.isUtility",
+]
+
+
+def get_nested_value(data: dict, path: str):
+    """Get value from nested dict using dot notation."""
+    parts = path.split(".")
+    current = data
+    for part in parts:
+        if not isinstance(current, dict):
+            return None
+        current = current.get(part)
+    return current
 
 
 def validate_schema(data: dict, skill_name: str) -> list[str]:
     """Validate skill.yaml against required schema. Returns list of errors."""
     errors = []
 
+    # Check required sections and fields
     for section, fields in REQUIRED_FIELDS.items():
         if "." in section:
             # Nested field like "role.capabilities"
@@ -77,17 +98,85 @@ def validate_schema(data: dict, skill_name: str) -> list[str]:
             if field not in section_data:
                 errors.append(f"Missing required field: {section}.{field}")
 
-    # Validate boundaries have content
-    if "boundaries" in data:
-        if not data["boundaries"].get("authorizedActions"):
-            errors.append("boundaries.authorizedActions cannot be empty")
-        if not data["boundaries"].get("prohibitions"):
-            errors.append("boundaries.prohibitions cannot be empty")
+    # Validate boolean fields are actually booleans
+    for field_path in BOOLEAN_FIELDS:
+        value = get_nested_value(data, field_path)
+        if value is not None and not isinstance(value, bool):
+            errors.append(f"{field_path} must be boolean (true/false), got: {type(value).__name__}")
 
-    # Validate workflow has at least one phase
+    # Validate role.prefix is SCREAMING_SNAKE_CASE
+    prefix = get_nested_value(data, "role.prefix")
+    if prefix:
+        import re
+        if not re.match(r'^[A-Z][A-Z0-9_]*$', prefix):
+            errors.append(f"role.prefix must be SCREAMING_SNAKE_CASE, got: {prefix}")
+
+    # Validate boundaries structure
+    if "boundaries" in data:
+        boundaries = data["boundaries"]
+
+        # authorizedActions must be non-empty list of strings
+        auth_actions = boundaries.get("authorizedActions", [])
+        if not auth_actions:
+            errors.append("boundaries.authorizedActions cannot be empty")
+        elif not isinstance(auth_actions, list):
+            errors.append("boundaries.authorizedActions must be a list")
+        else:
+            for i, action in enumerate(auth_actions):
+                if not isinstance(action, str):
+                    errors.append(f"boundaries.authorizedActions[{i}] must be string")
+
+        # prohibitions must be non-empty list with 'action' field
+        prohibitions = boundaries.get("prohibitions", [])
+        if not prohibitions:
+            errors.append("boundaries.prohibitions cannot be empty")
+        elif not isinstance(prohibitions, list):
+            errors.append("boundaries.prohibitions must be a list")
+        else:
+            for i, prohibition in enumerate(prohibitions):
+                if not isinstance(prohibition, dict):
+                    errors.append(f"boundaries.prohibitions[{i}] must be an object with 'action' field")
+                elif "action" not in prohibition:
+                    errors.append(f"boundaries.prohibitions[{i}] missing required 'action' field")
+
+    # Validate workflow structure
     if "workflow" in data:
-        if not data["workflow"].get("phases"):
+        phases = data["workflow"].get("phases", [])
+        if not phases:
             errors.append("workflow.phases cannot be empty")
+        elif not isinstance(phases, list):
+            errors.append("workflow.phases must be a list")
+        else:
+            for i, phase in enumerate(phases):
+                if not isinstance(phase, dict):
+                    errors.append(f"workflow.phases[{i}] must be an object")
+                elif "name" not in phase:
+                    errors.append(f"workflow.phases[{i}] missing required 'name' field")
+                elif "steps" not in phase:
+                    errors.append(f"workflow.phases[{i}] missing required 'steps' field")
+
+    # Validate qualityChecklist structure
+    if "qualityChecklist" in data:
+        qc = data["qualityChecklist"]
+        if isinstance(qc, list):
+            # Simple list format - items should be strings
+            for i, item in enumerate(qc):
+                if not isinstance(item, str):
+                    errors.append(f"qualityChecklist[{i}] must be string (simple format)")
+        elif isinstance(qc, dict):
+            # Sections format
+            if "sections" not in qc:
+                errors.append("qualityChecklist must have 'sections' when using dict format")
+            else:
+                for i, section in enumerate(qc.get("sections", [])):
+                    if not isinstance(section, dict):
+                        errors.append(f"qualityChecklist.sections[{i}] must be an object")
+                    elif "name" not in section:
+                        errors.append(f"qualityChecklist.sections[{i}] missing 'name' field")
+                    elif "checks" not in section:
+                        errors.append(f"qualityChecklist.sections[{i}] missing 'checks' field")
+        else:
+            errors.append("qualityChecklist must be list or dict with 'sections'")
 
     return errors
 
