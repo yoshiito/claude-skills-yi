@@ -260,10 +260,10 @@ If a worker receives direct request for new work, it routes to appropriate intak
 
 ```
 [PROJECT_COORDINATOR] Create:
-- Type: parent | sub-issue | bug
+- Type: mission | feature | dev-subtask | mission-activity
 - Title: "..."
 - Body: "..."
-- Parent: #NUM (for sub-issues)
+- Parent: #NUM (for features and subtasks)
 
 [PROJECT_COORDINATOR] Update #NUM:
 - Status: backlog | in-progress | in-review | done
@@ -277,6 +277,7 @@ If a worker receives direct request for new work, it routes to appropriate intak
 All tickets must include:
 - **Technical Spec**: MUST/MUST NOT/SHOULD constraints
 - **Gherkin Scenarios**: Given/When/Then
+- **Mission Statement**: Clear statement defining what "done" looks like
 
 ## Definition of Ready Checks
 
@@ -284,12 +285,12 @@ PM verifies before work starts:
 
 | Check | Required |
 |-------|----------|
-| Parent-child relationship set | Yes |
+| Parent (Mission) relationship set | Yes |
+| Mission Statement | Yes |
 | Technical Spec | Yes |
 | Gherkin scenarios | Yes |
 | Testing Notes | Yes |
-| `[Test]` sub-issue exists | Yes |
-| `[Docs]` sub-issue exists (if user-facing) | Yes |
+| Feature branch (user-provided) | Yes |
 | Dependencies set | Yes |
 
 **If ANY check fails**: Route gaps to SA/TPO.

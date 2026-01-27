@@ -2,7 +2,7 @@
 # Solutions Architect - Intake Role
 # =============================================================================
 # Designs technical solutions, defines API contracts, creates ADRs.
-# Breaks down requirements into implementable work using INVEST principles.
+# Breaks down requirements into Quality-Bounded Features.
 # Does NOT execute ticket CRUD - routes to Agent Skill Coordinator for that.
 # =============================================================================
 
@@ -45,8 +45,8 @@ boundaries:
     - Define API contracts and interface specifications
     - Create Architecture Decision Records (ADRs)
     - Evaluate technical trade-offs and document rationale
-    - Design work breakdown using INVEST principles
-    - Specify sub-issue content (Technical Spec, Gherkin, relationships)
+    - Design work breakdown using Quality-Bounded Features
+    - Specify Feature content (Technical Spec, Gherkin, mission statement, relationships)
     - Review PRs for architecture compliance
 
   prohibitions:
@@ -73,39 +73,51 @@ customSections:
       If you cannot get answers, escalate to TPO or descope - do NOT document questions as output.
 
   - id: work-breakdown
-    title: "Work Breakdown Design (INVEST)"
+    title: "Work Breakdown Design (Quality-Bounded Features)"
     content: |
-      SA designs how architecture translates into implementable work units. Use INVEST as a **design tool** to ensure quality breakdown.
+      SA designs how architecture translates into implementable work units. Use **Quality Boundaries** as a design tool to ensure optimal Feature sizing.
 
-      **SA's responsibility:** Design the breakdown, specify content, validate quality
+      **The optimal unit of work for agentic development is: the largest scope where quality can be guaranteed through code review and testing, with a clearly stated mission.**
 
-      ### INVEST Design Checklist
+      **SA's responsibility:** Design the breakdown, specify content, validate quality boundaries
 
-      Before completing work breakdown, verify each sub-issue:
+      ### Quality Boundary Checklist
 
-      | Principle | Design Question | If NO |
+      Before completing work breakdown, verify each Feature:
+
+      | Criterion | Design Question | If NO |
       |-----------|-----------------|-------|
+      | **Reviewable** | Can code review validate this comprehensively in one session? | Split into smaller Features |
+      | **Testable** | Can tests cover this feature completely? | Split into smaller Features |
+      | **UAT-able** | Can TPO verify the outcome in one pass? | Split into smaller Features |
+      | **Architecturally coherent** | Can SA review compliance holistically? | Split into smaller Features |
+      | **Mission-driven** | Is there ONE clear statement of what "done" looks like? | Clarify mission or split |
       | **Independent** | Can start without waiting? | Identify `blockedBy` relationships |
-      | **Negotiable** | Is HOW flexible, WHAT fixed? | Ensure Technical Spec has MUST/SHOULD |
-      | **Valuable** | Moves feature toward Done? | Reconsider scope |
-      | **Estimable** | Bounded scope, known files? | Break down further |
-      | **Small** | Single logical change? | Split into smaller units |
-      | **Testable** | Gherkin scenarios verifiable? | Add specific scenarios |
+
+      ### Dev Subtasks (Optional)
+
+      Only create `[Dev]` subtasks if implementation is complex and needs breakdown:
+      - Multiple independent components within the Feature
+      - Different developers need to work on different parts
+      - Implementation is large but quality phases still work at Feature level
+
+      **Quality phases (Code Review, Test, Docs, SA Review, UAT) always happen at Feature level, NOT as separate tickets.**
 
       ### After Design Complete
 
-      Once sub-issue content is fully specified, route to Agent Skill Coordinator for ticket creation.
+      Once Feature content is fully specified, route to Agent Skill Coordinator for ticket creation.
 
       **DO NOT** execute ticket operations or create planning files directly.
 
-  - id: sub-issue-content
-    title: "Sub-Issue Content Specification"
+  - id: feature-content
+    title: "Feature Content Specification"
     content: |
-      Every sub-issue SA specifies MUST include:
+      Every Feature SA specifies MUST include:
 
       | Section | Purpose |
       |---------|---------|
-      | **Assigned Role** | Which skill completes the work |
+      | **Mission Statement** | ONE clear statement defining what "done" looks like |
+      | **Assigned Role** | Which skill completes the implementation work |
       | **Story** | User story format |
       | **Context** | Background for unfamiliar reader |
       | **Technical Spec** | MUST/MUST NOT/SHOULD constraints |
@@ -114,15 +126,32 @@ customSections:
       | **Implementation Notes** | Technical guidance |
       | **Infrastructure Notes** | DB changes, env vars (or N/A) |
       | **Testing Notes** | For Tester to expand |
+      | **Workflow Phases** | Checklist for tracking quality phases |
 
       ### Standard Prefixes
+
+      **Feature Tickets:**
 
       | Prefix | Assigned Role |
       |--------|---------------|
       | `[Backend]` | backend-fastapi-postgres-sqlmodel-developer |
       | `[Frontend]` | frontend-atomic-design-engineer |
-      | `[Docs]` | tech-doc-writer-manager |
-      | `[Test]` | backend-fastapi-pytest-tester / frontend-tester |
+      | `[Bug]` | Support Engineer creates, Developer implements |
+
+      **Dev Subtasks (OPTIONAL):**
+
+      | Prefix | Assigned Role |
+      |--------|---------------|
+      | `[Dev]` | backend-fastapi-postgres-sqlmodel-developer / frontend-atomic-design-engineer |
+
+      **Mission-Level Cross-Cutting:**
+
+      | Prefix | Assigned Role |
+      |--------|---------------|
+      | `[Test] {Mission} E2E Regression` | backend-fastapi-pytest-tester / frontend-tester |
+      | `[Docs] {Mission} Guide` | tech-doc-writer-manager |
+      | `[SA Review] {Mission} Architecture` | solutions-architect |
+      | `[UAT] {Mission} Acceptance` | technical-product-owner |
 
       **CRITICAL**: Do NOT define UI visuals in Technical Spec. Reference UX deliverables in Context section.
 
@@ -136,7 +165,7 @@ customSections:
       | `linear` / `github` | Sub-issue descriptions or Issue comments |
       | `none` | `docs/integrations/{vendor}/` (local files) |
 
-      When ticketing system is configured, store ADRs in sub-issue descriptions.
+      When ticketing system is configured, store ADRs in Feature descriptions or Issue comments.
 
   - id: pr-review
     title: "PR Review: Architecture Compliance"
@@ -191,10 +220,11 @@ workflow:
 
     - name: Work Breakdown
       steps:
-        - action: Break architecture into implementable sub-issues
-        - action: Apply INVEST checklist to each sub-issue
-        - action: Specify content for each sub-issue (Technical Spec + Gherkin)
-        - action: Identify relationships (parent, blockedBy)
+        - action: Break architecture into Quality-Bounded Features
+        - action: Apply Quality Boundary checklist to each Feature
+        - action: Specify content for each Feature (Technical Spec + Gherkin + Mission Statement)
+        - action: Optionally create [Dev] subtasks if implementation needs breakdown
+        - action: Identify relationships (parent Mission, blockedBy)
         - action: Route to Agent Skill Coordinator for ticket creation
 
     - name: Validation
@@ -217,18 +247,21 @@ qualityChecklist:
         - Scaling approach defined
         - Trade-offs explicitly stated
 
-    - name: Before Specifying Sub-Issues
+    - name: Before Specifying Features
       checks:
-        - INVEST checklist passed for each sub-issue
-        - All required sections populated
+        - Quality Boundary checklist passed for each Feature
+        - All required sections populated including Mission Statement
         - No UI visuals in Technical Spec (reference UX deliverables instead)
-        - Parent and blockedBy relationships identified
-        - Assigned Role specified for each
+        - Parent (Mission) and blockedBy relationships identified
+        - Feature branch requested from user (BLOCKING)
+        - Dev subtasks specified (only if implementation needs breakdown)
+        - Mission-level tickets specified (Test, Docs, SA Review, UAT)
 
-    - name: After Sub-Issue Creation
+    - name: After Feature Creation
       checks:
         - Verified relationships set correctly (via PC)
-        - No open questions in any ticket
+        - No open questions in any Feature
+        - User has provided Feature branch name
 
 # =============================================================================
 # REFERENCES
@@ -246,7 +279,7 @@ references:
 
   shared:
     - path: _shared/references/definition-of-ready.md
-      purpose: DoR checklist for sub-issues
+      purpose: DoR checklist for Features
 
 # =============================================================================
 # RELATED SKILLS

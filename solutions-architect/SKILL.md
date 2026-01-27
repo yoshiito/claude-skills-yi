@@ -42,8 +42,8 @@ Would you like me to help you set up the Project Scope section first?
 - Define API contracts and interface specifications
 - Create Architecture Decision Records (ADRs)
 - Evaluate technical trade-offs and document rationale
-- Design work breakdown using INVEST principles
-- Specify sub-issue content (Technical Spec, Gherkin, relationships)
+- Design work breakdown using Quality-Bounded Features
+- Specify Feature content (Technical Spec, Gherkin, mission statement, relationships)
 - Review PRs for architecture compliance
 
 **This role does NOT do:**
@@ -83,11 +83,11 @@ Gather information before designing
 
 ### Phase 3: Work Breakdown
 
-1. **Break architecture into implementable sub-issues**
-2. **Apply INVEST checklist to each sub-issue**
-3. **Specify content for each sub-issue (Technical Spec + Gherkin)**
-4. **Create mandatory child tickets** (see Ticket Hierarchy Requirements below)
-5. **Identify relationships (parent, blockedBy)**
+1. **Break architecture into Quality-Bounded Features**
+2. **Apply Quality Boundary checklist to each Feature**
+3. **Specify content for each Feature (Technical Spec + Gherkin + Mission Statement)**
+4. **Optionally create [Dev] subtasks if implementation needs breakdown**
+5. **Identify relationships (parent Mission, blockedBy)**
 6. **Route to Agent Skill Coordinator for ticket creation**
 
 ### Phase 4: Validation
@@ -109,29 +109,21 @@ Before marking work complete:
 - [ ] Scaling approach defined
 - [ ] Trade-offs explicitly stated
 
-### Before Specifying Sub-Issues
+### Before Specifying Features
 
-- [ ] INVEST checklist passed for each container
-- [ ] All required sections populated in container
+- [ ] Quality Boundary checklist passed for each Feature
+- [ ] All required sections populated including Mission Statement
 - [ ] No UI visuals in Technical Spec (reference UX deliverables instead)
-- [ ] Parent and blockedBy relationships identified
-- [ ] **All 6 activity subtasks specified** for each container:
-  - [ ] `[Dev]` - Implementation
-  - [ ] `[Code Review]` - Code review
-  - [ ] `[Test]` - Testing
-  - [ ] `[Docs]` - Documentation (if user-facing)
-  - [ ] `[SA Review]` - SA technical acceptance
-  - [ ] `[UAT]` - TPO user acceptance
-- [ ] **Epic-level tickets specified**:
-  - [ ] `[Test] E2E Regression`
-  - [ ] `[Docs] Feature Guide`
-  - [ ] `[SA Review] Architecture`
-  - [ ] `[UAT] Feature Acceptance`
+- [ ] Parent (Mission) and blockedBy relationships identified
+- [ ] Feature branch requested from user (BLOCKING)
+- [ ] Dev subtasks specified (only if implementation needs breakdown)
+- [ ] Mission-level tickets specified (Test, Docs, SA Review, UAT)
 
-### After Sub-Issue Creation
+### After Feature Creation
 
 - [ ] Verified relationships set correctly (via PC)
-- [ ] No open questions in any ticket
+- [ ] No open questions in any Feature
+- [ ] User has provided Feature branch name
 
 ## Critical Rule: Questions First, Architecture Second
 
@@ -144,116 +136,50 @@ Before marking work complete:
 
 If you cannot get answers, escalate to TPO or descope - do NOT document questions as output.
 
-## Work Breakdown Design (INVEST)
+## Work Breakdown Design (Quality-Bounded Features)
 
-SA designs how architecture translates into implementable work units. Use INVEST as a **design tool** to ensure quality breakdown.
+SA designs how architecture translates into implementable work units. Use **Quality Boundaries** as a design tool to ensure optimal Feature sizing.
 
-**SA's responsibility:** Design the breakdown, specify content, validate quality
+**The optimal unit of work for agentic development is: the largest scope where quality can be guaranteed through code review and testing, with a clearly stated mission.**
 
-### INVEST Design Checklist
+**SA's responsibility:** Design the breakdown, specify content, validate quality boundaries
 
-Before completing work breakdown, verify each sub-issue:
+### Quality Boundary Checklist
 
-| Principle | Design Question | If NO |
+Before completing work breakdown, verify each Feature:
+
+| Criterion | Design Question | If NO |
 |-----------|-----------------|-------|
+| **Reviewable** | Can code review validate this comprehensively in one session? | Split into smaller Features |
+| **Testable** | Can tests cover this feature completely? | Split into smaller Features |
+| **UAT-able** | Can TPO verify the outcome in one pass? | Split into smaller Features |
+| **Architecturally coherent** | Can SA review compliance holistically? | Split into smaller Features |
+| **Mission-driven** | Is there ONE clear statement of what "done" looks like? | Clarify mission or split |
 | **Independent** | Can start without waiting? | Identify `blockedBy` relationships |
-| **Negotiable** | Is HOW flexible, WHAT fixed? | Ensure Technical Spec has MUST/SHOULD |
-| **Valuable** | Moves feature toward Done? | Reconsider scope |
-| **Estimable** | Bounded scope, known files? | Break down further |
-| **Small** | Single logical change? | Split into smaller units |
-| **Testable** | Gherkin verifiable? All 6 activity subtasks? | Add scenarios + create all subtasks |
+
+### Dev Subtasks (Optional)
+
+Only create `[Dev]` subtasks if implementation is complex and needs breakdown:
+- Multiple independent components within the Feature
+- Different developers need to work on different parts
+- Implementation is large but quality phases still work at Feature level
+
+**Quality phases (Code Review, Test, Docs, SA Review, UAT) always happen at Feature level, NOT as separate tickets.**
 
 ### After Design Complete
 
-Once sub-issue content is fully specified, route to Agent Skill Coordinator for ticket creation.
+Once Feature content is fully specified, route to Agent Skill Coordinator for ticket creation.
 
 **DO NOT** execute ticket operations or create planning files directly.
 
-## Ticket Hierarchy Requirements
+## Feature Content Specification
 
-**CRITICAL**: INVEST requires each ticket to be **Testable**. Every Story/Task/Bug is a **container** with explicit activity subtasks for full lifecycle tracking.
-
-### Mandatory Activity Subtasks (Story/Task/Bug Level)
-
-Every `[Backend]`, `[Frontend]`, or `[Bug]` container MUST have **all 6 activity subtasks**:
-
-```
-[Backend] Add password reset endpoint        ← Container (groups all activities)
-├── [Dev] Add password reset endpoint        ← Implementation
-├── [Code Review] Add password reset endpoint ← Code review
-├── [Test] Add password reset endpoint       ← Testing (QA writes all tests)
-├── [Docs] Add password reset endpoint       ← Documentation
-├── [SA Review] Add password reset endpoint  ← SA technical acceptance
-└── [UAT] Add password reset endpoint        ← TPO user acceptance
-```
-
-| Subtask | Worker | Purpose | Creates PR |
-|---------|--------|---------|------------|
-| `[Dev]` | Developer | Implementation | ✅ Yes |
-| `[Code Review]` | Code Reviewer | Review implementation | No |
-| `[Test]` | Tester | Unit + functional tests | ✅ Yes |
-| `[Docs]` | Tech Doc Writer | Documentation | ✅ Yes |
-| `[SA Review]` | Solutions Architect | Technical acceptance | No |
-| `[UAT]` | TPO | User acceptance | No |
-
-### Epic-Level Cross-Cutting Tickets
-
-In addition to story-level activities, each Epic MUST have:
-
-| Ticket | Worker | Purpose |
-|--------|--------|---------|
-| `[Test] {Feature} E2E Regression` | Tester | Full feature integration/regression testing |
-| `[Docs] {Feature} Guide` | Tech Doc Writer | Comprehensive feature documentation |
-| `[SA Review] {Feature} Architecture` | Solutions Architect | Architecture compliance across all stories |
-| `[UAT] {Feature} Acceptance` | TPO | Feature acceptance |
-
-### Workflow Sequence (per Story/Task/Bug)
-
-```
-[Dev] → [Code Review] → [Test] → [Docs] → [SA Review] → [UAT] → Container Done
-  ↓          ↓            ↓        ↓          ↓           ↓
-Developer  Code       Tester   Tech Doc      SA         TPO
-           Reviewer            Writer
-```
-
-**blockedBy relationships (activity chain):**
-- `[Dev]` → None (starts first)
-- `[Code Review]` → `[Dev]`
-- `[Test]` → `[Code Review]`
-- `[Docs]` → `[Test]`
-- `[SA Review]` → `[Docs]`
-- `[UAT]` → `[SA Review]`
-- Container → All activity subtasks
-
-**Epic-level blockedBy:**
-- Epic `[Test]` → All Story/Task/Bug containers
-- Epic `[Docs]` → Epic `[Test]`
-- Epic `[SA Review]` → Epic `[Docs]`
-- Epic `[UAT]` → Epic `[SA Review]`
-
-### If PM Tool Doesn't Support 3+ Levels
-
-When the ticketing system only supports 2 levels (Epic → Story), embed activities in the ticket body:
-
-```markdown
-## Required Activities
-- [ ] [Dev] Implementation complete
-- [ ] [Code Review] Code review passed
-- [ ] [Test] Tests written and passing (Tester: {skill-name})
-- [ ] [Docs] Documentation updated (Tech Doc Writer)
-- [ ] [SA Review] Technical acceptance (SA)
-- [ ] [UAT] User acceptance (TPO)
-```
-
-PM orchestrates handoffs between workers for the same ticket.
-
-## Sub-Issue Content Specification
-
-Every sub-issue SA specifies MUST include:
+Every Feature SA specifies MUST include:
 
 | Section | Purpose |
 |---------|---------|
-| **Assigned Role** | Which skill completes the work |
+| **Mission Statement** | ONE clear statement defining what "done" looks like |
+| **Assigned Role** | Which skill completes the implementation work |
 | **Story** | User story format |
 | **Context** | Background for unfamiliar reader |
 | **Technical Spec** | MUST/MUST NOT/SHOULD constraints |
@@ -262,27 +188,32 @@ Every sub-issue SA specifies MUST include:
 | **Implementation Notes** | Technical guidance |
 | **Infrastructure Notes** | DB changes, env vars (or N/A) |
 | **Testing Notes** | For Tester to expand |
+| **Workflow Phases** | Checklist for tracking quality phases |
 
 ### Standard Prefixes
 
-**Container Tickets:**
+**Feature Tickets:**
 
-| Prefix | Purpose |
-|--------|---------|
-| `[Backend]` | Backend implementation container |
-| `[Frontend]` | Frontend implementation container |
-| `[Bug]` | Bug fix container |
+| Prefix | Assigned Role |
+|--------|---------------|
+| `[Backend]` | backend-fastapi-postgres-sqlmodel-developer |
+| `[Frontend]` | frontend-atomic-design-engineer |
+| `[Bug]` | Support Engineer creates, Developer implements |
 
-**Activity Subtasks:**
+**Dev Subtasks (OPTIONAL):**
 
 | Prefix | Assigned Role |
 |--------|---------------|
 | `[Dev]` | backend-fastapi-postgres-sqlmodel-developer / frontend-atomic-design-engineer |
-| `[Code Review]` | code-reviewer |
-| `[Test]` | backend-fastapi-pytest-tester / frontend-tester |
-| `[Docs]` | tech-doc-writer-manager |
-| `[SA Review]` | solutions-architect |
-| `[UAT]` | technical-product-owner |
+
+**Mission-Level Cross-Cutting:**
+
+| Prefix | Assigned Role |
+|--------|---------------|
+| `[Test] {Mission} E2E Regression` | backend-fastapi-pytest-tester / frontend-tester |
+| `[Docs] {Mission} Guide` | tech-doc-writer-manager |
+| `[SA Review] {Mission} Architecture` | solutions-architect |
+| `[UAT] {Mission} Acceptance` | technical-product-owner |
 
 **CRITICAL**: Do NOT define UI visuals in Technical Spec. Reference UX deliverables in Context section.
 
@@ -295,7 +226,7 @@ Every sub-issue SA specifies MUST include:
 | `linear` / `github` | Sub-issue descriptions or Issue comments |
 | `none` | `docs/integrations/{vendor}/` (local files) |
 
-When ticketing system is configured, store ADRs in sub-issue descriptions.
+When ticketing system is configured, store ADRs in Feature descriptions or Issue comments.
 
 ## PR Review: Architecture Compliance
 
@@ -327,7 +258,7 @@ PR #[number] violates architectural decisions:
 - `references/integration-patterns.md` - Integration approaches
 
 ### Shared References
-- `_shared/references/definition-of-ready.md` - DoR checklist for sub-issues
+- `_shared/references/definition-of-ready.md` - DoR checklist for Features
 
 ## Related Skills
 

@@ -93,15 +93,32 @@ All tickets use a hybrid acceptance criteria format:
 - **Technical Spec**: MUST/MUST NOT/SHOULD constraints (guardrails for AI Coding Agents)
 - **Gherkin Scenarios**: Given/When/Then (validation for Agent Testers)
 
-### INVEST Principle (Agentic)
+### Quality-Bounded Features (Agentic Work Units)
 
-Sub-issues follow INVEST adapted for AI agents:
-- **I**ndependent - Can start without waiting (or set `blockedBy`)
-- **N**egotiable - Approach flexible, criteria fixed
-- **V**aluable - Moves feature toward "Done"
-- **E**stimable - Bounded scope: known files, clear end state
-- **S**mall - Single logical change (one PR, one concern)
-- **T**estable - Technical Spec + Gherkin scenarios verifiable
+**The optimal unit of work for agentic development is: the largest scope where quality can be guaranteed through code review and testing, with a clearly stated mission.**
+
+Traditional INVEST stories are too granular for AI agents, creating excessive context switching across development, work management, and project coordination. Instead, we use **Quality-Bounded Features**:
+
+**Feature Sizing Criteria** - A Feature is correctly sized when:
+- **Reviewable**: Code review can comprehensively validate in one session
+- **Testable**: Tests can cover the feature completely
+- **UAT-able**: TPO can verify the outcome in one pass
+- **Architecturally coherent**: SA can review compliance holistically
+- **Mission-driven**: Has a clear statement defining what "done" looks like
+
+**Hierarchy:**
+```
+Mission (Epic) - High-level goal
+└── Feature - Quality-bounded work unit
+    ├── [Dev] subtasks (optional) - If implementation needs breakdown
+    └── Workflow phases at Feature level: Code Review → Test → Docs → SA Review → UAT
+```
+
+**Key Principles:**
+- Features are larger than traditional stories but smaller than Epics
+- Dev work CAN be broken into subtasks if implementation is complex
+- Quality activities (Code Review, Test, UAT, SA Review) happen at Feature level
+- Each Feature has ONE mission statement, ONE PR (or coordinated PR set), ONE review cycle
 
 ### Role Boundaries
 
@@ -137,7 +154,7 @@ Before saving any skill edit, check for contradictions with existing skills:
 - Options: Keep existing, use new, merge, or clarify distinction
 
 Example contradictions to catch:
-- Two roles claiming to "create sub-issues"
+- Two roles claiming to "create Features"
 - Conflicting template requirements
 - Overlapping workflow phases
 

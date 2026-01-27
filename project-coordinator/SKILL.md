@@ -48,7 +48,7 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 | Who Can Invoke | When | Example |
 |----------------|------|---------|
 | TPO | After defining requirements | Create parent issue |
-| Solutions Architect | After architecture breakdown | Create sub-issues with relationships |
+| Solutions Architect | After architecture breakdown | Create Features with relationships |
 | Support Engineer | After identifying bug | Create bug ticket |
 | PM | Before Drive Mode | Verify relationships |
 | Workers | During implementation | Update status, add comments |
@@ -92,55 +92,30 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 
 **Enforce at**: Before creating ANY ticket (BLOCKING - no exceptions)
 
-#### For Epic
+#### For Mission
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Title prefix | Title starts with `[Feature]` | Missing prefix |
+| Title prefix | Title starts with `[Mission]` | Missing prefix |
 | Problem Statement | Body contains "Problem Statement" section with content | Missing or empty |
 | Target Users | Body contains "Target Users" section with content | Missing or empty |
 | Success Criteria | Body contains "Success Criteria" section with content | Missing or empty |
 | UAT Criteria | Body contains "UAT Criteria" with checklist items `- [ ]` | Missing or empty |
 | Open Questions | No unchecked items in "Open Questions" section | Missing or empty |
 
-#### For Container (`[Backend]`, `[Frontend]`, `[Bug]`)
+#### For Feature
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Title prefix | Title starts with `[Backend]`, `[Frontend]`, or `[Bug]` | Missing/invalid prefix |
+| Title prefix | Title starts with `[Backend]`, `[Frontend]`, `[Bug]` | Missing/invalid prefix |
+| Mission Statement | Body contains "Mission Statement" section with ONE clear statement | Missing or empty |
 | Technical Spec | Body contains `<technical-spec>` with `<must>` section | Missing or empty |
 | Gherkin | Body contains Given/When/Then keywords | Missing or empty |
-| Parent | Parent #NUM provided in request | Missing or empty |
+| Parent | Parent #NUM (Mission) provided in request | Missing or empty |
 | Testing Notes | Body contains "Testing Notes" section | Missing or empty |
+| Workflow Phases | Body contains "Workflow Phases" checklist | Missing or empty |
 | Open Questions | No unchecked items in "Open Questions" section | Missing or empty |
-| **6 Activity Subtasks** | All 6 activity subtasks included in request | Missing any activity |
-
-**CRITICAL**: Every container MUST be created with 6 activity subtasks:
-- `[Dev]` - Implementation
-- `[Code Review]` - Code review
-- `[Test]` - Testing
-- `[Docs]` - Documentation
-- `[SA Review]` - SA technical acceptance
-- `[UAT]` - TPO user acceptance
-
-If requesting role provides container without all 6 activities, **REJECT** and require them to specify all 6.
-
-#### For Activity Subtask (`[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`)
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with activity prefix | Missing/invalid prefix |
-| Parent container | Parent #NUM references a container | Missing or wrong parent type |
-| blockedBy | Correct predecessor in activity chain | Missing or wrong |
-| Description | Activity-specific requirements present | Missing or empty |
-
-**blockedBy chain validation:**
-- `[Dev]` → None (first in chain)
-- `[Code Review]` → blockedBy `[Dev]`
-- `[Test]` → blockedBy `[Code Review]`
-- `[Docs]` → blockedBy `[Test]`
-- `[SA Review]` → blockedBy `[Docs]`
-- `[UAT]` → blockedBy `[SA Review]`
+| Feature Branch | User has provided Feature branch name | Missing or empty |
 
 #### For Bug
 
@@ -152,108 +127,56 @@ If requesting role provides container without all 6 activities, **REJECT** and r
 | Actual Result | Body contains "Actual" section | Missing or empty |
 | Expected Result | Body contains "Expected" section | Missing or empty |
 
-#### For Epic-Level Tickets (`[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` at Epic Level)
+#### For Subtask
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Title prefix | Title starts with `[Test]`, `[Docs]`, `[SA Review]`, or `[UAT]` | Missing prefix |
-| Feature name | Title contains feature name (e.g., `[Test] Password Reset E2E Regression`) | Missing |
-| Parent Epic | Parent #NUM references an Epic | Missing or wrong parent type |
-| blockedBy | Correct epic-level chain | Missing |
-| Description | Activity-specific requirements present | Missing or empty |
-
-**Epic-level blockedBy chain:**
-- Epic `[Test]` → blockedBy all Containers
-- Epic `[Docs]` → blockedBy Epic `[Test]`
-- Epic `[SA Review]` → blockedBy Epic `[Docs]`
-- Epic `[UAT]` → blockedBy Epic `[SA Review]`
+| Title prefix | Title starts with `[Subtask]` | Missing prefix |
+| Parent | Parent #NUM provided in request | Missing or empty |
+| Description | Body is not empty | Missing or empty |
 
 ### Definition of Done (On Status=Done)
 
 **Enforce at**: Before updating ANY ticket to status=done (BLOCKING - no exceptions)
 
-#### For `[Dev]` Subtask
+#### For Implementation
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| PR created | Comment contains PR URL | Missing |
-| Branch convention | Branch follows team naming convention | Incorrect |
-| Technical Spec satisfied | Comment confirms MUST/MUST NOT met | Missing |
+| PR link | Comment contains PR URL | Missing |
+| PR merged | Comment states "merged" or check PR status | Missing |
+| Code review | Comment mentions "Code Review" or reviewer approval | Missing |
+| Tests | Comment mentions tests written/passing | Missing |
 
-**Note**: PR merging is a user action AFTER Code Review approval, not part of `[Dev]` DoD.
-
-#### For `[Code Review]` Subtask
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Code review completed | Comment documents review performed | Missing |
-| No Critical/High issues | Comment confirms no blocking issues | Missing |
-| PR approved | Comment states PR approved | Missing |
-
-**Note**: After Code Review approval, **user merges PR and deletes branch**. This is a user action, not part of agent workflow.
-
-#### For `[Test]` Subtask
+#### For Test
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Unit tests written | Comment documents unit tests | Missing |
-| Functional tests written | Comment documents functional tests | Missing |
-| All tests passing | Comment states all tests pass | Missing |
-| Gherkin scenarios covered | Comment references scenarios from container | Missing |
-| Test PR created | Comment contains test PR link | Missing |
+| Test results | Comment documents pass/fail for each scenario | Missing |
+| Coverage | Comment mentions scenarios from ticket validated | Missing |
 
-**Note**: User merges test PR. Agent DoD is test code written and passing.
-
-#### For `[Docs]` Subtask
+#### For Docs
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Documentation created | Comment contains link to docs | Missing |
-| Matches implementation | Comment confirms docs match code | Missing |
-| Review completed | Comment mentions review | Missing |
-| Docs PR created | Comment contains docs PR link | Missing |
+| Doc link | Comment contains link to created/updated docs | Missing |
+| Review | Comment mentions review completed | Missing |
 
-**Note**: User merges docs PR. Agent DoD is documentation written and reviewed.
-
-#### For `[SA Review]` Subtask
+#### For Bug
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| Architecture compliance | Comment confirms ADR patterns followed | Missing |
-| Integration validated | Comment confirms integration points correct | Missing |
-| Technical acceptance | Comment states SA approval | Missing |
+| PR link | Comment contains PR URL | Missing |
+| PR merged | Comment states "merged" | Missing |
+| Code review | Comment mentions approval | Missing |
+| Regression test | Comment mentions test added to prevent recurrence | Missing |
 
-#### For `[UAT]` Subtask
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| UAT criteria verified | Comment references UAT checklist | Missing |
-| User acceptance confirmed | Comment states TPO approval | Missing |
-| No open issues | Comment confirms no user-facing issues | Missing |
-
-#### For Container (`[Backend]`, `[Frontend]`, `[Bug]`)
+#### For Mission
 
 | Check | How to Verify | Reject If |
 |-------|---------------|-----------|
-| All 6 activity subtasks done | Query child activities, all must be status=done | Any activity not done |
-| `[Dev]` done | Verify status | Not done |
-| `[Code Review]` done | Verify status | Not done |
-| `[Test]` done | Verify status | Not done |
-| `[Docs]` done | Verify status | Not done |
-| `[SA Review]` done | Verify status | Not done |
-| `[UAT]` done | Verify status | Not done |
-
-**Container cannot be marked Done until ALL 6 activity subtasks are Done.**
-
-#### For Epic
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| All containers done | Query child containers, all must be status=done | Any container not done |
-| Epic `[Test]` done | E2E regression ticket completed | Missing or not done |
-| Epic `[Docs]` done | Feature guide ticket completed | Missing or not done |
-| Epic `[SA Review]` done | Architecture review ticket completed | Missing or not done |
-| Epic `[UAT]` done | Feature acceptance ticket completed | Missing or not done |
+| All Features done | Query child Features, all must be status=done | Missing |
+| UAT verified | Comment contains "UAT Complete" with checked items | Missing |
 | Caller is TPO | Request came from TPO role | Missing |
 
 ### Rejection Response Format
@@ -288,51 +211,23 @@ Returning to [CALLING_ROLE].
 
 ```
 [PROJECT_COORDINATOR] Create:
-- Type: epic | container | activity | epic-activity
+- Type: mission | feature | dev-subtask | mission-activity
 - Title: "..."
 - Body: "..."
-- Parent: #NUM (required for containers and activities)
-- Blocked By: #NUM, #NUM (required for activities per chain)
+- Parent: #NUM (required for features and subtasks)
+- Blocked By: #NUM, #NUM (optional)
 - Labels: label1, label2
 
 ```
 
-**Type values:**
-- `epic` - Feature-level issue (created by TPO)
-- `container` - `[Backend]`, `[Frontend]`, `[Bug]` with 6 activities (created by SA)
-- `activity` - One of the 6 activity subtasks under a container (created by SA)
-- `epic-activity` - Epic-level `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` (created by SA)
-
-**When creating a container**, SA MUST include all 6 activity subtasks in a single request or batch:
-```
-[PROJECT_COORDINATOR] Create Container with Activities:
-- Parent: #EPIC_NUM
-- Container Title: "[Backend] Add password reset endpoint"
-- Container Body: "..."
-- Activities:
-  - [Dev]: "Implementation of password reset endpoint"
-  - [Code Review]: "Code review for password reset endpoint"
-  - [Test]: "Unit and functional tests for password reset"
-  - [Docs]: "Documentation for password reset feature"
-  - [SA Review]: "Technical acceptance for password reset"
-  - [UAT]: "User acceptance for password reset"
-```
-
 **Type mapping:**
 
-| Type | Title Prefix | Content From |
-|------|--------------|--------------|
-| `epic` | `[Feature]` | TPO |
-| `container` | `[Backend]`/`[Frontend]`/`[Bug]` | Solutions Architect |
-| `activity` | `[Dev]`/`[Code Review]`/`[Test]`/`[Docs]`/`[SA Review]`/`[UAT]` | Solutions Architect |
+| Type | Title Prefix | Created By |
+|------|--------------|------------|
+| `mission` | `[Mission]` | TPO |
+| `feature` | `[Backend]`/`[Frontend]`/`[Bug]` | Solutions Architect |
 | `bug` | `[Bug]` | Support Engineer |
-
-**Note**: Project Coordinator creates all tickets. "Content From" indicates which role invokes PC with the ticket content.
-
-**Hierarchy model:**
-- Epic contains Containers (`[Backend]`, `[Frontend]`, `[Bug]`)
-- Each Container MUST have 6 Activity Subtasks
-- See `_shared/references/definition-of-ready.md` for full hierarchy requirements
+| `subtask` | `[Subtask]` | Worker |
 
 ### Update Ticket
 
@@ -395,14 +290,10 @@ Check EVERY requirement. Show WHAT you found and WHERE. This is not optional. No
    - [ ] All required sections present
    - [ ] No unresolved open questions
    - [ ] Parent specified (if required)
-   - [ ] **For containers**: All 6 activity subtasks specified
-   - [ ] **For activities**: Correct blockedBy chain position
 2. **For Status=Done operations** - Run DoD checks per ticket type
    - [ ] Fetch actual ticket from system
    - [ ] Read comments and description
    - [ ] Verify each completion criterion
-   - [ ] **For containers**: All 6 activity subtasks are Done
-   - [ ] **For epics**: All containers + epic-level tickets Done
 3. **Build verification trail table** - Show each requirement, whether found, and where
 4. **REJECT if any check fails** - Use rejection format with specific missing items
 
@@ -498,7 +389,7 @@ I do NOT:
 Every validation MUST show evidence:
 
 ```
-[PROJECT_COORDINATOR] - Validating sub-issue creation.
+[PROJECT_COORDINATOR] - Validating Feature creation.
 
 **Reference Check**: Read ticket-templates.md ✓
 
@@ -575,7 +466,7 @@ Returning to [CALLING_ROLE].
 | Skill | Coordination |
 |-------|--------------|
 | **TPO** | Invokes for parent issue creation |
-| **Solutions Architect** | Invokes for sub-issue creation with relationships |
+| **Solutions Architect** | Invokes for Feature creation with relationships |
 | **Support Engineer** | Invokes for bug ticket creation |
 | **PM** | Invokes for relationship verification |
 | **Workers** | Invoke for status updates |

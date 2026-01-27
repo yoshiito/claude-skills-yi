@@ -136,7 +136,7 @@ Support user discovery, document after
    - [ ] READ each ticket body
    - [ ] Check Technical Spec exists
    - [ ] Check Gherkin scenarios exist
-   - [ ] Check [Test] sub-issue exists
+   - [ ] Check Testing Notes section exists
 2. **Coordinate execution**
    - [ ] Query Agent Skill Coordinator for worker assignment
    - [ ] Hand off ticket to worker
@@ -215,7 +215,8 @@ Routing flow (do NOT pause between steps):
 **Right:** Get recommendation → invoke role → role handles request
 
 **⛔ SAME-TURN REQUIREMENT:**
-When ASC returns "Returning to PM", you MUST invoke the recommended role **in the SAME response**. Do NOT treat "Returning to PM" as a turn boundary.
+When ASC returns "Returning to PM", you MUST invoke the recommended role
+**in the SAME response**. Do NOT treat "Returning to PM" as a turn boundary.
 
 Your response must contain BOTH:
 1. The ASC query and response
@@ -414,7 +415,7 @@ Gherkin scenarios: [X scenarios to satisfy]
 | Skill | Provides |
 |-------|----------|
 | **TPO** | Requirements, UAT criteria |
-| **Solutions Architect** | Technical design, sub-issues with specs |
+| **Solutions Architect** | Technical design, Features with specs |
 
 ### Downstream/Parallel
 

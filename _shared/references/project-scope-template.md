@@ -24,7 +24,7 @@ Copy this section into your project's `claude.md` file and customize for your pr
 
 ### Git Branching
 
-**Branch at sub-issue level** - each sub-issue gets its own branch from `main`.
+**Branch at Feature level** - each Feature gets its own branch from Mission branch or `main`.
 
 #### Branch Pattern
 

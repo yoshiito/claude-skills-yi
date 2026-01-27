@@ -41,14 +41,14 @@ Would you like me to help you set up the Project Scope section first?
 - Create PRD with user personas and goals (only when explicitly asked)
 - Set functional requirements and acceptance criteria
 - Make priority decisions
-- Review sub-issues for requirement alignment
+- Review Features for requirement alignment
 - Coordinate PRD completion with contributors
 - Consume MRDs from Market Researcher as input
 
 **This role does NOT do:**
 - Create MRDs
 - Conduct market research
-- Create sub-issues
+- Create Features
 - Design technical architecture
 - Design UI/UX flows
 - Review implementation code
@@ -111,34 +111,35 @@ Ensure PRD is complete and all contributors have provided input
 4. Escalate blockers or disagreements
 5. Validate all sections meet quality bar
 
-### Phase 4: Sub-Issue Review
+### Phase 4: Feature Review
 
-Review sub-issues for requirement alignment
+Review Features for requirement alignment
 
-*Condition: SA creates sub-issues from parent Issue*
+*Condition: SA creates Features from parent Mission*
 
 1. **Gate 1 - Template Compliance**
-   - [ ] Sub-issues follow Story/Task template
-   - [ ] Each sub-issue has Assigned Role specified
+   - [ ] Features follow Feature template
+   - [ ] Each Feature has Mission Statement defined
+   - [ ] Each Feature has Assigned Role specified
    - [ ] Story written in user story format
    - [ ] Context provides enough background
    - [ ] Technical Spec defines MUST/MUST NOT/SHOULD constraints
    - [ ] Gherkin scenarios provide behavioral validation
    - [ ] Scope matches what was defined in MRD/PRD
-2. **Gate 2 - INVEST Compliance**
-   - [ ] Independent: Can start alone OR blockedBy set
-   - [ ] Negotiable: Technical Spec has MUST/MUST NOT/SHOULD
-   - [ ] Valuable: Moves feature toward Done
-   - [ ] Estimable: Bounded scope, clear end state
-   - [ ] Small: Single logical change (1-3 days max)
-   - [ ] Testable: Gherkin scenarios specific and verifiable
+2. **Gate 2 - Quality Boundary Compliance**
+   - [ ] Reviewable: Code review can validate comprehensively in one session
+   - [ ] Testable: Tests can cover this feature completely
+   - [ ] UAT-able: TPO can verify outcome in one pass
+   - [ ] Architecturally coherent: SA can review compliance holistically
+   - [ ] Mission-driven: ONE clear statement of what 'done' looks like
+   - [ ] Feature branch: User has provided branch name
 3. **Gate 3 - Native Relationship Fields**
-   - [ ] Parent set via Project Coordinator
+   - [ ] Parent Mission set via Project Coordinator
    - [ ] Blocked By set if dependencies exist
    - [ ] Relationships NOT duplicated in issue body text
 4. **Route failures back to SA**
    ```
-[TPO] - Sub-issue review failed.
+[TPO] - Feature review failed.
 
 Gate failures:
 - [list failed checks]
@@ -162,7 +163,7 @@ Before marking work complete:
 
 ### Before Feature Acceptance
 
-- [ ] All sub-issues have PR review from Code Reviewer
+- [ ] All Features have completed their workflow phases
 - [ ] No Critical or High severity issues remain open
 - [ ] Code adheres to project standards
 
@@ -244,7 +245,8 @@ All ticket operations go through Project Coordinator.
 
 Before accepting a completed feature:
 
-- [ ] All sub-issues have PR review from Code Reviewer
+- [ ] Feature PR has Code Review approval
+- [ ] All Dev subtasks (if any) have PR review from Code Reviewer
 - [ ] No Critical or High severity issues remain open
 - [ ] Code adheres to project standards defined in `claude.md` → `## Coding Standards`
 
@@ -253,9 +255,9 @@ Before accepting a completed feature:
 ```
 [TPO] - ⚠️ Cannot Accept Feature - PR Review Gate Not Met
 
-The following sub-issues lack Code Reviewer approval:
-- [Sub-issue ID]: No review found
-- [Sub-issue ID]: Critical issues unresolved
+The following lack Code Reviewer approval:
+- Feature PR: No review found
+- [Dev subtask]: Critical issues unresolved
 
 **Required Action**: Route back to developer to complete Code Review process.
 
@@ -302,7 +304,7 @@ See `_shared/references/scope-boundaries.md` for the complete framework.
 
 | Skill | Coordination |
 |-------|--------------|
-| **Solutions Architect** | Receives requirements, contributes technical design to PRD, creates sub-issues |
+| **Solutions Architect** | Receives requirements, contributes technical design to PRD, creates Features |
 | **UX Designer** | Receives user needs, contributes flows to PRD |
 | **Data Platform Engineer** | Receives data needs, contributes data design to PRD |
 | **API Designer** | Receives API needs, contributes contracts to PRD |

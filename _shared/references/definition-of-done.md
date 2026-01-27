@@ -26,76 +26,78 @@
 
 | Action | Who Controls | In Agent DoD? |
 |--------|-------------|---------------|
-| Write code, create PR | Agent (`[Dev]`) | Yes |
-| Review code, approve | Agent (`[Code Review]`) | Yes |
-| **Merge Story PR to Epic branch** | **Agent (`[Code Review]`)** | **Yes** |
-| **Merge Epic branch to main** | **User** | **No** |
-| **Specify Epic branch** | **User** | **No** (but required before Dev) |
-| Write tests | Agent (`[Test]`) | Yes |
-| Write docs | Agent (`[Docs]`) | Yes |
-| SA technical review | Agent (`[SA Review]`) | Yes |
-| UAT acceptance | Agent (`[UAT]`) | Yes |
+| Write code, create PR | Agent (Development phase) | Yes |
+| Review code, approve | Agent (Code Review phase) | Yes |
+| **Merge Feature PR** | **User** | **No** |
+| **Merge Mission branch to main** | **User** | **No** |
+| **Specify Feature branch** | **User** | **No** (but required before Dev) |
+| Write tests | Agent (Test phase) | Yes |
+| Write docs | Agent (Docs phase) | Yes |
+| SA technical review | Agent (SA Review phase) | Yes |
+| UAT acceptance | Agent (UAT phase) | Yes |
 
-## DoD by Activity Subtask
+## DoD by Workflow Phase (at Feature Level)
 
-### `[Dev]` - Implementation
+Quality phases are tracked at Feature level via workflow checklists, NOT as separate tickets.
+
+### Development Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| PR created | Yes | Link in completion comment |
+| PR created | Yes | Link in Feature comment |
 | Branch convention followed | Yes | team naming convention |
 | Technical Spec satisfied | Yes | All MUST/MUST NOT met |
+| Dev subtasks complete | If any | All `[Dev]` children Done |
 
-**Note**: PR merging happens AFTER Code Review approval (user action, not agent DoD).
+**Note**: User merges Feature PR.
 
-### `[Code Review]` - Code Review
+### Code Review Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| Code review completed | Yes | Review documented in comment |
+| Code review completed | Yes | Review documented in Feature comment |
 | **All issues resolved** | Yes | No issues remain (Critical, High, Medium, or Minor) |
-| PR approved | Yes | Approval confirmed in comment |
-| **PR merged to Epic Branch** | Yes | Code Reviewer merges after approval |
+| PR approved | Yes | Approval confirmed in Feature comment |
 
-**Code Reviewer Merge Responsibility**: After approval, Code Reviewer merges the PR to Epic branch using `gh pr merge --squash --delete-branch`. User only merges Epic branch to main.
+**User merges after approval.**
 
-### `[Test]` - Testing
+### Test Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
 | Unit tests written | Yes | Tests documented |
 | Functional tests written | Yes | Covers Gherkin scenarios |
 | All tests passing | Yes | CI green or manual confirmation |
-| Test PR created | Yes | Link in completion comment |
+| Test PR created | Yes | Link in Feature comment |
 
 **Note**: User merges test PR.
 
-### `[Docs]` - Documentation
+### Docs Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
 | Documentation created | Yes | Link or location provided |
 | Matches implementation | Yes | Reflects actual behavior |
 | Review completed | Yes | Technical review done |
-| Docs PR created | Yes | Link in completion comment |
+| Docs PR created | Yes | Link in Feature comment |
 
 **Note**: User merges docs PR.
 
-### `[SA Review]` - SA Technical Acceptance
+### SA Review Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
 | Architecture compliance | Yes | ADR patterns followed |
 | Integration validated | Yes | Integration points correct |
 | Query resolutions integrated | If any | Queries resolved and incorporated |
-| Technical acceptance | Yes | SA approval confirmed |
+| Technical acceptance | Yes | SA approval confirmed in Feature comment |
 
-### `[UAT]` - TPO User Acceptance
+### UAT Phase
 
 | Check | Required | Validation |
 |-------|----------|------------|
 | UAT criteria verified | Yes | Each criterion checked |
-| User acceptance confirmed | Yes | TPO approval confirmed |
+| User acceptance confirmed | Yes | TPO approval confirmed in Feature comment |
 | No open issues | Yes | No user-facing issues remain |
 
 ## DoD for Query Tickets
@@ -130,82 +132,92 @@
 Resolved by: [Name/role]
 ```
 
-**Note**: When Query is marked Done, PC automatically removes it from the originating ticket's `[Dev]` subtask's blockedBy list.
+**Note**: When Query is marked Done, PC automatically removes it from the originating Feature's blockedBy list.
 
-## DoD for Container Tickets
+## DoD for Feature Tickets
 
-### `[Backend]`, `[Frontend]`, `[Bug]` Containers
+### `[Backend]`, `[Frontend]`, `[Bug]` Features
 
-**Containers are Done when ALL 6 activity subtasks are Done.**
+**Features are Done when ALL workflow phases are complete.**
 
 | Check | Required |
 |-------|----------|
-| `[Dev]` subtask Done | Yes |
-| `[Code Review]` subtask Done | Yes |
-| `[Test]` subtask Done | Yes |
-| `[Docs]` subtask Done | Yes |
-| `[SA Review]` subtask Done | Yes |
-| `[UAT]` subtask Done | Yes |
+| Development phase complete | Yes |
+| Code Review phase complete | Yes |
+| Test phase complete | Yes |
+| Docs phase complete | Yes (if user-facing) |
+| SA Review phase complete | Yes |
+| UAT phase complete | Yes |
+| Dev subtasks Done | If any |
 
-## DoD for Epic/Feature
+## DoD for Mission
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| All containers Done | Yes | Every child container Done |
-| Epic `[Test]` Done | Yes | E2E regression complete |
-| Epic `[Docs]` Done | Yes | Feature guide complete |
-| Epic `[SA Review]` Done | Yes | Architecture verified |
-| Epic `[UAT]` Done | Yes | TPO acceptance complete |
-| Caller is TPO | Yes | Only TPO can close epics |
+| All Features Done | Yes | Every child Feature Done |
+| Mission `[Test]` Done | Yes | E2E regression complete |
+| Mission `[Docs]` Done | Yes | Mission guide complete |
+| Mission `[SA Review]` Done | Yes | Architecture verified |
+| Mission `[UAT]` Done | Yes | TPO acceptance complete |
+| Caller is TPO | Yes | Only TPO can close Missions |
 
 ## DoD Enforcement Flow
 
-### Activity Subtask Completion
+### Feature Completion
 
 ```
-[PROJECT_COORDINATOR] - Verifying Definition of Done for #NUM...
+[PROJECT_COORDINATOR] - Verifying Definition of Done for Feature #NUM...
 
-| Check | Status | Evidence |
-|-------|--------|----------|
-| [check 1] | Pass/Fail | [where found] |
-| [check 2] | Pass/Fail | [where found] |
+| Workflow Phase | Status | Evidence |
+|----------------|--------|----------|
+| Development | Pass/Fail | PR link found |
+| Code Review | Pass/Fail | Approval comment found |
+| Test | Pass/Fail | Test completion comment |
+| Docs | Pass/Fail | Docs completion comment |
+| SA Review | Pass/Fail | SA approval comment |
+| UAT | Pass/Fail | UAT approval comment |
 ```
 
 **If checks fail**: REJECT with missing items, do NOT update status.
 
-### Container Completion
+### Feature with Dev Subtasks
 
 ```
-[PROJECT_COORDINATOR] - Verifying container DoD for #NUM...
+[PROJECT_COORDINATOR] - Verifying Feature DoD for #NUM...
 
-| Activity Subtask | Status |
-|------------------|--------|
-| [Dev] #X | Done/Not Done |
-| [Code Review] #X | Done/Not Done |
-| [Test] #X | Done/Not Done |
-| [Docs] #X | Done/Not Done |
-| [SA Review] #X | Done/Not Done |
-| [UAT] #X | Done/Not Done |
+| Dev Subtask | Status |
+|-------------|--------|
+| [Dev] Component 1 #X | Done/Not Done |
+| [Dev] Component 2 #Y | Done/Not Done |
+
+| Workflow Phase | Status |
+|----------------|--------|
+| Development | All Dev subtasks complete |
+| Code Review | Approved |
+| Test | Complete |
+| Docs | Complete |
+| SA Review | Approved |
+| UAT | Accepted |
 ```
 
-**Container cannot be marked Done until ALL 6 activity subtasks are Done.**
+**Feature cannot be marked Done until ALL workflow phases complete and all Dev subtasks (if any) are Done.**
 
 ## Common Gaps
 
 | Gap | Resolution |
 |-----|------------|
-| No PR link | Worker must provide PR link in comment |
-| Story PR not merged | Code Reviewer merges to Epic branch after approval |
-| Epic not merged to main | **User action** - not an agent DoD check |
-| Branch not deleted | Handled by `--delete-branch` flag during merge |
+| No PR link | Worker must provide PR link in Feature comment |
+| Feature PR not merged | **User action** - not an agent DoD check |
+| Mission branch not merged to main | **User action** - not an agent DoD check |
 | No code review approval | Worker must get Code Reviewer approval |
 | **Minor/Medium issues unresolved** | Code Reviewer rejects - ALL issues must be fixed |
 | Tests missing | Worker must write tests per Gherkin scenarios |
 | Tests failing | Worker must fix failures |
 | Spec not met | Worker must address MUST/MUST NOT violations |
-| Activity subtasks incomplete | Complete all activities before closing container |
+| Workflow phase incomplete | Complete all phases before closing Feature |
+| Dev subtask incomplete | Complete all Dev subtasks before Feature phases |
 | UAT not verified | TPO must verify and add UAT comment |
-| Open Query blocking `[Dev]` | Resolve Query before marking `[Dev]` Done |
+| Open Query blocking Feature | Resolve Query before proceeding |
 | Query missing Resolution Summary | Add structured resolution comment before closing |
 
 ## Related References

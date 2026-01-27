@@ -39,7 +39,7 @@ invocationModel:
       example: Create parent issue
     - role: Solutions Architect
       when: After architecture breakdown
-      example: Create sub-issues with relationships
+      example: Create Features with relationships
     - role: Support Engineer
       when: After identifying bug
       example: Create bug ticket
@@ -67,7 +67,7 @@ invocationModel:
 # =============================================================================
 boundaries:
   authorizedActions:
-    - Create tickets (epic, sub-issue, bug, subtask) with quality verification
+    - Create tickets (mission, feature, dev-subtask, bug) with quality verification
     - Update ticket fields (title, body, status, labels) with completion verification
     - Set/update relationships (parent, blockers)
     - Verify ticket relationships exist
@@ -115,15 +115,17 @@ qualityGates:
           - name: Open Questions
             verify: No unchecked items in "Open Questions" section
 
-      sub-issue:
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Docs]", "[Test]"]
+      feature:
+        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
         requiredSections:
+          - name: Mission Statement
+            verify: Body contains "Mission Statement" section with ONE clear statement
           - name: Technical Spec
             verify: Body contains <technical-spec> with <must> section
           - name: Gherkin
             verify: Body contains Given/When/Then keywords
           - name: Parent
-            verify: Parent #NUM provided in request
+            verify: Parent #NUM (Mission) provided in request
           - name: Testing Notes
             verify: Body contains "Testing Notes" section
           - name: Open Questions
@@ -188,10 +190,10 @@ qualityGates:
           - name: Regression test
             verify: Comment mentions test added to prevent recurrence
 
-      epic:  # [Feature]
+      mission:  # [Mission]
         checks:
-          - name: All sub-issues done
-            verify: Query child issues, all must be status=done
+          - name: All Features done
+            verify: Query child Features, all must be status=done
           - name: UAT verified
             verify: Comment contains "UAT Complete" with checked items
           - name: Caller is TPO
@@ -221,18 +223,18 @@ invocationInterface:
   create:
     format: |
       [PROJECT_COORDINATOR] Create:
-      - Type: epic | sub-issue | bug | subtask
+      - Type: mission | feature | dev-subtask | bug
       - Title: "..."
       - Body: "..."
-      - Parent: #NUM (required for sub-issues and subtasks)
+      - Parent: #NUM (required for features and subtasks)
       - Blocked By: #NUM, #NUM (optional)
       - Labels: label1, label2
     typeMapping:
-      - type: epic
-        titlePrefix: "[Feature]"
+      - type: mission
+        titlePrefix: "[Mission]"
         createdBy: TPO
-      - type: sub-issue
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Docs]", "[Test]"]
+      - type: feature
+        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
         createdBy: Solutions Architect
       - type: bug
         titlePrefix: "[Bug]"
@@ -381,7 +383,7 @@ relatedSkills:
     - skill: TPO
       coordination: Invokes for parent issue creation
     - skill: Solutions Architect
-      coordination: Invokes for sub-issue creation with relationships
+      coordination: Invokes for Feature creation with relationships
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM

@@ -199,7 +199,7 @@ workflow:
             - READ each ticket body
             - Check Technical Spec exists
             - Check Gherkin scenarios exist
-            - Check [Test] sub-issue exists
+            - Check Testing Notes section exists
         - action: Coordinate execution
           checklist:
             - Query Agent Skill Coordinator for worker assignment
@@ -267,7 +267,7 @@ relatedSkills:
     - skill: TPO
       provides: Requirements, UAT criteria
     - skill: Solutions Architect
-      provides: Technical design, sub-issues with specs
+      provides: Technical design, Features with specs
 
   downstream:
     - skill: Project Coordinator

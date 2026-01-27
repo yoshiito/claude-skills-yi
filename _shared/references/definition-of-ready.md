@@ -7,8 +7,8 @@
 | Role | Uses DoR For |
 |------|--------------|
 | **Project Coordinator** | **ENFORCES** - rejects ticket creation if DoR not met |
-| **Solutions Architect** | Prepares sub-issues to pass DoR checks |
-| **TPO** | Prepares parent issues to pass DoR checks |
+| **Solutions Architect** | Prepares Features to pass DoR checks |
+| **TPO** | Prepares Missions (Epics) to pass DoR checks |
 | **PM** | Additional validation before Drive Mode |
 | **Workers** | Understands what "ready" looks like |
 
@@ -36,21 +36,25 @@
 
 **UAT Criteria**: TPO must define specific, verifiable criteria that they will check before accepting the feature as complete. Project Coordinator will provide template guidance if missing.
 
-### For Sub-Issues (Content from SA)
+### For Features (Content from SA)
+
+**Features are quality-bounded work units** - the largest scope where quality can be guaranteed.
 
 | Check | Required | Validation |
 |-------|----------|------------|
-| Title | ✅ | `[Type] {description}` - Type: Backend/Frontend/Bug/Docs/Test |
-| Parent linked | ✅ | Native field, not body text |
+| Title | ✅ | `[Type] {description}` - Type: Backend/Frontend/Bug |
+| Parent linked | ✅ | Native field, not body text (links to Mission) |
 | Technical Spec | ✅ | MUST/MUST NOT/SHOULD constraints |
 | Gherkin scenarios | ✅ | Given/When/Then for validation |
 | Testing Notes | ✅ | What tests to write, edge cases to cover |
 | Dependencies | ✅ | `blockedBy` set via native field (or explicitly "None") |
-| Skill prefix | ✅ | `[Backend]`, `[Frontend]`, `[Bug]`, `[Docs]`, `[Test]` |
+| Feature branch | ✅ | User-provided branch name (BLOCKING) |
+| Mission statement | ✅ | Clear, singular outcome defining "done" |
 | No open questions | ✅ | All clarifications resolved in ticket |
-| INVEST passed | ✅ | See checklist below |
-| **Activity subtasks specified** | ✅ | All 6 activity subtasks for implementation containers |
+| Quality-bounded | ✅ | See checklist below |
 | **No unresolved Queries** | ✅ | All linked `[Query]` tickets must be resolved |
+
+**Note**: Dev subtasks are OPTIONAL - only create if implementation needs breakdown.
 
 ### For Query Tickets (Content from Any Role)
 
@@ -64,117 +68,116 @@
 | Technical Details | ✅ | Section exists with context |
 | Questions | ✅ | At least one question for target team |
 
-**Note**: Query has no activity subtasks - it is resolved through human discussion.
+**Note**: Query has no workflow phases - it is resolved through human discussion.
 
-### For Story/Task/Bug Completeness (Verified by SA)
+### Quality-Bounded Feature Checklist (Verified by SA)
 
-**INVEST requires each ticket to be Testable.** Every implementation ticket is a **container** with **6 mandatory activity subtasks**:
+**Features are quality-bounded** - sized so all quality activities can happen comprehensively at the Feature level.
 
-| Parent Type | Required Activity Subtasks |
-|-------------|---------------------------|
-| `[Backend]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
-| `[Frontend]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
-| `[Bug]` | `[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]` |
+**Quality Boundary Checklist:**
 
-**Activity Subtask Purposes:**
+| Criterion | Question | If NO |
+|-----------|----------|-------|
+| **Reviewable** | Can code review validate this comprehensively in one session? | Split into smaller Features |
+| **Testable** | Can tests cover this feature completely? | Split into smaller Features |
+| **UAT-able** | Can TPO verify the outcome in one pass? | Split into smaller Features |
+| **Architecturally coherent** | Can SA review compliance holistically? | Split into smaller Features |
+| **Mission-driven** | Is there ONE clear statement of what "done" looks like? | Clarify or split |
 
-| Subtask | Worker | Purpose | Creates PR |
-|---------|--------|---------|------------|
-| `[Dev]` | Developer | Implementation | ✅ Yes |
-| `[Code Review]` | Code Reviewer | Review implementation | No |
-| `[Test]` | Tester | Unit + functional tests | ✅ Yes |
-| `[Docs]` | Tech Doc Writer | Documentation | ✅ Yes |
-| `[SA Review]` | Solutions Architect | Technical acceptance | No |
-| `[UAT]` | TPO | User acceptance | No |
+**Workflow Phases (at Feature level, NOT separate tickets):**
 
-**blockedBy relationships (activity chain):**
-- `[Dev]` → None (starts first) + any open `[Query]` blockers
-- `[Code Review]` → `[Dev]`
-- `[Test]` → `[Code Review]`
-- `[Docs]` → `[Test]`
-- `[SA Review]` → `[Docs]`
-- `[UAT]` → `[SA Review]`
-- Container → All 6 activity subtasks
+| Phase | Worker | When |
+|-------|--------|------|
+| Development | Developer | After Feature branch confirmed |
+| Code Review | Code Reviewer | After PR created |
+| Test | Tester | After Code Review approved |
+| Docs | Tech Doc Writer | After Test complete |
+| SA Review | Solutions Architect | After Docs complete |
+| UAT | TPO | After SA Review complete |
 
-**Query as Dynamic Blocker**: When a `[Query]` is raised against a container, PC automatically adds it to that container's `[Dev]` subtask's blockedBy list. The `[Dev]` cannot be marked Done while any Query blocker is open.
+**Dev Subtasks (OPTIONAL):**
+- Only create `[Dev]` subtasks if implementation is complex and needs breakdown
+- Dev subtasks are for organizing implementation work, not for quality phases
+- Quality phases (Code Review, Test, etc.) always happen at Feature level
 
-**No exceptions.** If ANY activity subtask is missing, the ticket violates INVEST and is NOT ready.
+**Query as Dynamic Blocker**: When a `[Query]` is raised against a Feature, it blocks that Feature's development. The Feature cannot proceed while any linked Query is open.
 
-### For Epic-Level Completeness (Verified by SA/PM)
+### For Mission-Level Completeness (Verified by SA/PM)
 
-**In addition to story-level activity subtasks**, each Epic MUST have cross-cutting tickets:
+**In addition to Feature-level workflow phases**, each Mission (Epic) MUST have cross-cutting tickets:
 
-| Epic-Level Ticket | Required | Purpose |
-|-------------------|----------|---------|
-| `[Test] {Feature} E2E Regression` | ✅ ALWAYS | Full feature integration/regression testing |
-| `[Docs] {Feature} Guide` | ✅ ALWAYS for user-facing | Comprehensive feature documentation |
-| `[SA Review] {Feature} Architecture` | ✅ ALWAYS | Architecture compliance across all stories |
-| `[UAT] {Feature} Acceptance` | ✅ ALWAYS | Feature acceptance by TPO |
+| Mission-Level Ticket | Required | Purpose |
+|---------------------|----------|---------|
+| `[Test] {Mission} E2E Regression` | ✅ ALWAYS | Full integration/regression testing across all Features |
+| `[Docs] {Mission} Guide` | ✅ for user-facing | Comprehensive documentation for the Mission |
+| `[SA Review] {Mission} Architecture` | ✅ ALWAYS | Architecture compliance across all Features |
+| `[UAT] {Mission} Acceptance` | ✅ ALWAYS | Mission acceptance by TPO |
 
 **blockedBy relationships:**
-- Epic `[Test]` → blockedBy all Story/Task/Bug containers
-- Epic `[Docs]` → blockedBy Epic `[Test]`
-- Epic `[SA Review]` → blockedBy Epic `[Docs]`
-- Epic `[UAT]` → blockedBy Epic `[SA Review]`
+- Mission `[Test]` → blockedBy all Feature containers
+- Mission `[Docs]` → blockedBy Mission `[Test]`
+- Mission `[SA Review]` → blockedBy Mission `[Docs]`
+- Mission `[UAT]` → blockedBy Mission `[SA Review]`
 
-### Why This Hierarchy?
+### Why Quality-Bounded Features?
 
-**Story-Level Activities:**
-- Each ticket is independently testable (INVEST - Testable)
-- Full lifecycle tracking: Dev → Code Review → Test → Docs → SA Review → UAT
-- QA writes unit + functional tests for each specific change
-- Each activity is a visible, trackable subtask
+**Feature-Level Quality Phases:**
+- Each Feature is quality-bounded - reviewable, testable, UAT-able in one pass
+- Workflow phases happen at Feature level, reducing context switching
+- Larger scope means fewer handoffs and better coherence
+- Dev subtasks (if used) are for implementation organization only
 
-**Epic-Level Cross-Cutting:**
-- Integration/E2E testing across all stories
-- Regression testing for the whole feature
-- Architecture compliance verification across all stories
-- Feature acceptance by TPO
-- Catches issues that only appear when components interact
+**Mission-Level Cross-Cutting:**
+- Integration/E2E testing across all Features
+- Regression testing for the whole Mission
+- Architecture compliance verification across all Features
+- Mission acceptance by TPO
+- Catches issues that only appear when Features interact
 
-**If missing**: SA must create the activity subtasks/epic tickets before PM can drive.
+**If Feature is too large to review/test comprehensively**: Split into smaller Features until quality can be guaranteed.
 
-### INVEST Checklist (Sub-Issues Only)
+### Quality Boundary Checklist (Features Only)
 
-- [ ] **I**ndependent: Can start without waiting (or `blockedBy` set)
-- [ ] **N**egotiable: Approach flexible, criteria fixed
-- [ ] **V**aluable: Moves feature toward "Done"
-- [ ] **E**stimable: Bounded scope with known files and clear end state
-- [ ] **S**mall: Single logical change (one PR, one concern)
-- [ ] **T**estable: Technical Spec + Gherkin verifiable; all 6 activity subtasks exist
+- [ ] **Reviewable**: Code review can comprehensively validate in one session
+- [ ] **Testable**: Tests can cover this feature completely
+- [ ] **UAT-able**: TPO can verify the outcome in one pass
+- [ ] **Architecturally coherent**: SA can review compliance holistically
+- [ ] **Mission-driven**: ONE clear statement of what "done" looks like
+- [ ] **Feature branch**: User has provided branch name (BLOCKING)
 
 ## DoR Enforcement
 
-### When Creating Tickets (SA)
+### When Creating Features (SA)
 
 Before `create_issue`, verify ALL checks pass. If any fail:
 
 ```
-❌ TICKET CREATION BLOCKED
+❌ FEATURE CREATION BLOCKED
 
 Title: "[Backend] User API"
 
 Missing:
 - Technical Spec: Not defined
 - Gherkin scenarios: Missing
-- Parent: Not linked
+- Feature branch: Not provided by user
+- Mission statement: Not defined
 
-Action: Complete these before creating ticket.
+Action: Complete these before creating Feature.
 ```
 
 ### When Entering Drive Mode (PM)
 
-Before driving, verify ALL tickets pass DoR. If any fail:
+Before driving, verify ALL Features pass DoR. If any fail:
 
 ```
 [PM] - ⛔ Cannot enter Drive Mode
 
 Definition of Ready not met:
 
-| Ticket | Missing | Route To |
-|--------|---------|----------|
+| Feature | Missing | Route To |
+|---------|---------|----------|
 | [ID-1] | Technical Spec | SA |
-| [ID-2] | Gherkin scenarios | SA |
+| [ID-2] | Feature branch | User (BLOCKING) |
 
 Fix these gaps, then invoke Drive Mode again.
 ```
@@ -188,8 +191,9 @@ Fix these gaps, then invoke Drive Mode again.
 | Technical Spec | Solutions Architect |
 | Gherkin scenarios | Solutions Architect |
 | Dependencies | Solutions Architect |
-| Activity subtasks (`[Dev]`, `[Code Review]`, `[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
-| Epic-level tickets (`[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
+| Feature branch | User (BLOCKING - work cannot start) |
+| Mission statement | Solutions Architect |
+| Mission-level tickets (`[Test]`, `[Docs]`, `[SA Review]`, `[UAT]`) | Solutions Architect |
 | Unresolved `[Query]` tickets | Target Team (human resolution required) |
 | Test strategy | Tester |
 | Documentation plan | Tech Doc Writer |
@@ -199,12 +203,14 @@ Fix these gaps, then invoke Drive Mode again.
 | Issue | Fix |
 |-------|-----|
 | Vague acceptance criteria | Add MUST/MUST NOT/SHOULD constraints |
-| Missing dependencies | SA reviews task ordering |
+| Missing dependencies | SA reviews Feature ordering |
 | No Gherkin scenarios | SA adds Given/When/Then |
-| Open questions in ticket | Resolve via comments, then update ticket |
-| Title missing prefix | Use `[Backend]`, `[Frontend]`, etc. |
-| No UAT criteria (parent) | TPO adds verifiable UAT checklist |
-| Unresolved Query blocking `[Dev]` | Resolve Query with target team before proceeding |
+| Open questions in Feature | Resolve via comments, then update Feature |
+| Title missing prefix | Use `[Backend]`, `[Frontend]`, `[Bug]` |
+| No UAT criteria (Mission) | TPO adds verifiable UAT checklist |
+| Feature too large to review | Split into smaller quality-bounded Features |
+| No Feature branch | User MUST provide branch (BLOCKING) |
+| Unresolved Query blocking Feature | Resolve Query with target team before proceeding |
 | Query missing target team | Specify team/domain in Query body |
 
 ## Related References

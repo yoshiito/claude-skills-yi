@@ -38,14 +38,14 @@ boundaries:
     - Create PRD with user personas and goals (only when explicitly asked)
     - Set functional requirements and acceptance criteria
     - Make priority decisions
-    - Review sub-issues for requirement alignment
+    - Review Features for requirement alignment
     - Coordinate PRD completion with contributors
     - Consume MRDs from Market Researcher as input
 
   prohibitions:
     - Create MRDs
     - Conduct market research
-    - Create sub-issues
+    - Create Features
     - Design technical architecture
     - Design UI/UX flows
     - Review implementation code
@@ -112,36 +112,37 @@ workflow:
         - Escalate blockers or disagreements
         - Validate all sections meet quality bar
 
-    - name: Sub-Issue Review
+    - name: Feature Review
       required: false
-      condition: SA creates sub-issues from parent Issue
-      description: Review sub-issues for requirement alignment
+      condition: SA creates Features from parent Mission
+      description: Review Features for requirement alignment
       steps:
         - action: Gate 1 - Template Compliance
           checklist:
-            - Sub-issues follow Story/Task template
-            - Each sub-issue has Assigned Role specified
+            - Features follow Feature template
+            - Each Feature has Mission Statement defined
+            - Each Feature has Assigned Role specified
             - Story written in user story format
             - Context provides enough background
             - Technical Spec defines MUST/MUST NOT/SHOULD constraints
             - Gherkin scenarios provide behavioral validation
             - Scope matches what was defined in MRD/PRD
-        - action: Gate 2 - INVEST Compliance
+        - action: Gate 2 - Quality Boundary Compliance
           checklist:
-            - "Independent: Can start alone OR blockedBy set"
-            - "Negotiable: Technical Spec has MUST/MUST NOT/SHOULD"
-            - "Valuable: Moves feature toward Done"
-            - "Estimable: Bounded scope, clear end state"
-            - "Small: Single logical change (1-3 days max)"
-            - "Testable: Gherkin scenarios specific and verifiable"
+            - "Reviewable: Code review can validate comprehensively in one session"
+            - "Testable: Tests can cover this feature completely"
+            - "UAT-able: TPO can verify outcome in one pass"
+            - "Architecturally coherent: SA can review compliance holistically"
+            - "Mission-driven: ONE clear statement of what 'done' looks like"
+            - "Feature branch: User has provided branch name"
         - action: Gate 3 - Native Relationship Fields
           checklist:
-            - Parent set via Project Coordinator
+            - Parent Mission set via Project Coordinator
             - Blocked By set if dependencies exist
             - Relationships NOT duplicated in issue body text
         - action: Route failures back to SA
           template: |
-            [TPO] - Sub-issue review failed.
+            [TPO] - Feature review failed.
 
             Gate failures:
             - [list failed checks]
@@ -165,7 +166,7 @@ qualityChecklist:
 
     - name: Before Feature Acceptance
       checks:
-        - All sub-issues have PR review from Code Reviewer
+        - All Features have completed their workflow phases
         - No Critical or High severity issues remain open
         - Code adheres to project standards
 
@@ -255,7 +256,8 @@ customSections:
 
       Before accepting a completed feature:
 
-      - [ ] All sub-issues have PR review from Code Reviewer
+      - [ ] Feature PR has Code Review approval
+      - [ ] All Dev subtasks (if any) have PR review from Code Reviewer
       - [ ] No Critical or High severity issues remain open
       - [ ] Code adheres to project standards defined in `claude.md` → `## Coding Standards`
 
@@ -264,9 +266,9 @@ customSections:
       ```
       [TPO] - ⚠️ Cannot Accept Feature - PR Review Gate Not Met
 
-      The following sub-issues lack Code Reviewer approval:
-      - [Sub-issue ID]: No review found
-      - [Sub-issue ID]: Critical issues unresolved
+      The following lack Code Reviewer approval:
+      - Feature PR: No review found
+      - [Dev subtask]: Critical issues unresolved
 
       **Required Action**: Route back to developer to complete Code Review process.
 
@@ -319,7 +321,7 @@ relatedSkills:
 
   downstream:
     - skill: Solutions Architect
-      coordination: Receives requirements, contributes technical design to PRD, creates sub-issues
+      coordination: Receives requirements, contributes technical design to PRD, creates Features
     - skill: UX Designer
       coordination: Receives user needs, contributes flows to PRD
     - skill: Data Platform Engineer

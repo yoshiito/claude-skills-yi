@@ -108,7 +108,7 @@ Before proposing work items, creating tickets, or making recommendations:
 - Ask questions to domain owners
 
 ### What You CANNOT Do Outside Your Scope
-- Create issues/sub-issues (in any ticket system)
+- Create issues/Features (in any ticket system)
 - Propose implementation approaches
 - Make architectural decisions
 - Define acceptance criteria
@@ -119,14 +119,14 @@ Before proposing work items, creating tickets, or making recommendations:
 ### Solutions Architect
 
 **Owns**: Technical architecture for assigned domains
-**Boundary Check**: Before creating sub-issues (or work items), verify each component falls within owned domains
+**Boundary Check**: Before creating Features (or work items), verify each component falls within owned domains
 
 ```
-If creating [Backend] sub-issue:
+If creating [Backend] Feature:
   → Check: Am I the SA for Backend on this project?
   → If NO: Document as dependency, tag Backend SA
 
-If creating [Frontend] sub-issue:
+If creating [Frontend] Feature:
   → Check: Am I the SA for Frontend on this project?
   → If NO: Document as dependency, tag Frontend SA
 ```

@@ -90,7 +90,7 @@ customSections:
       Every validation MUST show evidence:
 
       ```
-      [PROJECT_COORDINATOR] - Validating sub-issue creation.
+      [PROJECT_COORDINATOR] - Validating Feature creation.
 
       **Reference Check**: Read ticket-templates.md ✓
 
@@ -124,7 +124,7 @@ invocationModel:
       example: Create parent issue
     - role: Solutions Architect
       when: After architecture breakdown
-      example: Create sub-issues with relationships
+      example: Create Features with relationships
     - role: Support Engineer
       when: After identifying bug
       example: Create bug ticket
@@ -178,8 +178,8 @@ qualityGates:
   definitionOfReady:
     enforceAt: Before creating ANY ticket (BLOCKING - no exceptions)
     ticketTypes:
-      epic:
-        titlePrefix: "[Feature]"
+      mission:
+        titlePrefix: "[Mission]"
         requiredSections:
           - name: Problem Statement
             verify: Body contains "Problem Statement" section with content
@@ -192,19 +192,25 @@ qualityGates:
           - name: Open Questions
             verify: No unchecked items in "Open Questions" section
 
-      sub-issue:
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Docs]", "[Test]"]
+      feature:
+        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
         requiredSections:
+          - name: Mission Statement
+            verify: Body contains "Mission Statement" section with ONE clear statement
           - name: Technical Spec
             verify: Body contains `<technical-spec>` with `<must>` section
           - name: Gherkin
             verify: Body contains Given/When/Then keywords
           - name: Parent
-            verify: "Parent #NUM provided in request"
+            verify: "Parent #NUM (Mission) provided in request"
           - name: Testing Notes
             verify: Body contains "Testing Notes" section
+          - name: Workflow Phases
+            verify: Body contains "Workflow Phases" checklist
           - name: Open Questions
             verify: No unchecked items in "Open Questions" section
+          - name: Feature Branch
+            verify: User has provided Feature branch name
 
       bug:
         titlePrefix: "[Bug]"
@@ -265,10 +271,10 @@ qualityGates:
           - name: Regression test
             verify: Comment mentions test added to prevent recurrence
 
-      epic:
+      mission:
         checks:
-          - name: All sub-issues done
-            verify: Query child issues, all must be status=done
+          - name: All Features done
+            verify: Query child Features, all must be status=done
           - name: UAT verified
             verify: Comment contains "UAT Complete" with checked items
           - name: Caller is TPO
@@ -304,18 +310,18 @@ invocationInterface:
   create:
     format: |
       [PROJECT_COORDINATOR] Create:
-      - Type: epic | sub-issue | bug | subtask
+      - Type: mission | feature | dev-subtask | mission-activity
       - Title: "..."
       - Body: "..."
-      - Parent: #NUM (required for sub-issues and subtasks)
+      - Parent: #NUM (required for features and subtasks)
       - Blocked By: #NUM, #NUM (optional)
       - Labels: label1, label2
     typeMapping:
-      - type: epic
-        titlePrefix: "[Feature]"
+      - type: mission
+        titlePrefix: "[Mission]"
         createdBy: TPO
-      - type: sub-issue
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Docs]", "[Test]"]
+      - type: feature
+        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
         createdBy: Solutions Architect
       - type: bug
         titlePrefix: "[Bug]"
@@ -509,7 +515,7 @@ relatedSkills:
     - skill: TPO
       coordination: Invokes for parent issue creation
     - skill: Solutions Architect
-      coordination: Invokes for sub-issue creation with relationships
+      coordination: Invokes for Feature creation with relationships
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
