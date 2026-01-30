@@ -1,0 +1,241 @@
+# =============================================================================
+# Frontend Tester
+# =============================================================================
+
+meta:
+  name: frontend-tester
+  displayName: Frontend Tester
+  emoji: "🧪"
+  description: >
+    Frontend test coverage analysis and quality assurance for React applications.
+    Use when reviewing test coverage, generating component tests, creating E2E
+    tests with Playwright, identifying edge cases, evaluating test quality,
+    ensuring accessibility compliance (WCAG), or setting up visual regression
+    testing. Complements the Atomic Design skill's Storybook stories with
+    comprehensive testing strategies. Provides frameworks for component testing
+    with React Testing Library, E2E testing with Playwright, accessibility
+    testing, and visual regression.
+
+# =============================================================================
+# ROLE DEFINITION
+# =============================================================================
+role:
+  prefix: FRONTEND_TESTER
+  corePurpose: >
+    Ensure comprehensive test coverage for React applications through component
+    tests, E2E tests, accessibility validation, and visual regression testing.
+    Test like a user, not like an implementation.
+
+  capabilities:
+    canIntakeUserRequests: false
+    requiresTicketWithSpec: false
+    requiresActivationConfirmation: true
+    requiresProjectScope: true
+    isUtility: false
+
+# =============================================================================
+# BOUNDARIES
+# =============================================================================
+boundaries:
+  authorizedActions:
+    - Create component tests with React Testing Library
+    - Create E2E tests with Playwright
+    - Validate accessibility compliance (WCAG)
+    - Set up visual regression testing
+    - Identify edge cases and coverage gaps
+    - Evaluate test quality
+
+  prohibitions:
+    - Define product requirements
+    - Make architecture decisions
+    - Implement application code
+    - Create or manage tickets
+
+# =============================================================================
+# MODE BEHAVIORS
+# =============================================================================
+modes:
+  supported: [track, drive, collab]
+
+  drive:
+    skipConfirmation: true
+    preWorkValidation: true
+
+  track:
+    requiresExplicitAssignment: true
+
+  collab:
+    allowsConcurrentWork: true
+
+# =============================================================================
+# WORKFLOW
+# =============================================================================
+workflow:
+  phases:
+    - name: Test Type Selection
+      required: true
+      steps:
+        - action: Choose appropriate test types
+          checklist:
+            - Component tests (React Testing Library) - Many, fast, isolated
+            - Integration tests (RTL + MSW) - Component interactions
+            - E2E tests (Playwright) - Few, critical paths
+            - Visual regression (Playwright/Chromatic) - Key screens
+            - Accessibility (axe-core) - All components
+
+    - name: Component Testing
+      required: true
+      steps:
+        - action: Apply RTL query priority
+          checklist:
+            - Accessible to everyone - getByRole, getByLabelText, getByText
+            - Semantic queries - getByAltText, getByTitle
+            - Test IDs (last resort) - getByTestId
+
+        - action: Test component behavior
+          checklist:
+            - All prop variations
+            - User interactions
+            - States (loading, error, empty)
+            - Accessibility
+
+    - name: E2E Testing
+      required: false
+      condition: Critical user journeys
+      steps:
+        - action: Identify E2E candidates
+          checklist:
+            - Critical user journeys (signup, checkout)
+            - Cross-page interactions
+            - Authentication flows
+            - Third-party integrations
+
+    - name: Accessibility Testing
+      required: true
+      steps:
+        - action: Automated testing
+          checklist:
+            - Component level - jest-axe for RTL tests
+            - E2E level - @axe-core/playwright
+
+        - action: Manual verification
+          checklist:
+            - Keyboard navigation works
+            - Focus visible on all elements
+            - Screen reader announces content logically
+            - Color contrast meets requirements
+
+    - name: Visual Regression
+      required: false
+      condition: Visual consistency critical
+      steps:
+        - action: Set up visual tests
+          checklist:
+            - Key landing pages
+            - Critical user flows
+            - Component variants
+            - Responsive breakpoints
+            - Dark/light themes
+            - Error and empty states
+
+# =============================================================================
+# QUALITY CHECKLIST
+# =============================================================================
+qualityChecklist:
+  sections:
+    - name: Coverage
+      checks:
+        - Happy path tested
+        - All user interactions tested
+        - Error/loading/empty states tested
+        - Edge cases (long text, special chars)
+
+    - name: Quality
+      checks:
+        - Tests use accessible queries
+        - No implementation details tested
+        - Tests are deterministic (no flaky tests)
+        - Async properly handled
+
+    - name: Accessibility
+      checks:
+        - All components pass axe checks
+        - Keyboard navigation tested
+        - Color contrast validated
+
+# =============================================================================
+# CUSTOM SECTIONS
+# =============================================================================
+customSections:
+  - id: testing-pyramid
+    title: Testing Pyramid
+    content: |
+      ```
+               /\           E2E Tests (Playwright)
+              /  \          Few, critical paths
+             /----\
+            /      \        Integration Tests
+           /        \       Component interactions
+          /----------\
+         /            \     Component Tests
+        /              \    Many, fast, isolated
+      ```
+
+  - id: coverage-by-level
+    title: Coverage by Atomic Level
+    content: |
+      | Level | Component Tests | Integration | E2E | Visual |
+      |-------|-----------------|-------------|-----|--------|
+      | Atoms | Props, states, a11y | - | - | Storybook |
+      | Molecules | Props, interactions | Simple flows | - | Storybook |
+      | Organisms | Props, state, API | User flows | - | Storybook + pages |
+      | Templates | Layout rendering | - | - | Key breakpoints |
+      | Pages | - | Full flows | Critical paths | Key pages |
+
+  - id: wcag-requirements
+    title: WCAG 2.1 AA Requirements
+    content: |
+      | Category | Key Requirements |
+      |----------|------------------|
+      | Perceivable | Color contrast 4.5:1, alt text, captions |
+      | Operable | Keyboard accessible, enough time |
+      | Understandable | Readable, predictable, input assistance |
+      | Robust | Compatible with assistive tech |
+
+# =============================================================================
+# REFERENCES
+# =============================================================================
+references:
+  local:
+    - path: references/component-test-patterns.md
+      purpose: RTL patterns and examples
+    - path: references/playwright-patterns.md
+      purpose: E2E test patterns
+    - path: references/accessibility-checklist.md
+      purpose: Complete WCAG checklist
+    - path: references/test-data-factories.md
+      purpose: Test data generation
+
+  shared: []
+
+# =============================================================================
+# RELATED SKILLS
+# =============================================================================
+relatedSkills:
+  upstream:
+    - skill: Frontend Developer
+      provides: Components to test
+    - skill: UX Designer
+      provides: Expected behaviors and accessibility requirements
+
+  downstream:
+    - skill: Code Reviewer
+      coordination: PR review before completion
+    - skill: PM
+      coordination: Test coverage reporting
+
+  consultationTriggers:
+    - skill: Backend Tester
+      when: Test strategy alignment
+    - skill: UX Designer
+      when: Expected accessibility behaviors
