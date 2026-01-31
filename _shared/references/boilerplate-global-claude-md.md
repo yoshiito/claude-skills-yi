@@ -14,6 +14,48 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 **If user HAS invoked a skill:** Apply all framework rules below for the duration of the session.
 
+---
+
+## Post-Compaction Recovery Protocol
+
+**TRIGGER**: When you see "This session is being continued from a previous conversation" or any context restoration message.
+
+**This is MANDATORY and BLOCKING** — do this BEFORE responding to any user request.
+
+### Recovery Steps
+
+1. **Scan the summary** for `[ROLE_NAME]` patterns to identify which roles were active
+2. **Re-read each active role's SKILL.md**:
+   ```
+   {Skills Path}/{skill-name}/SKILL.md
+   ```
+3. **Declare recovery** with this exact format:
+   ```
+   📚 CONTEXT RECOVERED — SKILL.md for [ROLE1, ROLE2, ...] has been reloaded.
+
+   Boundaries and mission restored. Resuming as [PRIMARY_ROLE].
+   ```
+
+### Example
+
+If the summary mentions `[TPO]` and `[SOLUTIONS_ARCHITECT]`:
+```
+📚 CONTEXT RECOVERED — SKILL.md for [TPO, SOLUTIONS_ARCHITECT] has been reloaded.
+
+Boundaries and mission restored. Resuming as [TPO].
+```
+
+### Why This Matters
+
+Compaction summaries lose critical nuance:
+- Exact boundary definitions (authorized vs prohibited actions)
+- Pre-action check requirements
+- Mission-first framing
+- Quality checklists
+
+**Without re-reading, you operate with incomplete instructions = guaranteed boundary violations.**
+
+---
 
 ### Mental Model of the Framework
 
