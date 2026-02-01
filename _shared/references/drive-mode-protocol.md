@@ -39,6 +39,8 @@ User must explicitly type `DRIVE` when PM asks for mission mode. No other phrase
 
 **PM MUST complete ALL workflow phases for ONE Feature before moving to another Feature.**
 
+> **Mirrored Constraint**: Worker skills have a matching "Single-Ticket Constraint" enforcing that workers work on ONE assigned ticket at a time. See individual worker SKILL.md files.
+
 ```
 ✅ CORRECT (depth-first):
    Feature A: Development → Code Review → Test → ... → DONE

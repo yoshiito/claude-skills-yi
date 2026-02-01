@@ -45,6 +45,8 @@ When working in the skills library itself, Skill Creator is the **default intake
 | SVG Designer | `[SVG_DESIGNER]` | TPO, UX Designer |
 | **Market Researcher** | `[MARKET_RESEARCHER]` | TPO, SA, PM (for market research, MRDs) |
 
+> **Single-Ticket Constraint**: All worker roles have a mandatory "Single-Ticket Constraint" — they work on ONE assigned ticket at a time. This mirrors PM's Feature Completion Rule. See individual worker SKILL.md files for enforcement details.
+
 ### Utility Skills (No User Confirmation Required)
 
 Utility skills operate automatically — any role can invoke them without asking user permission.
