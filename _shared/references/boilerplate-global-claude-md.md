@@ -210,15 +210,16 @@ See `{Skills Path}/_shared/references/collaboration-protocol.md` for full protoc
 5. **Store documentation in ticketing system** when configured—never create local files
 6. **Commit to current branch only** — user manages all branch creation/merging
 
-## Role Activation — ALL ROLES REQUIRE CONFIRMATION
+## Role Activation — Confirmation Rules
 
 **CRITICAL**: ALL roles (intake AND worker) MUST:
 1. **FIRST** — Check for placeholders. If ANY exist, HARD STOP.
 2. **THEN** — Request explicit user confirmation before performing any work.
 
-**EXCEPTIONS**:
-- Drive Mode (workers skip confirmation)
-- Utility skills (Project Coordinator, Agent Skill Coordinator)
+**EXCEPTIONS** (no confirmation required):
+- **Framework activation** — When user first invokes `/program-manager` to enter skill mode, PM proceeds immediately (no confirmation prompt). This is the session entry point.
+- **Drive Mode** — Workers skip confirmation when invoked by PM in Drive Mode.
+- **Utility skills** — Project Coordinator, Agent Skill Coordinator operate automatically.
 
 ### Drive Mode Exception
 
