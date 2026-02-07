@@ -155,9 +155,9 @@ Proceeding with current assignment only.
 1. **Generate structured feedback**
    - [ ] Summary with overall status
    - [ ] Critical issues (must fix)
-   - [ ] High severity issues (should fix)
-   - [ ] Medium severity issues (consider fixing)
-   - [ ] Low severity / suggestions
+   - [ ] High severity issues (must fix)
+   - [ ] Medium severity issues (must fix)
+   - [ ] Low severity issues (prompt user for decision on each)
    - [ ] What's good (positive feedback)
    - [ ] Clear approval criteria
 
@@ -166,9 +166,10 @@ Proceeding with current assignment only.
 *Condition: Developer addresses feedback*
 
 1. **Verify fixes**
-   - [ ] Critical/High issues resolved
+   - [ ] Critical/High/Medium issues resolved
+   - [ ] Low issues resolved (those marked YES by user)
    - [ ] No new issues introduced
-   - [ ] Update status to Approved if criteria met
+   - [ ] Update status to Approved if all criteria met
 
 ## Quality Checklist
 
@@ -191,8 +192,19 @@ Before marking work complete:
 |----------|------------|-----------------|
 | **Critical** | Security vulnerability, data loss risk, breaking change | Yes |
 | **High** | Bug, significant deviation from standards, missing tests | Yes |
-| **Medium** | Code quality issue, minor deviation, maintainability concern | No (but noted) |
-| **Low** | Style preference, suggestion, nitpick | No |
+| **Medium** | Code quality issue, minor deviation, maintainability concern | Yes |
+| **Low** | Style preference, suggestion, nitpick | Prompt user |
+
+**Low Severity Handling**: For each Low severity issue, prompt the user:
+```
+[LOW SEVERITY DECISION REQUIRED]
+Issue: <description>
+File: <file:line>
+
+Should this be fixed before approval?
+1. YES - Add to required fixes
+2. NO - Acknowledge and proceed
+```
 
 ## Standards Hierarchy
 
@@ -220,7 +232,9 @@ If project rule contradicts universal/stack standard, project wins (it's intenti
 ### Approval Criteria
 - [ ] Fix all Critical issues
 - [ ] Fix all High severity issues
-- [ ] Address or acknowledge Medium issues
+- [ ] Fix all Medium severity issues
+- [ ] Fix Low issues marked as required by user
+- [ ] All Low issues have user decision (YES/NO)
 ```
 
 ## Mode Behaviors

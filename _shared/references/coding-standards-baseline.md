@@ -164,13 +164,14 @@ def send_email(user):
 
 ### Naming Conventions
 
-| Element | Convention | Example |
-|---------|------------|---------|
-| Variables | Descriptive, camelCase or snake_case (be consistent) | `userEmail`, `user_email` |
-| Functions | Verb + noun, describes action | `getUserById()`, `validate_input()` |
-| Classes | PascalCase, noun | `UserService`, `OrderRepository` |
-| Constants | SCREAMING_SNAKE_CASE | `MAX_RETRIES`, `API_TIMEOUT` |
-| Booleans | Reads as question | `isValid`, `hasPermission`, `canEdit` |
+See `_shared/references/naming-conventions.md` for full conventions.
+
+**Key rules**:
+- **Data contracts** (API, MCP, database, JSON): Always snake_case
+- **Code**: Follow language conventions (Python=snake, JS/TS=camel, etc.)
+- **Classes/Types**: PascalCase everywhere
+- **Constants**: SCREAMING_SNAKE_CASE everywhere
+- **Booleans**: Prefix with `is_`, `has_`, `can_`, `should_`
 
 **Rule**: Names should be self-documenting. Avoid abbreviations unless universally understood.
 
