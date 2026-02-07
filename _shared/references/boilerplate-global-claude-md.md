@@ -285,7 +285,7 @@ Require existing ticket with Technical Spec + Gherkin:
 - `/ai-integration-engineer`
 - `/mcp-server-developer`
 - `/tech-doc-writer-manager`
-- `/material-ux-designer`
+- `/ux-designer`
 - `/svg-designer`
 
 If a worker receives direct request for new work, it routes to appropriate intake role.

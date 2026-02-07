@@ -440,7 +440,7 @@ relatedSkills:
   upstream:
     - skill: TPO
       provides: Brand requirements, design briefs
-    - skill: Material UX Designer
+    - skill: UX Designer
       provides: Style guidelines, visual patterns
 
   downstream:
@@ -450,7 +450,7 @@ relatedSkills:
       coordination: Receives assets for documentation
 
   consultationTriggers:
-    - skill: Material UX Designer
+    - skill: UX Designer
       when: Visual style decisions or pattern conflicts
     - skill: TPO
       when: Brand direction unclear or requires approval

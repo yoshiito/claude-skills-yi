@@ -467,7 +467,7 @@ Luxury/Premium:         #1F2937 (Near Black), #D4AF37 (Gold)
 | Skill | Provides |
 |-------|----------|
 | **TPO** | Brand requirements, design briefs |
-| **Material UX Designer** | Style guidelines, visual patterns |
+| **UX Designer** | Style guidelines, visual patterns |
 
 ### Downstream/Parallel
 
@@ -477,5 +477,5 @@ Luxury/Premium:         #1F2937 (Near Black), #D4AF37 (Gold)
 | **Tech Doc Writer** | Receives assets for documentation |
 
 ### Consultation Triggers
-- **Material UX Designer**: Visual style decisions or pattern conflicts
+- **UX Designer**: Visual style decisions or pattern conflicts
 - **TPO**: Brand direction unclear or requires approval

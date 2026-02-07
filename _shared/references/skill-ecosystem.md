@@ -117,7 +117,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | **Tech Doc Writer** | Create and maintain documentation | API docs, guides, runbooks |
 | **Program Manager (PM)** | Coordinate delivery across teams | Delivery plans, status updates, Linear tickets |
 | **Support Engineer** | Error triage, log analysis, incident investigation | Issue diagnosis, root cause analysis |
-| **Material Design UX** | Guide UI/UX decisions | Design patterns, accessibility guidance |
+| **UX Designer** | Guide UI/UX decisions | Design patterns, accessibility guidance |
 | **SVG Designer** | Create vector graphics | Logos, icons, illustrations |
 | **Agent Skill Coordinator** | Role routing queries (utility) | Routing decisions, return paths |
 | **Project Coordinator** | Ticket CRUD with quality gates (utility) | Tickets with DoR/DoD enforcement |
@@ -236,7 +236,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 1. Frontend Developer → Build components (atomic design)
 2. Frontend Tester    → Write component/E2E tests
 3. Code Reviewer      → Review PR before merge
-4. Material Design UX → Consult for UI patterns
+4. UX Designer → Consult for UI patterns
 ```
 
 ### Adding AI Features
@@ -271,7 +271,7 @@ See `_shared/references/universal-skill-preamble.md` for full preamble rules.
 | Solutions Architect | TPO, Market Researcher, Data Platform Engineer, AI Integration Engineer |
 | API Designer | TPO, Solutions Architect |
 | Backend Developer | TPO, Solutions Architect, API Designer, Support Engineer (bug reports) |
-| Frontend Developer | TPO, Solutions Architect, Material Design UX, Support Engineer (bug reports) |
+| Frontend Developer | TPO, Solutions Architect, UX Designer, Support Engineer (bug reports) |
 | Data Platform Engineer | TPO, Solutions Architect |
 | MCP Server Developer | TPO, Solutions Architect |
 | Backend Tester | Backend Developer |
@@ -319,7 +319,7 @@ TPO (requirements)
   ↓
 Solutions Architect (data flow)
   ↓
-Material Design UX (UI patterns)
+UX Designer (UI patterns)
   ↓
 Frontend Developer (components)
   ↓
@@ -468,7 +468,7 @@ Quick reference for when to involve other skills:
 | Database schema design | Data Platform Engineer |
 | AI/ML features | AI Integration Engineer |
 | Tool integrations for AI | MCP Server Developer |
-| UI/UX decisions | Material Design UX |
+| UI/UX decisions | UX Designer |
 | Test strategy | Backend/Frontend Tester |
 | **PR ready for review** | **Code Reviewer** |
 | Documentation needed | Tech Doc Writer |

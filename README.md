@@ -63,7 +63,7 @@ Worker skills route new feature requests to intake roles.
 | **mcp-server-developer** | Build Model Context Protocol servers |
 | **tech-doc-writer-manager** | Technical documentation authoring and maintenance |
 | **support-engineer** | Error triage, log analysis, and incident investigation |
-| **material-ux-designer** | UI/UX guidance based on Material Design |
+| **ux-designer** | Design thinking + Material Design + Penpot design generation |
 | **svg-designer** | Create logos, icons, and vector illustrations |
 
 ### Utility Skills (No confirmation required)
@@ -82,7 +82,7 @@ LAYER 1: PRODUCT DEFINITION
 LAYER 2: ARCHITECTURE & DESIGN
   ├── Solutions Architect → ADRs, system diagrams
   ├── API Designer → OpenAPI specs
-  └── Material Design UX → UI patterns
+  └── UX Designer → UI patterns
 
 LAYER 3: IMPLEMENTATION
   ├── Backend Developer → FastAPI endpoints
