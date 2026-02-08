@@ -380,8 +380,14 @@ workflow:
           description: Know the exact template requirements for this ticket type
         - action: Read the relevant operations file
           description: github-operations.md, linear-operations.md, or plan-file-operations.md
+        - action: "If relationships specified: Read the handler's BLOCKING section"
+          description: >
+            For GitHub, read the "⛔ BLOCKING: Relationship Protocol" section.
+            This section defines MANDATORY steps that cannot be skipped.
         - action: Confirm reference check in output
-          description: 'State "Reference Check: Read [file] ✓"'
+          description: >
+            State "Reference Check: Read [file] ✓"
+            If relationships specified, also state: "Relationship Protocol: Read [handler] ⛔ BLOCKING section ✓"
 
     - name: Validate with Evidence Trail
       required: true
@@ -411,11 +417,17 @@ workflow:
     - name: Execute Operation (Only if Validation Passes)
       required: true
       condition: All validation checks passed
+      description: >
+        The handler reference file (github-operations.md, etc.) defines the EXACT
+        protocol. This skill defines WHAT to do; the handler defines HOW.
+        Follow the handler's protocol EXACTLY — it is binding.
       steps:
         - Determine ticket system from claude.md
         - Route to appropriate handler (github, linear, none)
-        - Execute per handler reference file
-        - Verify operation succeeded
+        - "Execute ALL steps in handler's protocol (not just step 1)"
+        - "If relationships specified: Handler's relationship steps are MANDATORY"
+        - "Run handler's verification step to confirm success"
+        - Report only after verification passes
 
     - name: Return Control
       required: true
@@ -433,6 +445,7 @@ responseFormats:
       [PROJECT_COORDINATOR] - ✅ Operation complete.
 
       **Reference Check**: Read [reference files] ✓
+      **Relationship Protocol**: Read [handler] ⛔ BLOCKING section ✓ (if relationships specified)
 
       **Verification Trail**:
       | Requirement | Found | Location |
@@ -442,9 +455,12 @@ responseFormats:
       **Result**: SUCCESS
       **Ticket**: #NUM - Title
       **URL**: [link]
-      **Relationships**:
-      - Parent: #NUM (verified)
-      - Blocked By: #NUM, #NUM (verified)
+
+      **Relationships** (if any):
+      | Relationship | Expected | Verified Via | Result |
+      |--------------|----------|--------------|--------|
+      | Parent | #NUM | GraphQL query: parent.number | ✓ Matches |
+      | Blocked By | #NUM, #NUM | GraphQL query: blockedByIssues | ✓ Matches |
 
       Returning to [CALLING_ROLE].
 

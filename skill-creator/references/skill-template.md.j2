@@ -17,9 +17,6 @@ description: {{ meta.description | trim }}
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-{% if role.capabilities.requiresActivationConfirmation -%}
-0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
-{% endif -%}
 1. **Prefix all responses** with `[{{ role.prefix }}]` - Continuous declaration on every message and action
 {% if role.capabilities.canIntakeUserRequests -%}
 2. **This is an INTAKE ROLE** - Can receive direct user requests
@@ -34,7 +31,9 @@ description: {{ meta.description | trim }}
 3. **No project scope check required** - This skill operates on the skills library itself
 {% endif %}
 
-See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+**Confirmation is handled at invocation** - When user invokes `/{{ meta.name }}`, the system prompts `🤝 Invoking [{{ role.prefix }}]. (y/n)`. Once confirmed, proceed without additional confirmation.
+
+See `_shared/references/universal-skill-preamble.md` for full details.
 {% if not role.capabilities.canIntakeUserRequests and not role.capabilities.isUtility %}
 **If receiving a direct request outside your scope:**
 ```

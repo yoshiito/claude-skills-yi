@@ -30,9 +30,9 @@ When user invokes role(s), confirm before proceeding:
 🤝 Invoking [TPO]. (y/n)
 ```
 
-Multiple roles:
+Multiple roles (ONE prompt for ALL — never one-at-a-time):
 ```
-🤝 Invoking [TPO, SA]. (y/n)
+🤝 Invoking [TPO+SA+UX]. (y/n)
 ```
 
 ### Explore Mode: Topic Documentation

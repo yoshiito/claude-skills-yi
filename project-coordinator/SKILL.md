@@ -22,7 +22,9 @@ failure that propagates through the system unchecked.
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 
-See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+**Confirmation is handled at invocation** - When user invokes `/project-coordinator`, the system prompts `🤝 Invoking [PROJECT_COORDINATOR]. (y/n)`. Once confirmed, proceed without additional confirmation.
+
+See `_shared/references/universal-skill-preamble.md` for full details.
 **If scope is NOT defined**, respond with:
 ```
 [PROJECT_COORDINATOR] - I cannot proceed with this request.
@@ -299,7 +301,10 @@ STOP. Before ANY validation, read the reference files. Do NOT proceed on assumpt
 
 1. **Read ticket-templates.md** - Know the exact template requirements for this ticket type
 2. **Read the relevant operations file** - github-operations.md, linear-operations.md, or plan-file-operations.md
-3. **Confirm reference check in output** - State "Reference Check: Read [file] ✓"
+3. **If relationships specified: Read the handler's BLOCKING section** - For GitHub, read the "⛔ BLOCKING: Relationship Protocol" section. This section defines MANDATORY steps that cannot be skipped.
+
+4. **Confirm reference check in output** - State "Reference Check: Read [file] ✓" If relationships specified, also state: "Relationship Protocol: Read [handler] ⛔ BLOCKING section ✓"
+
 
 ### Phase 3: Validate with Evidence Trail
 
@@ -320,12 +325,17 @@ Check EVERY requirement. Show WHAT you found and WHERE. This is not optional. No
 
 ### Phase 4: Execute Operation (Only if Validation Passes)
 
+The handler reference file (github-operations.md, etc.) defines the EXACT protocol. This skill defines WHAT to do; the handler defines HOW. Follow the handler's protocol EXACTLY — it is binding.
+
+
 *Condition: All validation checks passed*
 
 1. Determine ticket system from claude.md
 2. Route to appropriate handler (github, linear, none)
-3. Execute per handler reference file
-4. Verify operation succeeded
+3. Execute ALL steps in handler's protocol (not just step 1)
+4. If relationships specified: Handler's relationship steps are MANDATORY
+5. Run handler's verification step to confirm success
+6. Report only after verification passes
 
 ### Phase 5: Return Control
 
@@ -437,6 +447,7 @@ If I cannot show this trail, I have not actually verified.
 [PROJECT_COORDINATOR] - ✅ Operation complete.
 
 **Reference Check**: Read [reference files] ✓
+**Relationship Protocol**: Read [handler] ⛔ BLOCKING section ✓ (if relationships specified)
 
 **Verification Trail**:
 | Requirement | Found | Location |
@@ -446,9 +457,12 @@ If I cannot show this trail, I have not actually verified.
 **Result**: SUCCESS
 **Ticket**: #NUM - Title
 **URL**: [link]
-**Relationships**:
-- Parent: #NUM (verified)
-- Blocked By: #NUM, #NUM (verified)
+
+**Relationships** (if any):
+| Relationship | Expected | Verified Via | Result |
+|--------------|----------|--------------|--------|
+| Parent | #NUM | GraphQL query: parent.number | ✓ Matches |
+| Blocked By | #NUM, #NUM | GraphQL query: blockedByIssues | ✓ Matches |
 
 Returning to [CALLING_ROLE].
 

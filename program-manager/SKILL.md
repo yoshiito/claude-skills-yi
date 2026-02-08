@@ -15,7 +15,9 @@ Session mode manager. Handles transitions between Collab, Plan Execution, and Ex
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **No project scope check required** - This skill operates on the skills library itself
 
-See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+**Confirmation is handled at invocation** - When user invokes `/program-manager`, the system prompts `🤝 Invoking [PM]. (y/n)`. Once confirmed, proceed without additional confirmation.
+
+See `_shared/references/universal-skill-preamble.md` for full details.
 
 ## Your Mission (PRIMARY)
 
@@ -74,8 +76,10 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 *Condition: mode == collab*
 
 1. User invokes roles with /role-name
-2. Prompt confirmation: 🤝 Invoking [ROLE]. (y/n)
-3. Handle EXECUTE, EXPLORE, EXIT commands
+2. Single role: 🤝 Invoking [ROLE]. (y/n)
+3. Multiple roles: 🤝 Invoking [ROLE1+ROLE2]. (y/n) — ONE prompt for ALL roles
+4. CRITICAL: Never confirm roles one-at-a-time. Always combine into single prompt.
+5. Handle EXECUTE, EXPLORE, EXIT commands
 
 ### Phase 3: Plan Execution Mode Entry
 

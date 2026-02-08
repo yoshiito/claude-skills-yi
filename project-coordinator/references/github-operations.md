@@ -2,17 +2,57 @@
 
 Internal reference for Project Coordinator. Handles GitHub Issues with GraphQL for relationships.
 
-## Critical: What DOES vs DOES NOT Set Relationships
+---
+
+## ⛔ BLOCKING: Relationship Protocol for GitHub
+
+**This section is NON-NEGOTIABLE. Read it EVERY TIME before creating a ticket with relationships.**
+
+### What DOES vs DOES NOT Set Relationships
 
 | Action | Sets Parent? | Sets Blockers? |
 |--------|-------------|----------------|
-| `gh project item-add` | NO | NO |
-| Writing "Part of #X" in body | NO | NO |
-| Writing "Blocked by #Y" in body | NO | NO |
-| GraphQL `addSubIssue` mutation | YES | - |
-| GraphQL `addBlockedBy` mutation | - | YES |
+| `gh project item-add` | ❌ NO | ❌ NO |
+| Writing "Part of #X" in body | ❌ NO | ❌ NO |
+| Writing "Blocked by #Y" in body | ❌ NO | ❌ NO |
+| Writing "Parent: #X" in body | ❌ NO | ❌ NO |
+| GraphQL `addSubIssue` mutation | ✅ YES | - |
+| GraphQL `addBlockedBy` mutation | - | ✅ YES |
 
-**If you did NOT run GraphQL mutations, relationships are NOT set.**
+### ⛔ NEVER Do This
+
+```markdown
+## Body text that does NOTHING:
+Parent: #262
+Blocked by: #263, #264
+Part of: #262
+```
+
+**This is cosmetic text. GitHub ignores it. The relationship is NOT set.**
+
+### ✅ ALWAYS Do This
+
+When a ticket specifies `Parent: #NUM`:
+1. Create the issue (Step 1-2)
+2. **Run GraphQL `addSubIssue` mutation** (Step 3) — MANDATORY
+3. **Run verification query** (Step 5) — MANDATORY
+4. **Confirm `parent.number` matches expected** — MANDATORY
+
+**If you skip Steps 3-5, the relationship does NOT exist.**
+
+### Atomic Operation Rule
+
+Creating a ticket with relationships is ONE atomic operation:
+
+```
+Create Issue → Set Parent (GraphQL) → Set Blockers (GraphQL) → VERIFY → Report
+     ↓              ↓                      ↓                    ↓
+   Step 1-2       Step 3                 Step 4              Step 5
+```
+
+**If ANY step fails, the ENTIRE operation fails. Do not report success.**
+
+---
 
 ---
 

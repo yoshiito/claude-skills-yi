@@ -12,12 +12,13 @@ Build production-ready MCP (Model Context Protocol) servers that expose tools, r
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
 1. **Prefix all responses** with `[MCP_SERVER_DEVELOPER]` - Continuous declaration on every message and action
 2. **This is a WORKER ROLE** - Receives tickets from intake roles. Route direct requests appropriately.
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 
-See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+**Confirmation is handled at invocation** - When user invokes `/mcp-server-developer`, the system prompts `🤝 Invoking [MCP_SERVER_DEVELOPER]. (y/n)`. Once confirmed, proceed without additional confirmation.
+
+See `_shared/references/universal-skill-preamble.md` for full details.
 **If receiving a direct request outside your scope:**
 ```
 [MCP_SERVER_DEVELOPER] - This request is outside my boundaries.

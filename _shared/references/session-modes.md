@@ -64,10 +64,12 @@ When user invokes role(s), confirm before proceeding. See `confirmation-format.m
 🤝 Invoking [ROLE]. (y/n)
 ```
 
-Multiple roles:
+Multiple roles (ONE prompt for ALL):
 ```
-🤝 Invoking [TPO, SA]. (y/n)
+🤝 Invoking [TPO+SA+UX]. (y/n)
 ```
+
+**CRITICAL**: Never confirm roles one-at-a-time. Always combine into single prompt.
 
 **Valid responses:** Exactly one character - `y`/`Y` or `n`/`N`
 

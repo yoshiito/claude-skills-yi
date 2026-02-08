@@ -121,7 +121,9 @@ workflow:
       condition: mode == collab
       steps:
         - User invokes roles with /role-name
-        - "Prompt confirmation: 🤝 Invoking [ROLE]. (y/n)"
+        - "Single role: 🤝 Invoking [ROLE]. (y/n)"
+        - "Multiple roles: 🤝 Invoking [ROLE1+ROLE2]. (y/n) — ONE prompt for ALL roles"
+        - "CRITICAL: Never confirm roles one-at-a-time. Always combine into single prompt."
         - Handle EXECUTE, EXPLORE, EXIT commands
 
     - name: Plan Execution Mode Entry

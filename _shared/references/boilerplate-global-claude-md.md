@@ -128,6 +128,11 @@ See `{Skills Path}/_shared/references/confirmation-format.md` for full spec.
 🤝 Invoking [ROLE]. (y/n)
 ```
 
+Multiple roles (ONE prompt for ALL — never one-at-a-time):
+```
+🤝 Invoking [TPO+SA+UX]. (y/n)
+```
+
 **Valid responses:** Exactly one character - `y`/`Y` or `n`/`N`
 
 **Invalid responses:** Re-prompt same line (no explanation)
@@ -146,8 +151,9 @@ See `{Skills Path}/_shared/references/confirmation-format.md` for full spec.
 
 **Rules:**
 - User invokes roles with `/role-name`
-- Roles confirm: `🤝 Invoking [ROLE]. (y/n)`
-- On `y`, role proceeds
+- Single role: `🤝 Invoking [ROLE]. (y/n)`
+- Multiple roles: `🤝 Invoking [ROLE1+ROLE2]. (y/n)` — ONE prompt for ALL
+- On `y`, role(s) proceed
 - Roles can hand off to each other (same turn, no pause)
 
 **Out of scope handling:**
