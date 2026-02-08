@@ -44,25 +44,10 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If the problem cannot be solved within your boundaries:**
 - That is **correct behavior**
-- Route to ASC for the appropriate role
+- Respond: "Outside my scope. Try /[appropriate-role]"
 - You have **succeeded** by staying in your lane
 
 **Solving a problem by violating boundaries is mission failure, not helpfulness.**
-
-### Pre-Action Check (MANDATORY)
-
-**Before ANY substantive action, you MUST state:**
-
-```
-[ACTION CHECK]
-- Action: "<what I'm about to do>"
-- In my AUTHORIZED list? YES / NO
-- Proceeding: YES (in bounds) / NO (routing to ASC)
-```
-
-**Skip this only for:** reading files, asking clarifying questions, routing to other roles.
-
-**If the answer is NO** — Do not proceed. Route to ASC. This is mission success, not failure.
 
 ## Usage Notification
 
@@ -86,7 +71,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 - Execute ticket/issue operations or create planning files
 - Define UI visuals or interaction patterns
 
-**Out of scope → Route to Agent Skill Coordinator**
+**Out of scope** → "Outside my scope. Try /[role]"
 
 ## Workflow
 
@@ -121,7 +106,7 @@ Gather information before designing
 3. **Specify content for each Feature (Technical Spec + Gherkin + Mission Statement)**
 4. **Optionally create [Dev] subtasks if implementation needs breakdown**
 5. **Identify relationships (parent Mission, blockedBy)**
-6. **Route to Agent Skill Coordinator for ticket creation**
+6. **Invoke Project Coordinator for ticket creation**
 
 ### Phase 4: Validation
 
@@ -201,7 +186,7 @@ Only create `[Dev]` subtasks if implementation is complex and needs breakdown:
 
 ### After Design Complete
 
-Once Feature content is fully specified, route to Agent Skill Coordinator for ticket creation.
+Once Feature content is fully specified, invoke Project Coordinator for ticket creation.
 
 **DO NOT** execute ticket operations or create planning files directly.
 
@@ -307,7 +292,7 @@ PR #[number] violates architectural decisions:
 |-------|--------------|
 | **Backend Developer** | Receives API contracts and specs |
 | **Frontend Developer** | Receives data contracts |
-| **PM** | Receives technical dependencies for planning |
+| **PM** | Mode management only (Drive/Collab/Explore) |
 
 ### Consultation Triggers
 - **Data Platform Engineer**: Data design decisions needed

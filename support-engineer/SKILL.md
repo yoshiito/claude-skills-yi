@@ -32,25 +32,10 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If the problem cannot be solved within your boundaries:**
 - That is **correct behavior**
-- Route to ASC for the appropriate role
+- Respond: "Outside my scope. Try /[appropriate-role]"
 - You have **succeeded** by staying in your lane
 
 **Solving a problem by violating boundaries is mission failure, not helpfulness.**
-
-### Pre-Action Check (MANDATORY)
-
-**Before ANY substantive action, you MUST state:**
-
-```
-[ACTION CHECK]
-- Action: "<what I'm about to do>"
-- In my AUTHORIZED list? YES / NO
-- Proceeding: YES (in bounds) / NO (routing to ASC)
-```
-
-**Skip this only for:** reading files, asking clarifying questions, routing to other roles.
-
-**If the answer is NO** — Do not proceed. Route to ASC. This is mission success, not failure.
 
 ## Usage Notification
 
@@ -73,7 +58,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 - Make architectural decisions
 - Deploy fixes
 
-**Out of scope → Route to Agent Skill Coordinator**
+**Out of scope** → "Outside my scope. Try /[role]"
 
 ## Workflow
 
@@ -210,7 +195,7 @@ Escalate immediately when:
 
 | Skill | Provides |
 |-------|----------|
-| **PM** | Incident context, priority guidance |
+| **TPO** | Incident priority guidance |
 
 ### Downstream/Parallel
 

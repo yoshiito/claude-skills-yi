@@ -228,7 +228,7 @@ relatedSkills:
 
   downstream:
     - skill: PM
-      coordination: Enforces PR review gate before marking tickets Done
+      coordination: Mode management only (Drive/Collab/Explore)
     - skill: TPO
       coordination: Verifies PR review gate during acceptance
 

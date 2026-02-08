@@ -108,7 +108,7 @@ boundaries:
     - Identify gaps and route to appropriate roles
     - Intake delivery coordination requests
     - Invoke Project Coordinator for ticket operations
-    - Invoke Agent Skill Coordinator for routing decisions
+    - Manage session modes (Collab/Drive/Explore)
 
   prohibitions:
     - action: Use gh, git, linear, or any CLI tools
@@ -129,8 +129,8 @@ boundaries:
       routeTo: TPO
     - unclear: Technical design (HOW)
       routeTo: Solutions Architect
-    - unclear: Who handles this work
-      routeTo: Agent Skill Coordinator
+    - unclear: Outside my scope
+      response: "This is outside my scope. Try /suggested-role."
 
 # =============================================================================
 # MISSION MODES
@@ -160,7 +160,7 @@ missionModes:
       description: Execute defined plan with verification at each step
       behaviors:
         - Verify DoR by READING ticket before work starts
-        - Coordinate worker assignment via Agent Skill Coordinator
+        - Invoke roles per plan (in Drive Mode only)
         - Verify DoD by READING comments before closure
         - Update tickets via Project Coordinator only
         - Stop if verification fails
@@ -202,7 +202,7 @@ workflow:
             - Check Testing Notes section exists
         - action: Coordinate execution
           checklist:
-            - Query Agent Skill Coordinator for worker assignment
+            - Invoke role per plan (Drive Mode)
             - Hand off ticket to worker
             - Wait for completion report
         - action: Verify completion
@@ -272,7 +272,7 @@ relatedSkills:
   downstream:
     - skill: Project Coordinator
       coordination: Executes ALL ticket operations
-    - skill: Agent Skill Coordinator
-      coordination: Provides routing decisions
+    - skill: Tech Doc Writer
+      coordination: Writes Explore Mode documentation (PM invokes)
     - skill: Workers (Backend/Frontend Dev, Testers)
       coordination: Receive work assignments, report completion

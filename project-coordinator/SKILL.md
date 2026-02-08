@@ -49,25 +49,10 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If the problem cannot be solved within your boundaries:**
 - That is **correct behavior**
-- Route to ASC for the appropriate role
+- Respond: "Outside my scope. Try /[appropriate-role]"
 - You have **succeeded** by staying in your lane
 
 **Solving a problem by violating boundaries is mission failure, not helpfulness.**
-
-### Pre-Action Check (MANDATORY)
-
-**Before ANY substantive action, you MUST state:**
-
-```
-[ACTION CHECK]
-- Action: "<what I'm about to do>"
-- In my AUTHORIZED list? YES / NO
-- Proceeding: YES (in bounds) / NO (routing to ASC)
-```
-
-**Skip this only for:** reading files, asking clarifying questions, routing to other roles.
-
-**If the answer is NO** — Do not proceed. Route to ASC. This is mission success, not failure.
 
 ## Usage Notification
 
@@ -146,7 +131,10 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 | Gherkin | Body contains Given/When/Then keywords | Missing or empty |
 | Parent | Parent #NUM (Mission) provided in request | Missing or empty |
 | Testing Notes | Body contains "Testing Notes" section | Missing or empty |
-| Workflow Phases | Body contains "Workflow Phases" checklist | Missing or empty |
+| Workflow Phases | 1. Each phase has Role (exact skill slug) + Checklist (ticket-specific items) + Hand off
+2. Role-Phase validation: Development→developer, Test→tester, Docs→doc-writer, etc.
+3. Read assigned role's SKILL.md to verify phase work is in authorizedActions
+ | Missing or empty |
 | Open Questions | No unchecked items in "Open Questions" section | Missing or empty |
 | Feature Branch | User has provided Feature branch name | Missing or empty |
 
@@ -501,5 +489,5 @@ Returning to [CALLING_ROLE].
 | **TPO** | Invokes for parent issue creation |
 | **Solutions Architect** | Invokes for Feature creation with relationships |
 | **Support Engineer** | Invokes for bug ticket creation |
-| **PM** | Invokes for relationship verification |
+| **PM** | Invokes for DoR verification before Drive Mode |
 | **Workers** | Invoke for status updates |

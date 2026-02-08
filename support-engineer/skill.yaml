@@ -219,8 +219,8 @@ references:
 # =============================================================================
 relatedSkills:
   upstream:
-    - skill: PM
-      provides: Incident context, priority guidance
+    - skill: TPO
+      provides: Incident priority guidance
 
   downstream:
     - skill: Backend Developer

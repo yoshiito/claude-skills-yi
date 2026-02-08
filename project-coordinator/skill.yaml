@@ -206,7 +206,10 @@ qualityGates:
           - name: Testing Notes
             verify: Body contains "Testing Notes" section
           - name: Workflow Phases
-            verify: Body contains "Workflow Phases" checklist
+            verify: |
+              1. Each phase has Role (exact skill slug) + Checklist (ticket-specific items) + Hand off
+              2. Role-Phase validation: Development→developer, Test→tester, Docs→doc-writer, etc.
+              3. Read assigned role's SKILL.md to verify phase work is in authorizedActions
           - name: Open Questions
             verify: No unchecked items in "Open Questions" section
           - name: Feature Branch
@@ -519,6 +522,6 @@ relatedSkills:
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
-      coordination: Invokes for relationship verification
+      coordination: Invokes for DoR verification before Drive Mode
     - skill: Workers
       coordination: Invoke for status updates

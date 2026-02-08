@@ -208,7 +208,7 @@ relatedSkills:
     - skill: Code Reviewer
       coordination: Reviews PR before completion
     - skill: PM
-      coordination: Receives completion notification
+      coordination: Mode management only (Drive/Collab/Explore)
 
   consultationTriggers:
     - skill: Data Platform Engineer

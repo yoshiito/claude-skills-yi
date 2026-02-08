@@ -244,13 +244,70 @@ Feature: [Feature name]
 [Edge cases to cover, test data requirements]
 
 ## Workflow Phases
-Track completion of each phase in comments:
-- [ ] Development complete (PR created)
-- [ ] Code Review complete (PR approved)
-- [ ] Test complete (tests written and passing)
-- [ ] Docs complete (documentation updated)
-- [ ] SA Review complete (architecture validated)
-- [ ] UAT complete (TPO accepted)
+
+**CRITICAL**: Each phase MUST specify the role and concrete checklist items for THIS ticket.
+
+### Development
+- **Role**: `[exact-skill-name]`
+- **Checklist**:
+  - [ ] [Concrete work item 1 for THIS ticket]
+  - [ ] [Concrete work item 2 for THIS ticket]
+  - [ ] [... more ticket-specific work items]
+  - [ ] All checklist items complete, PR created
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to Code Reviewer
+
+### Code Review
+- **Role**: `code-reviewer`
+- **Checklist**:
+  - [ ] [Specific verification item 1 for THIS ticket]
+  - [ ] [Specific verification item 2 for THIS ticket]
+  - [ ] [... more ticket-specific review items]
+  - [ ] All items verified, PR approved
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to [Tester role]
+
+### Test
+- **Role**: `[backend-fastapi-pytest-tester or frontend-tester]`
+- **Checklist**:
+  - [ ] [Specific test case 1 from Gherkin scenarios]
+  - [ ] [Specific test case 2 from Gherkin scenarios]
+  - [ ] [... more ticket-specific test items]
+  - [ ] All tests passing
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to Tech Doc Writer
+
+### Docs (if user-facing changes)
+- **Role**: `tech-doc-writer-manager`
+- **Checklist**:
+  - [ ] [Specific doc update 1 for THIS ticket]
+  - [ ] [... more ticket-specific doc items]
+  - [ ] All docs updated
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to Solutions Architect
+
+### SA Review
+- **Role**: `solutions-architect`
+- **Checklist**:
+  - [ ] [Specific architecture check for THIS ticket]
+  - [ ] Architecture compliance verified
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to TPO
+
+### UAT
+- **Role**: `technical-product-owner`
+- **Checklist**:
+  - [ ] [Acceptance criterion 1 from Gherkin]
+  - [ ] [Acceptance criterion 2 from Gherkin]
+  - [ ] All acceptance criteria verified
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Feature complete
 
 ## Open Questions
 - [ ] [Any unresolved questions - MUST be empty before creation]
@@ -267,10 +324,34 @@ Track completion of each phase in comments:
 | Technical Spec | `<technical-spec>` with `<must>` section | ✅ Enforced |
 | Gherkin scenarios | `Given`/`When`/`Then` keywords present | ✅ Enforced |
 | Testing Notes | Section exists | ✅ Enforced |
+| Workflow Phases | Each phase has Role + Checklist items | ✅ Enforced |
 | Open Questions | **EMPTY** (all resolved) | ✅ Enforced |
 | Parent Mission | `Parent Mission: #NUM` in request | ✅ Enforced |
 | **Feature Branch** | **User-specified branch name (BLOCKING)** | ✅ Enforced |
 | Quality-bounded | See checklist below | ⚠️ Manual |
+
+**Workflow Phases Requirement (SA specifies before invoking PC):**
+- [ ] Each phase has `Role:` with exact skill slug
+- [ ] Each phase has `Checklist:` with concrete items for THIS ticket
+- [ ] Checklist items are ticket-specific (not generic "implement feature")
+- [ ] Each phase ends with hand-off to next role
+- [ ] Development checklist items derived from Technical Spec
+- [ ] Test checklist items derived from Gherkin scenarios
+- [ ] Code Review checklist items specify what to verify for THIS ticket
+
+**Role-Phase Validation (PC enforces - BLOCKING):**
+
+| Phase Type | Valid Roles | Invalid Assignment = REJECT |
+|------------|-------------|----------------------------|
+| Development | `backend-*-developer`, `frontend-*-engineer`, `mcp-server-developer`, `data-platform-engineer`, `ai-integration-engineer`, `api-designer`, `ux-designer`, `svg-designer` | Tester, Doc Writer, Reviewer |
+| Code Review | `code-reviewer` | Any other role |
+| Test | `backend-*-tester`, `frontend-tester` | Developer, Doc Writer |
+| Docs | `tech-doc-writer-manager` | Developer, Tester |
+| SA Review | `solutions-architect` | Any other role |
+| UAT | `technical-product-owner` | Any other role |
+| Subtask Complete | `project-coordinator` | Any other role |
+
+**PC MUST read the assigned role's SKILL.md** to verify the phase work falls within that role's `authorizedActions`. If not → REJECT with specific boundary violation.
 
 **Dev Subtasks (OPTIONAL - only if implementation needs breakdown):**
 - [ ] `[Dev]` subtasks specified if implementation is complex
@@ -379,16 +460,61 @@ All MUST/MUST NOT requirements satisfied.
 
 ### Workflow Phases (at Bug level, NOT separate tickets)
 
-Like Features, Bugs are quality-bounded. Quality phases happen at the Bug ticket level:
+Like Features, Bugs are quality-bounded. Quality phases happen at the Bug ticket level.
 
-| Phase | Worker | Tracked As |
-|-------|--------|------------|
-| Development | Developer | Bug status + PR |
-| Code Review | Code Reviewer | PR review |
-| Test | Tester | Regression test completion |
-| Docs | Tech Doc Writer | Docs update (if user-facing) |
-| SA Review | Solutions Architect | SA approval comment |
-| UAT | TPO | UAT approval comment |
+**Bug tickets MUST include Workflow Phases section with same structure as Features:**
+
+```markdown
+## Workflow Phases
+
+### Development
+- **Role**: `[developer-skill-name]`
+- **Checklist**:
+  - [ ] [Fix item 1 based on root cause]
+  - [ ] [Fix item 2 based on root cause]
+  - [ ] All checklist items complete, PR created
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to Code Reviewer
+
+### Code Review
+- **Role**: `code-reviewer`
+- **Checklist**:
+  - [ ] [Verify fix addresses root cause]
+  - [ ] [Verify no regression in related code]
+  - [ ] All items verified, PR approved
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to [Tester role]
+
+### Test
+- **Role**: `[tester-skill-name]`
+- **Checklist**:
+  - [ ] [Test the specific bug scenario is fixed]
+  - [ ] [Regression test related functionality]
+  - [ ] All tests passing
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to Solutions Architect
+
+### SA Review
+- **Role**: `solutions-architect`
+- **Checklist**:
+  - [ ] [Verify fix doesn't introduce architectural issues]
+  - [ ] Architecture compliance verified
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Hand off to TPO
+
+### UAT
+- **Role**: `technical-product-owner`
+- **Checklist**:
+  - [ ] [Verify bug is fixed from user perspective]
+  - [ ] All acceptance criteria verified
+  - [ ] Comment on ticket with completion evidence
+  - [ ] Check off completed checklist items in ticket
+  - [ ] Bug complete
+```
 
 ### DoD: Definition of Done (Before Closing)
 

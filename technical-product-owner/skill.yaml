@@ -329,7 +329,7 @@ relatedSkills:
     - skill: API Designer
       coordination: Receives API needs, contributes contracts to PRD
     - skill: PM
-      coordination: Receives approved PRD, coordinates delivery
+      coordination: Mode management only (Drive/Collab/Explore)
     - skill: Testers
       coordination: Receives acceptance criteria, contributes test strategy to PRD
 
@@ -338,5 +338,3 @@ relatedSkills:
       when: Need market research or MRD for new feature
     - skill: Solutions Architect
       when: Need technical feasibility assessment
-    - skill: Agent Skill Coordinator
-      when: Unclear about routing or role responsibilities

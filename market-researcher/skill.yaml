@@ -238,8 +238,8 @@ relatedSkills:
       provides: Research requests for features/opportunities
     - skill: Solutions Architect
       provides: Technical context for feasibility assessment
-    - skill: PM
-      provides: Delivery context and priorities
+    - skill: TPO
+      provides: Priority guidance and product context
 
   downstream:
     - skill: TPO

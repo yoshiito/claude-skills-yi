@@ -90,8 +90,7 @@ boundaries:
   routingTable: null
 
 # =============================================================================
-# NOTE: No handoff section - Agent Skill Coordinator owns role routing
-# Utilities always return to CALLING_ROLE (tracked via invocationModel)
+# NOTE: Utilities always return to CALLING_ROLE (tracked via invocationModel)
 # =============================================================================
 
 # =============================================================================
@@ -387,6 +386,6 @@ relatedSkills:
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
-      coordination: Invokes for relationship verification
+      coordination: Invokes for DoR verification before Drive Mode
     - skill: Workers
       coordination: Invoke for status updates

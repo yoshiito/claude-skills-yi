@@ -232,7 +232,7 @@ relatedSkills:
     - skill: Code Reviewer
       coordination: PR review before completion
     - skill: PM
-      coordination: Test coverage reporting
+      coordination: Mode management only (Drive/Collab/Explore)
 
   consultationTriggers:
     - skill: Backend Tester
