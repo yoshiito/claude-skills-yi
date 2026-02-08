@@ -226,11 +226,11 @@ missionModes:
   required: boolean       # Must ask at session start?
   prompt: |               # Raw markdown prompt
     Which mode?
-    1. **DRIVE** - Active
+    1. **EXECUTE** - Plan Execution Mode
     2. **TRACK** - Passive
 
   modes:
-    drive:
+    plan_execution:
       description: string
       behaviors:
         - string
@@ -343,9 +343,9 @@ roleRegistry:
 
 ```yaml
 modes:
-  supported: [track, drive, collab, explore]  # Which modes this skill supports
+  supported: [track, plan_execution, collab, explore]  # Which modes this skill supports
 
-  drive:
+  plan_execution:
     skipConfirmation: boolean
     preWorkValidation: boolean
 

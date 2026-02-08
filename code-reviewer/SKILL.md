@@ -225,9 +225,9 @@ If project rule contradicts universal/stack standard, project wins (it's intenti
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 
@@ -256,7 +256,7 @@ If project rule contradicts universal/stack standard, project wins (it's intenti
 
 | Skill | Coordination |
 |-------|--------------|
-| **PM** | Mode management only (Drive/Collab/Explore) |
+| **PM** | Mode management only (Plan Execution/Collab/Explore) |
 | **TPO** | Verifies PR review gate during acceptance |
 
 ### Consultation Triggers

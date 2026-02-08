@@ -9,7 +9,7 @@
 | **Project Coordinator** | **ENFORCES** - rejects ticket creation if DoR not met |
 | **Solutions Architect** | Prepares Features to pass DoR checks |
 | **TPO** | Prepares Missions (Epics) to pass DoR checks |
-| **PM** | Additional validation before Drive Mode |
+| **PM** | Additional validation before Plan Execution Mode |
 | **Workers** | Understands what "ready" looks like |
 
 ## Enforcement Point
@@ -165,12 +165,12 @@ Missing:
 Action: Complete these before creating Feature.
 ```
 
-### When Entering Drive Mode (PM)
+### When Entering Plan Execution Mode (PM)
 
 Before driving, verify ALL Features pass DoR. If any fail:
 
 ```
-[PM] - ⛔ Cannot enter Drive Mode
+[PM] - ⛔ Cannot enter Plan Execution Mode
 
 Definition of Ready not met:
 
@@ -179,7 +179,7 @@ Definition of Ready not met:
 | [ID-1] | Technical Spec | SA |
 | [ID-2] | Feature branch | User (BLOCKING) |
 
-Fix these gaps, then invoke Drive Mode again.
+Fix these gaps, then invoke Plan Execution Mode again.
 ```
 
 ### Routing When DoR Fails

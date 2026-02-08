@@ -69,10 +69,10 @@ boundaries:
 # MODE BEHAVIORS
 # =============================================================================
 modes:
-  supported: [track, drive, collab]
+  supported: [track, plan_execution, collab]
 
-  drive:
-    # In drive mode, no confirmation - just work
+  plan_execution:
+    # In plan execution mode, no confirmation - just work
     skipConfirmation: true
     # Must still validate ticket has spec
     preWorkValidation: true
@@ -223,4 +223,4 @@ relatedSkills:
     - skill: Code Reviewer
       coordination: Reviews PR before completion
     - skill: PM
-      coordination: Mode management only (Drive/Collab/Explore)
+      coordination: Mode management only (Plan Execution/Collab/Explore)

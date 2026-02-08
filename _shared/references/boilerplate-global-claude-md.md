@@ -37,7 +37,7 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
    ```
    📚 CONTEXT RECOVERED — SKILL.md for [ROLE1, ROLE2, ...] has been reloaded.
 
-   Current mode: [Collab/Drive/Explore]. Resuming as [PRIMARY_ROLE].
+   Current mode: [Collab/Plan Execution/Explore]. Resuming as [PRIMARY_ROLE].
    ```
 
 ---
@@ -75,13 +75,13 @@ The framework operates in one of three modes. See `{Skills Path}/_shared/referen
 | Mode | Prefix | Purpose | Entry |
 |------|--------|---------|-------|
 | **Collab** 🤝 | Default | Brainstorm, explore options | Default / `COLLAB` |
-| **Drive** ⚡ | Execute existing plan | `DRIVE` (after DoR verified) |
+| **Plan Execution** ⚡ | Execute existing plan | `EXECUTE` (after DoR verified) |
 | **Explore** 🔍 | Rapid iteration, document after | `EXPLORE` |
 
 **Key rules:**
 - All messages prefixed with mode indicator (🤝/⚡/🔍) before role prefix
 - Only USER can exit modes (say `COLLAB`, `EXIT`, or mode name to switch)
-- Cannot go directly from Drive ↔ Explore (must return to Collab first)
+- Cannot go directly from Plan Execution ↔ Explore (must return to Collab first)
 
 ---
 
@@ -95,7 +95,7 @@ This is NOT optional and applies to every message, every action, every follow-up
 ```
 🤝 [PM] - Collab Mode active.
 🤝 [TPO] - I'll analyze your feature request.
-⚡ [BACKEND_DEVELOPER] - Invoked in Drive Mode. Proceeding...
+⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding...
 🔍 [FRONTEND_DEVELOPER] - Exploring component options...
 ```
 
@@ -115,7 +115,7 @@ User: y
 🤝 [TPO] - I'll help define requirements...
 ```
 
-**PM's only job is mode management** (Collab/Drive/Explore transitions).
+**PM's only job is mode management** (Collab/Plan Execution/Explore transitions).
 
 ---
 
@@ -157,15 +157,15 @@ See `{Skills Path}/_shared/references/confirmation-format.md` for full spec.
 
 ---
 
-## Drive Mode ⚡
+## Plan Execution Mode ⚡
 
 **Purpose:** Execute an existing plan autonomously.
 
-**Entry:** User says `DRIVE`. PM triggers PC to verify DoR.
+**Entry:** User says `EXECUTE`. PM triggers PC to verify DoR.
 
 **DoR verification:**
 - PC reads actual artifacts (no assumptions from memory)
-- If PASS → Enter Drive Mode
+- If PASS → Enter Plan Execution Mode
 - If FAIL → Stay in Collab Mode, report gaps
 
 **Rules:**
@@ -174,7 +174,7 @@ See `{Skills Path}/_shared/references/confirmation-format.md` for full spec.
 - Workers return control to PM when done
 - Depth-first: complete one work item before starting another
 
-**Exit:** Only user can exit. PM prompts: `⚡ Exit Drive Mode? (y/n)`
+**Exit:** Only user can exit. PM prompts: `⚡ Exit Plan Execution Mode? (y/n)`
 
 ---
 
@@ -227,7 +227,7 @@ For [description], try /suggested-role.
 | Mode | Confirmation Required? |
 |------|------------------------|
 | **Collab** 🤝 | Yes - `🤝 Invoking [ROLE]. (y/n)` |
-| **Drive** ⚡ | No - workers proceed immediately |
+| **Plan Execution** ⚡ | No - workers proceed immediately |
 | **Explore** 🔍 | No - workers proceed immediately |
 
 ---
@@ -236,7 +236,7 @@ For [description], try /suggested-role.
 
 ### Entry Point
 
-- `/program-manager` — Mode management only (Collab/Drive/Explore)
+- `/program-manager` — Mode management only (Collab/Plan Execution/Explore)
 
 ### Directly Invokable Roles
 
@@ -311,7 +311,7 @@ All tickets must include:
 | Feature branch (user-provided) | Yes |
 | Dependencies set | Yes |
 
-**If ANY check fails**: Cannot enter Drive Mode. Stay in Collab Mode.
+**If ANY check fails**: Cannot enter Plan Execution Mode. Stay in Collab Mode.
 
 ---
 

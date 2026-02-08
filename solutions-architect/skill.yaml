@@ -295,7 +295,7 @@ relatedSkills:
     - skill: Frontend Developer
       coordination: Receives data contracts
     - skill: PM
-      coordination: Mode management only (Drive/Collab/Explore)
+      coordination: Mode management only (Plan Execution/Collab/Explore)
 
   consultationTriggers:
     - skill: Data Platform Engineer

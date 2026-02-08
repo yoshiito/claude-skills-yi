@@ -209,9 +209,9 @@ POST /users/{id}/password-reset-tokens  →  POST /users/{id}/reset-password
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 

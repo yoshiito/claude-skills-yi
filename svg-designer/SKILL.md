@@ -426,9 +426,9 @@ Luxury/Premium:         #1F2937 (Near Black), #D4AF37 (Gold)
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 

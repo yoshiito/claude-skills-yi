@@ -121,7 +121,7 @@ Universal framework rules:
 - PM as entry point
 - Role declaration (`[ROLE_NAME]` prefix)
 - Routing flow (PM → ASC → role, no pause)
-- Drive/Collab mode protocols
+- Plan Execution/Collab mode protocols
 - Skill boundary enforcement
 - Role categories and activation rules
 
@@ -140,8 +140,8 @@ Project-specific configuration:
 ### Standard Mode
 Roles require user confirmation before proceeding.
 
-### Drive Mode
-User types `DRIVE` to activate. Workers skip confirmation and proceed immediately. PM verifies DoR/DoD.
+### Plan Execution Mode
+User types `EXECUTE` to activate. Workers skip confirmation and proceed immediately. PM verifies DoR/DoD.
 
 ### Collab Mode
 Multiple roles collaborate. Messages prefixed with `🤝` before role prefix.

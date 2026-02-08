@@ -224,4 +224,4 @@ Resolved by: [Name/role]
 
 - `definition-of-ready.md` - Pre-work checklist
 - `project-coordinator/references/ticket-templates.md` - Full templates with DoR/DoD
-- `drive-mode-protocol.md` - Verification templates for Drive Mode
+- `plan-execution-mode-protocol.md` - Verification templates for Plan Execution Mode

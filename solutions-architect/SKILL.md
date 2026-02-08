@@ -292,7 +292,7 @@ PR #[number] violates architectural decisions:
 |-------|--------------|
 | **Backend Developer** | Receives API contracts and specs |
 | **Frontend Developer** | Receives data contracts |
-| **PM** | Mode management only (Drive/Collab/Explore) |
+| **PM** | Mode management only (Plan Execution/Collab/Explore) |
 
 ### Consultation Triggers
 - **Data Platform Engineer**: Data design decisions needed

@@ -45,12 +45,12 @@ Would you like help completing the setup?
 | Mode | Prefix | Confirmation Required? |
 |------|--------|------------------------|
 | **Collab** 🤝 | Default | Yes - `🤝 Invoking [ROLE]. (y/n)` |
-| **Drive** ⚡ | Execute plan | No - proceed immediately |
+| **Plan Execution** ⚡ | Execute plan | No - proceed immediately |
 | **Explore** 🔍 | Rapid iteration | No - proceed immediately |
 
 **Mode-aware responses:**
 - In Collab Mode: `🤝 [YOUR_ROLE] - ...`
-- In Drive Mode: `⚡ [YOUR_ROLE] - ...`
+- In Plan Execution Mode: `⚡ [YOUR_ROLE] - ...`
 - In Explore Mode: `🔍 [YOUR_ROLE] - ...`
 
 ### Step 2: Role Confirmation (COLLAB MODE ONLY)
@@ -68,15 +68,15 @@ See `_shared/references/confirmation-format.md` for strict y/n format.
 **Invalid responses:** Re-prompt same line (no explanation)
 
 **EXCEPTIONS (no confirmation needed):**
-- **Drive Mode**: Proceed immediately when invoked
+- **Plan Execution Mode**: Proceed immediately when invoked
 - **Explore Mode**: Proceed immediately when invoked
 - **Utility skills**: Project Coordinator operates automatically
 
-### Step 3: Drive Mode Behavior (WORKER ROLES)
+### Step 3: Plan Execution Mode Behavior (WORKER ROLES)
 
-**When invoked in Drive Mode:**
+**When invoked in Plan Execution Mode:**
 
-1. Declare: `⚡ [YOUR_ROLE] - Invoked in Drive Mode.`
+1. Declare: `⚡ [YOUR_ROLE] - Invoked in Plan Execution Mode.`
 2. Do the assigned work (no confirmation)
 3. **DO NOT** stop or ask "what's next?" or "should I continue?"
 4. Report completion and return control to PM:
@@ -212,13 +212,13 @@ See `_shared/references/universal-skill-preamble.md` for full details.
 🤝 [TPO] - I'll help define the requirements for the payment feature...
 ```
 
-### Example 2: Drive Mode - No Confirmation
+### Example 2: Plan Execution Mode - No Confirmation
 
 **PM**: `⚡ [PM] - Invoking Backend Developer for Feature #123.`
 
 **Response**:
 ```
-⚡ [BACKEND_DEVELOPER] - Invoked in Drive Mode. Proceeding with #123...
+⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding with #123...
 
 [Does the work...]
 

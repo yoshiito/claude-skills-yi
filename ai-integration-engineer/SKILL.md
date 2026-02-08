@@ -252,9 +252,9 @@ Check if project's `claude.md` has "Project Scope" section. If not, prompt user 
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 

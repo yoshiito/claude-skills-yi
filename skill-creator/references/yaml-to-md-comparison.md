@@ -151,12 +151,12 @@ missionModes:
   prompt: |
     Which mode should I operate in?
 
-    1. **DRIVE MODE** - Actively push work to completion
+    1. **PLAN EXECUTION MODE** - Actively push work to completion
     2. **TRACK MODE** - Passively monitor and report
 
   modes:
-    drive:
-      description: Actively drive work to completion
+    plan_execution:
+      description: Execute existing plan per ticket checklist
       behaviors:
         - Assign tickets to workers and invoke their skills
         - Push work forward continuously
@@ -174,15 +174,15 @@ missionModes:
 ```
 Which mode should I operate in?
 
-1. **DRIVE MODE** - Actively push work to completion
+1. **PLAN EXECUTION MODE** - Actively push work to completion
 2. **TRACK MODE** - Passively monitor and report
 ```
 
 **DO NOT PROCEED** until user selects a mode. This is non-negotiable.
 
-### Drive Mode
+### Plan Execution Mode
 
-Actively drive work to completion
+Execute existing plan per ticket checklist
 
 **Behaviors:**
 - Assign tickets to workers and invoke their skills

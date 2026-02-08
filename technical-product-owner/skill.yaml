@@ -205,7 +205,7 @@ customSections:
       1. **Gather requirements** → Ask questions, get answers BEFORE drafting
       2. **Check for MRD** → If Market Researcher has provided an MRD, use it as input
       3. **Coordinate PRD** → Engage contributors for their sections
-      4. **Drive completion** → Ensure all sections complete, resolve conflicts
+      4. **Finalize PRD** → Ensure all sections complete, resolve conflicts
 
       ### Rule 3: Component Hygiene & Approvals
 
@@ -329,7 +329,7 @@ relatedSkills:
     - skill: API Designer
       coordination: Receives API needs, contributes contracts to PRD
     - skill: PM
-      coordination: Mode management only (Drive/Collab/Explore)
+      coordination: Mode management only (Plan Execution/Collab/Explore)
     - skill: Testers
       coordination: Receives acceptance criteria, contributes test strategy to PRD
 

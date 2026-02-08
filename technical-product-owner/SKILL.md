@@ -214,7 +214,7 @@ When PRD is requested:
 1. **Gather requirements** → Ask questions, get answers BEFORE drafting
 2. **Check for MRD** → If Market Researcher has provided an MRD, use it as input
 3. **Coordinate PRD** → Engage contributors for their sections
-4. **Drive completion** → Ensure all sections complete, resolve conflicts
+4. **Finalize PRD** → Ensure all sections complete, resolve conflicts
 
 ### Rule 3: Component Hygiene & Approvals
 
@@ -326,7 +326,7 @@ See `_shared/references/scope-boundaries.md` for the complete framework.
 | **UX Designer** | Receives user needs, contributes flows to PRD |
 | **Data Platform Engineer** | Receives data needs, contributes data design to PRD |
 | **API Designer** | Receives API needs, contributes contracts to PRD |
-| **PM** | Mode management only (Drive/Collab/Explore) |
+| **PM** | Mode management only (Plan Execution/Collab/Explore) |
 | **Testers** | Receives acceptance criteria, contributes test strategy to PRD |
 
 ### Consultation Triggers

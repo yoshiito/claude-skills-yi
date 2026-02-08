@@ -44,7 +44,7 @@ invocationModel:
       when: After identifying bug
       example: Create bug ticket
     - role: PM
-      when: Before Drive Mode
+      when: Before Plan Execution Mode
       example: Verify relationships
     - role: Workers
       when: During implementation
@@ -386,6 +386,6 @@ relatedSkills:
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
-      coordination: Invokes for DoR verification before Drive Mode
+      coordination: Invokes for DoR verification before Plan Execution Mode
     - skill: Workers
       coordination: Invoke for status updates

@@ -216,9 +216,9 @@ Always prompt for:
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 
@@ -251,4 +251,4 @@ Always prompt for:
 |-------|--------------|
 | **Frontend Tester** | Test strategy alignment |
 | **Code Reviewer** | PR review before completion |
-| **PM** | Mode management only (Drive/Collab/Explore) |
+| **PM** | Mode management only (Plan Execution/Collab/Explore) |

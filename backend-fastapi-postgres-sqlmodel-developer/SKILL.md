@@ -202,9 +202,9 @@ See `references/raw-sql-vs-orm.md` for detailed examples.
 
 ## Mode Behaviors
 
-**Supported modes**: track, drive, collab
+**Supported modes**: track, plan_execution, collab
 
-### Drive Mode
+### Plan_execution Mode
 - **skipConfirmation**: True
 - **preWorkValidation**: True
 
@@ -236,7 +236,7 @@ See `references/raw-sql-vs-orm.md` for detailed examples.
 |-------|--------------|
 | **Backend Tester** | Receives implementation for test creation |
 | **Code Reviewer** | Reviews PR before completion |
-| **PM** | Mode management only (Drive/Collab/Explore) |
+| **PM** | Mode management only (Plan Execution/Collab/Explore) |
 
 ### Consultation Triggers
 - **Data Platform Engineer**: Complex queries, schema performance, raw SQL review

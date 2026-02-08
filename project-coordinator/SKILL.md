@@ -68,7 +68,7 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 | TPO | After defining requirements | Create parent issue |
 | Solutions Architect | After architecture breakdown | Create Features with relationships |
 | Support Engineer | After identifying bug | Create bug ticket |
-| PM | Before Drive Mode | Verify relationships |
+| PM | Before Plan Execution Mode | Verify relationships |
 | Workers | During implementation | Update status, add comments |
 
 ### Automatic Invocation Pattern
@@ -489,5 +489,5 @@ Returning to [CALLING_ROLE].
 | **TPO** | Invokes for parent issue creation |
 | **Solutions Architect** | Invokes for Feature creation with relationships |
 | **Support Engineer** | Invokes for bug ticket creation |
-| **PM** | Invokes for DoR verification before Drive Mode |
+| **PM** | Invokes for DoR verification before Plan Execution Mode |
 | **Workers** | Invoke for status updates |

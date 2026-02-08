@@ -6,8 +6,8 @@ The framework operates in one of three modes. **Collab Mode is the default.**
 
 | Mode | Prefix | Purpose | Entry | Exit |
 |------|--------|---------|-------|------|
-| **Collab** | 🤝 | Brainstorm, explore options | Default / `COLLAB` | `DRIVE` or `EXPLORE` or `EXIT` |
-| **Drive** | ⚡ | Execute existing plan | `DRIVE` | `COLLAB` or `EXIT` |
+| **Collab** | 🤝 | Brainstorm, explore options | Default / `COLLAB` | `EXECUTE` or `EXPLORE` or `EXIT` |
+| **Plan Execution** | ⚡ | Execute existing plan | `EXECUTE` | `COLLAB` or `EXIT` |
 | **Explore** | 🔍 | Rapid iteration, document after | `EXPLORE` | `COLLAB` or `EXIT` |
 
 ```
@@ -21,11 +21,11 @@ The framework operates in one of three modes. **Collab Mode is the default.**
                       │      │      │
               ┌───────┘      │      └───────┐
               │              │              │
-              │         DRIVE or            │
+              │        EXECUTE or            │
               │         EXPLORE             │
               │              │              │
      ┌────────┴──────┐       │       ┌──────┴─────────┐
-     │  DRIVE MODE   │       │       │  EXPLORE MODE  │
+     │  PLAN EXECUTION MODE   │       │       │  EXPLORE MODE  │
      │       ⚡       │       │       │       🔍        │
      └───────────────┘       │       └────────────────┘
                              │
@@ -35,7 +35,7 @@ The framework operates in one of three modes. **Collab Mode is the default.**
                       (Session ends)
 ```
 
-**Key rule: You cannot go directly from Drive ↔ Explore. You must return to Collab first.**
+**Key rule: You cannot go directly from Plan Execution ↔ Explore. You must return to Collab first.**
 
 ---
 
@@ -97,15 +97,15 @@ User: y
 
 ---
 
-## Drive Mode ⚡
+## Plan Execution Mode ⚡
 
 **Purpose**: Execute an existing plan autonomously. Plan exists, work is defined.
 
 **When to use**: "Execute this plan", "Ship this feature", "Work through these tickets"
 
-### Prerequisites (DoR for Drive Mode)
+### Prerequisites (DoR for Plan Execution Mode)
 
-Before entering Drive Mode, PM triggers PC to verify:
+Before entering Plan Execution Mode, PM triggers PC to verify:
 
 - [ ] Plan exists with defined work items
 - [ ] Work items have Technical Spec + Gherkin
@@ -117,23 +117,23 @@ Before entering Drive Mode, PM triggers PC to verify:
 ### Entry Flow
 
 ```
-User: DRIVE
+User: EXECUTE
 
-🤝 [PM] - Attempting Drive Mode. Invoking PC to verify readiness.
+🤝 [PM] - Attempting Plan Execution Mode. Invoking PC to verify readiness.
 
 🤝 [PC] - Checking DoR...
 [PC reads actual tickets/plan documents]
 
 IF PASS:
-🤝 [PC] - ✅ DoR verified. Ready for Drive Mode.
-⚡ [PM] - Drive Mode active. Starting with #123. Invoking Backend Developer.
+🤝 [PC] - ✅ DoR verified. Ready for Plan Execution Mode.
+⚡ [PM] - Plan Execution Mode active. Starting with #123. Invoking Backend Developer.
 
 IF FAIL:
 🤝 [PC] - ❌ DoR failed: #124 missing roles.
-🤝 [PM] - Cannot enter Drive Mode. Remaining in Collab Mode. Fix #124 first.
+🤝 [PM] - Cannot enter Plan Execution Mode. Remaining in Collab Mode. Fix #124 first.
 ```
 
-**If verification fails:** Stay in Collab Mode. Never enter Drive Mode.
+**If verification fails:** Stay in Collab Mode. Never enter Plan Execution Mode.
 
 ### Rules
 
@@ -149,30 +149,30 @@ IF FAIL:
 ### Behavior
 
 ```
-⚡ [PM] - Drive Mode active. Starting Feature #123.
+⚡ [PM] - Plan Execution Mode active. Starting Feature #123.
 ⚡ [PM] - Invoking Backend Developer.
 
-⚡ [BACKEND_DEVELOPER] - Invoked in Drive Mode. Proceeding with #123...
+⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding with #123...
 [...works...]
 ⚡ [BACKEND_DEVELOPER] - ✅ Complete. PR: #456. Returning control to PM.
 
 ⚡ [PM] - Received. Invoking Code Reviewer.
 
-⚡ [CODE_REVIEWER] - Invoked in Drive Mode. Reviewing PR #456...
+⚡ [CODE_REVIEWER] - Invoked in Plan Execution Mode. Reviewing PR #456...
 ```
 
-### Exiting Drive Mode
+### Exiting Plan Execution Mode
 
 **Only user can exit.** PM may prompt:
 
 ```
-⚡ [PM] - Work queue complete. Exit Drive Mode? (y/n)
+⚡ [PM] - Work queue complete. Exit Plan Execution Mode? (y/n)
 ```
 
 Wait for valid response (`y`/`Y`/`n`/`N`). When user confirms exit:
 
 ```
-⚡ [PM] - Exiting Drive Mode.
+⚡ [PM] - Exiting Plan Execution Mode.
 🤝 [PM] - Back to Collab Mode.
 ```
 
@@ -259,9 +259,9 @@ If `n`: Exit without documenting.
 |------|----|---------|-----------|
 | (start) | Collab | Framework activation | Announce Collab Mode active |
 | Any | Collab | `COLLAB` | Announce mode change |
-| Collab | Drive | `DRIVE` | Trigger PC to verify DoR, enter only if pass |
+| Collab | Plan Execution | `EXECUTE` | Trigger PC to verify DoR, enter only if pass |
 | Collab | Explore | `EXPLORE` | Enter immediately |
-| Drive | Collab | `COLLAB` or `EXIT` | Prompt (y/n), summarize progress |
+| Plan Execution | Collab | `COLLAB` or `EXIT` | Prompt (y/n), summarize progress |
 | Explore | Collab | `COLLAB` or `EXIT` | Prompt to document (y/n), then exit |
 | Collab | End | `EXIT` | End session |
 
@@ -279,7 +279,7 @@ If role receives request that doesn't fit current mode, suggest switching:
 
 ```
 🤝 [BACKEND_DEVELOPER] - This looks like execution work.
-Should we switch to Drive Mode? Say DRIVE to enter.
+Should we switch to Plan Execution Mode? Say EXECUTE to enter.
 ```
 
 ---
@@ -287,4 +287,4 @@ Should we switch to Drive Mode? Say DRIVE to enter.
 ## Related References
 
 - `confirmation-format.md` - y/n confirmation format standard
-- `definition-of-ready.md` - DoR checklist (includes role specification for Drive Mode)
+- `definition-of-ready.md` - DoR checklist (includes role specification for Plan Execution Mode)
