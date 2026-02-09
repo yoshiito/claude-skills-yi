@@ -75,7 +75,7 @@ customSections:
 
       **BLOCKING REQUIREMENT**: Before validating ANY ticket, I MUST:
 
-      1. **Read `references/ticket-templates.md`** — Know the exact requirements
+      1. **Read the relevant template from `references/templates/`** — Know the exact requirements
       2. **Read the relevant operations file** — Know the exact commands
       3. **Only then validate** — With full knowledge, not assumptions
 
@@ -92,7 +92,7 @@ customSections:
       ```
       [PROJECT_COORDINATOR] - Validating Feature creation.
 
-      **Reference Check**: Read ticket-templates.md ✓
+      **Reference Check**: Read `references/templates/feature.md` ✓
 
       **Verification Trail**:
       | Requirement | Found | Location |
@@ -297,7 +297,7 @@ qualityGates:
       **Missing Items**:
       - [ ] [specific missing item with template reference]
 
-      **Required Format** (from `references/ticket-templates.md`):
+      **Required Format** (from `references/templates/`):
       ```
       [relevant template snippet]
       ```
@@ -376,7 +376,7 @@ workflow:
         STOP. Before ANY validation, read the reference files.
         Do NOT proceed on assumptions or memory.
       steps:
-        - action: Read ticket-templates.md
+        - action: Read the relevant template from references/templates/
           description: Know the exact template requirements for this ticket type
         - action: Read the relevant operations file
           description: github-operations.md, linear-operations.md, or plan-file-operations.md
@@ -482,7 +482,7 @@ qualityChecklist:
   sections:
     - name: Before ANY Operation
       checks:
-        - Did I read ticket-templates.md? (not assumed, actually read)
+        - Did I read the relevant template from `references/templates/`? (not assumed, actually read)
         - Did I read the relevant operations file?
         - Did I state "Reference Check" in my output?
 
@@ -509,8 +509,12 @@ qualityChecklist:
 # =============================================================================
 references:
   local:
-    - path: references/ticket-templates.md
-      purpose: All ticket templates with DoR/DoD checklists (READ BEFORE VALIDATING)
+    - path: references/templates/
+      purpose: Ticket templates (READ BEFORE VALIDATING)
+    - path: references/ticket-hierarchy.md
+      purpose: Hierarchy model, relationships, role tables
+    - path: references/progress-comments.md
+      purpose: Progress comment formats
     - path: references/github-operations.md
       purpose: GitHub Issues + GraphQL mutations
     - path: references/linear-operations.md

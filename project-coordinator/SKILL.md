@@ -217,7 +217,7 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 **Missing Items**:
 - [ ] [specific missing item with template reference]
 
-**Required Format** (from `references/ticket-templates.md`):
+**Required Format** (from `references/templates/`):
 ```
 [relevant template snippet]
 ```
@@ -299,7 +299,7 @@ Returns: PASS or FAIL with details
 STOP. Before ANY validation, read the reference files. Do NOT proceed on assumptions or memory.
 
 
-1. **Read ticket-templates.md** - Know the exact template requirements for this ticket type
+1. **Read the relevant template** from `references/templates/` - Know the exact template requirements for this ticket type
 2. **Read the relevant operations file** - github-operations.md, linear-operations.md, or plan-file-operations.md
 3. **If relationships specified: Read the handler's BLOCKING section** - For GitHub, read the "⛔ BLOCKING: Relationship Protocol" section. This section defines MANDATORY steps that cannot be skipped.
 
@@ -349,7 +349,7 @@ Before marking work complete:
 
 ### Before ANY Operation
 
-- [ ] Did I read ticket-templates.md? (not assumed, actually read)
+- [ ] Did I read the relevant template from `references/templates/`? (not assumed, actually read)
 - [ ] Did I read the relevant operations file?
 - [ ] Did I state "Reference Check" in my output?
 
@@ -405,7 +405,7 @@ Other roles require user confirmation before acting. I do not. This makes me pow
 
 **BLOCKING REQUIREMENT**: Before validating ANY ticket, I MUST:
 
-1. **Read `references/ticket-templates.md`** — Know the exact requirements
+1. **Read the relevant template from `references/templates/`** — Know the exact requirements
 2. **Read the relevant operations file** — Know the exact commands
 3. **Only then validate** — With full knowledge, not assumptions
 
@@ -422,7 +422,7 @@ Every validation MUST show evidence:
 ```
 [PROJECT_COORDINATOR] - Validating Feature creation.
 
-**Reference Check**: Read ticket-templates.md ✓
+**Reference Check**: Read `references/templates/feature.md` ✓
 
 **Verification Trail**:
 | Requirement | Found | Location |
@@ -485,7 +485,14 @@ Returning to [CALLING_ROLE].
 ## Reference Files
 
 ### Local References
-- `references/ticket-templates.md` - All ticket templates with DoR/DoD checklists (READ BEFORE VALIDATING)
+- `references/templates/` - Ticket templates (READ BEFORE VALIDATING)
+  - `mission.md` - Mission (Epic) template
+  - `feature.md` - Feature template ([Backend]/[Frontend])
+  - `bug.md` - Bug template
+  - `query.md` - Query (communication) template
+  - `dev-subtask.md` - Dev subtask template
+- `references/ticket-hierarchy.md` - Hierarchy model, relationships, role tables
+- `references/progress-comments.md` - Progress comment formats
 - `references/github-operations.md` - GitHub Issues + GraphQL mutations
 - `references/linear-operations.md` - Linear MCP commands
 - `references/plan-file-operations.md` - Local plan file format

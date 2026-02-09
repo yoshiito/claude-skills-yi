@@ -223,5 +223,6 @@ Resolved by: [Name/role]
 ## Related References
 
 - `definition-of-ready.md` - Pre-work checklist
-- `project-coordinator/references/ticket-templates.md` - Full templates with DoR/DoD
+- `project-coordinator/references/templates/` - Full templates with DoR/DoD
+- `project-coordinator/references/ticket-hierarchy.md` - Hierarchy model and relationships
 - `plan-execution-mode-protocol.md` - Verification templates for Plan Execution Mode

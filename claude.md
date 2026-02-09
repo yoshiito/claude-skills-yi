@@ -63,7 +63,14 @@ skills/
 │   └── skill-ecosystem.md       # How skills relate to each other
 ├── project-coordinator/      # Utility skill for ticket CRUD + quality gates
 │   └── references/
-│       ├── ticket-templates.md      # Story/Task and Bug templates
+│       ├── templates/               # Individual ticket templates
+│       │   ├── mission.md           # Mission (Epic) template
+│       │   ├── feature.md           # Feature template ([Backend]/[Frontend])
+│       │   ├── bug.md               # Bug template
+│       │   ├── query.md             # Query (communication) template
+│       │   └── dev-subtask.md       # Dev subtask template
+│       ├── ticket-hierarchy.md      # Hierarchy model, relationships, role tables
+│       ├── progress-comments.md     # Progress comment formats
 │       ├── github-operations.md     # GitHub Issues + GraphQL
 │       ├── linear-operations.md     # Linear MCP commands
 │       └── plan-file-operations.md  # Local file fallback
@@ -225,9 +232,15 @@ All ticket operations go through Project Coordinator. See `project-coordinator/S
 3. Verify no contradictions introduced
 
 ### Updating Ticket Templates
-1. Edit `project-coordinator/references/ticket-templates.md`
-2. Update corresponding checks in `project-coordinator/SKILL.md`
-3. Update `_shared/references/definition-of-ready.md` if checklist changes
+1. Edit the relevant template in `project-coordinator/references/templates/`
+   - `mission.md` - Mission (Epic) template
+   - `feature.md` - Feature template ([Backend]/[Frontend])
+   - `bug.md` - Bug template
+   - `query.md` - Query (communication) template
+   - `dev-subtask.md` - Dev subtask template
+2. If hierarchy/relationships change, update `project-coordinator/references/ticket-hierarchy.md`
+3. Update corresponding checks in `project-coordinator/SKILL.md`
+4. Update `_shared/references/definition-of-ready.md` if checklist changes
 
 ### Adding a New Ticketing System
 1. Create `project-coordinator/references/{system}-operations.md`

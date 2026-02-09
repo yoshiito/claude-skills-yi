@@ -491,6 +491,7 @@ Project Coordinator handles tool-specific complexity internally via its referenc
 - `project-coordinator/references/github-operations.md`
 - `project-coordinator/references/linear-operations.md`
 - `project-coordinator/references/plan-file-operations.md`
-- `project-coordinator/references/ticket-templates.md`
+- `project-coordinator/references/templates/` (individual ticket templates)
+- `project-coordinator/references/ticket-hierarchy.md`
 
 Configure your ticket system in project's `claude.md` under Team Context.

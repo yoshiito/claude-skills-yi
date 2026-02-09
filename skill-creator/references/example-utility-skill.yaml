@@ -208,7 +208,7 @@ qualityGates:
       **Missing Items**:
       [list of missing items with checkboxes]
 
-      **Required Template Format** (see `references/ticket-templates.md`):
+      **Required Template Format** (see `references/templates/`):
       [relevant template snippet]
 
       **Action Required**: Fix the missing items and invoke PC again.
@@ -357,8 +357,12 @@ qualityChecklist:
 # =============================================================================
 references:
   local:
-    - path: references/ticket-templates.md
-      purpose: All ticket templates with DoR/DoD checklists
+    - path: references/templates/
+      purpose: Ticket templates (READ BEFORE VALIDATING)
+    - path: references/ticket-hierarchy.md
+      purpose: Hierarchy model, relationships, role tables
+    - path: references/progress-comments.md
+      purpose: Progress comment formats
     - path: references/github-operations.md
       purpose: GitHub Issues + GraphQL mutations
     - path: references/linear-operations.md
