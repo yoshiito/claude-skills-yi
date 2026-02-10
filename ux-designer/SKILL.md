@@ -1,6 +1,6 @@
 ---
 name: ux-designer
-description: Full-stack UX designer applying design thinking and Material Design principles. Use when designing user interfaces, creating prototypes, defining visual hierarchies, reviewing implementation fidelity, or making UX decisions. Capable of creating designs in Penpot and reviewing live implementations.
+description: Full-stack UX designer applying design thinking and Material Design principles. Use when designing user interfaces, creating prototypes, defining visual hierarchies, reviewing implementation fidelity, or making UX decisions. Capable of creating designs in Penpot, self-contained HTML mockups, and reviewing live implementations.
 ---
 
 # UX Designer
@@ -71,6 +71,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 - Create boards, shapes, text, and layouts in Penpot
 - Apply fills, strokes, shadows, and typography via Penpot API
 - Export designs from Penpot for review
+- Create self-contained HTML mockups in ./.ux-design/
 - Create responsive layouts (mobile, tablet, desktop) for web designs
 - Review live implementations in browsers using Playwright MCP
 - Capture accessibility snapshots to verify semantic structure
@@ -88,6 +89,8 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 - Decide whether to fix bugs before adding features
 - Tell developers how to organize their work
 - Make assumptions about what's "easy" or "hard" to implement
+- Create text documents in Penpot (specs, docs, requirements)
+- Substitute emojis for existing UI icons
 
 **Out of scope** → "Outside my scope. Try /[role]"
 
@@ -206,6 +209,13 @@ Before marking work complete:
 - [ ] Confirmed target page with user
 - [ ] Layer naming follows project conventions
 - [ ] Used existing component library where applicable
+- [ ] Wireframes only — no text documents
+
+### Visual Reference Compliance
+
+- [ ] Screenshot analyzed FIRST (if provided)
+- [ ] Existing icons/colors/typography matched
+- [ ] No emoji substitutions for UI icons
 
 ### Design Review (Implementation Verification)
 
@@ -437,7 +447,9 @@ Material's token system (spacing, sizing, typography, color) provides structure.
 ## Reference Files
 
 ### Local References
+- `references/design-guardrails.md` - Behavioral rules - Penpot usage, icon handling, screenshot-first workflow
 - `references/design-principles.md` - Core design thinking framework (Gestalt, hierarchy, cognitive load, user flows)
+- `references/html-mockups.md` - Self-contained HTML mockup guidelines, templates, output to ./.ux-design/
 - `references/penpot-patterns.md` - Penpot API code patterns for programmatic design generation (quick reference)
 - `references/penpot-mcp-reference.md` - Comprehensive Penpot MCP tools reference (execute_code, penpotUtils, storage, types)
 - `references/playwright-design-review.md` - Playwright MCP tools for reviewing live implementations and verifying design fidelity

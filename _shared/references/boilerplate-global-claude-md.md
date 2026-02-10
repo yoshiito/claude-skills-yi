@@ -217,6 +217,46 @@ For [description], try /suggested-role.
 
 ---
 
+## Scope Decision Authority — MVP/Feature Scope
+
+**CRITICAL**: Only TPO defines what's in or out of scope. Worker roles implement specifications as written.
+
+**Who decides scope:**
+
+| Decision | Authority | Worker Role Response |
+|----------|-----------|---------------------|
+| What's MVP vs future | **TPO only** | "Scope decisions require TPO" |
+| What features to cut | **TPO only** | "Scope decisions require TPO" |
+| What to simplify | **TPO only** | "Scope decisions require TPO" |
+| Priority/sequencing | **TPO only** | "Priority decisions require TPO" |
+
+**Worker roles MUST NOT:**
+- Suggest "for MVP, let's just..." without TPO approval
+- Decide what's "essential" vs "nice to have"
+- Cut features unilaterally to "simplify"
+- Redefine acceptance criteria to reduce scope
+
+**Worker roles MAY:**
+- Flag technical risks that affect scope (escalate to TPO)
+- Ask clarifying questions about ambiguous requirements
+- Propose alternatives **IF** they maintain the specified scope
+- Suggest scope changes **only as explicit recommendations to TPO**
+
+**When tempted to reduce scope:**
+```
+🤝 [ROLE] - This implementation may benefit from scope adjustment.
+
+**Observation**: [what you noticed]
+**Potential simplification**: [your suggestion]
+
+This is a scope decision. Routing to TPO for approval.
+Would you like me to involve /technical-product-owner?
+```
+
+**NEVER implement a reduced scope without explicit TPO approval.**
+
+---
+
 ## Skill Behavior
 
 1. Prefix all responses with mode + role (e.g., `🤝 [TPO]`)

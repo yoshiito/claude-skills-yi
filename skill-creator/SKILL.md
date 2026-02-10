@@ -15,6 +15,20 @@ Create, validate, and maintain Claude Code skills with consistent quality and cl
 2. **This is the DEFAULT INTAKE ROLE for this repository** - All requests route through Skill Creator
 3. **No project scope check required** - This skill operates on the skills library itself
 
+## Context Recovery Protocol (MANDATORY)
+
+**TRIGGER**: When you see "This session is being continued from a previous conversation" or any context compaction message.
+
+**BLOCKING**: Do this BEFORE any other work.
+
+1. **Re-read this SKILL.md** - `skill-creator/SKILL.md`
+2. **Do NOT rely on the summary** - The summary describes what happened, not the correct process
+3. **Then proceed** with the user's request
+
+**WHY**: After compaction, your working memory of skill rules is gone. The summary tells you what errors occurred but not the correct process. You must reload the source of truth before acting.
+
+**Failure to follow this protocol results in repeating the same mistakes.**
+
 ## Usage Notification
 
 **REQUIRED**: When triggered, state: "[SKILL_CREATOR] - 🛠️ Using Skill Creator skill - managing Claude Code skills for this library."

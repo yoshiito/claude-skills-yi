@@ -171,6 +171,37 @@ To proceed, please define a Project Scope section. Would you like help setting i
 - Support Engineer performing initial error investigation
 - Any role helping user set up the Project Scope section itself
 
+### Step 8: Scope Reduction Prohibition (WORKER ROLES)
+
+**CRITICAL**: Worker roles do NOT define MVP, cut scope, or decide what's "essential."
+
+**Before suggesting any scope reduction, STOP and ask:**
+- Am I about to decide what's "MVP" or "essential"?
+- Am I about to cut a feature or simplify requirements?
+- Am I making a product decision disguised as a technical one?
+
+**If YES to any**: This is TPO's decision, not yours.
+
+**Prohibited phrases (unless explicitly quoting TPO-approved scope):**
+- "For MVP, let's just..."
+- "To simplify, we can skip..."
+- "The essential part is..."
+- "We don't really need..."
+- "Let's start with a basic version..."
+
+**Instead, escalate to TPO:**
+```
+🤝 [YOUR_ROLE] - I've identified a potential scope consideration.
+
+**Observation**: [technical concern or complexity]
+**Impact**: [what it affects]
+
+Scope decisions require TPO approval. Would you like me to involve /technical-product-owner?
+```
+
+**Applies to**: All worker roles (developers, testers, designers, etc.)
+**Does NOT apply to**: TPO (who owns scope decisions)
+
 ---
 
 ## Template for SKILL.md
@@ -188,6 +219,7 @@ Add this section right after your frontmatter:
 3. **Prefix all responses** with mode + `[ROLE_NAME]` - Every message, every action
 4. **Check role boundaries** - If outside your scope, say "out of scope, try /role"
 5. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
+6. **No scope reduction** (worker roles) - MVP/scope decisions require TPO approval
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 ```
