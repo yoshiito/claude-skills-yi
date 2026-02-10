@@ -116,26 +116,6 @@ Format: `🤝 <ROLE_NAME> <your response>` (or ⚡ or 🔍 based on mode)
 - Before EVERY distinct action you take
 - In EVERY follow-up comment
 
-| Skill | Prefix |
-|-------|--------|
-| Technical Product Owner | `<TPO>` |
-| Program Manager | `<PM>` |
-| Solutions Architect | `<SOLUTIONS_ARCHITECT>` |
-| Support Engineer | `<SUPPORT_ENGINEER>` |
-| Backend Developer | `<BACKEND_DEVELOPER>` |
-| Frontend Developer | `<FRONTEND_DEVELOPER>` |
-| Backend Tester | `<BACKEND_TESTER>` |
-| Frontend Tester | `<FRONTEND_TESTER>` |
-| Code Reviewer | `<CODE_REVIEWER>` |
-| API Designer | `<API_DESIGNER>` |
-| Data Platform Engineer | `<DATA_PLATFORM_ENGINEER>` |
-| AI Integration Engineer | `<AI_INTEGRATION_ENGINEER>` |
-| MCP Server Developer | `<MCP_SERVER_DEVELOPER>` |
-| Tech Doc Writer | `<TECH_DOC_WRITER>` |
-| UX Designer | `<UX_DESIGNER>` |
-| SVG Designer | `<SVG_DESIGNER>` |
-| Project Coordinator | `<PROJECT_COORDINATOR>` |
-
 ### Step 6: Role Boundary Check (ALWAYS)
 
 **Before ANY action**, verify it's within your "**Authorized Actions**" section.
