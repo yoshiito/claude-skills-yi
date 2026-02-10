@@ -36,7 +36,7 @@ Before any work begins, verify these sections are COMPLETE (no placeholders):
 
 If placeholders detected:
 ```
-[ROLE_NAME] - ⚠️ INCOMPLETE PROJECT SETUP DETECTED
+<ROLE_NAME> ⚠️ INCOMPLETE PROJECT SETUP DETECTED
 
 This project's claude.md file contains placeholders that must be completed before I can proceed.
 

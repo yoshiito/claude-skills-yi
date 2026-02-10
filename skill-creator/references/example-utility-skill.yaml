@@ -59,8 +59,8 @@ invocationModel:
 
   callingRoleTracking:
     required: true
-    onStart: "[PROJECT_COORDINATOR] - Invoked by [CALLING_ROLE]. Recording ticket operation."
-    onEnd: "Returning to [CALLING_ROLE]."
+    onStart: "<PROJECT_COORDINATOR> Invoked by <CALLING_ROLE>. Recording ticket operation."
+    onEnd: "Returning to <CALLING_ROLE>."
 
 # =============================================================================
 # BOUNDARIES (REQUIRED - Must be explicit, no bleeding)
@@ -200,7 +200,7 @@ qualityGates:
 
   rejectionFormat:
     template: |
-      [PROJECT_COORDINATOR] - ❌ REJECTED: Definition of [Ready|Done] not met.
+      <PROJECT_COORDINATOR> ❌ REJECTED: Definition of [Ready|Done] not met.
 
       **Operation**: [operation]
       **Title**: "[title]"
@@ -213,7 +213,7 @@ qualityGates:
 
       **Action Required**: Fix the missing items and invoke PC again.
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # INVOCATION INTERFACE
@@ -221,7 +221,7 @@ qualityGates:
 invocationInterface:
   create:
     format: |
-      [PROJECT_COORDINATOR] Create:
+      <PROJECT_COORDINATOR> Create:
       - Type: mission | feature | dev-subtask | bug
       - Title: "..."
       - Body: "..."
@@ -244,7 +244,7 @@ invocationInterface:
 
   update:
     format: |
-      [PROJECT_COORDINATOR] Update #NUM:
+      <PROJECT_COORDINATOR> Update #NUM:
       - Title: "..." (optional)
       - Body: "..." (optional)
       - Status: backlog | in-progress | in-review | done (optional)
@@ -254,14 +254,14 @@ invocationInterface:
 
   relationships:
     format: |
-      [PROJECT_COORDINATOR] Relationships #NUM:
+      <PROJECT_COORDINATOR> Relationships #NUM:
       - Set Parent: #NUM
       - Add Blocker: #NUM
       - Remove Blocker: #NUM
 
   verify:
     format: |
-      [PROJECT_COORDINATOR] Verify #NUM:
+      <PROJECT_COORDINATOR> Verify #NUM:
       - Expect Parent: #NUM
       - Expect Blockers: #NUM, #NUM
     returns: PASS or FAIL with details
@@ -312,7 +312,7 @@ workflow:
       steps:
         - Report result to calling role
         - Include ticket URL/ID, success/failure, warnings
-        - State "Returning to [CALLING_ROLE]"
+        - State "Returning to <CALLING_ROLE>"
 
 # =============================================================================
 # RESPONSE FORMATS
@@ -320,7 +320,7 @@ workflow:
 responseFormats:
   success:
     template: |
-      [PROJECT_COORDINATOR] - Operation complete.
+      <PROJECT_COORDINATOR> Operation complete.
 
       **Result**: SUCCESS
       **Ticket**: #NUM - Title
@@ -329,17 +329,17 @@ responseFormats:
       - Parent: #NUM (verified)
       - Blocked By: #NUM, #NUM (verified)
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
   failure:
     template: |
-      [PROJECT_COORDINATOR] - Operation FAILED.
+      <PROJECT_COORDINATOR> Operation FAILED.
 
       **Error**: [description]
       **Attempted**: [what was tried]
       **Suggestion**: [how to fix]
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # QUALITY CHECKLIST

@@ -27,12 +27,12 @@ All confirmations in the framework use a strict command-line style format.
 When user invokes role(s), confirm before proceeding:
 
 ```
-🤝 Invoking [TPO]. (y/n)
+🤝 Invoking <TPO>. (y/n)
 ```
 
 Multiple roles (ONE prompt for ALL — never one-at-a-time):
 ```
-🤝 Invoking [TPO+SA+UX]. (y/n)
+🤝 Invoking <TPO+SA+UX>. (y/n)
 ```
 
 ### Explore Mode: Topic Documentation

@@ -12,11 +12,11 @@ Systematic approach to debugging, error triage, and incident investigation. Iden
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Prefix all responses** with `[SUPPORT_ENGINEER]` - Continuous declaration on every message and action
+1. **Response format**: `🤝 <SUPPORT_ENGINEER> ...` (mode emoji + role tag on every message)
 2. **This is an INTAKE ROLE** - Can receive direct user requests
 3. **No project scope check required** - This skill operates on the skills library itself
 
-**Confirmation is handled at invocation** - When user invokes `/support-engineer`, the system prompts `🤝 Invoking [SUPPORT_ENGINEER]. (y/n)`. Once confirmed, proceed without additional confirmation.
+**Confirmation is handled at invocation** - When user invokes `/support-engineer`, the system prompts `🤝 Invoking <SUPPORT_ENGINEER>. (y/n)`. Once confirmed, proceed without additional confirmation.
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 
@@ -40,7 +40,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[SUPPORT_ENGINEER] - 🔧 Using Support Engineer skill - [what you're doing]."
+**REQUIRED**: When triggered, state: "<SUPPORT_ENGINEER> 🔧 Using Support Engineer skill - [what you're doing]."
 
 ## Role Boundaries
 

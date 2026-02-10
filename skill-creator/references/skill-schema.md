@@ -206,7 +206,7 @@ workflow:
       steps:
         - action: Step name
           template: |     # Raw markdown template
-            [ROLE] - Message template here.
+            <ROLE> Message template here.
 
             **Details**:
             - Item 1
@@ -268,7 +268,7 @@ qualityGates:
 
   rejectionFormat:
     template: |           # Raw markdown
-      [ROLE] - ❌ REJECTED
+      <ROLE> ❌ REJECTED
       ...
 ```
 
@@ -284,8 +284,8 @@ invocationModel:
       example: string
 
   pattern:
-    onStart: string       # Template: "[ROLE] - Invoked by [CALLING_ROLE]."
-    onEnd: string         # Template: "Returning to [CALLING_ROLE]."
+    onStart: string       # Template: "<ROLE> Invoked by <CALLING_ROLE>."
+    onEnd: string         # Template: "Returning to <CALLING_ROLE>."
 
   callingRoleTracking:
     required: boolean
@@ -297,13 +297,13 @@ invocationModel:
 invocationInterface:
   create:
     format: |             # Raw markdown
-      [ROLE] Create:
+      <ROLE> Create:
       - Type: ...
     returns: string
 
   update:
     format: |
-      [ROLE] Update #NUM:
+      <ROLE> Update #NUM:
       - Field: value
 ```
 

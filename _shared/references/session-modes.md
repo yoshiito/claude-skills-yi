@@ -61,12 +61,12 @@ When user invokes role(s), confirm before proceeding. See `confirmation-format.m
 
 **Format:**
 ```
-🤝 Invoking [ROLE]. (y/n)
+🤝 Invoking <ROLE>. (y/n)
 ```
 
 Multiple roles (ONE prompt for ALL):
 ```
-🤝 Invoking [TPO+SA+UX]. (y/n)
+🤝 Invoking <TPO+SA+UX>. (y/n)
 ```
 
 **CRITICAL**: Never confirm roles one-at-a-time. Always combine into single prompt.
@@ -78,23 +78,23 @@ Multiple roles (ONE prompt for ALL):
 ### Behavior
 
 ```
-🤝 [PM] - Collab Mode active.
+🤝 <PM> Collab Mode active.
 
 User: /tpo I want to add user authentication
 
-🤝 Invoking [TPO]. (y/n)
+🤝 Invoking <TPO>. (y/n)
 
 User: y
 
-🤝 [TPO] - I'll help define requirements for user authentication...
+🤝 <TPO> I'll help define requirements for user authentication...
 
 User: /sa what about the architecture?
 
-🤝 Invoking [SA]. (y/n)
+🤝 Invoking <SA>. (y/n)
 
 User: y
 
-🤝 [SA] - Let me design the authentication architecture...
+🤝 <SA> Let me design the authentication architecture...
 ```
 
 ---
@@ -121,18 +121,18 @@ Before entering Plan Execution Mode, PM triggers PC to verify:
 ```
 User: EXECUTE
 
-🤝 [PM] - Attempting Plan Execution Mode. Invoking PC to verify readiness.
+🤝 <PM> Attempting Plan Execution Mode. Invoking PC to verify readiness.
 
-🤝 [PC] - Checking DoR...
+🤝 <PC> Checking DoR...
 [PC reads actual tickets/plan documents]
 
 IF PASS:
-🤝 [PC] - ✅ DoR verified. Ready for Plan Execution Mode.
-⚡ [PM] - Plan Execution Mode active. Starting with #123. Invoking Backend Developer.
+🤝 <PC> ✅ DoR verified. Ready for Plan Execution Mode.
+⚡ <PM> Plan Execution Mode active. Starting with #123. Invoking Backend Developer.
 
 IF FAIL:
-🤝 [PC] - ❌ DoR failed: #124 missing roles.
-🤝 [PM] - Cannot enter Plan Execution Mode. Remaining in Collab Mode. Fix #124 first.
+🤝 <PC> ❌ DoR failed: #124 missing roles.
+🤝 <PM> Cannot enter Plan Execution Mode. Remaining in Collab Mode. Fix #124 first.
 ```
 
 **If verification fails:** Stay in Collab Mode. Never enter Plan Execution Mode.
@@ -151,16 +151,16 @@ IF FAIL:
 ### Behavior
 
 ```
-⚡ [PM] - Plan Execution Mode active. Starting Feature #123.
-⚡ [PM] - Invoking Backend Developer.
+⚡ <PM> Plan Execution Mode active. Starting Feature #123.
+⚡ <PM> Invoking Backend Developer.
 
-⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding with #123...
+⚡ <BACKEND_DEVELOPER> Invoked in Plan Execution Mode. Proceeding with #123...
 [...works...]
-⚡ [BACKEND_DEVELOPER] - ✅ Complete. PR: #456. Returning control to PM.
+⚡ <BACKEND_DEVELOPER> ✅ Complete. PR: #456. Returning control to PM.
 
-⚡ [PM] - Received. Invoking Code Reviewer.
+⚡ <PM> Received. Invoking Code Reviewer.
 
-⚡ [CODE_REVIEWER] - Invoked in Plan Execution Mode. Reviewing PR #456...
+⚡ <CODE_REVIEWER> Invoked in Plan Execution Mode. Reviewing PR #456...
 ```
 
 ### Exiting Plan Execution Mode
@@ -168,14 +168,14 @@ IF FAIL:
 **Only user can exit.** PM may prompt:
 
 ```
-⚡ [PM] - Work queue complete. Exit Plan Execution Mode? (y/n)
+⚡ <PM> Work queue complete. Exit Plan Execution Mode? (y/n)
 ```
 
 Wait for valid response (`y`/`Y`/`n`/`N`). When user confirms exit:
 
 ```
-⚡ [PM] - Exiting Plan Execution Mode.
-🤝 [PM] - Back to Collab Mode.
+⚡ <PM> Exiting Plan Execution Mode.
+🤝 <PM> Back to Collab Mode.
 ```
 
 ---
@@ -202,7 +202,7 @@ Wait for valid response (`y`/`Y`/`n`/`N`). When user confirms exit:
 PM stays silent during exploration (no overhead). When PM detects a topic change:
 
 ```
-🔍 [PM] - Topic change. Document [previous topic] findings? (y/n)
+🔍 <PM> Topic change. Document [previous topic] findings? (y/n)
 ```
 
 **Valid responses:** Exactly one character - `y`/`Y` or `n`/`N`
@@ -215,26 +215,26 @@ If `n`: Continue without documenting.
 ```
 User: EXPLORE
 
-🔍 [PM] - Explore Mode active.
+🔍 <PM> Explore Mode active.
 
 User: /backend-dev Can we use Redis for session storage?
 
-🔍 [BACKEND_DEVELOPER] - Let me spike that...
+🔍 <BACKEND_DEVELOPER> Let me spike that...
 [...experiments...]
-🔍 [BACKEND_DEVELOPER] - Redis works but has latency issues with our setup.
+🔍 <BACKEND_DEVELOPER> Redis works but has latency issues with our setup.
 
 User: /backend-dev What about Memcached instead?
 
-🔍 [PM] - Topic change. Document [Redis caching] findings? (y/n)
+🔍 <PM> Topic change. Document [Redis caching] findings? (y/n)
 
 User: y
 
-🔍 [PM] - Invoking Tech Doc Writer.
-🔍 [TECH_DOC_WRITER] - Documenting Redis exploration findings...
+🔍 <PM> Invoking Tech Doc Writer.
+🔍 <TECH_DOC_WRITER> Documenting Redis exploration findings...
 [writes documentation]
-🔍 [TECH_DOC_WRITER] - Done.
+🔍 <TECH_DOC_WRITER> Done.
 
-🔍 [BACKEND_DEVELOPER] - Now trying Memcached...
+🔍 <BACKEND_DEVELOPER> Now trying Memcached...
 ```
 
 ### Exiting Explore Mode
@@ -242,15 +242,15 @@ User: y
 **Only user can exit.** When user says `EXIT` or `COLLAB`:
 
 ```
-🔍 [PM] - Exiting Explore Mode. Document current topic? (y/n)
+🔍 <PM> Exiting Explore Mode. Document current topic? (y/n)
 ```
 
 If `y`: PM invokes Tech Doc Writer.
 If `n`: Exit without documenting.
 
 ```
-🔍 [PM] - Exiting Explore Mode.
-🤝 [PM] - Back to Collab Mode.
+🔍 <PM> Exiting Explore Mode.
+🤝 <PM> Back to Collab Mode.
 ```
 
 ---
@@ -280,7 +280,7 @@ Every role checks current mode and applies rules:
 If role receives request that doesn't fit current mode, suggest switching:
 
 ```
-🤝 [BACKEND_DEVELOPER] - This looks like execution work.
+🤝 <BACKEND_DEVELOPER> This looks like execution work.
 Should we switch to Plan Execution Mode? Say EXECUTE to enter.
 ```
 

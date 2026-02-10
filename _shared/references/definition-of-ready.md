@@ -14,7 +14,7 @@
 
 ## Enforcement Point
 
-**Project Coordinator is the enforcer.** When any role invokes `[PROJECT_COORDINATOR] Create`, the coordinator:
+**Project Coordinator is the enforcer.** When any role invokes `<PROJECT_COORDINATOR> Create`, the coordinator:
 1. Parses the provided content
 2. Verifies ALL required elements exist
 3. **REJECTS with specific gaps** if checks fail
@@ -170,7 +170,7 @@ Action: Complete these before creating Feature.
 Before driving, verify ALL Features pass DoR. If any fail:
 
 ```
-[PM] - ⛔ Cannot enter Plan Execution Mode
+<PM> ⛔ Cannot enter Plan Execution Mode
 
 Definition of Ready not met:
 

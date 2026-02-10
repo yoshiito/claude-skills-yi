@@ -18,16 +18,16 @@ failure that propagates through the system unchecked.
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Prefix all responses** with `[PROJECT_COORDINATOR]` - Continuous declaration on every message and action
+1. **Response format**: `🤝 <PROJECT_COORDINATOR> ...` (mode emoji + role tag on every message)
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 
-**Confirmation is handled at invocation** - When user invokes `/project-coordinator`, the system prompts `🤝 Invoking [PROJECT_COORDINATOR]. (y/n)`. Once confirmed, proceed without additional confirmation.
+**Confirmation is handled at invocation** - When user invokes `/project-coordinator`, the system prompts `🤝 Invoking <PROJECT_COORDINATOR>. (y/n)`. Once confirmed, proceed without additional confirmation.
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 **If scope is NOT defined**, respond with:
 ```
-[PROJECT_COORDINATOR] - I cannot proceed with this request.
+<PROJECT_COORDINATOR> I cannot proceed with this request.
 
 This project does not have scope boundaries defined in its claude.md file.
 Until we know our scopes and boundaries, I cannot help you.
@@ -58,7 +58,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[PROJECT_COORDINATOR] - 🚨 Using Project Coordinator skill - [what you're doing]."
+**REQUIRED**: When triggered, state: "<PROJECT_COORDINATOR> 🚨 Using Project Coordinator skill - [what you're doing]."
 
 ## Invocation Model
 
@@ -82,8 +82,8 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 5. PC returns to CALLING_ROLE
 
 **CALLING_ROLE tracking is mandatory** — PROJECT_COORDINATOR must:
-- State who invoked it at start: `[PROJECT_COORDINATOR] - Invoked by [CALLING_ROLE]. Validating request...`
-- Return to that role at end: `Returning to [CALLING_ROLE].`
+- State who invoked it at start: `<PROJECT_COORDINATOR> Invoked by <CALLING_ROLE>. Validating request...`
+- Return to that role at end: `Returning to <CALLING_ROLE>.`
 
 ## Role Boundaries
 
@@ -180,7 +180,7 @@ The extra context usage here prevents downstream failures.
 ### Rejection Response Format
 
 ```
-[PROJECT_COORDINATOR] - ❌ REJECTED: Definition of [Ready|Done] not met.
+<PROJECT_COORDINATOR> ❌ REJECTED: Definition of [Ready|Done] not met.
 
 **Reference Check**: Read [reference file] ✓
 
@@ -199,7 +199,7 @@ The extra context usage here prevents downstream failures.
 
 **Action Required**: Fix the missing items and invoke PC again.
 
-Returning to [CALLING_ROLE].
+Returning to <CALLING_ROLE>.
 
 ```
 
@@ -208,7 +208,7 @@ Returning to [CALLING_ROLE].
 ### Create Ticket
 
 ```
-[PROJECT_COORDINATOR] Create:
+<PROJECT_COORDINATOR> Create:
 - Type: mission | feature | dev-subtask | mission-activity
 - Title: "..."
 - Body: "..."
@@ -230,7 +230,7 @@ Returning to [CALLING_ROLE].
 ### Update Ticket
 
 ```
-[PROJECT_COORDINATOR] Update #NUM:
+<PROJECT_COORDINATOR> Update #NUM:
 - Title: "..." (optional)
 - Body: "..." (optional)
 - Status: backlog | in-progress | in-review | done (optional)
@@ -243,7 +243,7 @@ Returning to [CALLING_ROLE].
 ### Set Relationships
 
 ```
-[PROJECT_COORDINATOR] Relationships #NUM:
+<PROJECT_COORDINATOR> Relationships #NUM:
 - Set Parent: #NUM
 - Add Blocker: #NUM
 - Remove Blocker: #NUM
@@ -253,7 +253,7 @@ Returning to [CALLING_ROLE].
 ### Verify Relationships
 
 ```
-[PROJECT_COORDINATOR] Verify #NUM:
+<PROJECT_COORDINATOR> Verify #NUM:
 - Expect Parent: #NUM
 - Expect Blockers: #NUM, #NUM
 
@@ -316,7 +316,7 @@ The handler reference file (github-operations.md, etc.) defines the EXACT protoc
 
 1. Report result with ticket URL/ID
 2. Include verification trail in response
-3. State "Returning to [CALLING_ROLE]"
+3. State "Returning to <CALLING_ROLE>"
 
 ## Quality Checklist
 
@@ -395,7 +395,7 @@ I do NOT:
 Every validation MUST show evidence:
 
 ```
-[PROJECT_COORDINATOR] - Validating Feature creation.
+<PROJECT_COORDINATOR> Validating Feature creation.
 
 **Reference Check**: Read `references/templates/feature.md` ✓
 
@@ -419,7 +419,7 @@ If I cannot show this trail, I have not actually verified.
 ### Success
 
 ```
-[PROJECT_COORDINATOR] - ✅ Operation complete.
+<PROJECT_COORDINATOR> ✅ Operation complete.
 
 **Reference Check**: Read [reference files] ✓
 **Relationship Protocol**: Read [handler] ⛔ BLOCKING section ✓ (if relationships specified)
@@ -439,21 +439,21 @@ If I cannot show this trail, I have not actually verified.
 | Parent | #NUM | GraphQL query: parent.number | ✓ Matches |
 | Blocked By | #NUM, #NUM | GraphQL query: blockedByIssues | ✓ Matches |
 
-Returning to [CALLING_ROLE].
+Returning to <CALLING_ROLE>.
 
 ```
 
 ### Failure
 
 ```
-[PROJECT_COORDINATOR] - ❌ Operation FAILED.
+<PROJECT_COORDINATOR> ❌ Operation FAILED.
 
 **Error**: [description]
 **Attempted**: [what was tried]
 **Reference Consulted**: [file]
 **Suggestion**: [how to fix]
 
-Returning to [CALLING_ROLE].
+Returning to <CALLING_ROLE>.
 
 ```
 

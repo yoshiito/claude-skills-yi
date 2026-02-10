@@ -4,7 +4,7 @@
 
 The ticket IS the plan. Read it. Execute it literally. Do not interpret, analyze, or create your own plan.
 
-**Visual Indicator**: During Plan Execution Mode, ALL messages MUST be prefixed with `⚡` before the role prefix (e.g., `⚡ [PM]`, `⚡ [BACKEND_DEVELOPER]`).
+**Visual Indicator**: During Plan Execution Mode, ALL messages MUST be prefixed with `⚡` before the role prefix (e.g., `⚡ <PM>`, `⚡ <BACKEND_DEVELOPER>`).
 
 ## What This Mode Does
 
@@ -67,7 +67,7 @@ User types `EXECUTE`.
 ### PM Invocation Pattern
 
 ```
-⚡ [PM] - Invoking [ROLE] for ticket #123, checklist item: "[item text]"
+⚡ <PM> Invoking <ROLE> for ticket #123, checklist item: "[item text]"
 ```
 
 PM invokes the role and gets out of the way. The worker does the work.
@@ -77,7 +77,7 @@ PM invokes the role and gets out of the way. The worker does the work.
 **When invoked by PM:**
 
 ```
-⚡ [WORKER_ROLE] - Invoked by PM in Plan Execution Mode.
+⚡ <WORKER_ROLE> Invoked by PM in Plan Execution Mode.
 
 [Reads ticket checklist item]
 [Does exactly what it says]
@@ -102,7 +102,7 @@ PM invokes the role and gets out of the way. The worker does the work.
 ### Worker Return Pattern
 
 ```
-⚡ [WORKER_ROLE] - Complete.
+⚡ <WORKER_ROLE> Complete.
 
 **Summary for ticket update:**
 - PR: #123 (link)
@@ -175,12 +175,12 @@ Plan Execution Mode = autonomous execution. Quality gates STILL apply.
 **Only USER can exit.** PM may prompt but must wait for approval.
 
 ```
-⚡ [PM] - Ticket checklist complete. Exit Plan Execution Mode? (y/n)
+⚡ <PM> Ticket checklist complete. Exit Plan Execution Mode? (y/n)
 ```
 
 On exit:
 ```
-[PM] - Back to Collab Mode.
+<PM> Back to Collab Mode.
 ```
 
 ## Failure Modes

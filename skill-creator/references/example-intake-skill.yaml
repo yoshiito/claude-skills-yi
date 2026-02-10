@@ -89,7 +89,7 @@ customSections:
       **For ALL ticket operations, I invoke Project Coordinator:**
 
       ```
-      [PROJECT_COORDINATOR] Update #NUM:
+      <PROJECT_COORDINATOR> Update #NUM:
       - Status: done
       - Add Comment: "..."
       ```

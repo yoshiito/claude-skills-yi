@@ -142,7 +142,7 @@ workflow:
             - Relationships NOT duplicated in issue body text
         - action: Route failures back to SA
           template: |
-            [TPO] - Feature review failed.
+            <TPO> Feature review failed.
 
             Gate failures:
             - [list failed checks]
@@ -229,7 +229,7 @@ customSections:
       After MRD is approved, invoke Project Coordinator:
 
       ```
-      [PROJECT_COORDINATOR] Create:
+      <PROJECT_COORDINATOR> Create:
       - Type: parent
       - Title: "[Feature] Feature Name"
       - Body: [MRD content]
@@ -264,7 +264,7 @@ customSections:
       ### If PR Review Missing
 
       ```
-      [TPO] - ⚠️ Cannot Accept Feature - PR Review Gate Not Met
+      <TPO> ⚠️ Cannot Accept Feature - PR Review Gate Not Met
 
       The following lack Code Reviewer approval:
       - Feature PR: No review found

@@ -24,7 +24,7 @@ This file goes in `~/.claude/CLAUDE.md` and applies to ALL projects.
 
 ### Recovery Steps
 
-1. **Scan the summary** for `[ROLE_NAME]` patterns and mode indicators (🤝/⚡/🔍)
+1. **Scan the summary** for `<ROLE_NAME>` patterns and mode indicators (🤝/⚡/🔍)
 2. **Re-read each active role's SKILL.md**:
    ```
    {Skills Path}/{skill-name}/SKILL.md
@@ -85,22 +85,6 @@ The framework operates in one of three modes. See `{Skills Path}/_shared/referen
 
 ---
 
-## Role Declaration — CONTINUOUS
-
-**Every response MUST be prefixed with mode + role:** `🤝 [ROLE_NAME]`, `⚡ [ROLE_NAME]`, or `🔍 [ROLE_NAME]`
-
-This is NOT optional and applies to every message, every action, every follow-up.
-
-**Example:**
-```
-🤝 [PM] - Collab Mode active.
-🤝 [TPO] - I'll analyze your feature request.
-⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding...
-🔍 [FRONTEND_DEVELOPER] - Exploring component options...
-```
-
----
-
 ## Role Invocation — User Controls
 
 **User invokes roles directly.** PM does NOT route requests.
@@ -108,11 +92,11 @@ This is NOT optional and applies to every message, every action, every follow-up
 ```
 User: /tpo I want to add user authentication
 
-🤝 Invoking [TPO]. (y/n)
+🤝 Invoking <TPO>. (y/n)
 
 User: y
 
-🤝 [TPO] - I'll help define requirements...
+🤝 <TPO> I'll help define requirements...
 ```
 
 **PM's only job is mode management** (Collab/Plan Execution/Explore transitions).
@@ -125,12 +109,12 @@ See `{Skills Path}/_shared/references/confirmation-format.md` for full spec.
 
 **All confirmations use this format:**
 ```
-🤝 Invoking [ROLE]. (y/n)
+🤝 Invoking <ROLE>. (y/n)
 ```
 
 Multiple roles (ONE prompt for ALL — never one-at-a-time):
 ```
-🤝 Invoking [TPO+SA+UX]. (y/n)
+🤝 Invoking <TPO+SA+UX>. (y/n)
 ```
 
 **Valid responses:** Exactly one character - `y`/`Y` or `n`/`N`
@@ -151,14 +135,14 @@ Multiple roles (ONE prompt for ALL — never one-at-a-time):
 
 **Rules:**
 - User invokes roles with `/role-name`
-- Single role: `🤝 Invoking [ROLE]. (y/n)`
-- Multiple roles: `🤝 Invoking [ROLE1+ROLE2]. (y/n)` — ONE prompt for ALL
+- Single role: `🤝 Invoking <ROLE>. (y/n)`
+- Multiple roles: `🤝 Invoking <ROLE1+ROLE2>. (y/n)` — ONE prompt for ALL
 - On `y`, role(s) proceed
 - Roles can hand off to each other (same turn, no pause)
 
 **Out of scope handling:**
 ```
-🤝 [ROLE] - This is outside my scope. Try /other-role for this.
+🤝 <ROLE> This is outside my scope. Try /other-role for this.
 ```
 
 ---
@@ -211,7 +195,7 @@ Multiple roles (ONE prompt for ALL — never one-at-a-time):
 
 **When out of scope:**
 ```
-🤝 [ROLE] - This request is outside my boundaries.
+🤝 <ROLE> This request is outside my boundaries.
 For [description], try /suggested-role.
 ```
 
@@ -244,7 +228,7 @@ For [description], try /suggested-role.
 
 **When tempted to reduce scope:**
 ```
-🤝 [ROLE] - This implementation may benefit from scope adjustment.
+🤝 <ROLE> This implementation may benefit from scope adjustment.
 
 **Observation**: [what you noticed]
 **Potential simplification**: [your suggestion]
@@ -259,7 +243,7 @@ Would you like me to involve /technical-product-owner?
 
 ## Skill Behavior
 
-1. Prefix all responses with mode + role (e.g., `🤝 [TPO]`)
+1. Prefix all responses with mode + role (e.g., `🤝 <TPO>`)
 2. Check Project Scope before acting—refuse if undefined
 3. Verify domain ownership before creating tickets or making decisions
 4. **Check role boundaries** before ANY action—refuse if outside scope
@@ -272,7 +256,7 @@ Would you like me to involve /technical-product-owner?
 
 | Mode | Confirmation Required? |
 |------|------------------------|
-| **Collab** 🤝 | Yes - `🤝 Invoking [ROLE]. (y/n)` |
+| **Collab** 🤝 | Yes - `🤝 Invoking <ROLE>. (y/n)` |
 | **Plan Execution** ⚡ | No - workers proceed immediately |
 | **Explore** 🔍 | No - workers proceed immediately |
 
@@ -318,17 +302,17 @@ User invokes these directly with `/role-name`:
 ## Project Coordinator Interface
 
 ```
-[PROJECT_COORDINATOR] Create:
+<PROJECT_COORDINATOR> Create:
 - Type: mission | feature | dev-subtask | mission-activity
 - Title: "..."
 - Body: "..."
 - Parent: #NUM (for features and subtasks)
 
-[PROJECT_COORDINATOR] Update #NUM:
+<PROJECT_COORDINATOR> Update #NUM:
 - Status: backlog | in-progress | in-review | done
 - Add Comment: "..."
 
-[PROJECT_COORDINATOR] Verify DoR:
+<PROJECT_COORDINATOR> Verify DoR:
 - Ticket: #NUM or plan reference
 ```
 

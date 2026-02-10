@@ -8,7 +8,7 @@ Quick reference for understanding how skills relate and when to invoke each one.
 
 | Role | Prefix | Handles |
 |------|--------|---------|
-| **Skill Creator** | `[SKILL_CREATOR]` | All skill management: creation, validation, updates, audits |
+| **Skill Creator** | `<SKILL_CREATOR>` | All skill management: creation, validation, updates, audits |
 
 When working in the skills library itself, Skill Creator is the **default intake role**. It manages all other skills.
 
@@ -22,28 +22,28 @@ When working in the skills library itself, Skill Creator is the **default intake
 
 | Role | Prefix | Handles |
 |------|--------|---------|
-| **Technical Product Owner (TPO)** | `[TPO]` | New features, requirements, product decisions (PRDs when asked) |
-| **Program Manager (PM)** | `[PM]` | Delivery coordination, status, scheduling, blockers |
-| **Solutions Architect** | `[SOLUTIONS_ARCHITECT]` | Architecture decisions, system design, integrations |
-| **Support Engineer** | `[SUPPORT_ENGINEER]` | Errors, bugs, incidents, troubleshooting |
+| **Technical Product Owner (TPO)** | `<TPO>` | New features, requirements, product decisions (PRDs when asked) |
+| **Program Manager (PM)** | `<PM>` | Delivery coordination, status, scheduling, blockers |
+| **Solutions Architect** | `<SOLUTIONS_ARCHITECT>` | Architecture decisions, system design, integrations |
+| **Support Engineer** | `<SUPPORT_ENGINEER>` | Errors, bugs, incidents, troubleshooting |
 
 ### Worker Roles (Receive Work from Intake Roles)
 
 | Role | Prefix | Receives Work From |
 |------|--------|--------------------|
-| Backend Developer | `[BACKEND_DEVELOPER]` | SA, PM (via tickets) |
-| Frontend Developer | `[FRONTEND_DEVELOPER]` | SA, PM (via tickets) |
-| Backend Tester | `[BACKEND_TESTER]` | Developers, PM |
-| Frontend Tester | `[FRONTEND_TESTER]` | Developers, PM |
-| **Code Reviewer** | `[CODE_REVIEWER]` | **Developers (when PR ready)** |
-| API Designer | `[API_DESIGNER]` | SA, TPO |
-| Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` | SA |
-| AI Integration Engineer | `[AI_INTEGRATION_ENGINEER]` | SA, TPO |
-| MCP Server Developer | `[MCP_SERVER_DEVELOPER]` | SA |
-| Tech Doc Writer | `[TECH_DOC_WRITER]` | Any role |
-| UX Designer | `[UX_DESIGNER]` | TPO, SA |
-| SVG Designer | `[SVG_DESIGNER]` | TPO, UX Designer |
-| **Market Researcher** | `[MARKET_RESEARCHER]` | TPO, SA, PM (for market research, MRDs) |
+| Backend Developer | `<BACKEND_DEVELOPER>` | SA, PM (via tickets) |
+| Frontend Developer | `<FRONTEND_DEVELOPER>` | SA, PM (via tickets) |
+| Backend Tester | `<BACKEND_TESTER>` | Developers, PM |
+| Frontend Tester | `<FRONTEND_TESTER>` | Developers, PM |
+| **Code Reviewer** | `<CODE_REVIEWER>` | **Developers (when PR ready)** |
+| API Designer | `<API_DESIGNER>` | SA, TPO |
+| Data Platform Engineer | `<DATA_PLATFORM_ENGINEER>` | SA |
+| AI Integration Engineer | `<AI_INTEGRATION_ENGINEER>` | SA, TPO |
+| MCP Server Developer | `<MCP_SERVER_DEVELOPER>` | SA |
+| Tech Doc Writer | `<TECH_DOC_WRITER>` | Any role |
+| UX Designer | `<UX_DESIGNER>` | TPO, SA |
+| SVG Designer | `<SVG_DESIGNER>` | TPO, UX Designer |
+| **Market Researcher** | `<MARKET_RESEARCHER>` | TPO, SA, PM (for market research, MRDs) |
 
 > **Single-Ticket Constraint**: All worker roles have a mandatory "Single-Ticket Constraint" — they work on ONE assigned ticket at a time. This mirrors PM's Feature Completion Rule. See individual worker SKILL.md files for enforcement details.
 
@@ -53,8 +53,8 @@ Utility skills operate automatically — any role can invoke them without asking
 
 | Role | Prefix | Purpose |
 |------|--------|---------|
-| **Project Coordinator** | `[PROJECT_COORDINATOR]` | Ticket CRUD with quality gate enforcement (DoR/DoD) |
-| **Agent Skill Coordinator** | `[AGENT_SKILL_COORDINATOR]` | Role routing queries — who handles what, return paths |
+| **Project Coordinator** | `<PROJECT_COORDINATOR>` | Ticket CRUD with quality gate enforcement (DoR/DoD) |
+| **Agent Skill Coordinator** | `<AGENT_SKILL_COORDINATOR>` | Role routing queries — who handles what, return paths |
 
 **How utility skills work:**
 1. Any role invokes utility skill (no user confirmation)
@@ -80,19 +80,19 @@ User request → PM → (consults Agent Skill Coordinator) → routes to appropr
 **Exception — Direct invocation:** Users can still invoke a specific role directly (e.g., `/solutions-architect`) if they know what they want.
 
 When a **worker role** receives a direct user request:
-1. Acknowledge with role prefix: `[ROLE_NAME] - This request involves...`
+1. Acknowledge with role prefix: `<ROLE_NAME> This request involves...`
 2. Route to PM for proper handling
 3. PM determines the correct destination
 
 **Example**:
 ```
-[BACKEND_DEVELOPER] - This request involves defining new feature requirements.
+<BACKEND_DEVELOPER> This request involves defining new feature requirements.
 Routing to PM for proper handling...
 
-[PM] - Consulting Agent Skill Coordinator... This is a requirements request.
+<PM> Consulting Agent Skill Coordinator... This is a requirements request.
 Routing to TPO...
 
-[TPO] - I'll help define the requirements for this feature...
+<TPO> I'll help define the requirements for this feature...
 ```
 
 See `_shared/references/universal-skill-preamble.md` for full preamble rules.

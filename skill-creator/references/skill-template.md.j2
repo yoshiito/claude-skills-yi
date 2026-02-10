@@ -17,7 +17,7 @@ description: {{ meta.description | trim }}
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Prefix all responses** with `[{{ role.prefix }}]` - Continuous declaration on every message and action
+1. **Response format**: `🤝 <{{ role.prefix }}> ...` (mode emoji + role tag on every message)
 {% if role.capabilities.canIntakeUserRequests -%}
 2. **This is an INTAKE ROLE** - Can receive direct user requests
 {% elif role.capabilities.isUtility -%}
@@ -31,13 +31,13 @@ description: {{ meta.description | trim }}
 3. **No project scope check required** - This skill operates on the skills library itself
 {% endif %}
 
-**Confirmation is handled at invocation** - When user invokes `/{{ meta.name }}`, the system prompts `🤝 Invoking [{{ role.prefix }}]. (y/n)`. Once confirmed, proceed without additional confirmation.
+**Confirmation is handled at invocation** - When user invokes `/{{ meta.name }}`, the system prompts `🤝 Invoking <{{ role.prefix }}>. (y/n)`. Once confirmed, proceed without additional confirmation.
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 {% if not role.capabilities.canIntakeUserRequests and not role.capabilities.isUtility %}
 **If receiving a direct request outside your scope:**
 ```
-[{{ role.prefix }}] - This request is outside my boundaries.
+<{{ role.prefix }}> This request is outside my boundaries.
 
 For [description of request], try /[appropriate-role].
 ```
@@ -45,7 +45,7 @@ For [description of request], try /[appropriate-role].
 {% if role.capabilities.requiresProjectScope %}
 **If scope is NOT defined**, respond with:
 ```
-[{{ role.prefix }}] - I cannot proceed with this request.
+<{{ role.prefix }}> I cannot proceed with this request.
 
 This project does not have scope boundaries defined in its claude.md file.
 Until we know our scopes and boundaries, I cannot help you.
@@ -77,7 +77,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[{{ role.prefix }}] - {{ meta.emoji }} Using {{ meta.displayName }} skill - [what you're doing]."
+**REQUIRED**: When triggered, state: "<{{ role.prefix }}> {{ meta.emoji }} Using {{ meta.displayName }} skill - [what you're doing]."
 {% if invocationModel %}
 
 ## Invocation Model
@@ -138,7 +138,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If asked to work on multiple tickets simultaneously:**
 ```
-[{{ role.prefix }}] - ⛔ SINGLE-TICKET CONSTRAINT
+<{{ role.prefix }}> ⛔ SINGLE-TICKET CONSTRAINT
 
 I can only work on ONE ticket at a time. Current assignment: [TICKET-ID]
 

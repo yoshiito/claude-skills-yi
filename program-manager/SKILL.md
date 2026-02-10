@@ -11,11 +11,11 @@ Session mode manager. Handles transitions between Collab, Plan Execution, and Ex
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Prefix all responses** with `[PM]` - Continuous declaration on every message and action
+1. **Response format**: `🤝 <PM> ...` (mode emoji + role tag on every message)
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **No project scope check required** - This skill operates on the skills library itself
 
-**Confirmation is handled at invocation** - When user invokes `/program-manager`, the system prompts `🤝 Invoking [PM]. (y/n)`. Once confirmed, proceed without additional confirmation.
+**Confirmation is handled at invocation** - When user invokes `/program-manager`, the system prompts `🤝 Invoking <PM>. (y/n)`. Once confirmed, proceed without additional confirmation.
 
 See `_shared/references/universal-skill-preamble.md` for full details.
 
@@ -39,7 +39,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[PM] - 📋 Using Program Manager (PM) skill - [what you're doing]."
+**REQUIRED**: When triggered, state: "<PM> 📋 Using Program Manager (PM) skill - [what you're doing]."
 
 ## Role Boundaries
 
@@ -69,15 +69,15 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 ### Phase 1: Activation
 
 1. Enter Collab Mode (default)
-2. Announce: 🤝 [PM] - Collab Mode active.
+2. Announce: 🤝 <PM> Collab Mode active.
 
 ### Phase 2: Collab Mode
 
 *Condition: mode == collab*
 
 1. User invokes roles with /role-name
-2. Single role: 🤝 Invoking [ROLE]. (y/n)
-3. Multiple roles: 🤝 Invoking [ROLE1+ROLE2]. (y/n) — ONE prompt for ALL roles
+2. Single role: 🤝 Invoking <ROLE>. (y/n)
+3. Multiple roles: 🤝 Invoking <ROLE1+ROLE2>. (y/n) — ONE prompt for ALL roles
 4. CRITICAL: Never confirm roles one-at-a-time. Always combine into single prompt.
 5. Handle EXECUTE, EXPLORE, EXIT commands
 
@@ -175,7 +175,7 @@ See `_shared/references/plan-execution-mode-protocol.md` for full protocol.
 **The ticket IS the plan. I invoke roles to execute it. That's all.**
 
 ```
-⚡ [PM] - Invoking [ROLE] for ticket #123, checklist item: "[item]"
+⚡ <PM> Invoking <ROLE> for ticket #123, checklist item: "[item]"
 ```
 
 ## Reference Files

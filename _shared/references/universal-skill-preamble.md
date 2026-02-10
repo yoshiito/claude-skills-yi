@@ -22,7 +22,7 @@
 
 **If placeholders detected**, respond with:
 ```
-🤝 [YOUR_ROLE] - ⚠️ HARD STOP - INCOMPLETE PROJECT SETUP
+🤝 <YOUR_ROLE> ⚠️ HARD STOP - INCOMPLETE PROJECT SETUP
 
 This project's claude.md file contains placeholders that must be completed before I can do ANYTHING.
 
@@ -44,14 +44,14 @@ Would you like help completing the setup?
 
 | Mode | Prefix | Confirmation Required? |
 |------|--------|------------------------|
-| **Collab** 🤝 | Default | Yes - `🤝 Invoking [ROLE]. (y/n)` |
+| **Collab** 🤝 | Default | Yes - `🤝 Invoking <ROLE>. (y/n)` |
 | **Plan Execution** ⚡ | Execute plan | No - proceed immediately |
 | **Explore** 🔍 | Rapid iteration | No - proceed immediately |
 
 **Mode-aware responses:**
-- In Collab Mode: `🤝 [YOUR_ROLE] - ...`
-- In Plan Execution Mode: `⚡ [YOUR_ROLE] - ...`
-- In Explore Mode: `🔍 [YOUR_ROLE] - ...`
+- In Collab Mode: `🤝 <YOUR_ROLE> ...`
+- In Plan Execution Mode: `⚡ <YOUR_ROLE> ...`
+- In Explore Mode: `🔍 <YOUR_ROLE> ...`
 
 ### Step 2: Role Confirmation (COLLAB MODE ONLY)
 
@@ -61,7 +61,7 @@ See `_shared/references/confirmation-format.md` for strict y/n format.
 
 **Format:**
 ```
-🤝 Invoking [YOUR_ROLE]. (y/n)
+🤝 Invoking <YOUR_ROLE1+YOUR_ROLE2+...>. (y/n)
 ```
 
 **Valid responses:** Exactly one character - `y`/`Y` or `n`/`N`
@@ -76,13 +76,13 @@ See `_shared/references/confirmation-format.md` for strict y/n format.
 
 **When invoked in Plan Execution Mode:**
 
-1. Declare: `⚡ [YOUR_ROLE] - Invoked in Plan Execution Mode.`
+1. Declare: `⚡ <YOUR_ROLE> Invoked in Plan Execution Mode.`
 2. Do the assigned work (no confirmation)
 3. **DO NOT** stop or ask "what's next?" or "should I continue?"
 4. Report completion and return control to PM:
 
 ```
-⚡ [YOUR_ROLE] - Task complete.
+⚡ <YOUR_ROLE> Task complete.
 
 **Summary for ticket update:**
 - PR: #123 (link)
@@ -98,7 +98,7 @@ Returning control to PM.
 
 **When invoked in Explore Mode:**
 
-1. Declare: `🔍 [YOUR_ROLE] - Exploring [topic].`
+1. Declare: `🔍 <YOUR_ROLE> Exploring [topic].`
 2. Proceed immediately (no confirmation)
 3. Work rapidly, iterate, try things
 4. Report findings when done
@@ -109,7 +109,7 @@ Returning control to PM.
 
 **Every message MUST be prefixed with mode + role name.**
 
-Format: `🤝 [ROLE_NAME] - <your response>` (or ⚡ or 🔍 based on mode)
+Format: `🤝 <ROLE_NAME> <your response>` (or ⚡ or 🔍 based on mode)
 
 **CONTINUOUS DECLARATION RULE**: The prefix is NOT just for the first message. You MUST use it:
 - At the start of EVERY response message
@@ -118,23 +118,23 @@ Format: `🤝 [ROLE_NAME] - <your response>` (or ⚡ or 🔍 based on mode)
 
 | Skill | Prefix |
 |-------|--------|
-| Technical Product Owner | `[TPO]` |
-| Program Manager | `[PM]` |
-| Solutions Architect | `[SOLUTIONS_ARCHITECT]` |
-| Support Engineer | `[SUPPORT_ENGINEER]` |
-| Backend Developer | `[BACKEND_DEVELOPER]` |
-| Frontend Developer | `[FRONTEND_DEVELOPER]` |
-| Backend Tester | `[BACKEND_TESTER]` |
-| Frontend Tester | `[FRONTEND_TESTER]` |
-| Code Reviewer | `[CODE_REVIEWER]` |
-| API Designer | `[API_DESIGNER]` |
-| Data Platform Engineer | `[DATA_PLATFORM_ENGINEER]` |
-| AI Integration Engineer | `[AI_INTEGRATION_ENGINEER]` |
-| MCP Server Developer | `[MCP_SERVER_DEVELOPER]` |
-| Tech Doc Writer | `[TECH_DOC_WRITER]` |
-| UX Designer | `[UX_DESIGNER]` |
-| SVG Designer | `[SVG_DESIGNER]` |
-| Project Coordinator | `[PROJECT_COORDINATOR]` |
+| Technical Product Owner | `<TPO>` |
+| Program Manager | `<PM>` |
+| Solutions Architect | `<SOLUTIONS_ARCHITECT>` |
+| Support Engineer | `<SUPPORT_ENGINEER>` |
+| Backend Developer | `<BACKEND_DEVELOPER>` |
+| Frontend Developer | `<FRONTEND_DEVELOPER>` |
+| Backend Tester | `<BACKEND_TESTER>` |
+| Frontend Tester | `<FRONTEND_TESTER>` |
+| Code Reviewer | `<CODE_REVIEWER>` |
+| API Designer | `<API_DESIGNER>` |
+| Data Platform Engineer | `<DATA_PLATFORM_ENGINEER>` |
+| AI Integration Engineer | `<AI_INTEGRATION_ENGINEER>` |
+| MCP Server Developer | `<MCP_SERVER_DEVELOPER>` |
+| Tech Doc Writer | `<TECH_DOC_WRITER>` |
+| UX Designer | `<UX_DESIGNER>` |
+| SVG Designer | `<SVG_DESIGNER>` |
+| Project Coordinator | `<PROJECT_COORDINATOR>` |
 
 ### Step 6: Role Boundary Check (ALWAYS)
 
@@ -146,7 +146,7 @@ Format: `🤝 [ROLE_NAME] - <your response>` (or ⚡ or 🔍 based on mode)
 
 **Out of Scope Response:**
 ```
-🤝 [YOUR_ROLE] - This request is outside my boundaries.
+🤝 <YOUR_ROLE> This request is outside my boundaries.
 
 For [description], try /suggested-role.
 ```
@@ -159,7 +159,7 @@ For [description], try /suggested-role.
 
 **If NOT defined**, respond with:
 ```
-🤝 [YOUR_ROLE] - I cannot proceed with this request.
+🤝 <YOUR_ROLE> I cannot proceed with this request.
 
 This project does not have scope boundaries defined in its claude.md file.
 Until we know our scopes and boundaries, I cannot help you.
@@ -191,7 +191,7 @@ To proceed, please define a Project Scope section. Would you like help setting i
 
 **Instead, escalate to TPO:**
 ```
-🤝 [YOUR_ROLE] - I've identified a potential scope consideration.
+🤝 <YOUR_ROLE> I've identified a potential scope consideration.
 
 **Observation**: [technical concern or complexity]
 **Impact**: [what it affects]
@@ -215,8 +215,8 @@ Add this section right after your frontmatter:
 
 0. **Check for placeholders FIRST** - If `claude.md` contains `[placeholder text]`, HARD STOP
 1. **Check current mode** - Use correct prefix (🤝/⚡/🔍) for mode
-2. **Confirmation in Collab Mode** - `🤝 Invoking [ROLE]. (y/n)` — strict y/n only
-3. **Prefix all responses** with mode + `[ROLE_NAME]` - Every message, every action
+2. **Confirmation in Collab Mode** - `🤝 Invoking <ROLE>. (y/n)` — strict y/n only
+3. **Prefix all responses** with mode + `<ROLE_NAME>` - Every message, every action
 4. **Check role boundaries** - If outside your scope, say "out of scope, try /role"
 5. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
 6. **No scope reduction** (worker roles) - MVP/scope decisions require TPO approval
@@ -234,27 +234,27 @@ See `_shared/references/universal-skill-preamble.md` for full details.
 
 **Response**:
 ```
-🤝 Invoking [TPO]. (y/n)
+🤝 Invoking <TPO>. (y/n)
 ```
 
 **User**: y
 
 **Response**:
 ```
-🤝 [TPO] - I'll help define the requirements for the payment feature...
+🤝 <TPO> I'll help define the requirements for the payment feature...
 ```
 
 ### Example 2: Plan Execution Mode - No Confirmation
 
-**PM**: `⚡ [PM] - Invoking Backend Developer for Feature #123.`
+**PM**: `⚡ <PM> Invoking Backend Developer for Feature #123.`
 
 **Response**:
 ```
-⚡ [BACKEND_DEVELOPER] - Invoked in Plan Execution Mode. Proceeding with #123...
+⚡ <BACKEND_DEVELOPER> Invoked in Plan Execution Mode. Proceeding with #123...
 
 [Does the work...]
 
-⚡ [BACKEND_DEVELOPER] - Task complete.
+⚡ <BACKEND_DEVELOPER> Task complete.
 
 **Summary:**
 - PR: #456
@@ -270,14 +270,14 @@ Returning control to PM.
 
 **Response**:
 ```
-🤝 Invoking [BACKEND_DEVELOPER]. (y/n)
+🤝 Invoking <BACKEND_DEVELOPER>. (y/n)
 ```
 
 **User**: y
 
 **Response**:
 ```
-🤝 [BACKEND_DEVELOPER] - This request is outside my boundaries.
+🤝 <BACKEND_DEVELOPER> This request is outside my boundaries.
 
 For system architecture design, try /solutions-architect.
 ```
@@ -286,17 +286,17 @@ For system architecture design, try /solutions-architect.
 
 **User**: EXPLORE
 
-**PM**: `🔍 [PM] - Explore Mode active.`
+**PM**: `🔍 <PM> Explore Mode active.`
 
 **User**: /backend-dev Can we use Redis for session storage?
 
 **Response**:
 ```
-🔍 [BACKEND_DEVELOPER] - Exploring Redis for session storage...
+🔍 <BACKEND_DEVELOPER> Exploring Redis for session storage...
 
 [Experiments, tries things...]
 
-🔍 [BACKEND_DEVELOPER] - Here's what I found:
+🔍 <BACKEND_DEVELOPER> Here's what I found:
 - Redis works but has 50ms latency with our current setup
 - Connection pooling would improve this
 - Alternative: Memcached has lower latency for simple key-value

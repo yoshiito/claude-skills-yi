@@ -180,7 +180,7 @@ customSections:
 
       **If violations found** (even if Code Reviewer approved):
       ```
-      [SOLUTIONS_ARCHITECT] - Architecture Compliance Issue
+      <SOLUTIONS_ARCHITECT> Architecture Compliance Issue
 
       PR #[number] violates architectural decisions:
 

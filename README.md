@@ -35,7 +35,7 @@ User request → PM → Agent Skill Coordinator → recommended role (immediate,
 1. PM receives request, invokes Agent Skill Coordinator
 2. ASC returns the appropriate role
 3. PM immediately invokes that role (no pause, no waiting)
-4. Role handles the request with `[ROLE_NAME]` prefix
+4. Role handles the request with `<ROLE_NAME>` prefix
 
 ### Intake vs Worker Roles
 
@@ -119,7 +119,7 @@ skills/
 
 Universal framework rules:
 - PM as entry point
-- Role declaration (`[ROLE_NAME]` prefix)
+- Role declaration (`<ROLE_NAME>` prefix)
 - Routing flow (PM → ASC → role, no pause)
 - Plan Execution/Collab mode protocols
 - Skill boundary enforcement
