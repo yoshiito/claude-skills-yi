@@ -7,6 +7,16 @@
 ## Template Structure
 
 ```markdown
+## Execution Rules
+
+**This ticket IS the work. Do not reframe.**
+
+- Execute each checklist item exactly as written
+- Each item is discrete—do not combine or skip
+- Do not add work not listed here
+- Mark items complete IN this ticket as you go
+- If unclear, ask—do not assume
+
 ## Mission Statement
 [ONE clear statement defining what "done" looks like for this Feature]
 
@@ -65,9 +75,9 @@ Feature: [Feature name]
 ## Testing Notes
 [Edge cases to cover, test data requirements]
 
-## Workflow Phases
+## Execution Steps
 
-**CRITICAL**: Each phase MUST specify the role and concrete checklist items for THIS ticket.
+**CRITICAL**: Each step MUST specify the role and concrete checklist items for THIS ticket. Steps are discrete and sequential—do not combine or skip.
 
 ### Development
 - **Role**: `[exact-skill-name]`
@@ -140,23 +150,26 @@ Feature: [Feature name]
 | Check | Required | PC Validates |
 |-------|----------|--------------|
 | Title prefix | `[Backend]` or `[Frontend]` | ✅ Enforced |
+| Execution Rules section | Present verbatim | ✅ Enforced |
 | Mission Statement | ONE clear "done" definition | ✅ Enforced |
 | Story | User story format | ⚠️ Manual |
 | Context | Not empty | ⚠️ Manual |
 | Technical Spec | `<technical-spec>` with `<must>` section | ✅ Enforced |
 | Gherkin scenarios | `Given`/`When`/`Then` keywords present | ✅ Enforced |
 | Testing Notes | Section exists | ✅ Enforced |
-| Workflow Phases | Each phase has Role + Checklist items | ✅ Enforced |
+| Execution Steps | Each step has Role + Checklist items | ✅ Enforced |
+| Checklist items | Each item fully specified | ✅ Enforced |
 | Open Questions | **EMPTY** (all resolved) | ✅ Enforced |
 | Parent Mission | `Parent Mission: #NUM` in request | ✅ Enforced |
 | **Feature Branch** | **User-specified branch name (BLOCKING)** | ✅ Enforced |
+| **Self-contained** | **All info to complete work is IN this ticket** | ✅ Enforced |
 | Quality-bounded | See checklist below | ⚠️ Manual |
 
-**Workflow Phases Requirement (SA specifies before invoking PC):**
-- [ ] Each phase has `Role:` with exact skill slug
-- [ ] Each phase has `Checklist:` with concrete items for THIS ticket
+**Execution Steps Requirement (SA specifies before invoking PC):**
+- [ ] Each step has `Role:` with exact skill slug
+- [ ] Each step has `Checklist:` with concrete items for THIS ticket
 - [ ] Checklist items are ticket-specific (not generic "implement feature")
-- [ ] Each phase ends with hand-off to next role
+- [ ] Each step ends with hand-off to next role
 - [ ] Development checklist items derived from Technical Spec
 - [ ] Test checklist items derived from Gherkin scenarios
 - [ ] Code Review checklist items specify what to verify for THIS ticket
@@ -188,7 +201,7 @@ Feature: [Feature name]
 
 ## DoD: Definition of Done (Before Closing)
 
-**Features are Done when ALL workflow phases are complete.**
+**Features are Done when ALL execution steps are complete.**
 
 | Check | Required | PC Validates |
 |-------|----------|--------------|
@@ -208,7 +221,7 @@ Feature: [Feature name]
 ## Mission Statement
 [Restated mission - confirmed achieved]
 
-## Workflow Phases
+## Execution Steps
 - [x] Development: PR #{num} merged
 - [x] Code Review: Approved by {reviewer}
 - [x] Test: {X} tests passing
@@ -220,4 +233,4 @@ Feature: [Feature name]
 All MUST/MUST NOT requirements satisfied.
 ```
 
-**Note**: Quality phases are tracked within the Feature ticket via comments and checklists.
+**Note**: Quality steps are tracked within the Feature ticket via comments and checklists.

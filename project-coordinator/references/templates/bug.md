@@ -6,6 +6,16 @@
 ## Template Structure
 
 ```markdown
+## Execution Rules
+
+**This ticket IS the work. Do not reframe.**
+
+- Execute each checklist item exactly as written
+- Each item is discrete—do not combine or skip
+- Do not add work not listed here
+- Mark items complete IN this ticket as you go
+- If unclear, ask—do not assume
+
 ## Environment
 - OS: [e.g., iOS 17.2, Windows 11]
 - Browser/App: [e.g., Chrome 120, App v5.4.1]
@@ -40,9 +50,9 @@
 - Related: [Related tickets]
 - Logs: [Relevant log snippets]
 
-## Workflow Phases
+## Execution Steps
 
-**CRITICAL**: Each phase MUST specify the role and concrete checklist items for THIS bug.
+**CRITICAL**: Each step MUST specify the role and concrete checklist items for THIS bug. Steps are discrete and sequential—do not combine or skip.
 
 ### Development
 - **Role**: `[developer-skill-name]`
@@ -98,16 +108,19 @@
 | Check | Required | PC Validates |
 |-------|----------|--------------|
 | Title prefix | `[Bug]` | ✅ Enforced |
+| Execution Rules section | Present verbatim | ✅ Enforced |
 | Environment | OS/Browser/App version specified | ✅ Enforced |
 | Steps to Reproduce | Numbered steps present | ✅ Enforced |
 | Actual Result | Described | ✅ Enforced |
 | Expected Result | Described | ✅ Enforced |
 | Impact | Severity specified | ⚠️ Manual |
-| Workflow Phases | Each phase has Role + Checklist items | ✅ Enforced |
+| Execution Steps | Each step has Role + Checklist items | ✅ Enforced |
+| Checklist items | Each item fully specified | ✅ Enforced |
+| **Self-contained** | **All info to complete work is IN this ticket** | ✅ Enforced |
 
 ## DoD: Definition of Done (Before Closing)
 
-**Bugs are Done when ALL workflow phases are complete.**
+**Bugs are Done when ALL execution steps are complete.**
 
 | Check | Required | PC Validates |
 |-------|----------|--------------|
@@ -130,7 +143,7 @@
 ## Fix
 [Brief description of the solution]
 
-## Workflow Phases
+## Execution Steps
 - [x] Development: PR #{num} merged
 - [x] Code Review: Approved by {reviewer}
 - [x] Test: Regression tests passing

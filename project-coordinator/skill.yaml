@@ -177,63 +177,21 @@ boundaries:
 qualityGates:
   definitionOfReady:
     enforceAt: Before creating ANY ticket (BLOCKING - no exceptions)
-    ticketTypes:
-      mission:
-        titlePrefix: "[Mission]"
-        requiredSections:
-          - name: Problem Statement
-            verify: Body contains "Problem Statement" section with content
-          - name: Target Users
-            verify: Body contains "Target Users" section with content
-          - name: Success Criteria
-            verify: Body contains "Success Criteria" section with content
-          - name: UAT Criteria
-            verify: Body contains "UAT Criteria" with checklist items `- [ ]`
-          - name: Open Questions
-            verify: No unchecked items in "Open Questions" section
-
-      feature:
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
-        requiredSections:
-          - name: Mission Statement
-            verify: Body contains "Mission Statement" section with ONE clear statement
-          - name: Technical Spec
-            verify: Body contains `<technical-spec>` with `<must>` section
-          - name: Gherkin
-            verify: Body contains Given/When/Then keywords
-          - name: Parent
-            verify: "Parent #NUM (Mission) provided in request"
-          - name: Testing Notes
-            verify: Body contains "Testing Notes" section
-          - name: Workflow Phases
-            verify: |
-              1. Each phase has Role (exact skill slug) + Checklist (ticket-specific items) + Hand off
-              2. Role-Phase validation: Development→developer, Test→tester, Docs→doc-writer, etc.
-              3. Read assigned role's SKILL.md to verify phase work is in authorizedActions
-          - name: Open Questions
-            verify: No unchecked items in "Open Questions" section
-          - name: Feature Branch
-            verify: User has provided Feature branch name
-
-      bug:
-        titlePrefix: "[Bug]"
-        requiredSections:
-          - name: Environment
-            verify: Body contains "Environment" section
-          - name: Steps to Reproduce
-            verify: Body contains numbered steps
-          - name: Actual Result
-            verify: Body contains "Actual" section
-          - name: Expected Result
-            verify: Body contains "Expected" section
-
-      subtask:
-        titlePrefix: "[Subtask]"
-        requiredSections:
-          - name: Parent
-            verify: "Parent #NUM provided in request"
-          - name: Description
-            verify: Body is not empty
+    binding: |
+      ⛔ BINDING: You MUST read the template file before validation.
+      DoR has long-term consequences — tickets created now will be executed in different sessions.
+      The extra context usage here prevents downstream failures.
+    templateFiles:
+      mission: references/templates/mission.md
+      feature: references/templates/feature.md
+      bug: references/templates/bug.md
+      dev-subtask: references/templates/dev-subtask.md
+    validation: |
+      1. Read the template file for this ticket type (MANDATORY - no skipping)
+      2. Find the "DoR: Definition of Ready" section in the template
+      3. Validate the ticket against EVERY check in that DoR table
+      4. Show verification trail for each check
+      5. REJECT if any check fails — provide the specific requirement from the template
 
   definitionOfDone:
     enforceAt: Before updating ANY ticket to status=done (BLOCKING - no exceptions)

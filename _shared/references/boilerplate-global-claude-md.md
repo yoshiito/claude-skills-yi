@@ -341,7 +341,33 @@ User invokes these directly with `/role-name`:
 All tickets must include:
 - **Technical Spec**: MUST/MUST NOT/SHOULD constraints
 - **Gherkin Scenarios**: Given/When/Then
-- **Work Phases**: Role + Phase checklist + Exit criteria + Next role
+- **Execution Steps**: Role + Checklist + Hand off for each step
+
+---
+
+## Ticket Contract (ALL ROLES)
+
+**Every role that touches a ticket must understand this contract.**
+
+### For Ticket Creators (TPO, SA, Support Engineer)
+
+Tickets must be **self-contained**:
+- All information needed to complete work is IN the ticket
+- No external reading required for execution
+- Execution Steps fully specified with Role + Checklist
+- Each checklist item is concrete (what, where, how)
+
+**Read the relevant template** from `{Skills Path}/project-coordinator/references/templates/` before creating tickets.
+
+### For Ticket Executors (Developers, Testers, Reviewers, Doc Writers)
+
+Tickets are **absolute**:
+- **Execute as written** — The ticket IS the work, do not reframe
+- **No scope creep** — Do not add work not listed in the ticket
+- **Trust the ticket** — All info you need is there
+- **Ask, don't assume** — If something is unclear, ask the ticket creator
+
+**If a ticket is missing information**, do NOT proceed with assumptions. Flag the gap and ask the creator to update the ticket.
 
 ---
 
@@ -353,7 +379,7 @@ All tickets must include:
 |-------|----------|
 | Technical Spec | Yes |
 | Gherkin scenarios | Yes |
-| Work Phases defined (Role + Checklist + Exit + Next) | Yes |
+| Execution Steps defined (Role + Checklist + Hand off) | Yes |
 | Feature branch (user-provided) | Yes |
 | Dependencies set | Yes |
 

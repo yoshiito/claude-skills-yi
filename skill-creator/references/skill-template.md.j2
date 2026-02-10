@@ -194,6 +194,25 @@ Proceeding with current assignment only.
 ### Definition of Ready (On Create)
 
 **Enforce at**: {{ qualityGates.definitionOfReady.enforceAt }}
+{% if qualityGates.definitionOfReady.binding %}
+
+{{ qualityGates.definitionOfReady.binding }}
+{% endif %}
+{% if qualityGates.definitionOfReady.templateFiles %}
+
+| Ticket Type | Template File |
+|-------------|---------------|
+{% for ticket_type, path in qualityGates.definitionOfReady.templateFiles.items() -%}
+| {{ ticket_type | title }} | `{{ path }}` |
+{% endfor %}
+{% endif %}
+{% if qualityGates.definitionOfReady.validation %}
+
+**Validation Process**:
+
+{{ qualityGates.definitionOfReady.validation }}
+{% endif %}
+{% if qualityGates.definitionOfReady.ticketTypes %}
 {% for ticket_type, config in qualityGates.definitionOfReady.ticketTypes.items() %}
 
 #### For {{ ticket_type | title }}
@@ -210,6 +229,7 @@ Proceeding with current assignment only.
 | {{ section.name }} | {{ section.verify }} | Missing or empty |
 {% endfor %}
 {% endfor %}
+{% endif %}
 {% endif %}
 {% if qualityGates.definitionOfDone %}
 

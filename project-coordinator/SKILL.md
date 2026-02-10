@@ -112,51 +112,26 @@ Utility skill—callable by ANY role without user confirmation. "Utility" does N
 
 **Enforce at**: Before creating ANY ticket (BLOCKING - no exceptions)
 
-#### For Mission
+⛔ BINDING: You MUST read the template file before validation.
+DoR has long-term consequences — tickets created now will be executed in different sessions.
+The extra context usage here prevents downstream failures.
 
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with `[Mission]` | Missing prefix |
-| Problem Statement | Body contains "Problem Statement" section with content | Missing or empty |
-| Target Users | Body contains "Target Users" section with content | Missing or empty |
-| Success Criteria | Body contains "Success Criteria" section with content | Missing or empty |
-| UAT Criteria | Body contains "UAT Criteria" with checklist items `- [ ]` | Missing or empty |
-| Open Questions | No unchecked items in "Open Questions" section | Missing or empty |
 
-#### For Feature
+| Ticket Type | Template File |
+|-------------|---------------|
+| Mission | `references/templates/mission.md` |
+| Feature | `references/templates/feature.md` |
+| Bug | `references/templates/bug.md` |
+| Dev-Subtask | `references/templates/dev-subtask.md` |
 
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with `[Backend]`, `[Frontend]`, `[Bug]` | Missing/invalid prefix |
-| Mission Statement | Body contains "Mission Statement" section with ONE clear statement | Missing or empty |
-| Technical Spec | Body contains `<technical-spec>` with `<must>` section | Missing or empty |
-| Gherkin | Body contains Given/When/Then keywords | Missing or empty |
-| Parent | Parent #NUM (Mission) provided in request | Missing or empty |
-| Testing Notes | Body contains "Testing Notes" section | Missing or empty |
-| Workflow Phases | 1. Each phase has Role (exact skill slug) + Checklist (ticket-specific items) + Hand off
-2. Role-Phase validation: Development→developer, Test→tester, Docs→doc-writer, etc.
-3. Read assigned role's SKILL.md to verify phase work is in authorizedActions
- | Missing or empty |
-| Open Questions | No unchecked items in "Open Questions" section | Missing or empty |
-| Feature Branch | User has provided Feature branch name | Missing or empty |
+**Validation Process**:
 
-#### For Bug
+1. Read the template file for this ticket type (MANDATORY - no skipping)
+2. Find the "DoR: Definition of Ready" section in the template
+3. Validate the ticket against EVERY check in that DoR table
+4. Show verification trail for each check
+5. REJECT if any check fails — provide the specific requirement from the template
 
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with `[Bug]` | Missing prefix |
-| Environment | Body contains "Environment" section | Missing or empty |
-| Steps to Reproduce | Body contains numbered steps | Missing or empty |
-| Actual Result | Body contains "Actual" section | Missing or empty |
-| Expected Result | Body contains "Expected" section | Missing or empty |
-
-#### For Subtask
-
-| Check | How to Verify | Reject If |
-|-------|---------------|-----------|
-| Title prefix | Title starts with `[Subtask]` | Missing prefix |
-| Parent | Parent #NUM provided in request | Missing or empty |
-| Description | Body is not empty | Missing or empty |
 
 ### Definition of Done (On Status=Done)
 
@@ -299,7 +274,7 @@ Returns: PASS or FAIL with details
 STOP. Before ANY validation, read the reference files. Do NOT proceed on assumptions or memory.
 
 
-1. **Read the relevant template** from `references/templates/` - Know the exact template requirements for this ticket type
+1. **Read the relevant template from references/templates/** - Know the exact template requirements for this ticket type
 2. **Read the relevant operations file** - github-operations.md, linear-operations.md, or plan-file-operations.md
 3. **If relationships specified: Read the handler's BLOCKING section** - For GitHub, read the "⛔ BLOCKING: Relationship Protocol" section. This section defines MANDATORY steps that cannot be skipped.
 
@@ -486,11 +461,6 @@ Returning to [CALLING_ROLE].
 
 ### Local References
 - `references/templates/` - Ticket templates (READ BEFORE VALIDATING)
-  - `mission.md` - Mission (Epic) template
-  - `feature.md` - Feature template ([Backend]/[Frontend])
-  - `bug.md` - Bug template
-  - `query.md` - Query (communication) template
-  - `dev-subtask.md` - Dev subtask template
 - `references/ticket-hierarchy.md` - Hierarchy model, relationships, role tables
 - `references/progress-comments.md` - Progress comment formats
 - `references/github-operations.md` - GitHub Issues + GraphQL mutations
