@@ -75,7 +75,7 @@ customSections:
 
       **BLOCKING REQUIREMENT**: Before validating ANY ticket, I MUST:
 
-      1. **Read `references/ticket-templates.md`** — Know the exact requirements
+      1. **Read the relevant template from `references/templates/`** — Know the exact requirements
       2. **Read the relevant operations file** — Know the exact commands
       3. **Only then validate** — With full knowledge, not assumptions
 
@@ -90,9 +90,9 @@ customSections:
       Every validation MUST show evidence:
 
       ```
-      [PROJECT_COORDINATOR] - Validating Feature creation.
+      <PROJECT_COORDINATOR> Validating Feature creation.
 
-      **Reference Check**: Read ticket-templates.md ✓
+      **Reference Check**: Read `references/templates/feature.md` ✓
 
       **Verification Trail**:
       | Requirement | Found | Location |
@@ -129,7 +129,7 @@ invocationModel:
       when: After identifying bug
       example: Create bug ticket
     - role: PM
-      when: Before Drive Mode
+      when: Before Plan Execution Mode
       example: Verify relationships
     - role: Workers
       when: During implementation
@@ -145,8 +145,8 @@ invocationModel:
 
   callingRoleTracking:
     required: true
-    onStart: "[PROJECT_COORDINATOR] - Invoked by [CALLING_ROLE]. Validating request..."
-    onEnd: "Returning to [CALLING_ROLE]."
+    onStart: "<PROJECT_COORDINATOR> Invoked by <CALLING_ROLE>. Validating request..."
+    onEnd: "Returning to <CALLING_ROLE>."
 
 # =============================================================================
 # BOUNDARIES
@@ -177,60 +177,21 @@ boundaries:
 qualityGates:
   definitionOfReady:
     enforceAt: Before creating ANY ticket (BLOCKING - no exceptions)
-    ticketTypes:
-      mission:
-        titlePrefix: "[Mission]"
-        requiredSections:
-          - name: Problem Statement
-            verify: Body contains "Problem Statement" section with content
-          - name: Target Users
-            verify: Body contains "Target Users" section with content
-          - name: Success Criteria
-            verify: Body contains "Success Criteria" section with content
-          - name: UAT Criteria
-            verify: Body contains "UAT Criteria" with checklist items `- [ ]`
-          - name: Open Questions
-            verify: No unchecked items in "Open Questions" section
-
-      feature:
-        titlePrefixes: ["[Backend]", "[Frontend]", "[Bug]"]
-        requiredSections:
-          - name: Mission Statement
-            verify: Body contains "Mission Statement" section with ONE clear statement
-          - name: Technical Spec
-            verify: Body contains `<technical-spec>` with `<must>` section
-          - name: Gherkin
-            verify: Body contains Given/When/Then keywords
-          - name: Parent
-            verify: "Parent #NUM (Mission) provided in request"
-          - name: Testing Notes
-            verify: Body contains "Testing Notes" section
-          - name: Workflow Phases
-            verify: Body contains "Workflow Phases" checklist
-          - name: Open Questions
-            verify: No unchecked items in "Open Questions" section
-          - name: Feature Branch
-            verify: User has provided Feature branch name
-
-      bug:
-        titlePrefix: "[Bug]"
-        requiredSections:
-          - name: Environment
-            verify: Body contains "Environment" section
-          - name: Steps to Reproduce
-            verify: Body contains numbered steps
-          - name: Actual Result
-            verify: Body contains "Actual" section
-          - name: Expected Result
-            verify: Body contains "Expected" section
-
-      subtask:
-        titlePrefix: "[Subtask]"
-        requiredSections:
-          - name: Parent
-            verify: "Parent #NUM provided in request"
-          - name: Description
-            verify: Body is not empty
+    binding: |
+      ⛔ BINDING: You MUST read the template file before validation.
+      DoR has long-term consequences — tickets created now will be executed in different sessions.
+      The extra context usage here prevents downstream failures.
+    templateFiles:
+      mission: references/templates/mission.md
+      feature: references/templates/feature.md
+      bug: references/templates/bug.md
+      dev-subtask: references/templates/dev-subtask.md
+    validation: |
+      1. Read the template file for this ticket type (MANDATORY - no skipping)
+      2. Find the "DoR: Definition of Ready" section in the template
+      3. Validate the ticket against EVERY check in that DoR table
+      4. Show verification trail for each check
+      5. REJECT if any check fails — provide the specific requirement from the template
 
   definitionOfDone:
     enforceAt: Before updating ANY ticket to status=done (BLOCKING - no exceptions)
@@ -282,7 +243,7 @@ qualityGates:
 
   rejectionFormat:
     template: |
-      [PROJECT_COORDINATOR] - ❌ REJECTED: Definition of [Ready|Done] not met.
+      <PROJECT_COORDINATOR> ❌ REJECTED: Definition of [Ready|Done] not met.
 
       **Reference Check**: Read [reference file] ✓
 
@@ -294,14 +255,14 @@ qualityGates:
       **Missing Items**:
       - [ ] [specific missing item with template reference]
 
-      **Required Format** (from `references/ticket-templates.md`):
+      **Required Format** (from `references/templates/`):
       ```
       [relevant template snippet]
       ```
 
       **Action Required**: Fix the missing items and invoke PC again.
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # INVOCATION INTERFACE
@@ -309,7 +270,7 @@ qualityGates:
 invocationInterface:
   create:
     format: |
-      [PROJECT_COORDINATOR] Create:
+      <PROJECT_COORDINATOR> Create:
       - Type: mission | feature | dev-subtask | mission-activity
       - Title: "..."
       - Body: "..."
@@ -332,7 +293,7 @@ invocationInterface:
 
   update:
     format: |
-      [PROJECT_COORDINATOR] Update #NUM:
+      <PROJECT_COORDINATOR> Update #NUM:
       - Title: "..." (optional)
       - Body: "..." (optional)
       - Status: backlog | in-progress | in-review | done (optional)
@@ -342,14 +303,14 @@ invocationInterface:
 
   relationships:
     format: |
-      [PROJECT_COORDINATOR] Relationships #NUM:
+      <PROJECT_COORDINATOR> Relationships #NUM:
       - Set Parent: #NUM
       - Add Blocker: #NUM
       - Remove Blocker: #NUM
 
   verify:
     format: |
-      [PROJECT_COORDINATOR] Verify #NUM:
+      <PROJECT_COORDINATOR> Verify #NUM:
       - Expect Parent: #NUM
       - Expect Blockers: #NUM, #NUM
     returns: PASS or FAIL with details
@@ -373,12 +334,18 @@ workflow:
         STOP. Before ANY validation, read the reference files.
         Do NOT proceed on assumptions or memory.
       steps:
-        - action: Read ticket-templates.md
+        - action: Read the relevant template from references/templates/
           description: Know the exact template requirements for this ticket type
         - action: Read the relevant operations file
           description: github-operations.md, linear-operations.md, or plan-file-operations.md
+        - action: "If relationships specified: Read the handler's BLOCKING section"
+          description: >
+            For GitHub, read the "⛔ BLOCKING: Relationship Protocol" section.
+            This section defines MANDATORY steps that cannot be skipped.
         - action: Confirm reference check in output
-          description: 'State "Reference Check: Read [file] ✓"'
+          description: >
+            State "Reference Check: Read [file] ✓"
+            If relationships specified, also state: "Relationship Protocol: Read [handler] ⛔ BLOCKING section ✓"
 
     - name: Validate with Evidence Trail
       required: true
@@ -408,18 +375,24 @@ workflow:
     - name: Execute Operation (Only if Validation Passes)
       required: true
       condition: All validation checks passed
+      description: >
+        The handler reference file (github-operations.md, etc.) defines the EXACT
+        protocol. This skill defines WHAT to do; the handler defines HOW.
+        Follow the handler's protocol EXACTLY — it is binding.
       steps:
         - Determine ticket system from claude.md
         - Route to appropriate handler (github, linear, none)
-        - Execute per handler reference file
-        - Verify operation succeeded
+        - "Execute ALL steps in handler's protocol (not just step 1)"
+        - "If relationships specified: Handler's relationship steps are MANDATORY"
+        - "Run handler's verification step to confirm success"
+        - Report only after verification passes
 
     - name: Return Control
       required: true
       steps:
         - Report result with ticket URL/ID
         - Include verification trail in response
-        - State "Returning to [CALLING_ROLE]"
+        - State "Returning to <CALLING_ROLE>"
 
 # =============================================================================
 # RESPONSE FORMATS
@@ -427,9 +400,10 @@ workflow:
 responseFormats:
   success:
     template: |
-      [PROJECT_COORDINATOR] - ✅ Operation complete.
+      <PROJECT_COORDINATOR> ✅ Operation complete.
 
       **Reference Check**: Read [reference files] ✓
+      **Relationship Protocol**: Read [handler] ⛔ BLOCKING section ✓ (if relationships specified)
 
       **Verification Trail**:
       | Requirement | Found | Location |
@@ -439,22 +413,25 @@ responseFormats:
       **Result**: SUCCESS
       **Ticket**: #NUM - Title
       **URL**: [link]
-      **Relationships**:
-      - Parent: #NUM (verified)
-      - Blocked By: #NUM, #NUM (verified)
 
-      Returning to [CALLING_ROLE].
+      **Relationships** (if any):
+      | Relationship | Expected | Verified Via | Result |
+      |--------------|----------|--------------|--------|
+      | Parent | #NUM | GraphQL query: parent.number | ✓ Matches |
+      | Blocked By | #NUM, #NUM | GraphQL query: blockedByIssues | ✓ Matches |
+
+      Returning to <CALLING_ROLE>.
 
   failure:
     template: |
-      [PROJECT_COORDINATOR] - ❌ Operation FAILED.
+      <PROJECT_COORDINATOR> ❌ Operation FAILED.
 
       **Error**: [description]
       **Attempted**: [what was tried]
       **Reference Consulted**: [file]
       **Suggestion**: [how to fix]
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # QUALITY CHECKLIST - Self-Audit
@@ -463,7 +440,7 @@ qualityChecklist:
   sections:
     - name: Before ANY Operation
       checks:
-        - Did I read ticket-templates.md? (not assumed, actually read)
+        - Did I read the relevant template from `references/templates/`? (not assumed, actually read)
         - Did I read the relevant operations file?
         - Did I state "Reference Check" in my output?
 
@@ -490,8 +467,12 @@ qualityChecklist:
 # =============================================================================
 references:
   local:
-    - path: references/ticket-templates.md
-      purpose: All ticket templates with DoR/DoD checklists (READ BEFORE VALIDATING)
+    - path: references/templates/
+      purpose: Ticket templates (READ BEFORE VALIDATING)
+    - path: references/ticket-hierarchy.md
+      purpose: Hierarchy model, relationships, role tables
+    - path: references/progress-comments.md
+      purpose: Progress comment formats
     - path: references/github-operations.md
       purpose: GitHub Issues + GraphQL mutations
     - path: references/linear-operations.md
@@ -519,6 +500,6 @@ relatedSkills:
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
-      coordination: Invokes for relationship verification
+      coordination: Invokes for DoR verification before Plan Execution Mode
     - skill: Workers
       coordination: Invoke for status updates

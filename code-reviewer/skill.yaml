@@ -54,9 +54,9 @@ boundaries:
 # MODE BEHAVIORS
 # =============================================================================
 modes:
-  supported: [track, drive, collab]
+  supported: [track, plan_execution, collab]
 
-  drive:
+  plan_execution:
     skipConfirmation: true
     preWorkValidation: true
 
@@ -228,7 +228,7 @@ relatedSkills:
 
   downstream:
     - skill: PM
-      coordination: Enforces PR review gate before marking tickets Done
+      coordination: Mode management only (Plan Execution/Collab/Explore)
     - skill: TPO
       coordination: Verifies PR review gate during acceptance
 

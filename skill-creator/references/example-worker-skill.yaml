@@ -61,17 +61,18 @@ boundaries:
       routeTo: Backend Tester
 
 # =============================================================================
-# NOTE: No handoff section - Agent Skill Coordinator owns role routing
+# NOTE: If request is outside scope, respond:
+# "This is outside my scope. Try /suggested-role."
 # =============================================================================
 
 # =============================================================================
 # MODE BEHAVIORS
 # =============================================================================
 modes:
-  supported: [track, drive, collab]
+  supported: [track, plan_execution, collab]
 
-  drive:
-    # In drive mode, no confirmation - just work
+  plan_execution:
+    # In plan execution mode, no confirmation - just work
     skipConfirmation: true
     # Must still validate ticket has spec
     preWorkValidation: true
@@ -222,4 +223,4 @@ relatedSkills:
     - skill: Code Reviewer
       coordination: Reviews PR before completion
     - skill: PM
-      coordination: Receives completion notification
+      coordination: Mode management only (Plan Execution/Collab/Explore)

@@ -261,6 +261,6 @@ relatedSkills:
 
   downstream:
     - skill: PM
-      coordination: Receives documentation completion for Docs workflow phase
+      coordination: Mode management only; PM invokes in Explore Mode for documentation
     - skill: Code Reviewer
       coordination: Reviews documentation PRs

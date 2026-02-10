@@ -44,7 +44,7 @@ invocationModel:
       when: After identifying bug
       example: Create bug ticket
     - role: PM
-      when: Before Drive Mode
+      when: Before Plan Execution Mode
       example: Verify relationships
     - role: Workers
       when: During implementation
@@ -59,8 +59,8 @@ invocationModel:
 
   callingRoleTracking:
     required: true
-    onStart: "[PROJECT_COORDINATOR] - Invoked by [CALLING_ROLE]. Recording ticket operation."
-    onEnd: "Returning to [CALLING_ROLE]."
+    onStart: "<PROJECT_COORDINATOR> Invoked by <CALLING_ROLE>. Recording ticket operation."
+    onEnd: "Returning to <CALLING_ROLE>."
 
 # =============================================================================
 # BOUNDARIES (REQUIRED - Must be explicit, no bleeding)
@@ -90,8 +90,7 @@ boundaries:
   routingTable: null
 
 # =============================================================================
-# NOTE: No handoff section - Agent Skill Coordinator owns role routing
-# Utilities always return to CALLING_ROLE (tracked via invocationModel)
+# NOTE: Utilities always return to CALLING_ROLE (tracked via invocationModel)
 # =============================================================================
 
 # =============================================================================
@@ -201,7 +200,7 @@ qualityGates:
 
   rejectionFormat:
     template: |
-      [PROJECT_COORDINATOR] - ❌ REJECTED: Definition of [Ready|Done] not met.
+      <PROJECT_COORDINATOR> ❌ REJECTED: Definition of [Ready|Done] not met.
 
       **Operation**: [operation]
       **Title**: "[title]"
@@ -209,12 +208,12 @@ qualityGates:
       **Missing Items**:
       [list of missing items with checkboxes]
 
-      **Required Template Format** (see `references/ticket-templates.md`):
+      **Required Template Format** (see `references/templates/`):
       [relevant template snippet]
 
       **Action Required**: Fix the missing items and invoke PC again.
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # INVOCATION INTERFACE
@@ -222,7 +221,7 @@ qualityGates:
 invocationInterface:
   create:
     format: |
-      [PROJECT_COORDINATOR] Create:
+      <PROJECT_COORDINATOR> Create:
       - Type: mission | feature | dev-subtask | bug
       - Title: "..."
       - Body: "..."
@@ -245,7 +244,7 @@ invocationInterface:
 
   update:
     format: |
-      [PROJECT_COORDINATOR] Update #NUM:
+      <PROJECT_COORDINATOR> Update #NUM:
       - Title: "..." (optional)
       - Body: "..." (optional)
       - Status: backlog | in-progress | in-review | done (optional)
@@ -255,14 +254,14 @@ invocationInterface:
 
   relationships:
     format: |
-      [PROJECT_COORDINATOR] Relationships #NUM:
+      <PROJECT_COORDINATOR> Relationships #NUM:
       - Set Parent: #NUM
       - Add Blocker: #NUM
       - Remove Blocker: #NUM
 
   verify:
     format: |
-      [PROJECT_COORDINATOR] Verify #NUM:
+      <PROJECT_COORDINATOR> Verify #NUM:
       - Expect Parent: #NUM
       - Expect Blockers: #NUM, #NUM
     returns: PASS or FAIL with details
@@ -313,7 +312,7 @@ workflow:
       steps:
         - Report result to calling role
         - Include ticket URL/ID, success/failure, warnings
-        - State "Returning to [CALLING_ROLE]"
+        - State "Returning to <CALLING_ROLE>"
 
 # =============================================================================
 # RESPONSE FORMATS
@@ -321,7 +320,7 @@ workflow:
 responseFormats:
   success:
     template: |
-      [PROJECT_COORDINATOR] - Operation complete.
+      <PROJECT_COORDINATOR> Operation complete.
 
       **Result**: SUCCESS
       **Ticket**: #NUM - Title
@@ -330,17 +329,17 @@ responseFormats:
       - Parent: #NUM (verified)
       - Blocked By: #NUM, #NUM (verified)
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
   failure:
     template: |
-      [PROJECT_COORDINATOR] - Operation FAILED.
+      <PROJECT_COORDINATOR> Operation FAILED.
 
       **Error**: [description]
       **Attempted**: [what was tried]
       **Suggestion**: [how to fix]
 
-      Returning to [CALLING_ROLE].
+      Returning to <CALLING_ROLE>.
 
 # =============================================================================
 # QUALITY CHECKLIST
@@ -358,8 +357,12 @@ qualityChecklist:
 # =============================================================================
 references:
   local:
-    - path: references/ticket-templates.md
-      purpose: All ticket templates with DoR/DoD checklists
+    - path: references/templates/
+      purpose: Ticket templates (READ BEFORE VALIDATING)
+    - path: references/ticket-hierarchy.md
+      purpose: Hierarchy model, relationships, role tables
+    - path: references/progress-comments.md
+      purpose: Progress comment formats
     - path: references/github-operations.md
       purpose: GitHub Issues + GraphQL mutations
     - path: references/linear-operations.md
@@ -387,6 +390,6 @@ relatedSkills:
     - skill: Support Engineer
       coordination: Invokes for bug ticket creation
     - skill: PM
-      coordination: Invokes for relationship verification
+      coordination: Invokes for DoR verification before Plan Execution Mode
     - skill: Workers
       coordination: Invoke for status updates

@@ -3,7 +3,7 @@
 # =============================================================================
 # Designs technical solutions, defines API contracts, creates ADRs.
 # Breaks down requirements into Quality-Bounded Features.
-# Does NOT execute ticket CRUD - routes to Agent Skill Coordinator for that.
+# Does NOT execute ticket CRUD - invokes Project Coordinator for that.
 # =============================================================================
 
 meta:
@@ -105,7 +105,7 @@ customSections:
 
       ### After Design Complete
 
-      Once Feature content is fully specified, route to Agent Skill Coordinator for ticket creation.
+      Once Feature content is fully specified, invoke Project Coordinator for ticket creation.
 
       **DO NOT** execute ticket operations or create planning files directly.
 
@@ -180,7 +180,7 @@ customSections:
 
       **If violations found** (even if Code Reviewer approved):
       ```
-      [SOLUTIONS_ARCHITECT] - Architecture Compliance Issue
+      <SOLUTIONS_ARCHITECT> Architecture Compliance Issue
 
       PR #[number] violates architectural decisions:
 
@@ -225,7 +225,7 @@ workflow:
         - action: Specify content for each Feature (Technical Spec + Gherkin + Mission Statement)
         - action: Optionally create [Dev] subtasks if implementation needs breakdown
         - action: Identify relationships (parent Mission, blockedBy)
-        - action: Route to Agent Skill Coordinator for ticket creation
+        - action: Invoke Project Coordinator for ticket creation
 
     - name: Validation
       steps:
@@ -295,7 +295,7 @@ relatedSkills:
     - skill: Frontend Developer
       coordination: Receives data contracts
     - skill: PM
-      coordination: Receives technical dependencies for planning
+      coordination: Mode management only (Plan Execution/Collab/Explore)
 
   consultationTriggers:
     - skill: Data Platform Engineer

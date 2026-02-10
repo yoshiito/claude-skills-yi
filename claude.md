@@ -63,7 +63,14 @@ skills/
 │   └── skill-ecosystem.md       # How skills relate to each other
 ├── project-coordinator/      # Utility skill for ticket CRUD + quality gates
 │   └── references/
-│       ├── ticket-templates.md      # Story/Task and Bug templates
+│       ├── templates/               # Individual ticket templates
+│       │   ├── mission.md           # Mission (Epic) template
+│       │   ├── feature.md           # Feature template ([Backend]/[Frontend])
+│       │   ├── bug.md               # Bug template
+│       │   ├── query.md             # Query (communication) template
+│       │   └── dev-subtask.md       # Dev subtask template
+│       ├── ticket-hierarchy.md      # Hierarchy model, relationships, role tables
+│       ├── progress-comments.md     # Progress comment formats
 │       ├── github-operations.md     # GitHub Issues + GraphQL
 │       ├── linear-operations.md     # Linear MCP commands
 │       └── plan-file-operations.md  # Local file fallback
@@ -225,9 +232,15 @@ All ticket operations go through Project Coordinator. See `project-coordinator/S
 3. Verify no contradictions introduced
 
 ### Updating Ticket Templates
-1. Edit `project-coordinator/references/ticket-templates.md`
-2. Update corresponding checks in `project-coordinator/SKILL.md`
-3. Update `_shared/references/definition-of-ready.md` if checklist changes
+1. Edit the relevant template in `project-coordinator/references/templates/`
+   - `mission.md` - Mission (Epic) template
+   - `feature.md` - Feature template ([Backend]/[Frontend])
+   - `bug.md` - Bug template
+   - `query.md` - Query (communication) template
+   - `dev-subtask.md` - Dev subtask template
+2. If hierarchy/relationships change, update `project-coordinator/references/ticket-hierarchy.md`
+3. Update corresponding checks in `project-coordinator/SKILL.md`
+4. Update `_shared/references/definition-of-ready.md` if checklist changes
 
 ### Adding a New Ticketing System
 1. Create `project-coordinator/references/{system}-operations.md`
@@ -269,16 +282,16 @@ All ticket operations go through Project Coordinator. See `project-coordinator/S
 
 ### 1. Role Prefix in All Responses (MANDATORY)
 
-**Every message from a skill MUST be prefixed with `[ROLE_NAME]`** to make it clear who is authoring the information.
+**Every message from a skill MUST be prefixed with `<ROLE_NAME>`** to make it clear who is authoring the information.
 
-**Format**: `[ROLE_NAME] - <response content>`
+**Format**: `<ROLE_NAME> <response content>`
 
 **Examples**:
 ```
-[TPO] - I've analyzed the requirements and identified three user personas...
-[SOLUTIONS_ARCHITECT] - The proposed architecture uses an event-driven pattern...
-[SUPPORT_ENGINEER] - Investigation complete. Root cause is a race condition in...
-[BACKEND_DEVELOPER] - I've implemented the password reset endpoint...
+<TPO> I've analyzed the requirements and identified three user personas...
+<SOLUTIONS_ARCHITECT> The proposed architecture uses an event-driven pattern...
+<SUPPORT_ENGINEER> Investigation complete. Root cause is a race condition in...
+<BACKEND_DEVELOPER> I've implemented the password reset endpoint...
 ```
 
 **Why**: When multiple skills collaborate on a project, it must be immediately clear which role authored each piece of information. This enables:
@@ -311,10 +324,10 @@ All ticket operations go through Project Coordinator. See `project-coordinator/S
 3. Route to the appropriate intake role
 4. Example response:
    ```
-   [BACKEND_DEVELOPER] - This request involves defining new requirements.
+   <BACKEND_DEVELOPER> This request involves defining new requirements.
    Routing to Technical Product Owner for requirement definition...
 
-   [TPO] - I'll help define the requirements for this feature...
+   <TPO> I'll help define the requirements for this feature...
    ```
 
 ### 3. Project Scope Requirement (MANDATORY)
@@ -325,7 +338,7 @@ Before any skill performs substantive work, it must check if the project's `clau
 
 **If scope is NOT defined**, respond with:
 ```
-[ROLE_NAME] - I cannot proceed with this request.
+<ROLE_NAME> I cannot proceed with this request.
 
 This project does not have scope boundaries defined in its claude.md file.
 Until we know our scopes and boundaries, I cannot help you.

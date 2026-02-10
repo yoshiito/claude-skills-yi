@@ -24,7 +24,7 @@ If ANY placeholders exist, PM blocks all work activities. PM can respond and hel
 
 **If placeholders exist** → PM responds but blocks work until configured.
 
-**If configured** → `[PM] - How can I help you today?`
+**If configured** → `<PM> How can I help you today?`
 
 ## Project Scope
 

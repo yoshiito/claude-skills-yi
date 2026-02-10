@@ -142,7 +142,7 @@ workflow:
             - Relationships NOT duplicated in issue body text
         - action: Route failures back to SA
           template: |
-            [TPO] - Feature review failed.
+            <TPO> Feature review failed.
 
             Gate failures:
             - [list failed checks]
@@ -205,7 +205,7 @@ customSections:
       1. **Gather requirements** → Ask questions, get answers BEFORE drafting
       2. **Check for MRD** → If Market Researcher has provided an MRD, use it as input
       3. **Coordinate PRD** → Engage contributors for their sections
-      4. **Drive completion** → Ensure all sections complete, resolve conflicts
+      4. **Finalize PRD** → Ensure all sections complete, resolve conflicts
 
       ### Rule 3: Component Hygiene & Approvals
 
@@ -229,7 +229,7 @@ customSections:
       After MRD is approved, invoke Project Coordinator:
 
       ```
-      [PROJECT_COORDINATOR] Create:
+      <PROJECT_COORDINATOR> Create:
       - Type: parent
       - Title: "[Feature] Feature Name"
       - Body: [MRD content]
@@ -264,7 +264,7 @@ customSections:
       ### If PR Review Missing
 
       ```
-      [TPO] - ⚠️ Cannot Accept Feature - PR Review Gate Not Met
+      <TPO> ⚠️ Cannot Accept Feature - PR Review Gate Not Met
 
       The following lack Code Reviewer approval:
       - Feature PR: No review found
@@ -329,7 +329,7 @@ relatedSkills:
     - skill: API Designer
       coordination: Receives API needs, contributes contracts to PRD
     - skill: PM
-      coordination: Receives approved PRD, coordinates delivery
+      coordination: Mode management only (Plan Execution/Collab/Explore)
     - skill: Testers
       coordination: Receives acceptance criteria, contributes test strategy to PRD
 
@@ -338,5 +338,3 @@ relatedSkills:
       when: Need market research or MRD for new feature
     - skill: Solutions Architect
       when: Need technical feasibility assessment
-    - skill: Agent Skill Coordinator
-      when: Unclear about routing or role responsibilities

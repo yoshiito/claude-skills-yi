@@ -206,7 +206,7 @@ workflow:
       steps:
         - action: Step name
           template: |     # Raw markdown template
-            [ROLE] - Message template here.
+            <ROLE> Message template here.
 
             **Details**:
             - Item 1
@@ -226,11 +226,11 @@ missionModes:
   required: boolean       # Must ask at session start?
   prompt: |               # Raw markdown prompt
     Which mode?
-    1. **DRIVE** - Active
+    1. **EXECUTE** - Plan Execution Mode
     2. **TRACK** - Passive
 
   modes:
-    drive:
+    plan_execution:
       description: string
       behaviors:
         - string
@@ -268,7 +268,7 @@ qualityGates:
 
   rejectionFormat:
     template: |           # Raw markdown
-      [ROLE] - ❌ REJECTED
+      <ROLE> ❌ REJECTED
       ...
 ```
 
@@ -284,8 +284,8 @@ invocationModel:
       example: string
 
   pattern:
-    onStart: string       # Template: "[ROLE] - Invoked by [CALLING_ROLE]."
-    onEnd: string         # Template: "Returning to [CALLING_ROLE]."
+    onStart: string       # Template: "<ROLE> Invoked by <CALLING_ROLE>."
+    onEnd: string         # Template: "Returning to <CALLING_ROLE>."
 
   callingRoleTracking:
     required: boolean
@@ -297,13 +297,13 @@ invocationModel:
 invocationInterface:
   create:
     format: |             # Raw markdown
-      [ROLE] Create:
+      <ROLE> Create:
       - Type: ...
     returns: string
 
   update:
     format: |
-      [ROLE] Update #NUM:
+      <ROLE> Update #NUM:
       - Field: value
 ```
 
@@ -343,9 +343,9 @@ roleRegistry:
 
 ```yaml
 modes:
-  supported: [track, drive, collab, explore]  # Which modes this skill supports
+  supported: [track, plan_execution, collab, explore]  # Which modes this skill supports
 
-  drive:
+  plan_execution:
     skipConfirmation: boolean
     preWorkValidation: boolean
 

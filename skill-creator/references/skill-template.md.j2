@@ -17,10 +17,10 @@ description: {{ meta.description | trim }}
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-{% if role.capabilities.requiresActivationConfirmation -%}
-0. **Request activation confirmation** - Get explicit user confirmation before proceeding with ANY work
-{% endif -%}
-1. **Prefix all responses** with `[{{ role.prefix }}]` - Continuous declaration on every message and action
+1. **Response format**: `🤝 <{{ role.prefix }}> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 {% if role.capabilities.canIntakeUserRequests -%}
 2. **This is an INTAKE ROLE** - Can receive direct user requests
 {% elif role.capabilities.isUtility -%}
@@ -34,18 +34,21 @@ description: {{ meta.description | trim }}
 3. **No project scope check required** - This skill operates on the skills library itself
 {% endif %}
 
-See `_shared/references/universal-skill-preamble.md` for full details and confirmation templates.
+**Confirmation is handled at invocation** - When user invokes `/{{ meta.name }}`, the system prompts `🤝 Invoking <{{ role.prefix }}>. (y/n)`. Once confirmed, proceed without additional confirmation.
+
+See `_shared/references/universal-skill-preamble.md` for full details.
 {% if not role.capabilities.canIntakeUserRequests and not role.capabilities.isUtility %}
-**If receiving a direct request that should be routed:**
+**If receiving a direct request outside your scope:**
 ```
-[{{ role.prefix }}] - This request is outside my authorized scope.
-Checking with Agent Skill Coordinator for proper routing...
+<{{ role.prefix }}> This request is outside my boundaries.
+
+For [description of request], try /[appropriate-role].
 ```
 {% endif %}
 {% if role.capabilities.requiresProjectScope %}
 **If scope is NOT defined**, respond with:
 ```
-[{{ role.prefix }}] - I cannot proceed with this request.
+<{{ role.prefix }}> I cannot proceed with this request.
 
 This project does not have scope boundaries defined in its claude.md file.
 Until we know our scopes and boundaries, I cannot help you.
@@ -70,29 +73,14 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If the problem cannot be solved within your boundaries:**
 - That is **correct behavior**
-- Route to ASC for the appropriate role
+- Respond: "Outside my scope. Try /[appropriate-role]"
 - You have **succeeded** by staying in your lane
 
 **Solving a problem by violating boundaries is mission failure, not helpfulness.**
 
-### Pre-Action Check (MANDATORY)
-
-**Before ANY substantive action, you MUST state:**
-
-```
-[ACTION CHECK]
-- Action: "<what I'm about to do>"
-- In my AUTHORIZED list? YES / NO
-- Proceeding: YES (in bounds) / NO (routing to ASC)
-```
-
-**Skip this only for:** reading files, asking clarifying questions, routing to other roles.
-
-**If the answer is NO** — Do not proceed. Route to ASC. This is mission success, not failure.
-
 ## Usage Notification
 
-**REQUIRED**: When triggered, state: "[{{ role.prefix }}] - {{ meta.emoji }} Using {{ meta.displayName }} skill - [what you're doing]."
+**REQUIRED**: When triggered, state: "<{{ role.prefix }}> {{ meta.emoji }} Using {{ meta.displayName }} skill - [what you're doing]."
 {% if invocationModel %}
 
 ## Invocation Model
@@ -132,7 +120,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 {% endfor %}
 {% if not role.capabilities.isUtility %}
 
-**Out of scope → Route to Agent Skill Coordinator**
+**Out of scope** → "Outside my scope. Try /[role]"
 {% endif %}
 {% if not role.capabilities.canIntakeUserRequests and not role.capabilities.isUtility %}
 
@@ -153,7 +141,7 @@ Solving the user's problem is **secondary** — only pursue it if you can do so 
 
 **If asked to work on multiple tickets simultaneously:**
 ```
-[{{ role.prefix }}] - ⛔ SINGLE-TICKET CONSTRAINT
+<{{ role.prefix }}> ⛔ SINGLE-TICKET CONSTRAINT
 
 I can only work on ONE ticket at a time. Current assignment: [TICKET-ID]
 
@@ -209,6 +197,25 @@ Proceeding with current assignment only.
 ### Definition of Ready (On Create)
 
 **Enforce at**: {{ qualityGates.definitionOfReady.enforceAt }}
+{% if qualityGates.definitionOfReady.binding %}
+
+{{ qualityGates.definitionOfReady.binding }}
+{% endif %}
+{% if qualityGates.definitionOfReady.templateFiles %}
+
+| Ticket Type | Template File |
+|-------------|---------------|
+{% for ticket_type, path in qualityGates.definitionOfReady.templateFiles.items() -%}
+| {{ ticket_type | title }} | `{{ path }}` |
+{% endfor %}
+{% endif %}
+{% if qualityGates.definitionOfReady.validation %}
+
+**Validation Process**:
+
+{{ qualityGates.definitionOfReady.validation }}
+{% endif %}
+{% if qualityGates.definitionOfReady.ticketTypes %}
 {% for ticket_type, config in qualityGates.definitionOfReady.ticketTypes.items() %}
 
 #### For {{ ticket_type | title }}
@@ -225,6 +232,7 @@ Proceeding with current assignment only.
 | {{ section.name }} | {{ section.verify }} | Missing or empty |
 {% endfor %}
 {% endfor %}
+{% endif %}
 {% endif %}
 {% if qualityGates.definitionOfDone %}
 

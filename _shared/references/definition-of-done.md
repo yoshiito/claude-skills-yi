@@ -12,7 +12,7 @@
 
 ## Enforcement Point
 
-**Project Coordinator is the enforcer.** When any role invokes `[PROJECT_COORDINATOR] Update #NUM: Status=done`, the coordinator:
+**Project Coordinator is the enforcer.** When any role invokes `<PROJECT_COORDINATOR> Update #NUM: Status=done`, the coordinator:
 1. Fetches the actual ticket from the system
 2. Reads comments and description for evidence
 3. **REJECTS with specific gaps** if checks fail
@@ -166,7 +166,7 @@ Resolved by: [Name/role]
 ### Feature Completion
 
 ```
-[PROJECT_COORDINATOR] - Verifying Definition of Done for Feature #NUM...
+<PROJECT_COORDINATOR> Verifying Definition of Done for Feature #NUM...
 
 | Workflow Phase | Status | Evidence |
 |----------------|--------|----------|
@@ -183,7 +183,7 @@ Resolved by: [Name/role]
 ### Feature with Dev Subtasks
 
 ```
-[PROJECT_COORDINATOR] - Verifying Feature DoD for #NUM...
+<PROJECT_COORDINATOR> Verifying Feature DoD for #NUM...
 
 | Dev Subtask | Status |
 |-------------|--------|
@@ -223,5 +223,6 @@ Resolved by: [Name/role]
 ## Related References
 
 - `definition-of-ready.md` - Pre-work checklist
-- `project-coordinator/references/ticket-templates.md` - Full templates with DoR/DoD
-- `drive-mode-protocol.md` - Verification templates for Drive Mode
+- `project-coordinator/references/templates/` - Full templates with DoR/DoD
+- `project-coordinator/references/ticket-hierarchy.md` - Hierarchy model and relationships
+- `plan-execution-mode-protocol.md` - Verification templates for Plan Execution Mode

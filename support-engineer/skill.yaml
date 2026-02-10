@@ -52,9 +52,9 @@ boundaries:
 # MODE BEHAVIORS
 # =============================================================================
 modes:
-  supported: [track, drive, collab]
+  supported: [track, plan_execution, collab]
 
-  drive:
+  plan_execution:
     skipConfirmation: true
     preWorkValidation: true
 
@@ -219,8 +219,8 @@ references:
 # =============================================================================
 relatedSkills:
   upstream:
-    - skill: PM
-      provides: Incident context, priority guidance
+    - skill: TPO
+      provides: Incident priority guidance
 
   downstream:
     - skill: Backend Developer

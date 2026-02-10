@@ -13,7 +13,7 @@ User: "I want SA, UX Designer, and Frontend Dev to work together"
 
 **Option B — Skill suggests it:**
 ```
-[CURRENT_ROLE] - This task requires collaboration.
+<CURRENT_ROLE> This task requires collaboration.
 
 **Requesting permission to start a Collab Session with:**
 - [ROLE_1] for [reason]
@@ -37,7 +37,7 @@ User: "I want SA, UX Designer, and Frontend Dev to work together"
 Once user approves, each invited role confirms joining:
 
 ```
-[INVITED_ROLE] - Joining Collab Session. (Y/N)
+<INVITED_ROLE> Joining Collab Session. (Y/N)
 ```
 
 **WAIT for user response.**
@@ -53,7 +53,7 @@ Once user approves, each invited role confirms joining:
 **Once user confirms Y, the role joins the active Collab Session.**
 
 **During an active Collab Session:**
-- **ALL messages MUST be prefixed with `🤝` before the role prefix** (e.g., `🤝 [UX_DESIGNER]`)
+- **ALL messages MUST be prefixed with `🤝` before the role prefix** (e.g., `🤝 <UX_DESIGNER>`)
 - All participating roles talk to each other **freely WITHOUT asking the user**
 - No confirmation prompts between participating roles
 - **No pausing between role hand-offs** — if you think "should I wait for user?", don't
@@ -65,31 +65,31 @@ Once user approves, each invited role confirms joining:
 When one role finishes and hands to another, the receiving role MUST respond **in the same turn**. Do NOT pause between roles. The conversation flows like:
 
 ```
-🤝 [ROLE_A] - I've completed X. Handing to ROLE_B for Y.
+🤝 <ROLE_A> I've completed X. Handing to ROLE_B for Y.
 
-🤝 [ROLE_B] - Received. Working on Y now...
+🤝 <ROLE_B> Received. Working on Y now...
 ```
 
 Both happen in ONE Claude response. No user input between them.
 
 **Correct behavior:**
 ```
-🤝 [UX_DESIGNER] - Here's the component layout...
+🤝 <UX_DESIGNER> Here's the component layout...
 
-🤝 [SOLUTIONS_ARCHITECT] - That works. Adjusting data flow...
+🤝 <SOLUTIONS_ARCHITECT> That works. Adjusting data flow...
 
-🤝 [FRONTEND_DEVELOPER] - I can implement that pattern...
+🤝 <FRONTEND_DEVELOPER> I can implement that pattern...
 
-🤝 [UX_DESIGNER] - One concern about loading state...
+🤝 <UX_DESIGNER> One concern about loading state...
 
-🤝 [SOLUTIONS_ARCHITECT] - Good point. Let's address that...
+🤝 <SOLUTIONS_ARCHITECT> Good point. Let's address that...
 ```
 
 **WRONG behavior (do NOT do this):**
 ```
-[UX_DESIGNER] - Here's my recommendation... ← WRONG - missing 🤝 prefix
+<UX_DESIGNER> Here's my recommendation... ← WRONG - missing 🤝 prefix
 
-🤝 [SOLUTIONS_ARCHITECT] - Should I respond? ← WRONG - just respond, don't ask
+🤝 <SOLUTIONS_ARCHITECT> Should I respond? ← WRONG - just respond, don't ask
 ```
 
 ## Step 4: Adding More Roles Mid-Session
@@ -110,7 +110,7 @@ Collab Session ends ONLY when:
 
 **AI may PROMPT to end, but must WAIT for user approval:**
 ```
-🤝 [PM] - Work appears complete. Would you like to end the Collab Session?
+🤝 <PM> Work appears complete. Would you like to end the Collab Session?
 
 1. END SESSION - Yes, end Collab Session
 2. CONTINUE - No, stay in Collab Session
@@ -120,7 +120,7 @@ Collab Session ends ONLY when:
 
 **When user confirms ending, stop using the 🤝 prefix:**
 ```
-🤝 [PM] - Collab Session ended.
+🤝 <PM> Collab Session ended.
 
-[PM] - Back to standard mode. What would you like to do next?
+<PM> Back to standard mode. What would you like to do next?
 ```

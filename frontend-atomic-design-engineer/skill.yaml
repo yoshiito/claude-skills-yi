@@ -54,9 +54,9 @@ boundaries:
 # MODE BEHAVIORS
 # =============================================================================
 modes:
-  supported: [track, drive, collab]
+  supported: [track, plan_execution, collab]
 
-  drive:
+  plan_execution:
     skipConfirmation: true
     preWorkValidation: true
 
@@ -213,7 +213,7 @@ relatedSkills:
     - skill: Code Reviewer
       coordination: PR review before completion
     - skill: PM
-      coordination: Progress tracking, blockers
+      coordination: Mode management only (Plan Execution/Collab/Explore)
 
   consultationTriggers:
     - skill: UX Designer
