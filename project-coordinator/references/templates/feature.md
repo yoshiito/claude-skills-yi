@@ -85,9 +85,9 @@ Feature: [Feature name]
   - [ ] [Concrete work item 1 for THIS ticket]
   - [ ] [Concrete work item 2 for THIS ticket]
   - [ ] [... more ticket-specific work items]
-  - [ ] All checklist items complete, PR created
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR created targeting feature branch
+  - [ ] Comment on ticket with verbose summary. [Describe: components created, files modified, patterns used]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Code Reviewer
 
 ### Code Review
@@ -96,9 +96,11 @@ Feature: [Feature name]
   - [ ] [Specific verification item 1 for THIS ticket]
   - [ ] [Specific verification item 2 for THIS ticket]
   - [ ] [... more ticket-specific review items]
-  - [ ] All items verified, PR approved
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR approved
+  - [ ] PR merged into feature branch
+  - [ ] Source branch deleted
+  - [ ] Comment on ticket with verbose summary. [Describe: items checked, issues found and resolved]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to [Tester role]
 
 ### Test
@@ -108,8 +110,8 @@ Feature: [Feature name]
   - [ ] [Specific test case 2 from Gherkin scenarios]
   - [ ] [... more ticket-specific test items]
   - [ ] All tests passing
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: number of tests, scenarios covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Tech Doc Writer
 
 ### Docs (if user-facing changes)
@@ -118,8 +120,8 @@ Feature: [Feature name]
   - [ ] [Specific doc update 1 for THIS ticket]
   - [ ] [... more ticket-specific doc items]
   - [ ] All docs updated
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: pages added/modified, sections covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Solutions Architect
 
 ### SA Review
@@ -127,8 +129,8 @@ Feature: [Feature name]
 - **Checklist**:
   - [ ] [Specific architecture check for THIS ticket]
   - [ ] Architecture compliance verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: API contracts, state management, patterns validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to TPO
 
 ### UAT
@@ -137,8 +139,8 @@ Feature: [Feature name]
   - [ ] [Acceptance criterion 1 from Gherkin]
   - [ ] [Acceptance criterion 2 from Gherkin]
   - [ ] All acceptance criteria verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: Gherkin scenarios validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Feature complete
 
 ## Open Questions

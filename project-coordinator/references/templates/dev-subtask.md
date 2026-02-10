@@ -45,10 +45,9 @@
   - [ ] [Fully specified task 1 - what, where, how]
   - [ ] [Fully specified task 2 - what, where, how]
   - [ ] [... each item self-explanatory]
-  - [ ] All checklist items complete, PR created
-  - [ ] PR targets feature branch
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR created targeting feature branch
+  - [ ] Comment on ticket with verbose summary. [Describe: components created, files modified, patterns used]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Code Reviewer
 
 ### Code Review
@@ -57,9 +56,11 @@
   - [ ] [Specific verification item 1 for THIS subtask]
   - [ ] [Specific verification item 2 for THIS subtask]
   - [ ] [... more subtask-specific review items]
-  - [ ] All items verified, PR approved
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR approved
+  - [ ] PR merged into feature branch
+  - [ ] Source branch deleted
+  - [ ] Comment on ticket with verbose summary. [Describe: items checked, issues found and resolved]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to [Tester role]
 
 ### Test
@@ -69,8 +70,8 @@
   - [ ] [Specific test case 2 for THIS subtask]
   - [ ] [... more subtask-specific test items]
   - [ ] All tests passing
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: number of tests, scenarios covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Tech Doc Writer
 
 ### Docs (if user-facing changes)
@@ -79,8 +80,8 @@
   - [ ] [Specific doc update 1 for THIS subtask]
   - [ ] [... more subtask-specific doc items]
   - [ ] All docs updated
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: pages added/modified, sections covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Solutions Architect
 
 ### SA Review
@@ -88,8 +89,8 @@
 - **Checklist**:
   - [ ] [Specific architecture check for THIS subtask]
   - [ ] Architecture compliance verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: API contracts, state management, patterns validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to TPO
 
 ### UAT
@@ -98,8 +99,8 @@
   - [ ] [Acceptance criterion 1 for THIS subtask]
   - [ ] [Acceptance criterion 2 for THIS subtask]
   - [ ] All acceptance criteria verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: Gherkin scenarios validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Subtask complete
 ```
 

@@ -59,9 +59,9 @@
 - **Checklist**:
   - [ ] [Fix item 1 based on root cause]
   - [ ] [Fix item 2 based on root cause]
-  - [ ] All checklist items complete, PR created
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR created targeting feature branch
+  - [ ] Comment on ticket with verbose summary. [Describe: root cause fix, files modified, approach used]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Code Reviewer
 
 ### Code Review
@@ -69,9 +69,11 @@
 - **Checklist**:
   - [ ] [Verify fix addresses root cause]
   - [ ] [Verify no regression in related code]
-  - [ ] All items verified, PR approved
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] PR approved
+  - [ ] PR merged into feature branch
+  - [ ] Source branch deleted
+  - [ ] Comment on ticket with verbose summary. [Describe: items checked, issues found and resolved]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to [Tester role]
 
 ### Test
@@ -80,8 +82,8 @@
   - [ ] [Test the specific bug scenario is fixed]
   - [ ] [Regression test related functionality]
   - [ ] All tests passing
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: number of tests, regression scenarios covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Solutions Architect
 
 ### SA Review
@@ -89,8 +91,8 @@
 - **Checklist**:
   - [ ] [Verify fix doesn't introduce architectural issues]
   - [ ] Architecture compliance verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: architectural impact assessed, patterns validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to TPO
 
 ### UAT
@@ -98,8 +100,8 @@
 - **Checklist**:
   - [ ] [Verify bug is fixed from user perspective]
   - [ ] All acceptance criteria verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: bug scenario validated, user impact resolved]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Bug complete
 ```
 

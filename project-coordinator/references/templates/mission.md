@@ -51,8 +51,8 @@
   - [ ] [E2E test scenario 1 - features work together]
   - [ ] [E2E test scenario 2 - cross-feature flows]
   - [ ] All integration tests passing
-  - [ ] Comment on ticket with test results
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: E2E scenarios tested, cross-feature flows validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Tech Doc Writer
 
 ### Docs (if user-facing changes)
@@ -61,8 +61,8 @@
   - [ ] [Mission-level doc update 1]
   - [ ] [... more mission-level doc items]
   - [ ] All docs updated
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: pages added/modified, sections covered]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to Solutions Architect
 
 ### SA Review
@@ -71,8 +71,8 @@
   - [ ] [Verify overall architecture coherence]
   - [ ] [Verify integration patterns correct]
   - [ ] Architecture compliance verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: architecture coherence, integration patterns validated]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Hand off to TPO
 
 ### UAT
@@ -83,8 +83,8 @@
   - [ ] [Error handling behaves as expected]
   - [ ] [Performance meets requirements]
   - [ ] All acceptance criteria verified
-  - [ ] Comment on ticket with completion evidence
-  - [ ] Check off completed checklist items in ticket
+  - [ ] Comment on ticket with verbose summary. [Describe: success criteria validated, user flows verified]
+  - [ ] Edit ticket body to check off this phase's completed items
   - [ ] Mission complete
 ```
 
