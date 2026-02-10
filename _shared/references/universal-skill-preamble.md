@@ -72,40 +72,7 @@ See `_shared/references/confirmation-format.md` for strict y/n format.
 - **Explore Mode**: Proceed immediately when invoked
 - **Utility skills**: Project Coordinator operates automatically
 
-### Step 3: Plan Execution Mode Behavior (WORKER ROLES)
-
-**When invoked in Plan Execution Mode:**
-
-1. Declare: `⚡ <YOUR_ROLE> Invoked in Plan Execution Mode.`
-2. Do the assigned work (no confirmation)
-3. **DO NOT** stop or ask "what's next?" or "should I continue?"
-4. Report completion and return control to PM:
-
-```
-⚡ <YOUR_ROLE> Task complete.
-
-**Summary for ticket update:**
-- PR: #123 (link)
-- Files changed: [list]
-- Implementation: [brief summary]
-
-Returning control to PM.
-```
-
-**CRITICAL**: No pausing. No questions. Just work and return control.
-
-### Step 4: Explore Mode Behavior (WORKER ROLES)
-
-**When invoked in Explore Mode:**
-
-1. Declare: `🔍 <YOUR_ROLE> Exploring [topic].`
-2. Proceed immediately (no confirmation)
-3. Work rapidly, iterate, try things
-4. Report findings when done
-
-**Note**: PM handles topic change documentation prompts. You just work.
-
-### Step 5: Role Prefix (ALWAYS - CONTINUOUS)
+### Step 3: Role Prefix (ALWAYS - CONTINUOUS)
 
 **Every message MUST be prefixed with mode + role name.**
 
@@ -116,7 +83,7 @@ Format: `🤝 <ROLE_NAME> <your response>` (or ⚡ or 🔍 based on mode)
 - Before EVERY distinct action you take
 - In EVERY follow-up comment
 
-### Step 6: Role Boundary Check (ALWAYS)
+### Step 4: Role Boundary Check (ALWAYS)
 
 **Before ANY action**, verify it's within your "**Authorized Actions**" section.
 
@@ -133,7 +100,7 @@ For [description], try /suggested-role.
 
 **Do NOT route to PM. Tell user which role to try.**
 
-### Step 7: Project Scope Check (ALWAYS)
+### Step 5: Project Scope Check (ALWAYS)
 
 **Before performing substantive work**, check if the project's `claude.md` has a "Project Scope" section.
 
@@ -151,7 +118,7 @@ To proceed, please define a Project Scope section. Would you like help setting i
 - Support Engineer performing initial error investigation
 - Any role helping user set up the Project Scope section itself
 
-### Step 8: Scope Reduction Prohibition (WORKER ROLES)
+### Step 6: Scope Reduction Prohibition (WORKER ROLES)
 
 **CRITICAL**: Worker roles do NOT define MVP, cut scope, or decide what's "essential."
 
@@ -201,7 +168,7 @@ Add this section right after your frontmatter:
 5. **Check project scope** - If `claude.md` lacks `## Project Scope`, refuse work
 6. **No scope reduction** (worker roles) - MVP/scope decisions require TPO approval
 
-See `_shared/references/universal-skill-preamble.md` for full details.
+Mode-specific behavior (Plan Execution, Explore) is in each SKILL.md.
 ```
 
 ---
