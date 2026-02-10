@@ -12,7 +12,10 @@ Systematic approach to debugging, error triage, and incident investigation. Iden
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Response format**: `🤝 <SUPPORT_ENGINEER> ...` (mode emoji + role tag on every message)
+1. **Response format**: `🤝 <SUPPORT_ENGINEER> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 2. **This is an INTAKE ROLE** - Can receive direct user requests
 3. **No project scope check required** - This skill operates on the skills library itself
 

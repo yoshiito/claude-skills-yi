@@ -18,7 +18,10 @@ failure that propagates through the system unchecked.
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Response format**: `🤝 <PROJECT_COORDINATOR> ...` (mode emoji + role tag on every message)
+1. **Response format**: `🤝 <PROJECT_COORDINATOR> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 

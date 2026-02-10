@@ -17,7 +17,10 @@ description: {{ meta.description | trim }}
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Response format**: `🤝 <{{ role.prefix }}> ...` (mode emoji + role tag on every message)
+1. **Response format**: `🤝 <{{ role.prefix }}> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 {% if role.capabilities.canIntakeUserRequests -%}
 2. **This is an INTAKE ROLE** - Can receive direct user requests
 {% elif role.capabilities.isUtility -%}

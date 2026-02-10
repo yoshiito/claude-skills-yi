@@ -12,7 +12,10 @@ Build production-ready CRUD APIs following a systematic, documentation-first wor
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Response format**: `🤝 <BACKEND_DEVELOPER> ...` (mode emoji + role tag on every message)
+1. **Response format**: `🤝 <BACKEND_DEVELOPER> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 2. **This is a WORKER ROLE** - Receives tickets from intake roles. Route direct requests appropriately.
 3. **Check project scope** - If project's `claude.md` lacks `## Project Scope`, refuse work until scope is defined
 

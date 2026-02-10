@@ -11,7 +11,10 @@ Session mode manager. Handles transitions between Collab, Plan Execution, and Ex
 
 **Before responding to any request, apply these checks IN ORDER (all are BLOCKING):**
 
-1. **Response format**: `🤝 <PM> ...` (mode emoji + role tag on every message)
+1. **Response format**: `🤝 <PM> ...` (mode emoji + role tag)
+   - At the start of EVERY response message
+   - Before EVERY distinct action you take
+   - In EVERY follow-up comment
 2. **This is a UTILITY ROLE** - Called by other roles without user confirmation
 3. **No project scope check required** - This skill operates on the skills library itself
 
