@@ -1,6 +1,6 @@
 ---
-name: agent-skill-creator
-description: Create, validate, and maintain Claude Code agents and skills following architecture patterns. V2 of skill-creator with expanded scope covering both agents (WHO Claude becomes) and skills (WHAT Claude knows). Use for ALL agent and skill management in this repository.
+name: fm-agent-skill-creator
+description: Create, validate, and maintain Claude Code agents and skills following architecture patterns. Covers both agents (WHO Claude becomes) and skills (WHAT Claude knows). Use for ALL agent and skill management.
 disable-model-invocation: true
 ---
 
@@ -22,7 +22,7 @@ Create, validate, and maintain Claude Code agents and skills with consistent arc
 
 **BLOCKING**: Do this BEFORE any other work.
 
-1. Re-read this SKILL.md — `agent-skill-creator/SKILL.md`
+1. Re-read this SKILL.md — `fm-agent-skill-creator/SKILL.md`
 2. Do NOT rely on the summary
 3. Then proceed with the user's request
 
@@ -73,6 +73,7 @@ Different tools OR different workflow = DIFFERENT agents.
 - Validate agents and skills against quality gates
 - Detect boundary overlaps across agents and skills
 - Manage reference files within skills
+- Upgrade existing skills/agents (exploratory or deterministic)
 - Maintain the YAML-based skill generation system (legacy skills)
 
 **This role does NOT do:**
@@ -85,12 +86,13 @@ Different tools OR different workflow = DIFFERENT agents.
 
 ### Phase 1: Request Analysis
 
-1. Identify request type: new agent, new skill, new reference, modification, audit
+1. Identify request type: new agent, new skill, new reference, modification, upgrade, audit
 2. **Apply the agent test** — determine if this needs an agent, a skill, or both
 3. Load the appropriate reference:
    - Creating an agent → read `references/agent-creation-guide.md`
    - Creating a skill → read `references/skill-creation-guide.md`
    - Designing composition → read `references/composition-patterns.md`
+   - Upgrading → proceed to Phase 3b (Upgrade)
 
 ### Phase 2: Boundary Analysis (MANDATORY)
 
@@ -103,9 +105,10 @@ Different tools OR different workflow = DIFFERENT agents.
 
 **For agents:**
 1. Read `references/agent-creation-guide.md` if not already loaded
-2. Write frontmatter (name, description, tools, skills)
+2. Write frontmatter (name, description, tools, skills — MUST include `sf-agent-registry`)
 3. Write body (identity, blocking check, boundaries, write domain, handoff, intake pattern)
-4. Validate against quality gates
+4. **Update sf-agent-registry** — add new agent to the catalog table
+5. Validate against quality gates
 
 **For skills:**
 1. Read `references/skill-creation-guide.md` if not already loaded
@@ -115,6 +118,39 @@ Different tools OR different workflow = DIFFERENT agents.
 5. Write frontmatter and body
 6. Create reference files if needed
 7. Validate against quality gates
+
+### Phase 3b: Upgrade (Existing Agents/Skills)
+
+Two modes — exploratory or deterministic:
+
+**Exploratory** ("Is this skill still current?"):
+1. Read the target skill/agent and its reference files
+2. Identify tools, libraries, patterns, and best practices referenced
+3. Web search for current versions, deprecations, and updated best practices
+4. Compare current content against findings
+5. Present upgrade report: what's current, what's stale, what's changed
+6. Get approval before making changes
+
+**Deterministic** ("Update this skill to use X"):
+1. Read the target skill/agent
+2. Apply the specified change across SKILL.md and reference files
+3. Verify structural compliance still passes (quality gates)
+4. Preserve architecture: boundaries, composition, and routing unchanged
+
+**Upgrade scope**:
+
+| What to check | Examples |
+|---|---|
+| Tool/library versions | FastAPI 0.100 → 0.115, React 18 → 19 |
+| Best practice evolution | New testing patterns, deprecated APIs |
+| Platform changes | CLI commands, API endpoints, config formats |
+| Framework conventions | New agent anatomy sections, updated gates |
+
+**Rules**:
+- Upgrades MUST NOT change role boundaries or write domains
+- Upgrades MUST NOT add/remove skills from agent composition without explicit approval
+- Exploratory mode is read-only until approval — present findings, don't edit
+- After upgrade, run full validation (Phase 5)
 
 ### Phase 4: Composition Design
 
@@ -143,7 +179,8 @@ Run ALL applicable quality gates before completion.
 | Type | Convention | Example |
 |------|-----------|---------|
 | Agent names | Lowercase, hyphenated | `document-writer` |
-| Framework skills | `sf-` prefix, lowercase, hyphenated | `sf-document-writer` |
+| Runtime framework skills | `sf-` prefix, lowercase, hyphenated | `sf-document-writer` |
+| Management framework skills | `fm-` prefix, lowercase, hyphenated | `fm-agent-skill-creator` |
 | Library skills | Lowercase, hyphenated (no prefix) | `skill-creator` |
 | Reference files | Topic/platform, lowercase, hyphenated | `api-doc-patterns.md` |
 
@@ -151,9 +188,10 @@ Run ALL applicable quality gates before completion.
 
 Every agent MUST have:
 - [ ] Frontmatter: name, description, tools (or disallowedTools)
-- [ ] Body: identity declaration, blocking check, role boundaries, write domain, handoff format, intake pattern (intake agents)
+- [ ] `sf-agent-registry` in `skills:` field (provides routing table and handoff format)
+- [ ] Body: identity declaration, blocking check, role boundaries, write domain, handoff, intake pattern (intake agents)
+- [ ] Role boundaries do NOT hardcode other agent names (registry handles routing)
 - [ ] Intake pattern defines orient menu (Vanilla/Collab) and confirm behavior (Plan Execution/Exploration)
-- [ ] Skills listed in `skills:` field if applicable
 - [ ] No hardcoded MCP servers (projects configure via `.mcp.json`)
 
 ### Gate 4: Skill Structural Compliance
@@ -180,6 +218,8 @@ Every skill MUST have:
 | Many small skills all in `skills:` field | Consolidate into fewer skills with references |
 | Agent body over 200 lines | Extract knowledge into embedded skill |
 | Vague language ("try to", "consider") | Replace with MUST/SHOULD/MAY |
+| Hardcoded agent names in boundaries/handoffs | Remove — sf-agent-registry handles routing |
+| Agent missing sf-agent-registry in skills | Add it — mandatory for all agents |
 
 ## Skills Library Architecture
 
@@ -190,7 +230,7 @@ SKILLS LIBRARY (~/.claude/skills/)          END-USER PROJECT (~/projects/app/)
 ├── _shared/references/                     ├── claude.md  <- COPIED from boilerplate
 │   ├── boilerplate-claude-md.md ──────────────┘
 │   └── *.md
-├── agent-skill-creator/SKILL.md
+├── fm-agent-skill-creator/SKILL.md
 └── ...
 ```
 
@@ -225,6 +265,7 @@ Before approving any agent or skill:
 - [ ] File sizes within limits
 - [ ] Naming conventions followed
 - [ ] No boundary overlaps detected
+- [ ] sf-agent-registry updated (if new agent)
 - [ ] Composition documented (if applicable)
 - [ ] Reference routing defined (if applicable)
 
@@ -232,5 +273,5 @@ Before approving any agent or skill:
 
 | Skill | Relationship |
 |-------|-------------|
-| skill-creator (v1) | Predecessor — agent-skill-creator expands scope to agents |
-| All agents/skills | Agent & Skill Creator validates and maintains all |
+| sf-agent-registry | Maintained by this skill when agents are added/removed |
+| All agents/skills | fm-agent-skill-creator validates and maintains all |

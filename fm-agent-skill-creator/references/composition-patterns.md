@@ -10,6 +10,7 @@ An agent's effective knowledge = **always-embedded skills + currently-loaded ref
 
 ```
 agent-name (agent)
+├── sf-agent-registry (always embedded — mandatory)
 ├── sf-skill-a (always embedded via skills:)
 │   ├── SKILL.md                    <- always in context
 │   └── references/topic.md        <- loaded on demand
@@ -97,6 +98,7 @@ Agent with one primary skill (no reusable skills needed).
 
 ```
 reviewer (agent)
+├── sf-agent-registry (mandatory)
 └── sf-reviewer (always embedded)
     ├── SKILL.md
     └── references/...
@@ -108,6 +110,7 @@ Agent with agent-specific + reusable skills.
 
 ```
 market-researcher (agent)
+├── sf-agent-registry (mandatory)
 ├── sf-market-researcher (agent-specific)
 ├── sf-research-methodology (reusable)
 └── sf-doc-write-operations (reusable)
@@ -129,6 +132,7 @@ sf-research-methodology
 ```
 document-writer (agent)
 ├── tools: Read, Write, Edit, Glob, Grep, Bash
+├── sf-agent-registry (always embedded — mandatory)
 ├── sf-document-writer (always embedded — agent-specific)
 │   ├── SKILL.md — inventory, workflow, quality, reference routing
 │   └── references/
@@ -144,7 +148,7 @@ document-writer (agent)
 ```
 
 **Entry point**: `/sf-document-writer <request>` -> forks to document-writer agent
-**Always in context**: sf-document-writer SKILL.md + sf-doc-write-operations SKILL.md
+**Always in context**: sf-agent-registry + sf-document-writer SKILL.md + sf-doc-write-operations SKILL.md
 **On demand**: whichever reference files the task requires
 
 ---
@@ -164,6 +168,7 @@ This tells the user exactly which expertise is active.
 ## Checklist
 
 Before finalizing composition:
+- [ ] sf-agent-registry is in every agent's `skills:` field
 - [ ] Each embedded skill is justified (agent needs it for EVERY task)
 - [ ] Specialized knowledge is in reference files, not embedded
 - [ ] Reusable skills are separate, agent-specific knowledge is in references

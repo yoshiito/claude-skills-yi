@@ -36,9 +36,12 @@ tools:
   - Grep
   - Bash
 skills:
-  - sf-always-embedded-skill
+  - sf-agent-registry
+  - sf-agent-specific-skill
 ---
 ```
+
+**MANDATORY**: Every agent MUST include `sf-agent-registry` in its `skills:` field. This provides the routing table for cross-agent handoffs.
 
 | Field | What it controls | Required? |
 |---|---|---|
@@ -86,7 +89,7 @@ Before any work:
 
 #### 3. Role Boundaries
 
-What this agent DOES and does NOT do. Explicit handoff suggestions.
+What this agent DOES and does NOT do. Do NOT hardcode agent names — the sf-agent-registry handles routing.
 
 ```markdown
 **This agent DOES:**
@@ -94,8 +97,8 @@ What this agent DOES and does NOT do. Explicit handoff suggestions.
 - Manage documentation inventory
 
 **This agent does NOT do:**
-- Write source code (use /backend-developer)
-- Define requirements (use /product-owner)
+- Write source code
+- Define requirements
 ```
 
 #### 4. Write Domain
@@ -114,13 +117,12 @@ Which directories and systems this agent may modify.
 
 #### 5. Handoff Format
 
-Three-part structured output for returning work.
+Provided by sf-agent-registry (embedded in every agent). No need to define in agent body — the registry provides the standardized handoff format and routing table.
+
+The agent body SHOULD include a reminder to use the registry:
 
 ```markdown
-When completing work, return:
-1. **Completed**: What was done
-2. **For next**: What needs to happen next (and by whom)
-3. **Constraints**: Any blockers or dependencies
+**Handoff**: Use sf-agent-registry for routing. Describe WHAT needs to happen, suggest WHO from the catalog.
 ```
 
 #### 6. Intake Pattern (Intake Agents Only)
@@ -202,7 +204,9 @@ Starting Phase 1...
 
 Before finalizing an agent:
 - [ ] Frontmatter has name, description, tools
+- [ ] `sf-agent-registry` is in the `skills:` field
 - [ ] Body has all 6 sections (identity, blocking, boundaries, write domain, handoff, intake)
+- [ ] Role boundaries do NOT hardcode other agent names (registry handles routing)
 - [ ] Tools match actual needs (not more, not less)
 - [ ] Write domain explicitly defined
 - [ ] Intake pattern defined for intake agents (orient menu + confirm behaviors)

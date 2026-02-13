@@ -150,11 +150,12 @@ The SKILL.md tells the agent WHEN to read which reference:
 
 | Type | Convention | Example |
 |------|-----------|---------|
-| Framework skills | `sf-` prefix | `sf-document-writer` |
+| Runtime framework skills | `sf-` prefix | `sf-document-writer` |
+| Management framework skills | `fm-` prefix | `fm-agent-skill-creator` |
 | Library skills | No prefix | `skill-creator` |
 | Reference files | Topic/platform name | `api-doc-patterns.md` |
 
-The `sf-` prefix namespaces framework skills to avoid collisions.
+The `sf-` prefix namespaces runtime framework skills. The `fm-` prefix namespaces management/meta skills used to build and maintain the framework itself.
 
 ---
 
