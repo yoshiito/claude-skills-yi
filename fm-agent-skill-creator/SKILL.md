@@ -1,4 +1,4 @@
----
+n---
 name: fm-agent-skill-creator
 description: Create, validate, and maintain Claude Code agents and skills following architecture patterns. Covers both agents (WHO Claude becomes) and skills (WHAT Claude knows). Use for ALL agent and skill management.
 disable-model-invocation: true
@@ -223,26 +223,42 @@ Every skill MUST have:
 
 ## Skills Library Architecture
 
-### Deployment Model
+### Self-Sufficient Ecosystem
 
-```
-SKILLS LIBRARY (~/.claude/skills/)          END-USER PROJECT (~/projects/app/)
-├── _shared/references/                     ├── claude.md  <- COPIED from boilerplate
-│   ├── boilerplate-claude-md.md ──────────────┘
-│   └── *.md
-├── fm-agent-skill-creator/SKILL.md
-└── ...
-```
+The framework (`yi-agent-framework`) IS the ecosystem. It replaces `~/.claude/skills/`. Everything the framework needs lives within the repo — no external dependencies.
 
-### Path Resolution Rule
+### Shared Reference Organization
 
-| File | Where It Lives | Path Style |
-|------|----------------|------------|
-| `boilerplate-claude-md.md` | Copied to project's `claude.md` | `{Skills Path}/path/to/file.md` |
-| SKILL.md files | Inside skills library | Relative paths (no prefix) |
-| `_shared/references/*.md` | Inside skills library | Relative paths (no prefix) |
+Shared references live in `skills/_shared/references/` and are organized into three categories:
 
-**NEVER add `{Skills Path}/` prefix to files that stay in the skills library.**
+| Directory | What It Contains | Distinction Test |
+|-----------|-----------------|-----------------|
+| `assets/` | Templates deployed to end-user projects — boilerplates, scaffolds | "Does this leave the library?" |
+| `knowledge/` | Domain expertise agents share — practices, governance, standards | "Does this make the work better?" |
+| `fw-specs/` | Framework specifications — protocols, gates, schemas | "Does this define how the framework runs?" |
+
+**MANIFEST.md** MUST exist at `skills/_shared/references/MANIFEST.md`. It defines the categorization system and inventories all shared reference files. Update it when adding or removing files.
+
+### Where References Belong
+
+| If the reference... | Put it in... |
+|---------------------|-------------|
+| Is needed by ONE agent/skill only | That skill's `references/` directory |
+| Is needed by MULTIPLE agents | `_shared/references/` in the appropriate category |
+| Is domain expertise some roles embody and others consult | `_shared/references/knowledge/` |
+| Defines how the framework operates | `_shared/references/fw-specs/` |
+| Is a template deployed to projects | `_shared/references/assets/` |
+
+### Skill vs Shared Reference for Cross-Cutting Knowledge
+
+When knowledge is shared across agents, decide packaging based on the agent's relationship to it:
+
+| Relationship | Packaging |
+|-------------|-----------|
+| Knowledge is **inherent to identity** (agent can't skip it) | Skill embedded via `skills:` field — references the shared knowledge file |
+| Knowledge is **consulted on-demand** (agent loads when relevant) | Agent reads the shared reference file directly via Read tool |
+
+Example: Component governance is inherent to frontend-developer (skill), but consulted by solutions-architect (Read file).
 
 ## YAML Generation System (Legacy Skills)
 
@@ -268,6 +284,8 @@ Before approving any agent or skill:
 - [ ] sf-agent-registry updated (if new agent)
 - [ ] Composition documented (if applicable)
 - [ ] Reference routing defined (if applicable)
+- [ ] Shared references placed in correct category (assets/knowledge/fw-specs)
+- [ ] MANIFEST.md updated (if shared references added/removed)
 
 ## Related Skills
 
